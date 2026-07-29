@@ -203,6 +203,20 @@ The logo is the interlocking "C" monogram supplied by the founder
 `public/logo.svg` / `logo-light.svg` and the favicon tile. Regenerate with
 `node scripts/vectorize-logo.mjs && node scripts/generate-assets.mjs`.
 
+## Founder portrait
+
+Jaidev's portrait (`src/assets/jaidev-jethi.jpg`) appears on the About page
+beside the founder story and in a homepage strip, and is referenced by the
+Person schema. Framing stays "thoughtful technologist", never celebrity.
+
+## Social media (support service)
+
+`/services/social-media` exists as a **support** service, not a fifth core
+one. It is educational content written within patient-privacy limits: no
+paid advertising, no follower-count chasing, no clinical photographs or
+patient stories without clear written consent. If a practice's website or
+Google listing needs work, the page says to fix those first.
+
 ## Funnel
 
 The site sells one thing: a **free written review** of a practice's online
