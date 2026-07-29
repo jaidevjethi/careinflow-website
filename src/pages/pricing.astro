@@ -99,7 +99,7 @@ const principles = [
     <div class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20">
       <SectionHead
         label="Chart — what you are paying for"
-        title="Six things the number covers."
+        title="What does the price include?"
       />
       <div class="mt-11 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {paysFor.map((p) => (
@@ -115,7 +115,7 @@ const principles = [
   <section class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[110px] xl:px-20" aria-labelledby="principles-title">
     <SectionHead
       label="Protocol — how the number behaves"
-      title="Four commitments, held in every engagement."
+      title="How our pricing behaves"
     />
     <div class="mt-11 grid max-w-[920px] gap-4">
       {principles.map((p, i) => (
@@ -134,7 +134,7 @@ const principles = [
     <div class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20">
       <SectionHead
         label="Status — founding practices"
-        title="The first five practices get the founding terms."
+        title="Founding practice terms"
         lede="Fixed founding pricing in exchange for one thing: permission to publish what happened, honestly, including what did not work. Ask about the terms on WhatsApp — they are written down, like everything else."
       />
       <p class="mt-7 flex flex-wrap gap-4">
@@ -147,7 +147,7 @@ const principles = [
   <FaqSection
     faqs={faqEntries.map((f) => ({ question: f.question, answer: f.answer }))}
     label="Questions about pricing"
-    title="The money questions, answered straight."
+    title="Questions about cost"
   />
 
   <CtaPanel prefill="pricing" nextStep={{ label: 'Start with the free review', href: '/free-review' }} />

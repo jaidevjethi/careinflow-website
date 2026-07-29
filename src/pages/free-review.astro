@@ -1,6 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import reviewImage from '@/assets/services/free-review.png';
 import SectionHead from '@/components/SectionHead.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import { BUSINESS, whatsappFor } from '@/config/site';
@@ -91,13 +93,23 @@ const outline = [
         Free · 2 working days<br />Usually answered the same day.
       </p>
     </div>
+
+    <Image
+      src={reviewImage}
+      alt="A doctor's desk seen from above: a notebook, a pen, a stethoscope and a phone showing a clinic webpage."
+      widths={[640, 960, 1280]}
+      sizes="(min-width: 1280px) 1200px, 92vw"
+      loading="eager"
+      fetchpriority="high"
+      class="mt-12 w-full rounded-3xl border border-line bg-surface"
+    />
   </section>
 
   <section class="border-t border-hairline bg-surface" aria-labelledby="covers-title">
     <div class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20">
       <SectionHead
         label="Chart — what the review covers"
-        title="Six checks, each one a reason patients choose someone else."
+        title="What does the free review check?"
       />
       <div class="mt-11 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {covers.map((c, i) => (
@@ -118,7 +130,7 @@ const outline = [
       <div>
         <SectionHead
           label="Findings — what you receive"
-          title="A short document you can act on, not a sales pitch."
+          title="What you get, and why it is free"
           lede="Written in plain language, specific to your practice, and useful whether or not you ever hire us. Most reviews run three to five pages."
         />
         <p class="mt-6 max-w-[620px] text-lg leading-[1.62] text-body">
@@ -154,7 +166,7 @@ const outline = [
     <div class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20">
       <SectionHead
         label="Protocol — what happens after"
-        title="If work is worth doing, the review becomes the plan."
+        title="What happens after the review?"
         lede="You get one fixed number in writing against a defined scope. If you would rather fix things yourself, the review tells you where to start — and we part as professionals."
       />
       <p class="mt-7 flex flex-wrap gap-4">
@@ -171,6 +183,6 @@ const outline = [
   <FaqSection
     faqs={faqEntries.map((f) => ({ question: f.question, answer: f.answer }))}
     label="Questions about the review"
-    title="Before you send the message"
+    title="Questions about the free review"
   />
 </BaseLayout>

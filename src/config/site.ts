@@ -65,6 +65,8 @@ export const PREFILLS = {
     "Hi CareInflow — I'd like the founding-practice terms in writing, starting with the free review. Clinic name: ",
   work:
     "Hi CareInflow — I saw your work and I'd like a free written review for my own practice. Clinic name: ",
+  social:
+    "Hi CareInflow — I'd like to talk about social media content for my practice. Clinic name: ",
 } as const;
 
 export type PrefillKey = keyof typeof PREFILLS;
@@ -89,6 +91,7 @@ export const FOOTER_GROUPS = [
       { label: 'Local SEO', href: '/services/local-seo' },
       { label: 'Google Business Profile', href: '/services/google-business-profile' },
       { label: 'Ongoing website care', href: '/services/website-care' },
+      { label: 'Social media', href: '/services/social-media' },
     ],
   },
   {

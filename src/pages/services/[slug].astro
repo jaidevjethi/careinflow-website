@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
@@ -39,6 +40,7 @@ const prefillByService: Record<string, PrefillKey> = {
   'local-seo': 'seo',
   'google-business-profile': 'gbp',
   'website-care': 'care',
+  'social-media': 'social',
 };
 const prefill = prefillByService[service.id] ?? 'default';
 
@@ -70,6 +72,16 @@ const schema = graph(
         {service.data.title}
       </h1>
       <p class="mt-6 max-w-[660px] text-lg leading-[1.62] text-body">{service.data.summary}</p>
+
+      <Image
+        src={service.data.illustration}
+        alt={service.data.illustrationAlt}
+        widths={[640, 960, 1200]}
+        sizes="(min-width: 1280px) 1200px, 92vw"
+        loading="eager"
+        fetchpriority="high"
+        class="mt-10 w-full rounded-3xl border border-line bg-surface"
+      />
     </header>
 
     <!-- BODY + DELIVERABLES -->

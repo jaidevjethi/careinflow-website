@@ -5,6 +5,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import LiveBadge from '@/components/LiveBadge.astro';
 import SectionHead from '@/components/SectionHead.astro';
 import heroImage from '@/assets/hero-three-surfaces.png';
+import founderImage from '@/assets/jaidev-jethi.jpg';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import { BUSINESS, whatsappWithMessage } from '@/config/site';
@@ -92,6 +93,12 @@ const protocols = [
     text: 'Written: what patients did, what changed nearby, what to do next.',
     link: '/services/website-care',
   },
+  {
+    code: 'CI-09',
+    title: 'Social media content',
+    text: 'Educational posts that support the website — never a replacement for it.',
+    link: '/services/social-media',
+  },
 ];
 
 const method = [
@@ -178,8 +185,8 @@ const whatsappHref = whatsappWithMessage(
       <div class="mb-14 flex flex-wrap items-end justify-between gap-6">
         <SectionHead
           label="01 · Triage — the three surfaces"
-          title="A patient meets your practice in three places. You probably control one of them."
-          lede="We treat them as a single system, because a patient does. Inconsistent hours or a missing price on one surface undoes the work on the other two."
+          title="Where do patients actually find your clinic?"
+          lede="In three places, and most practices control only one of them. We treat all three as one system, because a patient does. Wrong hours in one place undo the work done in the other two."
         />
         <a href={href('/services')} class="prose-link whitespace-nowrap text-base">See all capabilities →</a>
       </div>
@@ -277,8 +284,8 @@ const whatsappHref = whatsappWithMessage(
   <section class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[120px] xl:px-20" aria-labelledby="protocols-title">
     <SectionHead
       label="02 · Protocols — what we do"
-      title="Eight things we do. Each one removes a specific reason a patient hesitates."
-      lede="Most practices need three of them to begin. We tell you which three in writing, before you pay anything."
+      title="What CareInflow does for a clinic"
+      lede="Nine things, and each one removes a specific reason a patient hesitates. Most practices need three of them to begin — we tell you which three in writing, before you pay anything."
     />
     <div class="reveal-group mt-13 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {protocols.map((p) => (
@@ -302,8 +309,8 @@ const whatsappHref = whatsappWithMessage(
           <SectionHead
             dark
             label="03 · Indication — why healthcare only"
-            title="A café wants you hungry. A clinic needs you calm. An agency doing both will always solve yours second."
-            lede="Dental, dermatology, physiotherapy, ophthalmology, orthopaedics, paediatrics, cosmetic and mental health. That narrowness is the product: the patterns are learned once and applied to every practice we take on."
+            title="Why we work with healthcare practices only"
+            lede="A café wants you hungry. A clinic needs you calm. An agency doing both will always solve yours second. We work with dental, dermatology, physiotherapy, eye, orthopaedic, paediatric, cosmetic and mental health practices — and nothing else."
           />
           <div class="mt-8 flex flex-wrap gap-2.5">
             <span class="chip border border-panel-line-alt text-panel-text-dim">No ranking guarantees</span>
@@ -340,14 +347,43 @@ const whatsappHref = whatsappWithMessage(
     </div>
   </section>
 
+  <!-- FOUNDER -->
+  <section class="mx-auto max-w-[1440px] px-5 pb-20 sm:px-10 sm:pb-[120px] xl:px-20" aria-labelledby="founder-strip-title">
+    <div class="reveal flex flex-col gap-7 rounded-3xl border border-line bg-surface p-7 sm:flex-row sm:items-center sm:gap-9 sm:p-9">
+      <Image
+        src={founderImage}
+        alt="Jaidev Jethi, founder of CareInflow."
+        widths={[160, 320]}
+        sizes="160px"
+        loading="lazy"
+        class="h-[190px] w-[150px] shrink-0 rounded-2xl border border-line object-cover object-top"
+      />
+      <div>
+        <p class="label-mono text-faint" style="letter-spacing:0.12em">Who does the work</p>
+        <h2 id="founder-strip-title" class="mt-2.5 text-[clamp(22px,2.6vw,30px)] font-extrabold leading-[1.12] tracking-[-0.03em] text-ink">
+          You talk to the person building your website.
+        </h2>
+        <p class="mt-3 max-w-[640px] text-[15.5px] leading-[1.65] text-body">
+          CareInflow is run by {BUSINESS.founder} — web development in Gujarat,
+          cybersecurity study in Canada, then more than a year at Microsoft
+          before coming home to start this. There is no account manager
+          between you and the work.
+        </p>
+        <a href={href('/about')} class="prose-link mt-4 inline-block text-[15px]">
+          More about the studio →
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- 04 · FINDINGS — REAL BUILDS -->
   <section class="border-t border-hairline bg-surface" aria-labelledby="featured-title">
     <div class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[110px] xl:px-20">
       <div class="mb-12 flex flex-wrap items-end justify-between gap-6">
         <SectionHead
           label="04 · Findings — real builds"
-          title="Sites we have actually shipped, not mockups."
-          lede="Open them on your own phone and judge the loading speed yourself. We would rather show you working sites than describe them."
+          title="Websites we have actually built"
+          lede="Not mockups. Open them on your own phone and judge the loading speed yourself — we would rather show you working sites than describe them."
         />
         <a href={href('/work')} class="prose-link whitespace-nowrap text-base">See the work →</a>
       </div>
@@ -421,7 +457,7 @@ const whatsappHref = whatsappWithMessage(
   <FaqSection
     faqs={faqEntries.map((f) => ({ question: f.question, answer: f.answer }))}
     label="06 · Questions"
-    title="The doubts we hear most, answered plainly."
+    title="Questions clinic owners ask us"
   />
 
   <CtaPanel nextStep={{ label: 'Start with what we do', href: '/services' }} />

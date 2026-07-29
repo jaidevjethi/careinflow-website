@@ -8,8 +8,11 @@ import { glob, file } from 'astro/loaders';
  */
 const services = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/services' }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
+    /** Explainer illustration — see the careinflow-images skill for the style lock. */
+    illustration: image(),
+    illustrationAlt: z.string(),
     /** Short label used in navigation and cards. */
     navLabel: z.string(),
     /** Meta description, unique per page. */

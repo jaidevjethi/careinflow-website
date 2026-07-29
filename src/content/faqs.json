@@ -2,7 +2,7 @@
   {
     "id": "why-healthcare-only",
     "question": "Why does CareInflow only work with healthcare practices?",
-    "answer": "Because narrowness is the product. A café wants you hungry; a clinic needs you calm. By working only with dental, dermatology, physiotherapy, eye, orthopedic, pediatric, gynecology, cosmetic and mental health practices, we learn the patterns once — how patients search, what they worry about, what earns their trust — and apply them to every practice we take on.",
+    "answer": "Because doing one kind of work makes the work better. A café wants you hungry; a clinic needs you calm. By working only with dental, dermatology, physiotherapy, eye, orthopedic, pediatric, gynecology, cosmetic and mental health practices, we learn the patterns once — how patients search, what worries them, what earns their trust — and bring them to every practice we take on.",
     "pages": ["faq", "home", "about"],
     "order": 1
   },
@@ -75,6 +75,20 @@
     "answer": "We work from Shop F-27, Platinum Plaza Complex, Radhanpur Road, Mehsana — and primarily serve practices across North Gujarat: Mehsana, Ahmedabad, Gandhinagar, Visnagar, Unjha, Patan, Kalol, Siddhpur and Palanpur. Being nearby means we can visit your practice and photograph it properly. For practices further away, everything except the photography works remotely.",
     "pages": ["faq", "contact"],
     "order": 11
+  },
+  {
+    "id": "keep-domain",
+    "question": "Can I keep my current domain name and email?",
+    "answer": "Yes. We build the new website and point your existing domain at it, so patients who already know your address still find you. We also set up redirects so the pages Google has indexed keep working instead of turning into errors. Your email keeps running throughout — we plan the switch so nothing goes down during clinic hours.",
+    "pages": ["faq"],
+    "order": 13
+  },
+  {
+    "id": "do-you-do-social",
+    "question": "Do you handle social media for clinics?",
+    "answer": "Yes, as a support service rather than a main one. We write educational posts — treatment explainers, clinic updates, honest answers to the questions patients ask in the chair — within the limits patient privacy sets. We do not run paid ads or chase follower counts. And if your website or Google listing still needs work, we will tell you to fix those first, because that is where patients actually decide.",
+    "pages": ["faq", "social-media"],
+    "order": 14
   },
   {
     "id": "own-the-site",

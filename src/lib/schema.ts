@@ -41,13 +41,14 @@ export function organizationSchema() {
   };
 }
 
-export function founderSchema() {
+export function founderSchema(imageUrl?: string) {
   return {
     '@type': 'Person',
     '@id': FOUNDER_ID,
     name: BUSINESS.founder,
     jobTitle: 'Founder',
     worksFor: { '@id': ORG_ID },
+    ...(imageUrl ? { image: imageUrl } : {}),
     description:
       'Technologist and founder of CareInflow. Studied IT and web development in Gujarat, cybersecurity in Canada, and worked at Microsoft before returning to India to build CareInflow.',
     knowsAbout: ['Web development', 'Cybersecurity', 'Local SEO', 'Healthcare digital presence'],
