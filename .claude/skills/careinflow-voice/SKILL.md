@@ -26,7 +26,9 @@ You are writing for busy healthcare professionals in Gujarat, India — doctors 
 
 - Section labels use record vocabulary (uppercase mono): CHART, TRIAGE, PROTOCOL, INDICATION, STATUS, FINDINGS, METHOD — never "Solutions" or "Why choose us".
 - Measurements always carry a reference range the way a lab report does: `LCP 0.9S · REF <1.2S`. A number without a reference is not evidence.
-- CTAs (calm, informative): "Message us on WhatsApp" · "Get a free written review" · "Book a consultation" · "Discuss your clinic's website" · "See the method".
+- CTAs (calm, informative): "Message us on WhatsApp" · "Get a free written review" · "Send your clinic's name" · "Book a consultation" · "See the method". Full placement rules live in the `careinflow-funnel` skill.
+- Every ask carries its honest escape hatch — *if the answer is "change nothing", we will say that*. Never drop it to sound more confident; it is why the offer works.
+- One studio in Mehsana, no branches. Write "our studio", never "our offices" or "our locations"; service areas are places we serve, not places we sit.
 - Write for the patient's perspective where it helps: symptom-and-cost words, not clinical terminology.
 
 ## Example transformation

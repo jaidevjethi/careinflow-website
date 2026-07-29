@@ -46,6 +46,32 @@ export const WHATSAPP_URL = `https://wa.me/${BUSINESS.phone.replace('+', '')}`;
 export const whatsappWithMessage = (text: string): string =>
   `${WHATSAPP_URL}?text=${encodeURIComponent(text)}`;
 
+/**
+ * Context-specific WhatsApp prefills — each page opens the conversation with
+ * the message that matches what the visitor was just reading.
+ */
+export const PREFILLS = {
+  default:
+    "Hi CareInflow — I'd like a free written review of my practice's online presence. Clinic name: ",
+  website:
+    "Hi CareInflow — I'd like the free review, with a focus on my clinic's website. Clinic name: ",
+  gbp:
+    "Hi CareInflow — I'd like the free review, with a focus on my Google listing. Clinic name: ",
+  seo:
+    "Hi CareInflow — I'd like the free review, with a focus on how patients find my clinic in search. Clinic name: ",
+  care:
+    "Hi CareInflow — my clinic already has a website and I'd like to talk about maintaining it. Clinic name: ",
+  pricing:
+    "Hi CareInflow — I'd like the founding-practice terms in writing, starting with the free review. Clinic name: ",
+  work:
+    "Hi CareInflow — I saw your work and I'd like a free written review for my own practice. Clinic name: ",
+} as const;
+
+export type PrefillKey = keyof typeof PREFILLS;
+
+export const whatsappFor = (key: PrefillKey = 'default'): string =>
+  whatsappWithMessage(PREFILLS[key]);
+
 export const NAV_ITEMS = [
   { label: 'Services', href: '/services' },
   { label: 'Work', href: '/work' },
@@ -77,6 +103,7 @@ export const FOOTER_GROUPS = [
   {
     title: 'Answers',
     links: [
+      { label: 'Free review', href: '/free-review' },
       { label: 'Resources', href: '/resources' },
       { label: 'Questions', href: '/faq' },
       { label: 'Contact', href: '/contact' },

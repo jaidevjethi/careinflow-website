@@ -3,6 +3,8 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
+import CtaStrip from '@/components/CtaStrip.astro';
+import type { PrefillKey } from '@/config/site';
 import { href } from '@/lib/url';
 import {
   graph,
@@ -31,6 +33,14 @@ const related = allServices.filter((s) => service.data.related.includes(s.id));
 const path = `/services/${service.id}`;
 const title = `${service.data.title} | CareInflow`;
 const description = service.data.description;
+
+const prefillByService: Record<string, PrefillKey> = {
+  'healthcare-websites': 'website',
+  'local-seo': 'seo',
+  'google-business-profile': 'gbp',
+  'website-care': 'care',
+};
+const prefill = prefillByService[service.id] ?? 'default';
 
 const schema = graph(
   organizationSchema(),
@@ -108,11 +118,13 @@ const schema = graph(
     )}
   </article>
 
+  <CtaStrip />
+
   <FaqSection
     faqs={service.data.faqs.map((f) => ({ question: f.q, answer: f.a }))}
     label={`${service.data.code} · Questions`}
     title="Asked about this service"
   />
 
-  <CtaPanel />
+  <CtaPanel {prefill} nextStep={{ label: 'See the work first', href: '/work' }} />
 </BaseLayout>

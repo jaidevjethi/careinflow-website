@@ -10,7 +10,15 @@ const year = new Date().getFullYear();
     <div class="grid gap-12 lg:grid-cols-[1fr_auto] lg:gap-24">
       <div class="max-w-md">
         <div class="mb-4 flex items-center gap-2.5">
-          <span class="inline-block size-[22px] rounded-[7px] bg-surface" aria-hidden="true"></span>
+          <img
+            src={href('/logo-light.svg')}
+            alt=""
+            width="28"
+            height="26"
+            loading="lazy"
+            decoding="async"
+            class="block h-6 w-auto"
+          />
           <span class="text-lg font-extrabold tracking-[-0.03em] text-surface">CareInflow</span>
         </div>
         <p class="text-sm leading-[1.7] text-panel-text-faint">
@@ -46,7 +54,7 @@ const year = new Date().getFullYear();
 
     <div class="mt-14 border-t border-panel-divider pt-7">
       <p class="font-mono text-[10.5px] uppercase tracking-[0.1em] leading-[1.8] text-panel-text-faint">
-        Serving healthcare practices across {BUSINESS.serviceAreas.join(' · ')} and the wider North Gujarat region
+        One studio · Mehsana, Gujarat — serving healthcare practices across {BUSINESS.serviceAreas.join(' · ')} and the wider North Gujarat region
       </p>
       <p class="mt-3 text-[13px] text-panel-text-faint">
         © {year} {BUSINESS.name}. Built by hand in Mehsana — this site is our own best evidence.

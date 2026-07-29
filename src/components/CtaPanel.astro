@@ -1,13 +1,19 @@
 ---
-import { BUSINESS, whatsappWithMessage } from '@/config/site';
+import { BUSINESS, whatsappFor, type PrefillKey } from '@/config/site';
+import { href } from '@/lib/url';
 
 /**
  * The closing CTA card — used word for word across pages, as the design
  * system specifies ("the same white CTA card as the homepage").
+ * `prefill` tailors the WhatsApp opening message to the page's context;
+ * `nextStep` chains the funnel to the page a convinced visitor reads next.
  */
-const whatsappHref = whatsappWithMessage(
-  "Hi CareInflow — I'd like a free written review of my practice's online presence. Clinic name: ",
-);
+interface Props {
+  prefill?: PrefillKey;
+  nextStep?: { label: string; href: string };
+}
+const { prefill = 'default', nextStep } = Astro.props;
+const whatsappHref = whatsappFor(prefill);
 
 const reviewCovers = [
   'Listing accuracy',
@@ -38,6 +44,11 @@ const reviewCovers = [
           Usually answered<br />the same day.
         </p>
       </div>
+      {nextStep && (
+        <p class="mt-6 text-[14.5px] text-muted">
+          Still reading first? <a href={href(nextStep.href)} class="prose-link">{nextStep.label} →</a>
+        </p>
+      )}
     </div>
     <div class="rounded-[20px] border border-line bg-canvas p-7">
       <h3 class="label-mono mb-4 text-faint" style="letter-spacing:0.12em">The review covers</h3>

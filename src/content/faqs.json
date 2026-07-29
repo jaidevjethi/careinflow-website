@@ -10,14 +10,14 @@
     "id": "new-studio",
     "question": "How established is CareInflow?",
     "answer": "We are a new studio, and we would rather you heard that from us. CareInflow is currently choosing five founding practices, who get a fixed price agreed in writing and direct access to the people doing the work. In return we ask to publish what happened — honestly, including what did not work.",
-    "pages": ["faq", "about", "pricing"],
+    "pages": ["faq", "about", "pricing", "free-review"],
     "order": 2
   },
   {
     "id": "what-does-it-cost",
     "question": "What does a clinic website cost?",
     "answer": "Every engagement is a fixed price agreed in writing before any work starts — no hourly billing, no surprise invoices. The exact figure depends on scope: how many treatments need pages, whether you need Gujarati as well as English, and what state your Google presence is in. The free written review is where we tell you what you actually need; sometimes the honest answer is 'less than you expected'.",
-    "pages": ["faq", "pricing"],
+    "pages": ["faq", "pricing", "free-review"],
     "order": 3
   },
   {
@@ -52,7 +52,7 @@
     "id": "current-site-good-enough",
     "question": "My clinic already has a website. Is that not enough?",
     "answer": "Maybe — and the free review will tell you honestly. But check three things tonight on your own phone: how long your site takes to load on mobile data, whether your Google listing shows the right hours and recent photos, and whether searching a treatment you offer brings up your site at all. Most practices find at least one surprise.",
-    "pages": ["faq", "home"],
+    "pages": ["faq", "home", "free-review"],
     "order": 8
   },
   {
@@ -66,7 +66,7 @@
     "id": "how-to-start",
     "question": "How do we start?",
     "answer": "Send your clinic's name on WhatsApp. Within two working days you get a free written review of what a patient currently sees — your listing, your site, your search results, and the three clinics above you. If the answer is 'change nothing', we will say that. If there is work worth doing, the review becomes the plan we quote against.",
-    "pages": ["faq", "contact", "process"],
+    "pages": ["faq", "contact", "process", "free-review"],
     "order": 10
   },
   {

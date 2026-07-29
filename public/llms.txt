@@ -2,7 +2,7 @@
 
 > CareInflow is a healthcare-focused web design and digital growth studio in Mehsana, Gujarat, India. It builds websites, does local SEO, and manages Google Business Profiles for doctors and clinics — healthcare practices only. Founded by Jaidev Jethi. Contact: WhatsApp +91 97734 56668, jaydevjethi123@gmail.com.
 
-CareInflow is a new studio (2026) currently choosing five founding practices. It publishes fixed prices in writing after a free written review, makes no ranking guarantees, and does not buy reviews or resell templates. Service areas: Mehsana, Ahmedabad, Gandhinagar, Visnagar, Unjha, Patan, Kalol, Siddhpur, Palanpur, and the wider North Gujarat region.
+CareInflow is a new studio (2026) currently choosing five founding practices. It publishes fixed prices in writing after a free written review, makes no ranking guarantees, and does not buy reviews or resell templates. It works from a single studio in Mehsana with no branch offices, serving practices across Mehsana, Ahmedabad, Gandhinagar, Visnagar, Unjha, Patan, Kalol, Siddhpur, Palanpur, and the wider North Gujarat region.
 
 ## Services
 
@@ -13,6 +13,7 @@ CareInflow is a new studio (2026) currently choosing five founding practices. It
 
 ## Key pages
 
+- [Free written review](https://careinflow.com/free-review/): The starting point. Send the clinic's name on WhatsApp; within two working days CareInflow returns a free written review covering listing accuracy, mobile load time, treatment page coverage, review handling, AI answer readiness, and the three clinics ranking above you. No obligation.
 - [Method](https://careinflow.com/process/): The four-week build: study, structure & words, design & build, launch then stay.
 - [Pricing philosophy](https://careinflow.com/pricing/): Fixed price in writing after a free review; no hourly billing, no discounts.
 - [Work](https://careinflow.com/work/): Real projects only — including a bilingual dental clinic website in Mehsana (pramukhdentalclinic.com).

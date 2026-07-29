@@ -31,8 +31,14 @@ const services = defineCollection({
 /** Case studies — real projects only. */
 const caseStudies = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/case-studies' }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
+    /** Real screenshot of the live site — captured by scripts/capture-work-shots.mjs. */
+    cover: image(),
+    coverAlt: z.string(),
+    /** Optional second shot (e.g. the mobile view). */
+    coverMobile: image().optional(),
+    coverMobileAlt: z.string().optional(),
     client: z.string(),
     location: z.string(),
     sector: z.string(),

@@ -1,0 +1,23 @@
+---
+import { href } from '@/lib/url';
+
+/**
+ * One-line mid-page CTA — a calm nudge between content sections, always
+ * pointing at the free review (the funnel's centerpiece).
+ */
+interface Props {
+  text?: string;
+}
+const {
+  text = 'Not sure this is your gap? The free review will say so, honestly.',
+} = Astro.props;
+---
+
+<aside class="mx-auto max-w-[1440px] px-5 sm:px-10 xl:px-20" aria-label="Free review">
+  <div class="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-line bg-canvas px-6 py-5 sm:px-7">
+    <p class="text-[15.5px] leading-[1.5] text-body-deep">{text}</p>
+    <a href={href('/free-review')} class="prose-link whitespace-nowrap text-[15px]">
+      Get the free review →
+    </a>
+  </div>
+</aside>

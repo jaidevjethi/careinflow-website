@@ -95,12 +95,29 @@
     scroll-behavior: smooth;
   }
 
+  /*
+   * Cross-document view transitions: a soft fade between pages in browsers
+   * that support it, inert everywhere else. No JavaScript, no router.
+   */
+  @view-transition {
+    navigation: auto;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 240ms;
+    animation-timing-function: var(--ease-instrument);
+  }
+
   body {
     background: var(--color-canvas);
     color: var(--color-ink);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    /* Guard against a single wide child ever sideways-scrolling the page.
+       clip (not hidden) keeps position: sticky working in the header. */
+    overflow-x: clip;
   }
 
   ::selection {
@@ -214,11 +231,57 @@
   .card-hover {
     transition:
       transform 200ms var(--ease-instrument),
-      border-color 200ms linear;
+      border-color 200ms linear,
+      box-shadow 200ms var(--ease-instrument);
   }
   .card-hover:hover {
     transform: translateY(-2px);
     border-color: var(--color-line-hover);
+  }
+
+  /*
+   * Scroll-driven entrance: fade + 8px rise as the element enters the
+   * viewport, played once. Pure CSS via animation-timeline, so there is no
+   * observer, no scroll listener and nothing to run on the main thread.
+   * Browsers without support simply show the content — no flash of hidden
+   * content, because the hidden state only applies inside the @supports.
+   */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal {
+        animation: ci-rise linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 40%;
+      }
+      /* Staggered variant for grids — each child trails the last slightly. */
+      .reveal-group > * {
+        animation: ci-rise linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 45%;
+      }
+    }
+  }
+
+  /* Smooth FAQ disclosure where ::details-content is supported. */
+  @supports selector(::details-content) {
+    @media (prefers-reduced-motion: no-preference) {
+      details::details-content {
+        block-size: 0;
+        overflow: clip;
+        transition:
+          block-size 240ms var(--ease-instrument),
+          content-visibility 240ms allow-discrete;
+      }
+      details[open]::details-content {
+        block-size: auto;
+      }
+      /* Height only animates from a computed size, not the auto keyword. */
+      @supports (block-size: calc-size(auto, size)) {
+        details[open]::details-content {
+          block-size: calc-size(auto, size);
+        }
+      }
+    }
   }
 
   .prose-link {

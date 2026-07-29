@@ -1,0 +1,176 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SectionHead from '@/components/SectionHead.astro';
+import FaqSection from '@/components/FaqSection.astro';
+import { BUSINESS, whatsappFor } from '@/config/site';
+import { href } from '@/lib/url';
+import {
+  graph,
+  organizationSchema,
+  webSiteSchema,
+  webPageSchema,
+  breadcrumbSchema,
+  faqSchema,
+} from '@/lib/schema';
+
+const title = 'Free written review of your clinic\'s online presence | CareInflow';
+const description =
+  'Send your clinic\'s name on WhatsApp and get a free written review within two working days: your Google listing, website speed, treatment coverage, reviews, AI answers, and the three clinics above you.';
+
+const faqEntries = (await getCollection('faqs', ({ data }) => data.pages.includes('free-review')))
+  .map(({ data }) => data)
+  .sort((a, b) => a.order - b.order);
+
+const schema = graph(
+  organizationSchema(),
+  webSiteSchema(),
+  webPageSchema({ path: '/free-review', title, description }),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Free review', path: '/free-review' },
+  ]),
+  faqSchema(faqEntries.map((f) => ({ question: f.question, answer: f.answer }))),
+);
+
+const whatsappHref = whatsappFor('default');
+
+const covers = [
+  {
+    item: 'Listing accuracy',
+    detail: 'Your Google Business Profile checked line by line — categories, services, hours, photos — against what a patient actually needs.',
+  },
+  {
+    item: 'Mobile load time',
+    detail: 'Your website measured on a mid-range Android over mobile data, with the numbers and their reference ranges.',
+  },
+  {
+    item: 'Treatment page coverage',
+    detail: 'Which of the searches patients type can your site answer today — and which send them to a competitor.',
+  },
+  {
+    item: 'Review handling',
+    detail: 'What your recent reviews say, whether anyone replies, and what that pattern signals to the next patient.',
+  },
+  {
+    item: 'AI answer readiness',
+    detail: 'What ChatGPT and Google\'s AI answers currently say when asked about clinics like yours nearby — and whether you exist there at all.',
+  },
+  {
+    item: 'The three clinics above you',
+    detail: 'What the practices ranking above you are doing differently, specifically.',
+  },
+];
+
+const outline = [
+  { n: '01', line: 'Where patients find you today — the searches and surfaces that matter in your area' },
+  { n: '02', line: 'What they currently see — screenshots of your listing, site and AI answers' },
+  { n: '03', line: 'The gaps costing you patients, ranked by impact' },
+  { n: '04', line: 'What to fix first — useful with or without us' },
+  { n: '05', line: 'What it would cost, fixed, in writing — only if work is worth doing' },
+];
+---
+
+<BaseLayout {title} {description} path="/free-review" {schema}>
+  <section class="mx-auto max-w-[1440px] px-5 pb-16 pt-14 sm:px-10 sm:pb-20 sm:pt-20 xl:px-20">
+    <div class="tick-rule mb-3.5" aria-hidden="true"></div>
+    <p class="label-mono mb-5 text-surgical">Study — the first step, free</p>
+    <h1 class="max-w-[880px] text-[clamp(34px,5vw,62px)] font-extrabold leading-[1.04] tracking-[-0.045em] text-ink">
+      A written review of what patients see. Free, in two working days.
+    </h1>
+    <p class="mt-6 max-w-[660px] text-lg leading-[1.62] text-body">
+      One WhatsApp message with your clinic's name is all it takes. No form,
+      no discovery call, no obligation — and if the honest answer is "change
+      nothing", that is what the review will say.
+    </p>
+    <div class="mt-8 flex flex-wrap items-center gap-4">
+      <a href={whatsappHref} rel="noopener" class="btn-primary px-7 py-4 text-[17px]">
+        WhatsApp {BUSINESS.phoneDisplay}
+      </a>
+      <p class="text-[14.5px] leading-normal text-faint">
+        Free · 2 working days<br />Usually answered the same day.
+      </p>
+    </div>
+  </section>
+
+  <section class="border-t border-hairline bg-surface" aria-labelledby="covers-title">
+    <div class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20">
+      <SectionHead
+        label="Chart — what the review covers"
+        title="Six checks, each one a reason patients choose someone else."
+      />
+      <div class="mt-11 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        {covers.map((c, i) => (
+          <article class="card-hover rounded-[18px] border border-line bg-canvas p-6.5">
+            <p class="mb-3 font-mono text-[10.5px] uppercase tracking-[0.08em] text-surgical">
+              Check {String(i + 1).padStart(2, '0')}
+            </p>
+            <h3 class="text-lg font-bold tracking-[-0.02em] text-ink">{c.item}</h3>
+            <p class="mt-2 text-[14.5px] leading-[1.6] text-muted">{c.detail}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[110px] xl:px-20" aria-labelledby="outline-title">
+    <div class="grid items-start gap-12 lg:grid-cols-[1fr_460px] lg:gap-20">
+      <div>
+        <SectionHead
+          label="Findings — what you receive"
+          title="A short document you can act on, not a sales pitch."
+          lede="Written in plain language, specific to your practice, and useful whether or not you ever hire us. Most reviews run three to five pages."
+        />
+        <p class="mt-6 max-w-[620px] text-lg leading-[1.62] text-body">
+          Why free? We are a new studio choosing five founding practices, and
+          the review is how we prove we see what others miss — before you pay
+          anything. Some reviews end with "your presence is healthy". Those
+          practices remember us anyway.
+        </p>
+      </div>
+      <div class="rounded-3xl border border-line bg-surface p-7 shadow-card">
+        <h3 class="label-mono mb-5 text-faint" style="letter-spacing:0.12em">The review, in outline</h3>
+        <ol>
+          {outline.map((o, i) => (
+            <li
+              class:list={[
+                'grid grid-cols-[32px_1fr] gap-3 py-3.5 text-[14.5px] leading-[1.55] text-body-deep',
+                i < outline.length - 1 && 'border-b border-hairline',
+              ]}
+            >
+              <span class="font-mono text-[12px] text-surgical">{o.n}</span>
+              {o.line}
+            </li>
+          ))}
+        </ol>
+        <p class="mt-4 border-t border-line pt-4 font-mono text-[11px] uppercase tracking-[0.08em] text-surgical">
+          Free · no obligation · yours to keep
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-hairline bg-surface" aria-labelledby="after-review-title">
+    <div class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20">
+      <SectionHead
+        label="Protocol — what happens after"
+        title="If work is worth doing, the review becomes the plan."
+        lede="You get one fixed number in writing against a defined scope. If you would rather fix things yourself, the review tells you where to start — and we part as professionals."
+      />
+      <p class="mt-7 flex flex-wrap gap-4">
+        <a href={whatsappHref} rel="noopener" class="btn-primary px-6 py-3.5 text-[15px]">
+          Send your clinic's name
+        </a>
+        <a href={href('/process')} class="btn-secondary px-6 py-3.5 text-[15px]">
+          See the full method
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <FaqSection
+    faqs={faqEntries.map((f) => ({ question: f.question, answer: f.answer }))}
+    label="Questions about the review"
+    title="Before you send the message"
+  />
+</BaseLayout>

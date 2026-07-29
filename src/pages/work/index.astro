@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import { href } from '@/lib/url';
@@ -47,8 +48,17 @@ const schema = graph(
       {caseStudies.map((cs) => (
         <a
           href={href(`/work/${cs.id}`)}
-          class="card-hover flex flex-col rounded-3xl border border-line bg-canvas p-8 hover:no-underline"
+          class="card-hover flex flex-col overflow-hidden rounded-3xl border border-line bg-canvas hover:no-underline"
         >
+          <Image
+            src={cs.data.cover}
+            alt={cs.data.coverAlt}
+            widths={[520, 780, 1040]}
+            sizes="(min-width: 1024px) 620px, 92vw"
+            loading="lazy"
+            class="w-full border-b border-line bg-surface"
+          />
+          <div class="flex flex-1 flex-col p-8">
           <p class="mb-5 flex flex-wrap items-center gap-2">
             <span class="chip border border-line bg-surface text-body-deep">{cs.data.sector}</span>
             {!cs.data.healthcare && <span class="chip bg-hairline-soft text-muted">Non-healthcare</span>}
@@ -69,6 +79,7 @@ const schema = graph(
             ))}
           </dl>
           <p class="prose-link mt-6 text-[15px]">Read the case study →</p>
+          </div>
         </a>
       ))}
     </div>
@@ -88,5 +99,5 @@ const schema = graph(
     </div>
   </section>
 
-  <CtaPanel />
+  <CtaPanel prefill="work" nextStep={{ label: 'See the investment philosophy', href: '/pricing' }} />
 </BaseLayout>

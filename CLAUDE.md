@@ -29,7 +29,16 @@ Astro 5 · TypeScript strict · Tailwind CSS v4 (`@tailwindcss/vite`, tokens in 
 - Simple English for busy doctors. Short paragraphs. Clarity over cleverness. No buzzwords, no urgency CTAs ("Buy now", "Limited time"), no discount messaging — premium positioning.
 - Honest register: CareInflow is a new studio choosing five founding practices. **Never fabricate testimonials, reviews, ratings, client counts, or prices.** Sample interface artifacts keep their `ILLUSTRATIVE` label. Real portfolio: Pramukh Multispeciality Dental Clinic (Mehsana, healthcare flagship), Divyam Tours (labeled non-healthcare).
 - No ranking guarantees, no bought reviews, no templates resold as bespoke.
-- Use the `careinflow-voice` skill (.claude/skills/careinflow-voice/) when writing any site copy.
+- One studio, in Mehsana — no branches or other offices. Service areas are places served, not places staffed.
+
+## Repo skills (load the matching one before working)
+
+| Skill | Use for |
+|---|---|
+| `careinflow-voice` | any copy — tone, banned words, CTA wording |
+| `careinflow-design` | tokens, type, layout, motion, components |
+| `careinflow-funnel` | CTA placement, WhatsApp prefills, new pages |
+| `careinflow-images` | generating, capturing and optimizing imagery |
 
 ## SEO conventions
 

@@ -1,9 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import LiveBadge from '@/components/LiveBadge.astro';
-import HeroArtifacts from '@/components/HeroArtifacts.astro';
 import SectionHead from '@/components/SectionHead.astro';
+import heroImage from '@/assets/hero-three-surfaces.png';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import { BUSINESS, whatsappWithMessage } from '@/config/site';
@@ -24,6 +25,8 @@ const description =
 const faqEntries = (await getCollection('faqs', ({ data }) => data.pages.includes('home')))
   .map(({ data }) => data)
   .sort((a, b) => a.order - b.order);
+
+const featured = (await getCollection('caseStudies')).sort((a, b) => a.data.order - b.data.order);
 
 const schema = graph(
   organizationSchema(),
@@ -138,7 +141,7 @@ const whatsappHref = whatsappWithMessage(
           <a href={whatsappHref} rel="noopener" class="btn-primary px-7 py-4 text-base">
             Message us on WhatsApp
           </a>
-          <a href={href('/contact')} class="btn-secondary px-6 py-[15px] text-base">
+          <a href={href('/free-review')} class="btn-secondary px-6 py-[15px] text-base">
             Get a free written review
           </a>
         </div>
@@ -152,9 +155,20 @@ const whatsappHref = whatsappWithMessage(
           ))}
         </dl>
       </div>
-      <div class="animate-fade">
-        <HeroArtifacts />
-      </div>
+      <figure class="m-0 animate-fade">
+        <Image
+          src={heroImage}
+          alt="The three digital surfaces a patient meets: a phone showing a map listing with a location pin, a browser window showing a clinic website, and an AI assistant's answer — connected as one system."
+          widths={[560, 840, 1120]}
+          sizes="(min-width: 1024px) 560px, 92vw"
+          loading="eager"
+          fetchpriority="high"
+          class="w-full rounded-3xl border border-line bg-surface"
+        />
+        <figcaption class="mt-3 font-mono text-[10.5px] uppercase leading-[1.6] tracking-[0.06em] text-faint">
+          Google listing · website · AI answer — built and maintained together.
+        </figcaption>
+      </figure>
     </div>
   </section>
 
@@ -170,7 +184,7 @@ const whatsappHref = whatsappWithMessage(
         <a href={href('/services')} class="prose-link whitespace-nowrap text-base">See all capabilities →</a>
       </div>
 
-      <div class="grid gap-6 md:grid-cols-3">
+      <div class="reveal-group grid gap-6 md:grid-cols-3">
         <article class="card-hover rounded-3xl border border-line bg-canvas p-8">
           <div class="mb-5 flex items-center justify-between">
             <span class="font-mono text-[11px] uppercase tracking-[0.1em] text-faint">Surface 01</span>
@@ -266,7 +280,7 @@ const whatsappHref = whatsappWithMessage(
       title="Eight things we do. Each one removes a specific reason a patient hesitates."
       lede="Most practices need three of them to begin. We tell you which three in writing, before you pay anything."
     />
-    <div class="mt-13 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <div class="reveal-group mt-13 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {protocols.map((p) => (
         <a
           href={href(p.link)}
@@ -326,12 +340,48 @@ const whatsappHref = whatsappWithMessage(
     </div>
   </section>
 
-  <!-- 04 · STATUS — WHERE WE ARE TODAY -->
+  <!-- 04 · FINDINGS — REAL BUILDS -->
+  <section class="border-t border-hairline bg-surface" aria-labelledby="featured-title">
+    <div class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[110px] xl:px-20">
+      <div class="mb-12 flex flex-wrap items-end justify-between gap-6">
+        <SectionHead
+          label="04 · Findings — real builds"
+          title="Sites we have actually shipped, not mockups."
+          lede="Open them on your own phone and judge the loading speed yourself. We would rather show you working sites than describe them."
+        />
+        <a href={href('/work')} class="prose-link whitespace-nowrap text-base">See the work →</a>
+      </div>
+      <div class="reveal-group grid gap-6 lg:grid-cols-2">
+        {featured.map((cs) => (
+          <a href={href(`/work/${cs.id}`)} class="card-hover block overflow-hidden rounded-3xl border border-line bg-canvas hover:no-underline">
+            <Image
+              src={cs.data.cover}
+              alt={cs.data.coverAlt}
+              widths={[520, 780, 1040]}
+              sizes="(min-width: 1024px) 620px, 92vw"
+              loading="lazy"
+              class="w-full border-b border-line bg-surface"
+            />
+            <div class="p-7">
+              <p class="mb-3 flex flex-wrap items-center gap-2">
+                <span class="chip border border-line bg-surface text-body-deep">{cs.data.sector}</span>
+                {!cs.data.healthcare && <span class="chip bg-hairline-soft text-muted">Non-healthcare</span>}
+              </p>
+              <h3 class="text-[21px] font-bold tracking-[-0.025em] text-ink">{cs.data.client}</h3>
+              <p class="mt-2 text-[15px] leading-[1.6] text-muted">{cs.data.summary}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 · STATUS — WHERE WE ARE TODAY -->
   <section class="border-t border-hairline bg-surface" aria-labelledby="status-title">
     <div class="mx-auto grid max-w-[1440px] items-center gap-12 px-5 py-20 sm:px-10 sm:py-[110px] lg:grid-cols-[1fr_440px] lg:gap-16 xl:px-20">
       <div>
         <SectionHead
-          label="04 · Status — where we are today"
+          label="05 · Status — where we are today"
           title="We are a new studio, and we would rather you heard that from us."
         />
         <p class="mt-5 max-w-[620px] text-lg leading-[1.62] text-body">
@@ -370,9 +420,9 @@ const whatsappHref = whatsappWithMessage(
 
   <FaqSection
     faqs={faqEntries.map((f) => ({ question: f.question, answer: f.answer }))}
-    label="05 · Questions"
+    label="06 · Questions"
     title="The doubts we hear most, answered plainly."
   />
 
-  <CtaPanel />
+  <CtaPanel nextStep={{ label: 'Start with what we do', href: '/services' }} />
 </BaseLayout>

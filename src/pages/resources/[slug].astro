@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
+import CtaStrip from '@/components/CtaStrip.astro';
 import { href } from '@/lib/url';
 import {
   graph,
@@ -83,5 +84,7 @@ const dateFmt = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long'
     </div>
   </article>
 
-  <CtaPanel />
+  <CtaStrip text="Want this applied to your practice? The free review shows exactly where you stand." />
+
+  <CtaPanel nextStep={{ label: 'See what we do', href: '/services' }} />
 </BaseLayout>

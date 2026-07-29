@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import { href } from '@/lib/url';
@@ -62,6 +63,31 @@ const schema = graph(
           </a>
         </p>
       )}
+
+      <figure class="m-0 mt-10 grid gap-4 lg:grid-cols-[1fr_300px] lg:items-end">
+        <Image
+          src={cs.data.cover}
+          alt={cs.data.coverAlt}
+          widths={[720, 1080, 1440]}
+          sizes="(min-width: 1024px) 940px, 92vw"
+          loading="eager"
+          fetchpriority="high"
+          class="w-full rounded-3xl border border-line bg-surface"
+        />
+        {cs.data.coverMobile && (
+          <Image
+            src={cs.data.coverMobile}
+            alt={cs.data.coverMobileAlt ?? ''}
+            widths={[300, 430]}
+            sizes="300px"
+            loading="lazy"
+            class="w-full rounded-3xl border border-line bg-surface"
+          />
+        )}
+        <figcaption class="font-mono text-[10.5px] uppercase leading-[1.6] tracking-[0.06em] text-faint lg:col-span-2">
+          Live site, captured {new Date().toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })} — not a mockup.
+        </figcaption>
+      </figure>
     </header>
 
     <div class="border-t border-hairline bg-surface">
@@ -85,5 +111,5 @@ const schema = graph(
     </div>
   </article>
 
-  <CtaPanel />
+  <CtaPanel prefill="work" nextStep={{ label: 'See the investment philosophy', href: '/pricing' }} />
 </BaseLayout>
