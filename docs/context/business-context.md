@@ -196,6 +196,21 @@ Say:
 
 The website should always prioritize clarity over cleverness.
 
+## Brand mark
+
+The logo is the interlocking "C" monogram supplied by the founder
+(`docs/brand/careinflow-logo-original.png`), traced to vector as
+`public/logo.svg` / `logo-light.svg` and the favicon tile. Regenerate with
+`node scripts/vectorize-logo.mjs && node scripts/generate-assets.mjs`.
+
+## Funnel
+
+The site sells one thing: a **free written review** of a practice's online
+presence, requested with a single WhatsApp message and returned within two
+working days. `/free-review` explains it; every page routes there or to
+WhatsApp. No forms, no discovery calls, no gated downloads. Every ask carries
+the honest escape hatch — if the answer is "change nothing", we say so.
+
 ## Business Facts (from the design doc, confirmed for use)
 
 - Founder: Jaidev Jethi
