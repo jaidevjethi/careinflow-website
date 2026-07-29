@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import { href } from '@/lib/url';
+import { topicAccent } from '@/lib/accents';
 import {
   graph,
   organizationSchema,
@@ -57,10 +58,12 @@ const dateFmt = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short
       {resources.map((r) => (
         <a
           href={href(`/resources/${r.id}`)}
-          class="card-hover flex flex-col rounded-3xl border border-line bg-canvas p-7 hover:no-underline"
+          class="card-hover flex flex-col overflow-hidden rounded-3xl border border-line bg-canvas hover:no-underline"
         >
+          <span class:list={['block h-1.5 w-full', topicAccent(r.data.topic).bar]} aria-hidden="true"></span>
+          <div class="flex flex-1 flex-col p-7">
           <p class="mb-4 flex items-center gap-2">
-            <span class="chip border border-line bg-surface text-body-deep">{topicLabels[r.data.topic]}</span>
+            <span class:list={['chip', topicAccent(r.data.topic).chip]}>{topicLabels[r.data.topic]}</span>
             <span class="font-mono text-[10px] uppercase tracking-[0.08em] text-faint">{r.data.minutesRead} min</span>
           </p>
           <h2 class="text-[21px] font-extrabold leading-[1.2] tracking-[-0.025em] text-ink">{r.data.title}</h2>
@@ -68,6 +71,7 @@ const dateFmt = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short
           <p class="mt-auto pt-5 font-mono text-[10px] uppercase tracking-[0.08em] text-faint">
             {dateFmt.format(r.data.publishDate)}
           </p>
+          </div>
         </a>
       ))}
     </div>

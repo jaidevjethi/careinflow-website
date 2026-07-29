@@ -66,6 +66,24 @@
   --color-pass-tint: #eaf7f1;
   --color-star: #b8862f;
 
+  /*
+   * Accent family. Five muted hues so each service, article topic and card
+   * reads as its own thing instead of another beige rectangle. Saturated
+   * versions are for small elements only (labels, chips, rules); the tints
+   * carry large areas and are light enough to sit under `mix-blend-multiply`
+   * illustrations without shifting their ink.
+   */
+  --color-a-green: #0b5d4e;
+  --color-a-green-tint: #e9f1ee;
+  --color-a-blue: #1d4e6b;
+  --color-a-blue-tint: #e8eff4;
+  --color-a-amber: #96601f;
+  --color-a-amber-tint: #f6efe3;
+  --color-a-teal: #0f6763;
+  --color-a-teal-tint: #e5f0ef;
+  --color-a-plum: #6a3a57;
+  --color-a-plum-tint: #f2eaef;
+
   /* Dark ink panel family (one panel per page, never a theme) */
   --color-panel: #0e1714;
   --color-panel-card: #142020;

@@ -40,6 +40,20 @@ Sharp's pipeline order is fixed (trim → resize → extend), so `extend()` afte
 
 Illustrations → PNG (flat colour compresses well). Photographs → JPEG q88.
 
+### Normalising illustration backgrounds (required)
+
+Illustrations render through `IllustrationPanel`, which blends them onto an accent tint with `mix-blend-multiply`. That only looks right if the background is **uniformly pure white** — the generator emits its own off-white (typically `#F5F5F0`) which, next to added white padding, multiplies to two visibly different tones and reveals a rectangle.
+
+So after trimming and padding onto white, collapse every near-white pixel to `#FFFFFF`:
+
+```js
+if (r >= 236 && g >= 236 && b >= 236) { r = g = b = 255; }
+```
+
+Grey fills sit near 210 and survive untouched. This also cuts file size sharply (one flat colour instead of a gradient of near-whites) — the six service illustrations dropped from ~80–120 KB each to 12–38 KB.
+
+Ask the generator for art that "floats directly on a plain flat background with no card, no panel, no frame, no border and no shadow" — a baked-in card edge survives trimming and shows through the blend.
+
 ## Rendering
 
 Always `<Image>` from `astro:assets` with `widths`, `sizes`, and descriptive alt text that states what the image shows. Hero images: `loading="eager"` + `fetchpriority="high"`. Everything else: `loading="lazy"`. Wrap in `<figure>` with a mono `<figcaption>` when the image needs context. Astro emits width/height automatically, so CLS stays at zero — never strip them.

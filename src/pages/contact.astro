@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import { BUSINESS, WHATSAPP_URL, whatsappWithMessage } from '@/config/site';
+import { cycleAccent, ACCENTS } from '@/lib/accents';
 import {
   graph,
   organizationSchema,
@@ -81,9 +82,9 @@ const steps = [
           What happens after you press send
         </h2>
         <ol class="mt-8 grid max-w-[640px] gap-4">
-          {steps.map((s) => (
-            <li class="grid grid-cols-[40px_1fr] gap-4 rounded-2xl border border-line bg-canvas p-6">
-              <span class="font-mono text-[13px] text-surgical">{s.step}</span>
+          {steps.map((s, i) => (
+            <li class:list={['grid grid-cols-[40px_1fr] gap-4 rounded-2xl border border-line p-6', cycleAccent(i).tint]}>
+              <span class:list={['font-mono text-[13px]', cycleAccent(i).text]}>{s.step}</span>
               <p class="text-[15.5px] leading-[1.6] text-body">{s.text}</p>
             </li>
           ))}
@@ -107,7 +108,7 @@ const steps = [
         </p>
       </div>
 
-      <aside class="top-24 rounded-[20px] border border-line bg-canvas p-7 lg:sticky">
+      <aside class:list={["top-24 rounded-[20px] border border-line p-7 lg:sticky", ACCENTS.teal.tint]}>
         <h2 class="label-mono mb-4 text-faint" style="letter-spacing:0.12em">The review covers</h2>
         <ul class="text-[14.5px] leading-[2.05] text-body-deep">
           {reviewCovers.map((item) => (

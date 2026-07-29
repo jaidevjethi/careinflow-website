@@ -5,6 +5,7 @@ import SectionHead from '@/components/SectionHead.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import { href } from '@/lib/url';
+import { cycleAccent } from '@/lib/accents';
 import {
   graph,
   organizationSchema,
@@ -102,10 +103,13 @@ const principles = [
         title="What does the price include?"
       />
       <div class="mt-11 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {paysFor.map((p) => (
-          <article class="card-hover rounded-[18px] border border-line bg-canvas p-6.5">
+        {paysFor.map((p, i) => (
+          <article class="card-hover overflow-hidden rounded-[18px] border border-line bg-canvas">
+            <span class:list={['block h-1 w-full', cycleAccent(i).bar]} aria-hidden="true"></span>
+            <div class="p-6.5">
             <h3 class="text-lg font-bold tracking-[-0.02em] text-ink">{p.title}</h3>
             <p class="mt-2 text-[14.5px] leading-[1.6] text-muted">{p.text}</p>
+            </div>
           </article>
         ))}
       </div>

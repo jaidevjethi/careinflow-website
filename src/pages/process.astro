@@ -5,6 +5,7 @@ import SectionHead from '@/components/SectionHead.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import { href } from '@/lib/url';
+import { cycleAccent } from '@/lib/accents';
 import {
   graph,
   organizationSchema,
@@ -90,10 +91,10 @@ const needFromYou = [
   <section class="border-t border-hairline bg-surface" aria-label="The four weeks">
     <div class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20">
       <ol class="grid gap-5 lg:max-w-[920px]">
-        {weeks.map((w) => (
-          <li class="card-hover grid gap-5 rounded-3xl border border-line bg-canvas p-8 sm:grid-cols-[80px_1fr]">
+        {weeks.map((w, i) => (
+          <li class:list={['card-hover grid gap-5 rounded-3xl border border-line p-8 sm:grid-cols-[80px_1fr]', cycleAccent(i).tint]}>
             <div>
-              <p class="font-mono text-[13px] text-surgical">{w.step}</p>
+              <p class:list={['font-mono text-[13px]', cycleAccent(i).text]}>{w.step}</p>
               <p class="mt-1 font-mono text-[10px] uppercase tracking-[0.08em] text-faint">{w.week}</p>
             </div>
             <div>
