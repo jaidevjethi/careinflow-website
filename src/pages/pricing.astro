@@ -1,0 +1,154 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SectionHead from '@/components/SectionHead.astro';
+import FaqSection from '@/components/FaqSection.astro';
+import CtaPanel from '@/components/CtaPanel.astro';
+import { href } from '@/lib/url';
+import {
+  graph,
+  organizationSchema,
+  webSiteSchema,
+  webPageSchema,
+  breadcrumbSchema,
+  faqSchema,
+} from '@/lib/schema';
+
+const title = 'Pricing philosophy — fixed prices, agreed in writing | CareInflow';
+const description =
+  'How CareInflow prices its work: a fixed price in writing after a free review, no hourly billing, no surprise invoices. Premium work priced on value — what you are paying for, stated plainly.';
+
+const faqEntries = (await getCollection('faqs', ({ data }) => data.pages.includes('pricing')))
+  .map(({ data }) => data)
+  .sort((a, b) => a.order - b.order);
+
+const schema = graph(
+  organizationSchema(),
+  webSiteSchema(),
+  webPageSchema({ path: '/pricing', title, description }),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Pricing', path: '/pricing' },
+  ]),
+  faqSchema(faqEntries.map((f) => ({ question: f.question, answer: f.answer }))),
+);
+
+const paysFor = [
+  {
+    title: 'Healthcare specialization',
+    text: 'Patterns learned across practices — how patients search, what they fear, what earns trust — applied to yours from day one.',
+  },
+  {
+    title: 'Custom design',
+    text: 'Designed around your practice, never adapted from a template. Your site will not look like the clinic across the road.',
+  },
+  {
+    title: 'Modern development',
+    text: 'Hand-built, nearly zero JavaScript, measured on real phones against a published reference.',
+  },
+  {
+    title: 'Search groundwork',
+    text: 'Treatment pages, structured data, consistent details, Search Console — the foundation rankings are built on.',
+  },
+  {
+    title: 'Long-term support',
+    text: 'A written maintenance schedule and a quarterly review. We are pricing a relationship, not a handover.',
+  },
+  {
+    title: 'Personal attention',
+    text: 'You talk to the people doing the work. There is no account manager between you and the person building your site.',
+  },
+];
+
+const principles = [
+  {
+    title: 'Fixed price, in writing, before we start',
+    text: 'After the free review you receive a scope with one number on it. That number does not move unless you change the scope — and then it changes in writing too.',
+  },
+  {
+    title: 'The review is free and sometimes the answer is "change nothing"',
+    text: 'If your presence is genuinely healthy, the written review says so and costs you nothing. We would rather lose a project than invent one.',
+  },
+  {
+    title: 'You own everything, always',
+    text: 'Domain, hosting, code, content, analytics — registered in your name from day one. Stopping never costs you your website.',
+  },
+  {
+    title: 'No discounts, honestly',
+    text: 'We do not run offers, and we are not the cheapest option — freelancers and site builders exist and for some practices they are enough. We price for work that still looks right, loads fast and gets maintained three years later.',
+  },
+];
+---
+
+<BaseLayout {title} {description} path="/pricing" {schema}>
+  <section class="mx-auto max-w-[1440px] px-5 pb-14 pt-14 sm:px-10 sm:pt-20 xl:px-20">
+    <div class="tick-rule mb-3.5" aria-hidden="true"></div>
+    <p class="label-mono mb-5 text-surgical">Pricing — the philosophy</p>
+    <h1 class="max-w-[820px] text-[clamp(34px,5vw,62px)] font-extrabold leading-[1.04] tracking-[-0.045em] text-ink">
+      One fixed number, agreed in writing, before any work begins.
+    </h1>
+    <p class="mt-6 max-w-[680px] text-lg leading-[1.62] text-body">
+      A professional online presence is an investment in your practice's
+      credibility — like the interior of your clinic, patients read quality
+      from it. This page explains how we price that work and what the price
+      buys, plainly.
+    </p>
+  </section>
+
+  <section class="border-t border-hairline bg-surface" aria-labelledby="paysfor-title">
+    <div class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20">
+      <SectionHead
+        label="Chart — what you are paying for"
+        title="Six things the number covers."
+      />
+      <div class="mt-11 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        {paysFor.map((p) => (
+          <article class="card-hover rounded-[18px] border border-line bg-canvas p-6.5">
+            <h3 class="text-lg font-bold tracking-[-0.02em] text-ink">{p.title}</h3>
+            <p class="mt-2 text-[14.5px] leading-[1.6] text-muted">{p.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[110px] xl:px-20" aria-labelledby="principles-title">
+    <SectionHead
+      label="Protocol — how the number behaves"
+      title="Four commitments, held in every engagement."
+    />
+    <div class="mt-11 grid max-w-[920px] gap-4">
+      {principles.map((p, i) => (
+        <article class="grid gap-4 rounded-2xl border border-line bg-surface p-7 sm:grid-cols-[48px_1fr]">
+          <p class="font-mono text-[13px] text-surgical">{String(i + 1).padStart(2, '0')}</p>
+          <div>
+            <h3 class="text-[19px] font-bold tracking-[-0.02em] text-ink">{p.title}</h3>
+            <p class="mt-2 text-[15.5px] leading-[1.65] text-body">{p.text}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="border-t border-hairline bg-surface" aria-labelledby="founding-title">
+    <div class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20">
+      <SectionHead
+        label="Status — founding practices"
+        title="The first five practices get the founding terms."
+        lede="Fixed founding pricing in exchange for one thing: permission to publish what happened, honestly, including what did not work. Ask about the terms on WhatsApp — they are written down, like everything else."
+      />
+      <p class="mt-7 flex flex-wrap gap-4">
+        <a href={href('/contact')} class="btn-secondary px-6 py-3.5 text-[15px]">Start with the free review</a>
+        <a href={href('/services')} class="prose-link self-center text-base">See what each engagement includes →</a>
+      </p>
+    </div>
+  </section>
+
+  <FaqSection
+    faqs={faqEntries.map((f) => ({ question: f.question, answer: f.answer }))}
+    label="Questions about pricing"
+    title="The money questions, answered straight."
+  />
+
+  <CtaPanel />
+</BaseLayout>

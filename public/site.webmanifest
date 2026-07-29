@@ -1,0 +1,13 @@
+{
+  "name": "CareInflow",
+  "short_name": "CareInflow",
+  "description": "Healthcare-focused web design and digital growth studio in Mehsana, Gujarat.",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "theme_color": "#F7F6F3",
+  "background_color": "#F7F6F3",
+  "display": "browser",
+  "start_url": "/"
+}

@@ -1,0 +1,89 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import CtaPanel from '@/components/CtaPanel.astro';
+import { href } from '@/lib/url';
+import {
+  graph,
+  organizationSchema,
+  webSiteSchema,
+  webPageSchema,
+  breadcrumbSchema,
+} from '@/lib/schema';
+
+export async function getStaticPaths() {
+  const caseStudies = await getCollection('caseStudies');
+  return caseStudies.map((cs) => ({
+    params: { slug: cs.id },
+    props: { cs },
+  }));
+}
+
+const { cs } = Astro.props;
+const { Content } = await render(cs);
+
+const path = `/work/${cs.id}`;
+const title = `${cs.data.title} — ${cs.data.client} | CareInflow`;
+const description = cs.data.description;
+
+const schema = graph(
+  organizationSchema(),
+  webSiteSchema(),
+  webPageSchema({ path, title, description }),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Work', path: '/work' },
+    { name: cs.data.client, path },
+  ]),
+);
+---
+
+<BaseLayout {title} {description} {path} {schema}>
+  <article>
+    <header class="mx-auto max-w-[1440px] px-5 pb-14 pt-14 sm:px-10 sm:pt-20 xl:px-20">
+      <nav aria-label="Breadcrumb" class="mb-8">
+        <a href={href('/work')} class="font-mono text-[11px] uppercase tracking-[0.1em] text-faint hover:text-surgical">
+          ← All work
+        </a>
+      </nav>
+      <p class="mb-5 flex flex-wrap items-center gap-2">
+        <span class="chip border border-line bg-surface text-body-deep">{cs.data.sector}</span>
+        {!cs.data.healthcare && <span class="chip bg-hairline-soft text-muted">Non-healthcare</span>}
+        <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{cs.data.year}</span>
+      </p>
+      <h1 class="max-w-[860px] text-[clamp(32px,4.6vw,56px)] font-extrabold leading-[1.05] tracking-[-0.045em] text-ink">
+        {cs.data.title}
+      </h1>
+      <p class="mt-4 text-base font-semibold text-muted">{cs.data.client} · {cs.data.location}</p>
+      {cs.data.url && (
+        <p class="mt-5">
+          <a href={cs.data.url} rel="noopener" class="btn-secondary px-5 py-3 text-[15px]">
+            Visit the live site ↗
+          </a>
+        </p>
+      )}
+    </header>
+
+    <div class="border-t border-hairline bg-surface">
+      <div class="mx-auto grid max-w-[1440px] items-start gap-14 px-5 py-16 sm:px-10 sm:py-20 lg:grid-cols-[1fr_360px] lg:gap-20 xl:px-20">
+        <div class="prose-ci">
+          <Content />
+        </div>
+        <aside class="top-24 rounded-3xl border border-line bg-canvas p-7 lg:sticky">
+          <h2 class="label-mono mb-5 text-faint" style="letter-spacing:0.12em">Chart — key figures</h2>
+          <dl class="grid gap-5">
+            {cs.data.highlights.map((h) => (
+              <div class="border-b border-hairline pb-4 last:border-b-0 last:pb-0">
+                <dt class="font-mono text-[10px] uppercase tracking-[0.08em] text-faint">{h.label}</dt>
+                <dd class="mt-1 text-[26px] font-extrabold tracking-[-0.04em] text-ink">{h.value}</dd>
+                {h.ref && <dd class="mt-0.5 font-mono text-[10px] uppercase tracking-[0.06em] text-muted">{h.ref}</dd>}
+              </div>
+            ))}
+          </dl>
+        </aside>
+      </div>
+    </div>
+  </article>
+
+  <CtaPanel />
+</BaseLayout>

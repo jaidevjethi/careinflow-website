@@ -1,0 +1,378 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import LiveBadge from '@/components/LiveBadge.astro';
+import HeroArtifacts from '@/components/HeroArtifacts.astro';
+import SectionHead from '@/components/SectionHead.astro';
+import FaqSection from '@/components/FaqSection.astro';
+import CtaPanel from '@/components/CtaPanel.astro';
+import { BUSINESS, whatsappWithMessage } from '@/config/site';
+import { href } from '@/lib/url';
+import {
+  graph,
+  organizationSchema,
+  founderSchema,
+  webSiteSchema,
+  webPageSchema,
+  faqSchema,
+} from '@/lib/schema';
+
+const title = 'CareInflow — Healthcare website design, local SEO & Google Business Profile management';
+const description =
+  'CareInflow builds the three screens that decide whether a patient chooses your clinic: your Google listing, your website, and the AI answer. Healthcare practices only — Mehsana & North Gujarat.';
+
+const faqEntries = (await getCollection('faqs', ({ data }) => data.pages.includes('home')))
+  .map(({ data }) => data)
+  .sort((a, b) => a.order - b.order);
+
+const schema = graph(
+  organizationSchema(),
+  founderSchema(),
+  webSiteSchema(),
+  webPageSchema({ path: '/', title, description }),
+  faqSchema(faqEntries.map((f) => ({ question: f.question, answer: f.answer }))),
+);
+
+const heroStats = [
+  { value: '<1.2s', caption: 'ref. load, 4G' },
+  { value: '95+', caption: 'Lighthouse' },
+  { value: 'AA', caption: 'accessibility' },
+  { value: '4 wks', caption: 'typical build' },
+];
+
+const protocols = [
+  {
+    code: 'CI-01',
+    title: 'Practice website',
+    text: 'Hand-built, fast on cheap phones, written for a slightly worried patient.',
+    link: '/services/healthcare-websites',
+  },
+  {
+    code: 'CI-02',
+    title: 'Google Business Profile',
+    text: 'Rebuilt, verified and maintained — categories, services, hours, photos, Q&A.',
+    link: '/services/google-business-profile',
+  },
+  {
+    code: 'CI-03',
+    title: 'Local SEO groundwork',
+    text: 'A page per treatment and per area you serve. Consistent details everywhere.',
+    link: '/services/local-seo',
+  },
+  {
+    code: 'CI-04',
+    title: 'AI answer readiness',
+    text: 'Schema, entities and plain-language facts so assistants can quote you.',
+    link: '/services/local-seo',
+  },
+  {
+    code: 'CI-05',
+    title: 'Speed & Core Web Vitals',
+    text: 'Measured on a mid-range Android on mobile data, not on our laptops.',
+    link: '/services/healthcare-websites',
+  },
+  {
+    code: 'CI-06',
+    title: 'Enquiry & booking flow',
+    text: 'Usually WhatsApp, done properly — routed where your desk will answer it.',
+    link: '/services/healthcare-websites',
+  },
+  {
+    code: 'CI-07',
+    title: 'Maintenance & hosting',
+    text: 'Security, backups, edits, new treatment pages. We do not disappear.',
+    link: '/services/website-care',
+  },
+  {
+    code: 'CI-08',
+    title: 'Quarterly review',
+    text: 'Written: what patients did, what changed nearby, what to do next.',
+    link: '/services/website-care',
+  },
+];
+
+const method = [
+  {
+    step: '01',
+    title: 'Study — week 1',
+    text: 'Your searches, listing, reviews and the three clinics above you, written up. Yours to keep, free.',
+  },
+  {
+    step: '02',
+    title: 'Structure & words — week 2',
+    text: 'Page order and final copy signed off before any visual work starts.',
+  },
+  {
+    step: '03',
+    title: 'Design & build — week 3',
+    text: 'One pass, on your real content, tested on mobile data first.',
+  },
+  {
+    step: '04',
+    title: 'Launch, then stay — week 4 →',
+    text: 'Measured against the targets, then monthly upkeep and a quarterly review.',
+  },
+];
+
+const whatsappHref = whatsappWithMessage(
+  "Hi CareInflow — I'd like a free written review of my practice's online presence. Clinic name: ",
+);
+---
+
+<BaseLayout {title} {description} path="/" {schema}>
+  <!-- HERO -->
+  <section class="mx-auto max-w-[1440px] px-5 pb-16 pt-14 sm:px-10 sm:pb-20 sm:pt-20 xl:px-20 xl:pt-24">
+    <div class="grid items-center gap-12 lg:grid-cols-[1fr_560px] lg:gap-16">
+      <div class="animate-rise">
+        <LiveBadge text="Healthcare practices only · Mehsana, Gujarat" />
+        <h1 class="mt-7 text-[clamp(38px,5.5vw,72px)] font-extrabold leading-[1.02] tracking-[-0.05em] text-ink">
+          We design the three screens that decide whether a patient chooses you.
+        </h1>
+        <p class="mt-6 max-w-[560px] text-[19px] leading-[1.6] text-body">
+          Your Google listing, your website, and the answer an AI assistant
+          gives about your clinic. We build all three as one system, measure
+          them, and keep them current — for healthcare practices and nothing
+          else.
+        </p>
+        <div class="mt-8 flex flex-wrap items-center gap-4">
+          <a href={whatsappHref} rel="noopener" class="btn-primary px-7 py-4 text-base">
+            Message us on WhatsApp
+          </a>
+          <a href={href('/contact')} class="btn-secondary px-6 py-[15px] text-base">
+            Get a free written review
+          </a>
+        </div>
+        <dl class="mt-9 flex max-w-[560px] flex-wrap gap-7 border-t border-line pt-6">
+          {heroStats.map((stat) => (
+            <div>
+              <dt class="sr-only">{stat.caption}</dt>
+              <dd class="text-[26px] font-extrabold tracking-[-0.04em] text-ink">{stat.value}</dd>
+              <dd class="mt-0.5 text-[13px] text-faint">{stat.caption}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+      <div class="animate-fade">
+        <HeroArtifacts />
+      </div>
+    </div>
+  </section>
+
+  <!-- 01 · TRIAGE — THE THREE SURFACES -->
+  <section class="border-t border-hairline bg-surface" aria-labelledby="triage-title">
+    <div class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[120px] xl:px-20">
+      <div class="mb-14 flex flex-wrap items-end justify-between gap-6">
+        <SectionHead
+          label="01 · Triage — the three surfaces"
+          title="A patient meets your practice in three places. You probably control one of them."
+          lede="We treat them as a single system, because a patient does. Inconsistent hours or a missing price on one surface undoes the work on the other two."
+        />
+        <a href={href('/services')} class="prose-link whitespace-nowrap text-base">See all capabilities →</a>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-3">
+        <article class="card-hover rounded-3xl border border-line bg-canvas p-8">
+          <div class="mb-5 flex items-center justify-between">
+            <span class="font-mono text-[11px] uppercase tracking-[0.1em] text-faint">Surface 01</span>
+            <span class="chip bg-surgical-tint text-surgical">GBP</span>
+          </div>
+          <h3 class="text-[26px] font-bold tracking-[-0.03em] text-ink">Your Google listing</h3>
+          <p class="mt-3 text-base leading-[1.6] text-body">
+            For most clinics this is the real homepage: three results, chosen
+            on distance, hours, photos and the newest review. We rebuild the
+            profile and then actually maintain it.
+          </p>
+          <div class="mt-6 rounded-[14px] border border-line bg-surface p-4">
+            <p class="flex justify-between border-b border-hairline-soft py-2 text-[13px]">
+              <span class="text-muted">Categories &amp; services</span>
+              <span class="font-semibold text-pass">rebuilt</span>
+            </p>
+            <p class="flex justify-between border-b border-hairline-soft py-2 text-[13px]">
+              <span class="text-muted">Hours, holidays, photos</span>
+              <span class="font-semibold text-pass">monthly</span>
+            </p>
+            <p class="flex justify-between py-2 text-[13px]">
+              <span class="text-muted">Review replies drafted</span>
+              <span class="font-semibold text-pass">weekly</span>
+            </p>
+          </div>
+        </article>
+
+        <article class="card-hover rounded-3xl border border-line bg-canvas p-8">
+          <div class="mb-5 flex items-center justify-between">
+            <span class="font-mono text-[11px] uppercase tracking-[0.1em] text-faint">Surface 02</span>
+            <span class="chip bg-surgical-tint text-surgical">Web</span>
+          </div>
+          <h3 class="text-[26px] font-bold tracking-[-0.03em] text-ink">Your website</h3>
+          <p class="mt-3 text-base leading-[1.6] text-body">
+            Built by hand, not from a theme. A page for each treatment,
+            written in the words patients type — symptom and cost, not
+            clinical terminology.
+          </p>
+          <div class="mt-6 rounded-[14px] border border-line bg-surface p-4">
+            <p class="flex items-baseline gap-3">
+              <span class="text-[32px] font-extrabold tracking-[-0.04em] text-ink">&lt;1.2s</span>
+              <span class="text-[12.5px] text-faint">largest content painted, 4G</span>
+            </p>
+            <div class="mt-3 h-1.5 rounded-full bg-[#E7E4DC]" aria-hidden="true">
+              <div class="h-1.5 w-[86%] rounded-full bg-pass"></div>
+            </div>
+            <p class="mt-2 flex justify-between font-mono text-[10px] uppercase text-faint">
+              <span>LCP</span><span>CLS</span><span>INP</span>
+            </p>
+            <p class="mt-1 flex justify-between font-mono text-[10.5px] uppercase text-faint">
+              <span>ref &lt;1.2s</span><span>ref &lt;0.10</span><span>ref &lt;200ms</span>
+            </p>
+            <p class="mt-3 border-t border-hairline-soft pt-2.5 font-mono text-[10px] uppercase tracking-[0.06em] text-faint">
+              Build reference — every site measured before launch
+            </p>
+          </div>
+        </article>
+
+        <article class="card-hover rounded-3xl border border-ink bg-panel p-8">
+          <div class="mb-5 flex items-center justify-between">
+            <span class="font-mono text-[11px] uppercase tracking-[0.1em] text-panel-text-faint">Surface 03</span>
+            <span class="chip bg-panel-chip text-panel-accent">AEO</span>
+          </div>
+          <h3 class="text-[26px] font-bold tracking-[-0.03em] text-surface">The AI answer</h3>
+          <p class="mt-3 text-base leading-[1.6] text-panel-text">
+            Patients now ask an assistant before they open a browser. Answers
+            are assembled from structured, quotable facts — almost no clinic
+            in India has prepared for this yet.
+          </p>
+          <div class="mt-6 rounded-[14px] border border-panel-line bg-panel-card p-4">
+            <p class="flex justify-between border-b border-panel-divider py-2 text-[13px]">
+              <span class="text-panel-text-dim">Practice &amp; doctor entities</span>
+              <span class="font-semibold text-panel-accent">defined</span>
+            </p>
+            <p class="flex justify-between border-b border-panel-divider py-2 text-[13px]">
+              <span class="text-panel-text-dim">Treatment facts &amp; pricing</span>
+              <span class="font-semibold text-panel-accent">published</span>
+            </p>
+            <p class="flex justify-between py-2 text-[13px]">
+              <span class="text-panel-text-dim">FAQ &amp; schema validation</span>
+              <span class="font-semibold text-panel-accent">passing</span>
+            </p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 · PROTOCOLS — WHAT WE DO -->
+  <section class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[120px] xl:px-20" aria-labelledby="protocols-title">
+    <SectionHead
+      label="02 · Protocols — what we do"
+      title="Eight things we do. Each one removes a specific reason a patient hesitates."
+      lede="Most practices need three of them to begin. We tell you which three in writing, before you pay anything."
+    />
+    <div class="mt-13 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      {protocols.map((p) => (
+        <a
+          href={href(p.link)}
+          class="card-hover block rounded-[18px] border border-line bg-surface p-6.5 hover:no-underline"
+        >
+          <p class="mb-4 font-mono text-[10.5px] uppercase tracking-[0.06em] text-surgical">{p.code}</p>
+          <h3 class="text-lg font-bold tracking-[-0.02em] text-ink">{p.title}</h3>
+          <p class="mt-2 text-[14.5px] leading-[1.55] text-muted">{p.text}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- 03 · INDICATION — WHY HEALTHCARE ONLY (the page's one dark panel) -->
+  <section class="mx-auto max-w-[1440px] px-5 pb-20 sm:px-10 sm:pb-[120px] xl:px-20" aria-labelledby="indication-title">
+    <div class="rounded-[28px] bg-panel p-8 sm:p-12 lg:p-16">
+      <div class="grid items-start gap-12 lg:grid-cols-[1fr_520px] lg:gap-16">
+        <div>
+          <SectionHead
+            dark
+            label="03 · Indication — why healthcare only"
+            title="A café wants you hungry. A clinic needs you calm. An agency doing both will always solve yours second."
+            lede="Dental, dermatology, physiotherapy, ophthalmology, orthopaedics, paediatrics, cosmetic and mental health. That narrowness is the product: the patterns are learned once and applied to every practice we take on."
+          />
+          <div class="mt-8 flex flex-wrap gap-2.5">
+            <span class="chip border border-panel-line-alt text-panel-text-dim">No ranking guarantees</span>
+            <span class="chip border border-panel-line-alt text-panel-text-dim">No bought reviews</span>
+            <span class="chip border border-panel-line-alt text-panel-text-dim">No templates resold as bespoke</span>
+          </div>
+        </div>
+
+        <div class="rounded-[20px] border border-panel-line bg-panel-card p-8">
+          <h3 class="label-mono mb-5 text-panel-text-faint" style="letter-spacing:0.12em">How the work runs</h3>
+          <ol>
+            {method.map((m, i) => (
+              <li
+                class:list={[
+                  'grid grid-cols-[26px_1fr] gap-4 py-5',
+                  i === 0 && 'pt-0',
+                  i < method.length - 1 && 'border-b border-panel-divider',
+                  i === method.length - 1 && 'pb-0',
+                ]}
+              >
+                <span class="font-mono text-xs text-panel-accent">{m.step}</span>
+                <div>
+                  <h4 class="text-[17px] font-bold text-surface">{m.title}</h4>
+                  <p class="mt-1 text-[14.5px] leading-[1.55] text-panel-text-dim">{m.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+          <a href={href('/process')} class="mt-6 inline-block text-[15px] font-semibold text-panel-accent">
+            See the full method →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 · STATUS — WHERE WE ARE TODAY -->
+  <section class="border-t border-hairline bg-surface" aria-labelledby="status-title">
+    <div class="mx-auto grid max-w-[1440px] items-center gap-12 px-5 py-20 sm:px-10 sm:py-[110px] lg:grid-cols-[1fr_440px] lg:gap-16 xl:px-20">
+      <div>
+        <SectionHead
+          label="04 · Status — where we are today"
+          title="We are a new studio, and we would rather you heard that from us."
+        />
+        <p class="mt-5 max-w-[620px] text-lg leading-[1.62] text-body">
+          CareInflow is choosing five founding practices. Fixed price agreed in
+          writing, direct access to the people doing the work, and the same
+          standards we intend to hold for the next decade.
+        </p>
+        <p class="mt-4 max-w-[620px] text-lg leading-[1.62] text-body">
+          In return we ask to publish what happened — honestly, including what
+          did not work. That published record becomes the proof the next
+          practice reads.
+        </p>
+      </div>
+      <div class="card-hover rounded-3xl border border-line bg-canvas p-8">
+        <p class="flex items-baseline justify-between">
+          <span class="label-mono text-faint" style="letter-spacing:0.12em">Founding places</span>
+          <span class="text-[34px] font-extrabold tracking-[-0.04em] text-ink">{BUSINESS.founding.totalPlaces}</span>
+        </p>
+        <div class="mt-5 flex gap-1.5" role="img" aria-label={`${BUSINESS.founding.filledPlaces} of ${BUSINESS.founding.totalPlaces} founding places taken`}>
+          {Array.from({ length: BUSINESS.founding.totalPlaces }, (_, i) => (
+            <span
+              class:list={[
+                'h-2 flex-1 rounded-full',
+                i < BUSINESS.founding.filledPlaces ? 'bg-ink' : 'bg-line-strong',
+              ]}
+            ></span>
+          ))}
+        </div>
+        <p class="mt-5 text-[14.5px] leading-[1.6] text-muted">
+          One place is held for a practice in Mehsana so the work can be done
+          in person, start to finish.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <FaqSection
+    faqs={faqEntries.map((f) => ({ question: f.question, answer: f.answer }))}
+    label="05 · Questions"
+    title="The doubts we hear most, answered plainly."
+  />
+
+  <CtaPanel />
+</BaseLayout>

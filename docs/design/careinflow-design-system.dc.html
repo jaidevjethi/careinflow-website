@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500;600&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#E8E8E6; }
+  a { color: inherit; text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  @keyframes ci-rise { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+  @keyframes ci-fade { from { opacity:0; } to { opacity:1; } }
+  @keyframes ci-live { 0%,100% { opacity:1; } 50% { opacity:0.35; } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+</helmet>
+
+<section style="padding:80px 80px 140px; font-family:'Manrope',system-ui,sans-serif; background:#DEDFE0;">
+  <div style="max-width:1100px; margin:0 0 64px;">
+    <div style="font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:#61645C; margin-bottom:20px;">CareInflow · design system · three directions</div>
+    <h2 style="font-weight:800; font-size:50px; line-height:1.06; letter-spacing:-0.04em; color:#101613; margin:0 0 20px; text-wrap:pretty;">Three design systems that prove the expertise instead of describing it.</h2>
+    <p style="font-size:17px; line-height:1.65; color:#4C5551; max-width:700px; margin:0 0 12px;">Built like software rather than print: real interface artifacts on the page, so a doctor can see your craft in the Google listing you designed, the search result you wrote, the AI answer you engineered and the load time you measured. No gradients, no glass, no motion tricks — the modernity comes from precision, scale and surface quality.</p>
+    <p style="font-size:17px; line-height:1.65; color:#4C5551; max-width:700px; margin:0;">Compare <a href="#2a" style="color:#0B5D4E;">2a</a>, <a href="#2b" style="color:#0B5D4E;">2b</a> and <a href="#2c" style="color:#121917;">2c</a>.</p>
+  </div>
+
+  <div style="display:flex; flex-direction:row; align-items:flex-start; gap:96px;">
+
+    <div id="2a" style="width:1440px; flex:0 0 auto;">
+      <div style="display:flex; align-items:baseline; gap:16px; margin-bottom:14px;">
+        <span style="font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:700; background:#0B5D4E; color:#FFFFFF; padding:6px 12px; border-radius:6px;">2a</span>
+        <span style="font-weight:700; font-size:30px; color:#101613; letter-spacing:-0.03em;">Instrument</span>
+      </div>
+      <p style="font-size:15px; line-height:1.6; color:#4C5551; max-width:920px; margin:0 0 32px;">Product-grade and bright. Large soft-edged surfaces, one crisp blue, tight geometric type, and live-looking interface artifacts embedded in the page. The homepage is organised around the three surfaces a patient actually meets — Google listing, website, AI answer — each shown as a designed component rather than described in a paragraph.</p>
+
+      <sc-if value="{{ showSystem }}" hint-placeholder-val="{{ true }}">
+      <div style="background:#FFFFFF; border:1px solid #E4E1DA; border-radius:24px; padding:52px; margin-bottom:40px;">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:#61645C; padding-bottom:14px; border-bottom:1px solid #ECE9E2; margin-bottom:40px;">Design system 2a — surgical green on warm paper</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:56px;">
+          <div>
+            <div style="font-weight:700; font-size:21px; letter-spacing:-0.02em; color:#101613; margin-bottom:18px;">Palette</div>
+            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px;">
+              <div><div style="height:70px; background:#F7F6F3; border:1px solid #E4E1DA; border-radius:12px;"></div><div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:#5A625E; margin-top:7px; line-height:1.5;">#F7F6F3<br>CANVAS</div></div>
+              <div><div style="height:70px; background:#FFFFFF; border:1px solid #E4E1DA; border-radius:12px;"></div><div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:#5A625E; margin-top:7px; line-height:1.5;">#FFFFFF<br>SURFACE</div></div>
+              <div><div style="height:70px; background:#E4E1DA; border-radius:12px;"></div><div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:#5A625E; margin-top:7px; line-height:1.5;">#E4E1DA<br>LINE</div></div>
+              <div><div style="height:70px; background:#0B5D4E; border-radius:12px;"></div><div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:#5A625E; margin-top:7px; line-height:1.5;">#0B5D4E<br>SURGICAL</div></div>
+              <div><div style="height:70px; background:#0B7D57; border-radius:12px;"></div><div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:#5A625E; margin-top:7px; line-height:1.5;">#0B7D57<br>PASS</div></div>
+              <div><div style="height:70px; background:#101613; border-radius:12px;"></div><div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:#5A625E; margin-top:7px; line-height:1.5;">#101613<br>INK</div></div>
+            </div>
+            <div style="font-size:14px; line-height:1.65; color:#5A625E; margin-top:18px;">Surgical green is not a brand choice: it is the opponent colour of oxygenated red, which is why operating theatres use it — the eye rests on it. Warm neutrals (never pure white) cut glare on a phone in daylight. The lighter green #0B7D57 appears only on a verified measurement; ink is one dark panel per page, never a dark theme.</div>
+
+            <div style="font-weight:700; font-size:21px; letter-spacing:-0.02em; color:#101613; margin:40px 0 18px;">Components</div>
+            <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:20px;">
+              <div style="background:#101613; color:#FFFFFF; font-size:15px; font-weight:600; padding:14px 24px; border-radius:12px;">Message on WhatsApp</div>
+              <div style="border:1px solid #D8D4CB; background:#FFFFFF; color:#101613; font-size:15px; font-weight:600; padding:13px 23px; border-radius:12px;">See the method</div>
+              <div style="color:#0B5D4E; font-size:15px; font-weight:600;">Free review →</div>
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px;">
+              <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.08em; background:#E8F0ED; color:#0B5D4E; padding:7px 12px; border-radius:999px;">GBP</span>
+              <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.08em; background:#EAF7F1; color:#0B7D57; padding:7px 12px; border-radius:999px;">LCP 0.9s</span>
+              <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.08em; background:#F1EFE9; color:#5A625E; padding:7px 12px; border-radius:999px;">SCHEMA VALID</span>
+            </div>
+            <div style="border:1px solid #E4E1DA; border-radius:16px; padding:20px; box-shadow:0 1px 2px rgba(10,12,15,0.04), 0 16px 36px rgba(10,12,15,0.05);">
+              <div style="font-size:13px; font-weight:600; color:#61645C; margin-bottom:10px;">Surface card</div>
+              <div style="font-size:15px; line-height:1.6; color:#3A4441;">20–24px radius, 1px line, one two-part shadow. Cards hold artifacts, never decoration.</div>
+            </div>
+            <div style="margin-top:16px; border:1px solid #D8D4CB; border-radius:12px; padding:15px 16px; font-size:15px; color:#61645C; background:#FFFFFF;">Clinic name and city</div>
+            <div style="font-weight:700; font-size:21px; letter-spacing:-0.02em; color:#101613; margin:38px 0 16px;">Motion</div>
+            <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px;">
+              <div style="border:1px solid #E4E1DA; border-radius:12px; padding:16px 20px; background:#FFFFFF; font-size:14px; font-weight:600; color:#101613; transition:transform 200ms cubic-bezier(.22,1,.36,1), border-color 200ms linear;" style-hover="transform:translateY(-2px); border-color:#0B5D4E;">Hover me — 2px lift</div>
+              <div style="border:1px solid #E4E1DA; border-radius:12px; padding:16px 20px; background:#FFFFFF; font-family:'IBM Plex Mono',monospace; font-size:12px; color:#5A625E; animation:ci-rise 240ms cubic-bezier(.22,1,.36,1) both;">Entered — fade + 8px rise</div>
+              <div style="border:1px solid #E4E1DA; border-radius:12px; padding:16px 20px; background:#FFFFFF; display:flex; align-items:center; gap:9px; font-family:'IBM Plex Mono',monospace; font-size:12px; color:#5A625E;"><span style="width:7px; height:7px; border-radius:999px; background:#0B5D4E; display:inline-block; animation:ci-live 2400ms ease-in-out infinite;"></span>Live state — opacity only</div>
+            </div>
+            <div style="font-size:14px; line-height:1.75; color:#5A625E;">One easing for everything: <span style="font-family:'IBM Plex Mono',monospace; font-size:12.5px;">cubic-bezier(.22, 1, .36, 1)</span>. Entrance 240ms, hover 200ms, state change 200ms — nothing longer, nothing bouncing, nothing driven by scroll.</div>
+            <div style="font-size:14px; line-height:1.75; color:#5A625E; margin-top:12px;"><strong style="color:#101613;">Why it costs nothing.</strong> Only <span style="font-family:'IBM Plex Mono',monospace; font-size:12.5px;">opacity</span> and <span style="font-family:'IBM Plex Mono',monospace; font-size:12.5px;">transform</span> animate, so the browser composites them on the GPU and never re-lays out the page — no width, height, top or shadow animation anywhere. It is pure CSS: no animation library, no scroll listeners, no JavaScript, so it cannot move the load time or the Core Web Vitals this system publishes. Entrances play once. <span style="font-family:'IBM Plex Mono',monospace; font-size:12.5px;">prefers-reduced-motion</span> turns all of it off.</div>
+          </div>
+          <div>
+            <div style="font-weight:700; font-size:21px; letter-spacing:-0.02em; color:#101613; margin-bottom:18px;">Typography</div>
+            <div style="border-bottom:1px solid #ECE9E2; padding-bottom:16px; margin-bottom:16px;">
+              <div style="font-weight:800; font-size:58px; line-height:1.0; letter-spacing:-0.045em; color:#101613;">Manrope ExtraBold</div>
+              <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:#61645C; margin-top:8px; letter-spacing:0.1em;">DISPLAY / 76 · 52 · 34PX · TRACKING -0.045EM</div>
+            </div>
+            <div style="border-bottom:1px solid #ECE9E2; padding-bottom:16px; margin-bottom:16px;">
+              <div style="font-size:18px; line-height:1.62; color:#3A4441; max-width:520px;">Manrope Regular reads body copy at 18px on a 640px measure. One variable family for the entire site keeps the payload under 40 KB of font data — which matters, because the page itself is the performance argument.</div>
+              <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:#61645C; margin-top:8px; letter-spacing:0.1em;">BODY / 18PX · 1.62</div>
+            </div>
+            <div style="border-bottom:1px solid #ECE9E2; padding-bottom:16px; margin-bottom:16px;">
+              <div style="font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:#101613;">MONO FOR CODES, MEASUREMENTS AND CHIP LABELS</div>
+              <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:#61645C; margin-top:8px; letter-spacing:0.1em;">LABEL / 11–12PX</div>
+            </div>
+            <div style="display:flex; align-items:baseline; gap:20px;">
+              <div style="font-weight:800; font-size:56px; letter-spacing:-0.05em; color:#101613;">0.9<span style="font-size:26px; color:#0B7D57;">s</span></div>
+              <div style="font-size:14px; line-height:1.5; color:#5A625E; max-width:250px;">Numbers are set large and tight. They are the only ornament this system has.</div>
+            </div>
+            <div style="font-weight:700; font-size:21px; letter-spacing:-0.02em; color:#101613; margin:38px 0 16px;">Rules</div>
+            <div style="font-size:14px; line-height:1.75; color:#5A625E;">12 columns, 1440 max, 80px margin, 8px baseline, 140–160px section rhythm. Radius 12 / 16 / 24. Exactly one shadow recipe. Motion: 200ms opacity plus 8px rise on entry, and a 1px border darken on hover. Nothing parallaxes, nothing counts up, nothing autoplays.</div>
+            <div style="font-weight:700; font-size:21px; letter-spacing:-0.02em; color:#101613; margin:38px 0 16px;">Medical layer</div>
+            <div style="display:flex; align-items:flex-start; gap:14px; margin-bottom:14px;">
+              <div style="height:7px; width:88px; flex:0 0 auto; margin-top:7px; background:repeating-linear-gradient(to right,#D5D9DE 0 1px,transparent 1px 11px);"></div>
+              <div style="font-size:14px; line-height:1.6; color:#5A625E;">Chart ticks. A 11px tick rule sits above every section label — the graph-paper baseline of a printed trace. It is the only texture in the system.</div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:14px; margin-bottom:14px;">
+              <div style="font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#61645C; flex:0 0 88px; margin-top:2px;">REF &lt;1.2S</div>
+              <div style="font-size:14px; line-height:1.6; color:#5A625E;">Reference ranges. Every measured value carries the range it is judged against, the way a lab report does. A number without a reference is not evidence.</div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:14px;">
+              <div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; color:#0B5D4E; flex:0 0 88px; margin-top:1px;">TRIAGE</div>
+              <div style="font-size:14px; line-height:1.6; color:#5A625E;">Record vocabulary. Sections are labelled the way a case file is — chart, triage, findings, protocol, indication, status — never "solutions" or "why choose us".</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <div style="background:#F7F6F3; border:1px solid #E4E1DA; border-radius:24px; overflow:hidden;">
+        <div style="padding:0 40px; height:72px; display:flex; align-items:center; justify-content:space-between; background:#FFFFFF; border-bottom:1px solid #ECE9E2;">
+          <div style="display:flex; align-items:center; gap:11px;">
+            <span style="width:26px; height:26px; border-radius:8px; background:#101613; display:inline-block;"></span>
+            <span style="font-weight:800; font-size:19px; letter-spacing:-0.03em; color:#101613;">CareInflow</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span style="font-size:14.5px; font-weight:600; color:#5A625E; padding:9px 14px; border-radius:10px;">Capabilities</span>
+            <span style="font-size:14.5px; font-weight:600; color:#5A625E; padding:9px 14px; border-radius:10px;">Method</span>
+            <span style="font-size:14.5px; font-weight:600; color:#5A625E; padding:9px 14px; border-radius:10px;">Practice</span>
+            <span style="background:#101613; color:#FFFFFF; font-size:14px; font-weight:600; padding:11px 20px; border-radius:10px; margin-left:10px;">WhatsApp us</span>
+          </div>
+        </div>
+
+        <div style="padding:96px 80px 88px;">
+          <div style="display:grid; grid-template-columns:1fr 560px; gap:72px; align-items:center;">
+            <div>
+              <div style="display:inline-flex; align-items:center; gap:9px; background:#FFFFFF; border:1px solid #E4E1DA; padding:8px 14px; border-radius:999px; margin-bottom:32px;">
+                <span style="width:7px; height:7px; border-radius:999px; background:#0B7D57; display:inline-block; animation:ci-live 2400ms ease-in-out infinite;"></span>
+                <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.1em; color:#3A4441;">HEALTHCARE PRACTICES ONLY · MEHSANA, GUJARAT</span>
+              </div>
+              <h1 style="font-weight:800; font-size:72px; line-height:1.02; letter-spacing:-0.05em; color:#101613; margin:0 0 28px; text-wrap:pretty;">We design the three screens that decide whether a patient chooses you.</h1>
+              <p style="font-size:19px; line-height:1.6; color:#4C5551; margin:0 0 36px; max-width:560px; text-wrap:pretty;">Your Google listing, your website, and the answer an AI assistant gives about your clinic. We build all three as one system, measure them, and keep them current — for healthcare practices and nothing else.</p>
+              <div style="display:flex; align-items:center; gap:16px; margin-bottom:36px;">
+                <span style="background:#101613; color:#FFFFFF; font-size:16px; font-weight:600; padding:17px 28px; border-radius:12px;">Message us on WhatsApp</span>
+                <span style="border:1px solid #D8D4CB; background:#FFFFFF; color:#101613; font-size:16px; font-weight:600; padding:16px 26px; border-radius:12px;">Get a free written review</span>
+              </div>
+              <div style="display:flex; gap:28px; padding-top:26px; border-top:1px solid #E4E1DA; max-width:560px;">
+                <div><div style="font-weight:800; font-size:26px; letter-spacing:-0.04em; color:#101613;">&lt;1.2s</div><div style="font-size:13px; color:#61645C; margin-top:3px;">ref. load, 4G</div></div>
+                <div><div style="font-weight:800; font-size:26px; letter-spacing:-0.04em; color:#101613;">95+</div><div style="font-size:13px; color:#61645C; margin-top:3px;">Lighthouse</div></div>
+                <div><div style="font-weight:800; font-size:26px; letter-spacing:-0.04em; color:#101613;">AA</div><div style="font-size:13px; color:#61645C; margin-top:3px;">accessibility</div></div>
+                <div><div style="font-weight:800; font-size:26px; letter-spacing:-0.04em; color:#101613;">4 wks</div><div style="font-size:13px; color:#61645C; margin-top:3px;">typical build</div></div>
+              </div>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:16px;">
+              <div style="background:#FFFFFF; border:1px solid #E4E1DA; border-radius:20px; padding:22px; box-shadow:0 1px 2px rgba(10,12,15,0.04), 0 20px 44px rgba(10,12,15,0.06);">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                  <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.12em; color:#61645C;">CHART 01 · GOOGLE LISTING</span>
+                  <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.08em; background:#EAF7F1; color:#0B7D57; padding:5px 9px; border-radius:999px;">MAINTAINED</span>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 96px; gap:16px; align-items:start;">
+                  <div>
+                    <div style="font-weight:700; font-size:18px; color:#101613; letter-spacing:-0.02em;">Shreeji Dental &amp; Implant Centre</div>
+                    <div style="display:flex; align-items:center; gap:7px; margin-top:6px;">
+                      <span style="font-size:13px; font-weight:700; color:#101613;">4.8</span>
+                      <span style="font-size:12px; color:#B8862F; letter-spacing:1px;">★★★★★</span>
+                      <span style="font-size:12.5px; color:#61645C;">(214) · Dentist</span>
+                    </div>
+                    <div style="font-size:12.5px; color:#5A625E; margin-top:8px; line-height:1.6;">Radhanpur Road, Mehsana · 1.2 km<br><span style="color:#0B7D57; font-weight:600;">Open</span> · closes 8:30 pm</div>
+                    <div style="display:flex; gap:6px; margin-top:14px;">
+                      <span style="font-size:11.5px; font-weight:600; color:#0B5D4E; border:1px solid #C7D9D3; padding:6px 11px; border-radius:999px;">Directions</span>
+                      <span style="font-size:11.5px; font-weight:600; color:#0B5D4E; border:1px solid #C7D9D3; padding:6px 11px; border-radius:999px;">Call</span>
+                      <span style="font-size:11.5px; font-weight:600; color:#0B5D4E; border:1px solid #C7D9D3; padding:6px 11px; border-radius:999px;">WhatsApp</span>
+                    </div>
+                  </div>
+                  <div style="display:grid; grid-template-rows:repeat(2,44px); gap:6px;">
+                    <div style="border-radius:8px; background:repeating-linear-gradient(135deg,#E9ECEF 0 7px,#F3F5F7 7px 14px);"></div>
+                    <div style="border-radius:8px; background:repeating-linear-gradient(135deg,#E9ECEF 0 7px,#F3F5F7 7px 14px);"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+                <div style="background:#FFFFFF; border:1px solid #E4E1DA; border-radius:20px; padding:22px; box-shadow:0 1px 2px rgba(10,12,15,0.04), 0 20px 44px rgba(10,12,15,0.06);">
+                  <div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.12em; color:#61645C; margin-bottom:14px;">CHART 02 · SEARCH</div>
+                  <div style="font-size:11.5px; color:#5A625E;">shreejidental.in › implants</div>
+                  <div style="font-size:15.5px; font-weight:600; color:#0B5D4E; margin-top:5px; line-height:1.35;">Dental Implants in Mehsana — Cost, Steps &amp; Recovery</div>
+                  <div style="font-size:12.5px; color:#5A625E; line-height:1.55; margin-top:6px;">Single implant from ₹18,000. Two visits, 30 minutes each. What it feels like, who it suits…</div>
+                  <div style="display:flex; gap:6px; margin-top:12px; flex-wrap:wrap;">
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:0.06em; background:#F1EFE9; color:#5A625E; padding:5px 8px; border-radius:6px;">FAQ SCHEMA</span>
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:0.06em; background:#F1EFE9; color:#5A625E; padding:5px 8px; border-radius:6px;">PRICE SHOWN</span>
+                  </div>
+                </div>
+                <div style="background:#0E1714; border-radius:20px; padding:22px; box-shadow:0 1px 2px rgba(10,12,15,0.04), 0 20px 44px rgba(10,12,15,0.1);">
+                  <div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.12em; color:#7F8C87; margin-bottom:14px;">CHART 03 · AI ANSWER</div>
+                  <div style="font-size:12.5px; color:#93A09B; margin-bottom:9px;">"Best clinic for dental implants in Mehsana?"</div>
+                  <div style="font-size:13.5px; line-height:1.6; color:#ECE9E2;">Three clinics list implantology with published pricing. <span style="color:#7FC9B4; font-weight:600;">Shreeji Dental &amp; Implant Centre</span> documents its implant protocol, costs and recovery times…</div>
+                  <div style="display:flex; gap:6px; margin-top:14px;">
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:0.06em; border:1px solid #26332F; color:#93A09B; padding:5px 8px; border-radius:6px;">CITED 1/3</span>
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:0.06em; border:1px solid #26332F; color:#93A09B; padding:5px 8px; border-radius:6px;">ENTITY MATCHED</span>
+                  </div>
+                </div>
+              </div>
+              <div style="font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#61645C; line-height:1.6;">ILLUSTRATIVE — REPLACE WITH THE FIRST FOUNDING PRACTICE'S REAL SCREENS AT LAUNCH.</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#FFFFFF; border-top:1px solid #ECE9E2; padding:120px 80px;">
+          <div style="display:flex; justify-content:space-between; align-items:end; margin-bottom:56px;">
+            <div style="max-width:680px;">
+              <div style="height:7px; background:repeating-linear-gradient(to right,#D5D9DE 0 1px,transparent 1px 11px); margin-bottom:14px; max-width:200px;"></div><div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.14em; color:#0B5D4E; margin-bottom:22px;">01 · TRIAGE — THE THREE SURFACES</div>
+              <h2 style="font-weight:800; font-size:48px; line-height:1.06; letter-spacing:-0.04em; color:#101613; margin:0 0 18px; text-wrap:pretty;">A patient meets your practice in three places. You probably control one of them.</h2>
+              <p style="font-size:18px; line-height:1.62; color:#4C5551; margin:0;">We treat them as a single system, because a patient does. Inconsistent hours or a missing price on one surface undoes the work on the other two.</p>
+            </div>
+            <span style="font-size:16px; font-weight:600; color:#0B5D4E; white-space:nowrap;">See all capabilities →</span>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px;">
+            <div style="border:1px solid #E4E1DA; border-radius:24px; padding:32px; background:#F7F6F3; transition:transform 200ms cubic-bezier(.22,1,.36,1), border-color 200ms linear; animation:ci-rise 240ms cubic-bezier(.22,1,.36,1) both;" style-hover="transform:translateY(-2px); border-color:#C7D9D3;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:22px;">
+                <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.1em; color:#61645C;">SURFACE 01</span>
+                <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.08em; background:#E8F0ED; color:#0B5D4E; padding:6px 10px; border-radius:999px;">GBP</span>
+              </div>
+              <h3 style="font-weight:700; font-size:26px; letter-spacing:-0.03em; color:#101613; margin:0 0 12px;">Your Google listing</h3>
+              <p style="font-size:16px; line-height:1.6; color:#4C5551; margin:0 0 24px;">For most clinics this is the real homepage: three results, chosen on distance, hours, photos and the newest review. We rebuild the profile and then actually maintain it.</p>
+              <div style="background:#FFFFFF; border:1px solid #E4E1DA; border-radius:14px; padding:16px;">
+                <div style="display:flex; justify-content:space-between; font-size:13px; padding:9px 0; border-bottom:1px solid #F1EFE9;"><span style="color:#5A625E;">Categories &amp; services</span><span style="color:#0B7D57; font-weight:600;">rebuilt</span></div>
+                <div style="display:flex; justify-content:space-between; font-size:13px; padding:9px 0; border-bottom:1px solid #F1EFE9;"><span style="color:#5A625E;">Hours, holidays, photos</span><span style="color:#0B7D57; font-weight:600;">monthly</span></div>
+                <div style="display:flex; justify-content:space-between; font-size:13px; padding:9px 0;"><span style="color:#5A625E;">Review replies drafted</span><span style="color:#0B7D57; font-weight:600;">weekly</span></div>
+              </div>
+            </div>
+            <div style="border:1px solid #E4E1DA; border-radius:24px; padding:32px; background:#F7F6F3; transition:transform 200ms cubic-bezier(.22,1,.36,1), border-color 200ms linear; animation:ci-rise 240ms cubic-bezier(.22,1,.36,1) both;" style-hover="transform:translateY(-2px); border-color:#C7D9D3;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:22px;">
+                <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.1em; color:#61645C;">SURFACE 02</span>
+                <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.08em; background:#E8F0ED; color:#0B5D4E; padding:6px 10px; border-radius:999px;">WEB</span>
+              </div>
+              <h3 style="font-weight:700; font-size:26px; letter-spacing:-0.03em; color:#101613; margin:0 0 12px;">Your website</h3>
+              <p style="font-size:16px; line-height:1.6; color:#4C5551; margin:0 0 24px;">Built by hand, not from a theme. A page for each treatment, written in the words patients type — symptom and cost, not clinical terminology.</p>
+              <div style="background:#FFFFFF; border:1px solid #E4E1DA; border-radius:14px; padding:16px;">
+                <div style="display:flex; align-items:baseline; gap:12px; margin-bottom:12px;"><span style="font-weight:800; font-size:32px; letter-spacing:-0.04em; color:#101613;">0.9s</span><span style="font-size:12.5px; color:#61645C;">largest content painted, 4G</span></div>
+                <div style="height:6px; border-radius:999px; background:#E7E4DC; margin-bottom:8px;"><div style="width:86%; height:6px; border-radius:999px; background:#0B7D57;"></div></div>
+                <div style="display:flex; justify-content:space-between; font-family:'JetBrains Mono',monospace; font-size:10px; color:#61645C;"><span>LCP 0.9S</span><span>CLS 0.00</span><span>INP 42MS</span></div>
+                  <div style="display:flex; justify-content:space-between; font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#61645C; margin-top:5px;"><span>REF &lt;1.2S</span><span>REF &lt;0.10</span><span>REF &lt;200MS</span></div>
+              </div>
+            </div>
+            <div style="border:1px solid #101613; border-radius:24px; padding:32px; background:#0E1714; transition:transform 200ms cubic-bezier(.22,1,.36,1), border-color 200ms linear; animation:ci-rise 240ms cubic-bezier(.22,1,.36,1) both;" style-hover="transform:translateY(-2px); border-color:#26332F;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:22px;">
+                <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.1em; color:#7F8C87;">SURFACE 03</span>
+                <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.08em; background:#12352E; color:#7FC9B4; padding:6px 10px; border-radius:999px;">AEO</span>
+              </div>
+              <h3 style="font-weight:700; font-size:26px; letter-spacing:-0.03em; color:#FFFFFF; margin:0 0 12px;">The AI answer</h3>
+              <p style="font-size:16px; line-height:1.6; color:#A8B4AF; margin:0 0 24px;">Patients now ask an assistant before they open a browser. Answers are assembled from structured, quotable facts — almost no clinic in India has prepared for this yet.</p>
+              <div style="background:#142020; border:1px solid #24322E; border-radius:14px; padding:16px;">
+                <div style="display:flex; justify-content:space-between; font-size:13px; padding:9px 0; border-bottom:1px solid #1D2926;"><span style="color:#93A09B;">Practice &amp; doctor entities</span><span style="color:#7FC9B4; font-weight:600;">defined</span></div>
+                <div style="display:flex; justify-content:space-between; font-size:13px; padding:9px 0; border-bottom:1px solid #1D2926;"><span style="color:#93A09B;">Treatment facts &amp; pricing</span><span style="color:#7FC9B4; font-weight:600;">published</span></div>
+                <div style="display:flex; justify-content:space-between; font-size:13px; padding:9px 0;"><span style="color:#93A09B;">FAQ &amp; schema validation</span><span style="color:#7FC9B4; font-weight:600;">passing</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding:120px 80px; border-top:1px solid #E4E1DA;">
+          <div style="max-width:700px; margin-bottom:52px;">
+            <div style="height:7px; background:repeating-linear-gradient(to right,#D5D9DE 0 1px,transparent 1px 11px); margin-bottom:14px; max-width:200px;"></div><div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.14em; color:#0B5D4E; margin-bottom:22px;">02 · PROTOCOLS — WHAT WE DO</div>
+            <h2 style="font-weight:800; font-size:46px; line-height:1.06; letter-spacing:-0.04em; color:#101613; margin:0 0 18px;">Eight things we do. Each one removes a specific reason a patient hesitates.</h2>
+            <p style="font-size:18px; line-height:1.62; color:#4C5551; margin:0;">Most practices need three of them to begin. We tell you which three in writing, before you pay anything.</p>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px;">
+            <div style="background:#FFFFFF; border:1px solid #E4E1DA; border-radius:18px; padding:26px; transition:transform 200ms cubic-bezier(.22,1,.36,1), border-color 200ms linear;" style-hover="transform:translateY(-2px); border-color:#C7D9D3;"><div style="font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#0B5D4E; margin-bottom:16px;">CI-01</div><div style="font-weight:700; font-size:18px; letter-spacing:-0.02em; color:#101613; margin-bottom:8px;">Practice website</div><div style="font-size:14.5px; line-height:1.55; color:#5A625E;">Hand-built, fast on cheap phones, written for a slightly worried patient.</div></div>
+            <div style="background:#FFFFFF; border:1px solid #E4E1DA; border-radius:18px; padding:26px; transition:transform 200ms cubic-bezier(.22,1,.36,1), border-color 200ms linear;" style-hover="transform:translateY(-2px); border-color:#C7D9D3;"><div style="font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#0B5D4E; margin-bottom:16px;">CI-02</div><div style="font-weight:700; font-size:18px; letter-spacing:-0.02em; color:#101613; margin-bottom:8px;">Google Business Profile</div><div style="font-size:14.5px; line-height:1.55; color:#5A625E;">Rebuilt, verified and maintained — categories, services, hours, photos, Q&amp;A.</div></div>
+            <div style="background:#FFFFFF; border:1px solid #E4E1DA; border-radius:18px; padding:26px; transition:transform 200ms cubic-bezier(.22,1,.36,1), border-color 200ms linear;" style-hover="transform:translateY(-2px); border-color:#C7D9D3;"><div style="font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#0B5D4E; margin-bottom:16px;">CI-03</div><div style="font-weight:700; font-size:18px; letter-spacing:-0.02em; color:#101613; margin-bottom:8px;">Local SEO groundwork</div><div style="font-size:14.5px; line-height:1.55; color:#5A625E;">A page per treatment and per area you serve. Consistent details everywhere.</div></div>
+            <div style="background:#FFFFFF; border:1px solid #E4E1DA; border-radius:18px; padding:26px; transition:transform 200ms cubic-bezier(.22,1,.36,1), border-color 200ms linear;" style-hover="transform:translateY(-2px); border-color:#C7D9D3;"><div style="font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#0B5D4E; margin-bottom:16px;">CI-04</div><div style="font-weight:700; font-size:18px; letter-spacing:-0.02em; color:#101613; margin-bottom:8px;">AI answer readiness</div><div style="font-size:14.5px; line-height:1.55; color:#5A625E;">Schema, entities and plain-language facts so assistants can quote you.</div></div>
+            <div style="background:#FFFFFF; border:1px solid #E4E1DA; border-radius:18px; padding:26px; transition:transform 200ms cubic-bezier(.22,1,.36,1), border-color 200ms linear;" style-hover="transform:translateY(-2px); border-color:#C7D9D3;"><div style="font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#0B5D4E; margin-bottom:16px;">CI-05</div><div style="font-weight:700; font-size:18px; letter-spacing:-0.02em; color:#101613; margin-bottom:8px;">Speed &amp; Core Web Vitals</div><div style="font-size:14.5px; line-height:1.55; color:#5A625E;">Measured on a mid-range Android on mobile data, not on our laptops.</div></div>
+            <div style="background:#FFFFFF; border:1px solid #E4E1DA; border-radius:18px; padding:26px; transition:transform 200ms cubic-bezier(.22,1,.36,1), border-color 200ms linear;" style-hover="transform:translateY(-2px); border-color:#C7D9D3;"><div style="font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#0B5D4E; margin-bottom:16px;">CI-06</div><div style="font-weight:700; font-size:18px; letter-spacing:-0.02em; color:#101613; margin-bottom:8px;">Enquiry &amp; booking flow</div><div style="font-size:14.5px; line-height:1.55; color:#5A625E;">Usually WhatsApp, done properly — routed where your desk will answer it.</div></div>
+            <div style="background:#FFFFFF; border:1px solid #E4E1DA; border-radius:18px; padding:26px; transition:transform 200ms cubic-bezier(.22,1,.36,1), border-color 200ms linear;" style-hover="transform:translateY(-2px); border-color:#C7D9D3;"><div style="font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#0B5D4E; margin-bottom:16px;">CI-07</div><div style="font-weight:700; font-size:18px; letter-spacing:-0.02em; color:#101613; margin-bottom:8px;">Maintenance &amp; hosting</div><div style="font-size:14.5px; line-height:1.55; color:#5A625E;">Security, backups, edits, new treatment pages. We do not disappear.</div></div>
+            <div style="background:#FFFFFF; border:1px solid #E4E1DA; border-radius:18px; padding:26px; transition:transform 200ms cubic-bezier(.22,1,.36,1), border-color 200ms linear;" style-hover="transform:translateY(-2px); border-color:#C7D9D3;"><div style="font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#0B5D4E; margin-bottom:16px;">CI-08</div><div style="font-weight:700; font-size:18px; letter-spacing:-0.02em; color:#101613; margin-bottom:8px;">Quarterly review</div><div style="font-size:14.5px; line-height:1.55; color:#5A625E;">Written: what patients did, what changed nearby, what to do next.</div></div>
+          </div>
+        </div>
+
+        <div style="padding:0 80px 120px;">
+          <div style="background:#0E1714; border-radius:28px; padding:72px 64px;">
+            <div style="display:grid; grid-template-columns:1fr 520px; gap:72px; align-items:start;">
+              <div>
+                <div style="height:7px; background:repeating-linear-gradient(to right,#2C3540 0 1px,transparent 1px 11px); margin-bottom:14px; max-width:200px;"></div><div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.14em; color:#7FC9B4; margin-bottom:22px;">03 · INDICATION — WHY HEALTHCARE ONLY</div>
+                <h2 style="font-weight:800; font-size:46px; line-height:1.06; letter-spacing:-0.04em; color:#FFFFFF; margin:0 0 20px; text-wrap:pretty;">A café wants you hungry. A clinic needs you calm. An agency doing both will always solve yours second.</h2>
+                <p style="font-size:18px; line-height:1.62; color:#A8B4AF; margin:0 0 32px; max-width:520px;">Dental, dermatology, physiotherapy, ophthalmology, orthopaedics, paediatrics, cosmetic and mental health. That narrowness is the product: the patterns are learned once and applied to every practice we take on.</p>
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                  <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.08em; border:1px solid #26332F; color:#93A09B; padding:8px 13px; border-radius:999px;">NO RANKING GUARANTEES</span>
+                  <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.08em; border:1px solid #26332F; color:#93A09B; padding:8px 13px; border-radius:999px;">NO BOUGHT REVIEWS</span>
+                  <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.08em; border:1px solid #26332F; color:#93A09B; padding:8px 13px; border-radius:999px;">NO TEMPLATES RESOLD AS BESPOKE</span>
+                </div>
+              </div>
+              <div style="background:#142020; border:1px solid #24322E; border-radius:20px; padding:32px;">
+                <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.12em; color:#7F8C87; margin-bottom:20px;">HOW THE WORK RUNS</div>
+                <div style="display:grid; grid-template-columns:26px 1fr; gap:16px; padding-bottom:20px; border-bottom:1px solid #1D2926;"><div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:#7FC9B4;">01</div><div><div style="font-weight:700; font-size:17px; color:#FFFFFF; margin-bottom:5px;">Study — week 1</div><div style="font-size:14.5px; line-height:1.55; color:#93A09B;">Your searches, listing, reviews and the three clinics above you, written up. Yours to keep, free.</div></div></div>
+                <div style="display:grid; grid-template-columns:26px 1fr; gap:16px; padding:20px 0; border-bottom:1px solid #1D2926;"><div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:#7FC9B4;">02</div><div><div style="font-weight:700; font-size:17px; color:#FFFFFF; margin-bottom:5px;">Structure &amp; words — week 2</div><div style="font-size:14.5px; line-height:1.55; color:#93A09B;">Page order and final copy signed off before any visual work starts.</div></div></div>
+                <div style="display:grid; grid-template-columns:26px 1fr; gap:16px; padding:20px 0; border-bottom:1px solid #1D2926;"><div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:#7FC9B4;">03</div><div><div style="font-weight:700; font-size:17px; color:#FFFFFF; margin-bottom:5px;">Design &amp; build — week 3</div><div style="font-size:14.5px; line-height:1.55; color:#93A09B;">One pass, on your real content, tested on mobile data first.</div></div></div>
+                <div style="display:grid; grid-template-columns:26px 1fr; gap:16px; padding-top:20px;"><div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:#7FC9B4;">04</div><div><div style="font-weight:700; font-size:17px; color:#FFFFFF; margin-bottom:5px;">Launch, then stay — week 4 →</div><div style="font-size:14.5px; line-height:1.55; color:#93A09B;">Measured against the targets, then monthly upkeep and a quarterly review.</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#FFFFFF; border-top:1px solid #ECE9E2; padding:110px 80px;">
+          <div style="display:grid; grid-template-columns:1fr 440px; gap:72px; align-items:center;">
+            <div>
+              <div style="height:7px; background:repeating-linear-gradient(to right,#D5D9DE 0 1px,transparent 1px 11px); margin-bottom:14px; max-width:200px;"></div><div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.14em; color:#0B5D4E; margin-bottom:22px;">04 · STATUS — WHERE WE ARE TODAY</div>
+              <h2 style="font-weight:800; font-size:44px; line-height:1.06; letter-spacing:-0.04em; color:#101613; margin:0 0 20px;">We are a new studio, and we would rather you heard that from us.</h2>
+              <p style="font-size:18px; line-height:1.62; color:#4C5551; margin:0 0 18px; max-width:620px;">CareInflow is choosing five founding practices. Fixed price agreed in writing, direct access to the people doing the work, and the same standards we intend to hold for the next decade.</p>
+              <p style="font-size:18px; line-height:1.62; color:#4C5551; margin:0; max-width:620px;">In return we ask to publish what happened — honestly, including what did not work. That published record becomes the proof the next practice reads.</p>
+            </div>
+            <div style="border:1px solid #E4E1DA; border-radius:24px; padding:32px; background:#F7F6F3; transition:transform 200ms cubic-bezier(.22,1,.36,1), border-color 200ms linear; animation:ci-rise 240ms cubic-bezier(.22,1,.36,1) both;" style-hover="transform:translateY(-2px); border-color:#C7D9D3;">
+              <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:22px;"><span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.12em; color:#61645C;">FOUNDING PLACES</span><span style="font-weight:800; font-size:34px; letter-spacing:-0.04em; color:#101613;">5</span></div>
+              <div style="display:flex; gap:6px; margin-bottom:22px;">
+                <div style="flex:1; height:8px; border-radius:999px; background:#101613;"></div><div style="flex:1; height:8px; border-radius:999px; background:#D8D4CB;"></div><div style="flex:1; height:8px; border-radius:999px; background:#D8D4CB;"></div><div style="flex:1; height:8px; border-radius:999px; background:#D8D4CB;"></div><div style="flex:1; height:8px; border-radius:999px; background:#D8D4CB;"></div>
+              </div>
+              <div style="font-size:14.5px; line-height:1.6; color:#5A625E;">One place is held for a practice in Mehsana so the work can be done in person, start to finish.</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding:120px 80px;">
+          <div style="background:#FFFFFF; border:1px solid #E4E1DA; border-radius:28px; padding:64px; display:grid; grid-template-columns:1fr 380px; gap:64px; align-items:center; box-shadow:0 1px 2px rgba(10,12,15,0.04), 0 24px 56px rgba(10,12,15,0.06);">
+            <div>
+              <h2 style="font-weight:800; font-size:52px; line-height:1.04; letter-spacing:-0.045em; color:#101613; margin:0 0 22px; text-wrap:pretty;">Send your clinic's name. We reply with what a patient sees.</h2>
+              <p style="font-size:18px; line-height:1.62; color:#4C5551; margin:0 0 32px; max-width:560px;">One WhatsApp message — no form, no call, no deck. You get a written review of the specific things costing you patients, and if the answer is "change nothing", we will say that.</p>
+              <div style="display:flex; align-items:center; gap:18px;">
+                <span style="background:#101613; color:#FFFFFF; font-size:17px; font-weight:600; padding:18px 30px; border-radius:12px;">WhatsApp +91 97734 56668</span>
+                <span style="font-size:14.5px; color:#61645C; line-height:1.5;">Usually answered<br>the same day.</span>
+              </div>
+            </div>
+            <div style="background:#F7F6F3; border:1px solid #E4E1DA; border-radius:20px; padding:28px;">
+              <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.12em; color:#61645C; margin-bottom:18px;">THE REVIEW COVERS</div>
+              <div style="font-size:14.5px; color:#3A4441; line-height:2.05;">Listing accuracy<br>Mobile load time<br>Treatment page coverage<br>Review handling<br>AI answer readiness<br>The three clinics above you</div>
+              <div style="border-top:1px solid #E4E1DA; margin-top:18px; padding-top:14px; font-family:'JetBrains Mono',monospace; font-size:11px; color:#0B5D4E;">FREE · 2 WORKING DAYS</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#0E1714; padding:64px 80px; display:flex; justify-content:space-between; align-items:flex-end;">
+          <div>
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;"><span style="width:22px; height:22px; border-radius:7px; background:#FFFFFF; display:inline-block;"></span><span style="font-weight:800; font-size:18px; letter-spacing:-0.03em; color:#FFFFFF;">CareInflow</span></div>
+            <div style="font-size:14px; line-height:1.7; color:#7F8C87;">Shop F-27, Platinum Plaza Complex, Radhanpur Road,<br>Mehsana, Gujarat, India · +91 97734 56668</div>
+          </div>
+          <div style="display:flex; gap:32px; font-size:14px; color:#7F8C87;"><span>Capabilities</span><span>Method</span><span>Practice</span><span>Privacy</span></div>
+        </div>
+      </div>
+
+      <sc-if value="{{ showPlans }}" hint-placeholder-val="{{ true }}">
+      <div style="margin-top:40px; background:#FFFFFF; border:1px solid #E4E1DA; border-radius:24px; padding:44px 52px;">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:#61645C; padding-bottom:14px; border-bottom:1px solid #ECE9E2; margin-bottom:30px;">Layout plan 2a — Capabilities page</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:32px;">
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <div style="border:1px dashed #CFCBC1; border-radius:16px; padding:16px 20px;"><div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; color:#0B5D4E; margin-bottom:6px;">01 · OPENER</div><div style="font-size:15px; color:#3A4441;">Tight headline, four target chips (&lt;1.2s / 95+ / AA / schema valid), no image. Sets the page as a product spec.</div></div>
+            <div style="border:1px dashed #CFCBC1; border-radius:16px; padding:16px 20px;"><div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; color:#0B5D4E; margin-bottom:6px;">02 · SURFACE TABS</div><div style="font-size:15px; color:#3A4441;">Three anchored groups — GBP · Website · AI &amp; search. Sticky sub-nav; each group holds its own services.</div></div>
+            <div style="border:1px dashed #CFCBC1; border-radius:16px; padding:16px 20px; min-height:96px;"><div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; color:#0B5D4E; margin-bottom:6px;">03 · SERVICE DETAIL ×8</div><div style="font-size:15px; color:#3A4441;">Alternating: prose left / artifact card right. Each with what it is · why a patient cares · what you receive · time. Artifact is a real component, never a stock photo.</div></div>
+            <div style="border:1px dashed #CFCBC1; border-radius:16px; padding:16px 20px;"><div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; color:#0B5D4E; margin-bottom:6px;">04 · COVERAGE GRID</div><div style="font-size:15px; color:#3A4441;">Treatments × areas matrix: pages that exist today vs after. Static, readable as text.</div></div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <div style="border:1px dashed #CFCBC1; border-radius:16px; padding:16px 20px;"><div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; color:#0B5D4E; margin-bottom:6px;">05 · DARK PANEL — ENGAGEMENTS</div><div style="font-size:15px; color:#3A4441;">Three starting points on the ink surface. Fixed ₹ price, scope, exclusions, who it suits. Exclusions weighted equally.</div></div>
+            <div style="border:1px dashed #CFCBC1; border-radius:16px; padding:16px 20px;"><div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; color:#0B5D4E; margin-bottom:6px;">06 · AFTER LAUNCH</div><div style="font-size:15px; color:#3A4441;">The maintenance schedule as a literal weekly/monthly/quarterly table — the objection no competitor answers.</div></div>
+            <div style="border:1px dashed #CFCBC1; border-radius:16px; padding:16px 20px;"><div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; color:#0B5D4E; margin-bottom:6px;">07 · PLAIN WORDS + QUESTIONS</div><div style="font-size:15px; color:#3A4441;">GBP, NAP, Core Web Vitals, schema, AEO in one line each, then ten real objections. Structured as FAQ data — this is the page AI assistants quote.</div></div>
+            <div style="border:1px dashed #CFCBC1; border-radius:16px; padding:16px 20px; min-height:96px;"><div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; color:#0B5D4E; margin-bottom:6px;">08 · CLOSE</div><div style="font-size:15px; color:#3A4441;">The same white CTA card as the homepage, word for word, including the free-review checklist.</div></div>
+            <div style="padding:6px 20px; font-family:'JetBrains Mono',monospace; font-size:11px; line-height:1.7; color:#61645C;">RHYTHM — OPENER / TABS / ALTERNATING PAIRS / MATRIX / DARK / TABLE / LIST / CARD</div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+    </div>
+
+    <div id="2b" style="width:1440px; flex:0 0 auto; font-family:'Plus Jakarta Sans',system-ui,sans-serif;">
+      <div style="display:flex; align-items:baseline; gap:16px; margin-bottom:14px;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; background:#0B5D4E; color:#FFFFFF; padding:6px 12px; border-radius:6px;">2b</span>
+        <span style="font-weight:800; font-size:30px; color:#101613; letter-spacing:-0.03em;">Clinic OS</span>
+      </div>
+      <p style="font-size:15px; line-height:1.6; color:#4C5551; max-width:920px; margin:0 0 32px; font-family:'Manrope',sans-serif;">Interface-as-narrative. The homepage is a calm control surface: modular tiles, each one a real component showing a piece of your digital presence and its state. Flat surfaces, no shadows, one clinical green. This is the direction that most obviously reads as "these people build software", and it makes GBP and SEO work visible at a glance.</p>
+
+      <sc-if value="{{ showSystem }}" hint-placeholder-val="{{ true }}">
+      <div style="background:#FFFFFF; border:1px solid #E4E1DA; border-radius:20px; padding:52px; margin-bottom:40px;">
+        <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:#61645C; padding-bottom:14px; border-bottom:1px solid #EAE7E0; margin-bottom:40px;">Design system 2b — modular, flat, surgical green</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:56px;">
+          <div>
+            <div style="font-weight:700; font-size:21px; letter-spacing:-0.02em; color:#101613; margin-bottom:18px;">Palette</div>
+            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px;">
+              <div><div style="height:70px; background:#F8F6F1; border:1px solid #E4E1DA; border-radius:10px;"></div><div style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:#5A5F66; margin-top:7px; line-height:1.5;">#F8F6F1<br>CANVAS</div></div>
+              <div><div style="height:70px; background:#FFFFFF; border:1px solid #E4E1DA; border-radius:10px;"></div><div style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:#5A5F66; margin-top:7px; line-height:1.5;">#FFFFFF<br>TILE</div></div>
+              <div><div style="height:70px; background:#E4E1DA; border-radius:10px;"></div><div style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:#5A5F66; margin-top:7px; line-height:1.5;">#E4E1DA<br>LINE</div></div>
+              <div><div style="height:70px; background:#0B5D4E; border-radius:10px;"></div><div style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:#5A5F66; margin-top:7px; line-height:1.5;">#0B5D4E<br>SURGICAL</div></div>
+              <div><div style="height:70px; background:#E9F2EE; border:1px solid #D3E4DC; border-radius:10px;"></div><div style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:#5A5F66; margin-top:7px; line-height:1.5;">#E9F2EE<br>TINT</div></div>
+              <div><div style="height:70px; background:#101613; border-radius:10px;"></div><div style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:#5A5F66; margin-top:7px; line-height:1.5;">#101613<br>INK</div></div>
+            </div>
+            <div style="font-size:14px; line-height:1.65; color:#5A5F66; margin-top:18px;">One green, taken from surgical drapes rather than tech branding — the colour theatres adopted because it is the exact opponent of blood red and gives the eye relief. It only ever means "in good order". Iodine amber marks attention, and nothing else is coloured.</div>
+
+            <div style="font-weight:700; font-size:21px; letter-spacing:-0.02em; color:#101613; margin:40px 0 18px;">Components</div>
+            <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:20px;">
+              <div style="background:#0B5D4E; color:#FFFFFF; font-size:15px; font-weight:600; padding:14px 24px; border-radius:10px;">Message on WhatsApp</div>
+              <div style="border:1px solid #D5D1C8; background:#FFFFFF; color:#101613; font-size:15px; font-weight:600; padding:13px 23px; border-radius:10px;">See capabilities</div>
+              <div style="color:#0B5D4E; font-size:15px; font-weight:700;">Free review →</div>
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px;">
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; background:#E9F2EE; color:#0B5D4E; padding:6px 11px; border-radius:6px;">IN ORDER</span>
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; background:#FBF3E4; color:#8F6720; padding:6px 11px; border-radius:6px;">NEEDS WORK</span>
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; background:#EFEDE6; color:#61645C; padding:6px 11px; border-radius:6px;">NOT SET UP</span>
+            </div>
+            <div style="border:1px solid #E4E1DA; border-radius:14px; overflow:hidden;">
+              <div style="background:#F3F1EA; border-bottom:1px solid #E4E1DA; padding:11px 16px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.1em; color:#61645C;">TILE HEADER</div>
+              <div style="padding:18px 16px; font-size:15px; line-height:1.6; color:#3B3F45;">Tiles are flat: 1px line, 14–20px radius, a labelled header strip, no shadow. Depth comes from the tile grid itself.</div>
+            </div>
+            <div style="font-weight:700; font-size:21px; letter-spacing:-0.02em; color:#101613; margin:38px 0 16px;">Motion</div>
+            <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px;">
+              <div style="border:1px solid #E4E1DA; border-radius:10px; padding:16px 20px; background:#FFFFFF; font-size:14px; font-weight:600; color:#101613; transition:transform 200ms cubic-bezier(.22,1,.36,1), border-color 200ms linear;" style-hover="transform:translateY(-2px); border-color:#0B5D4E;">Hover me — 2px lift</div>
+              <div style="border:1px solid #E4E1DA; border-radius:10px; padding:16px 20px; background:#FFFFFF; font-family:'IBM Plex Mono',monospace; font-size:12px; color:#5A5F66; animation:ci-rise 240ms cubic-bezier(.22,1,.36,1) both;">Entered — fade + 8px rise</div>
+              <div style="border:1px solid #E4E1DA; border-radius:10px; padding:16px 20px; background:#FFFFFF; display:flex; align-items:center; gap:9px; font-family:'IBM Plex Mono',monospace; font-size:12px; color:#5A5F66;"><span style="width:7px; height:7px; border-radius:999px; background:#0B5D4E; display:inline-block; animation:ci-live 2400ms ease-in-out infinite;"></span>Live state — opacity only</div>
+            </div>
+            <div style="font-size:14px; line-height:1.75; color:#5A5F66;">One easing for everything: <span style="font-family:'IBM Plex Mono',monospace; font-size:12.5px;">cubic-bezier(.22, 1, .36, 1)</span>. Entrance 240ms, hover 200ms, state change 200ms — nothing longer, nothing bouncing, nothing driven by scroll.</div>
+            <div style="font-size:14px; line-height:1.75; color:#5A5F66; margin-top:12px;"><strong style="color:#101613;">Why it costs nothing.</strong> Only <span style="font-family:'IBM Plex Mono',monospace; font-size:12.5px;">opacity</span> and <span style="font-family:'IBM Plex Mono',monospace; font-size:12.5px;">transform</span> animate, so the browser composites them on the GPU and never re-lays out the page — no width, height, top or shadow animation anywhere. It is pure CSS: no animation library, no scroll listeners, no JavaScript, so it cannot move the load time or the Core Web Vitals this system publishes. Entrances play once. <span style="font-family:'IBM Plex Mono',monospace; font-size:12.5px;">prefers-reduced-motion</span> turns all of it off.</div>
+          </div>
+          <div>
+            <div style="font-weight:700; font-size:21px; letter-spacing:-0.02em; color:#101613; margin-bottom:18px;">Typography</div>
+            <div style="border-bottom:1px solid #EAE7E0; padding-bottom:16px; margin-bottom:16px;">
+              <div style="font-weight:800; font-size:56px; line-height:1.0; letter-spacing:-0.04em; color:#101613;">Jakarta ExtraBold</div>
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:#61645C; margin-top:8px; letter-spacing:0.1em;">DISPLAY / 72 · 48 · 30PX · TRACKING -0.04EM</div>
+            </div>
+            <div style="border-bottom:1px solid #EAE7E0; padding-bottom:16px; margin-bottom:16px;">
+              <div style="font-size:18px; line-height:1.62; color:#3B3F45; max-width:520px;">Plus Jakarta Sans is warmer and rounder than the usual grotesks, which keeps a dense interface from feeling cold — important when the subject is a clinic rather than a dashboard.</div>
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:#61645C; margin-top:8px; letter-spacing:0.1em;">BODY / 18PX · 1.62 · MEASURE 640PX</div>
+            </div>
+            <div style="border-bottom:1px solid #EAE7E0; padding-bottom:16px; margin-bottom:16px;">
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:#101613;">PLEX MONO FOR TILE HEADERS, STATES AND VALUES</div>
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:#61645C; margin-top:8px; letter-spacing:0.1em;">LABEL / 10.5–12PX</div>
+            </div>
+            <div style="display:flex; align-items:baseline; gap:18px;">
+              <div style="font-weight:800; font-size:54px; letter-spacing:-0.05em; color:#0B5D4E;">14/16</div>
+              <div style="font-size:14px; line-height:1.5; color:#5A5F66; max-width:250px;">Fractions and counts, not percentages — they are checkable, and a doctor can audit them.</div>
+            </div>
+            <div style="font-weight:700; font-size:21px; letter-spacing:-0.02em; color:#101613; margin:38px 0 16px;">Rules</div>
+            <div style="font-size:14px; line-height:1.75; color:#5A5F66;">A 12-column tile grid; tiles span 3, 4, 6 or 8 columns and never break the 8px baseline. 140px section rhythm, 80px margin. Radius 10 / 14 / 20. Zero shadows anywhere. Motion: tiles fade in at 200ms, borders darken on hover, nothing else.</div>
+            <div style="font-weight:700; font-size:21px; letter-spacing:-0.02em; color:#101613; margin:38px 0 16px;">Medical layer</div>
+            <div style="display:flex; align-items:flex-start; gap:14px; margin-bottom:14px;">
+              <div style="height:7px; width:88px; flex:0 0 auto; margin-top:7px; background:repeating-linear-gradient(to right,#D3D3CE 0 1px,transparent 1px 11px);"></div>
+              <div style="font-size:14px; line-height:1.6; color:#5A5F66;">Chart ticks above every section label — the graph-paper baseline of a printed trace, and the only texture in the system.</div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:14px; margin-bottom:14px;">
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:#61645C; flex:0 0 88px; margin-top:2px;">REF &lt;1.2S</div>
+              <div style="font-size:14px; line-height:1.6; color:#5A5F66;">Reference ranges beside every measured value, the way a lab report states them. A number with no reference is not evidence.</div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:14px;">
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.1em; color:#0B5D4E; flex:0 0 88px; margin-top:1px;">INTAKE</div>
+              <div style="font-size:14px; line-height:1.6; color:#5A5F66;">Tiles are numbered charts and the states read as triage — in order, needs work, not set up. The page is a case file, not a brochure.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <div style="background:#F8F6F1; border:1px solid #E4E1DA; border-radius:20px; overflow:hidden;">
+        <div style="padding:0 40px; height:70px; display:flex; align-items:center; justify-content:space-between; background:#FFFFFF; border-bottom:1px solid #E4E1DA;">
+          <div style="display:flex; align-items:center; gap:11px;">
+            <span style="width:24px; height:24px; border-radius:6px; background:#0B5D4E; display:inline-block;"></span>
+            <span style="font-weight:800; font-size:19px; letter-spacing:-0.03em; color:#101613;">CareInflow</span>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; color:#61645C; padding-left:12px; border-left:1px solid #E4E1DA;">HEALTHCARE ONLY</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:14.5px; font-weight:600; color:#5A5F66; padding:9px 12px;">Capabilities</span>
+            <span style="font-size:14.5px; font-weight:600; color:#5A5F66; padding:9px 12px;">Method</span>
+            <span style="font-size:14.5px; font-weight:600; color:#5A5F66; padding:9px 12px;">Practice</span>
+            <span style="background:#0B5D4E; color:#FFFFFF; font-size:14px; font-weight:600; padding:11px 20px; border-radius:9px; margin-left:8px;">WhatsApp us</span>
+          </div>
+        </div>
+
+        <div style="padding:90px 80px 80px;">
+          <div style="display:grid; grid-template-columns:1fr 600px; gap:64px; align-items:center;">
+            <div>
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.14em; color:#0B5D4E; margin-bottom:26px;">DIGITAL PRESENCE, BUILT AND MAINTAINED FOR CLINICS</div>
+              <h1 style="font-weight:800; font-size:68px; line-height:1.03; letter-spacing:-0.045em; color:#101613; margin:0 0 26px; text-wrap:pretty;">Your practice already has a digital presence. Right now, nobody is running it.</h1>
+              <p style="font-size:19px; line-height:1.6; color:#4C5551; margin:0 0 34px; max-width:560px; text-wrap:pretty;">The listing, the website, the treatment pages, the reviews, the answers assistants give about you — they exist whether or not you manage them. We take the whole thing over, put it in order, and keep it there.</p>
+              <div style="display:flex; align-items:center; gap:14px;">
+                <span style="background:#0B5D4E; color:#FFFFFF; font-size:16px; font-weight:600; padding:17px 28px; border-radius:10px;">Message us on WhatsApp</span>
+                <span style="border:1px solid #D5D1C8; background:#FFFFFF; color:#101613; font-size:16px; font-weight:600; padding:16px 26px; border-radius:10px;">See a free review of your clinic</span>
+              </div>
+            </div>
+            <div style="border:1px solid #E4E1DA; border-radius:20px; overflow:hidden; background:#FFFFFF;">
+              <div style="background:#F3F1EA; border-bottom:1px solid #E4E1DA; padding:14px 20px; display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; color:#5A5F66;">INTAKE CHART · PRESENCE REVIEW · TYPICAL CLINIC BEFORE WE START</span>
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:#61645C;">6 CHECKS · REF. RIGHT</span>
+              </div>
+              <div style="padding:6px 20px 14px;">
+                <div style="display:grid; grid-template-columns:1fr 130px; gap:16px; align-items:center; padding:15px 0; border-bottom:1px solid #EFEDE6;"><div><div style="font-weight:700; font-size:15.5px; color:#101613;">Google Business Profile</div><div style="font-size:13px; color:#61645C; margin-top:3px;">2 of 9 services listed · hours wrong on holidays</div></div><span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; background:#FBF3E4; color:#8F6720; padding:6px 10px; border-radius:6px; text-align:center;">NEEDS WORK</span></div>
+                <div style="display:grid; grid-template-columns:1fr 130px; gap:16px; align-items:center; padding:15px 0; border-bottom:1px solid #EFEDE6;"><div><div style="font-weight:700; font-size:15.5px; color:#101613;">Website load, 4G</div><div style="font-size:13px; color:#61645C; margin-top:3px;">6.4s to first content on a mid-range Android</div></div><span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; background:#FBF3E4; color:#8F6720; padding:6px 10px; border-radius:6px; text-align:center;">NEEDS WORK</span></div>
+                <div style="display:grid; grid-template-columns:1fr 130px; gap:16px; align-items:center; padding:15px 0; border-bottom:1px solid #EFEDE6;"><div><div style="font-weight:700; font-size:15.5px; color:#101613;">Treatment pages</div><div style="font-size:13px; color:#61645C; margin-top:3px;">1 page covering 9 treatments patients search for</div></div><span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; background:#FBF3E4; color:#8F6720; padding:6px 10px; border-radius:6px; text-align:center;">NEEDS WORK</span></div>
+                <div style="display:grid; grid-template-columns:1fr 130px; gap:16px; align-items:center; padding:15px 0; border-bottom:1px solid #EFEDE6;"><div><div style="font-weight:700; font-size:15.5px; color:#101613;">Review replies</div><div style="font-size:13px; color:#61645C; margin-top:3px;">Last reply 11 months ago · 3 unanswered concerns</div></div><span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; background:#EFEDE6; color:#61645C; padding:6px 10px; border-radius:6px; text-align:center;">NOT SET UP</span></div>
+                <div style="display:grid; grid-template-columns:1fr 130px; gap:16px; align-items:center; padding:15px 0; border-bottom:1px solid #EFEDE6;"><div><div style="font-weight:700; font-size:15.5px; color:#101613;">Structured data for AI answers</div><div style="font-size:13px; color:#61645C; margin-top:3px;">No practice, doctor or treatment data published</div></div><span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; background:#EFEDE6; color:#61645C; padding:6px 10px; border-radius:6px; text-align:center;">NOT SET UP</span></div>
+                <div style="display:grid; grid-template-columns:1fr 130px; gap:16px; align-items:center; padding:15px 0;"><div><div style="font-weight:700; font-size:15.5px; color:#101613;">Reachable in one tap</div><div style="font-size:13px; color:#61645C; margin-top:3px;">WhatsApp number present and answered</div></div><span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; background:#E9F2EE; color:#0B5D4E; padding:6px 10px; border-radius:6px; text-align:center;">IN ORDER</span></div>
+              </div>
+              <div style="border-top:1px solid #E4E1DA; padding:14px 20px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:#61645C; background:#F8F6F1;">THIS IS THE DOCUMENT YOU RECEIVE FREE, FOR YOUR OWN CLINIC, BEFORE ANY QUOTE.</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding:110px 80px; border-top:1px solid #E4E1DA; background:#FFFFFF;">
+          <div style="max-width:720px; margin-bottom:48px;">
+            <div style="height:7px; background:repeating-linear-gradient(to right,#D3D3CE 0 1px,transparent 1px 11px); margin-bottom:14px; max-width:200px;"></div><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.14em; color:#0B5D4E; margin-bottom:22px;">01 · FINDINGS — WHAT WE PUT IN ORDER</div>
+            <h2 style="font-weight:800; font-size:46px; line-height:1.06; letter-spacing:-0.04em; color:#101613; margin:0 0 16px; text-wrap:pretty;">Six components. One system. Managed like an operating theatre, not a campaign.</h2>
+            <p style="font-size:18px; line-height:1.62; color:#4C5551; margin:0;">Each tile below is a real piece of what we build. Nothing here is a stock photo or an illustration.</p>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(12,1fr); gap:16px;">
+            <div style="grid-column:span 5; border:1px solid #E4E1DA; border-radius:18px; overflow:hidden; background:#F8F6F1;">
+              <div style="background:#F3F1EA; border-bottom:1px solid #E4E1DA; padding:12px 18px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.1em; color:#5A5F66;">CHART 01 · THE WEBSITE</div>
+              <div style="padding:24px;">
+                <div style="height:280px; border-radius:12px; border:1px solid #E4E1DA; background:repeating-linear-gradient(135deg,#EAE7E0 0 9px,#F4F2EC 9px 18px); display:flex; align-items:flex-end; padding:16px;">
+                  <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:#61645C; line-height:1.6;">IMAGE — the clinic homepage on a phone, real screenshot, no device mockup frame.</div>
+                </div>
+                <div style="font-size:16px; line-height:1.6; color:#3B3F45; margin-top:20px;">Hand-built, three to four weeks, a page for every treatment. Fast enough that the patient never sees a loading state.</div>
+              </div>
+            </div>
+            <div style="grid-column:span 4; display:flex; flex-direction:column; gap:16px;">
+              <div style="border:1px solid #E4E1DA; border-radius:18px; overflow:hidden; background:#FFFFFF; flex:1;">
+                <div style="background:#F3F1EA; border-bottom:1px solid #E4E1DA; padding:12px 18px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.1em; color:#5A5F66;">CHART 02 · THE LISTING</div>
+                <div style="padding:20px;">
+                  <div style="font-weight:700; font-size:17px; color:#101613;">Shreeji Dental &amp; Implant Centre</div>
+                  <div style="display:flex; align-items:center; gap:7px; margin-top:5px;"><span style="font-size:13px; font-weight:700; color:#101613;">4.8</span><span style="font-size:12px; color:#B8862F;">★★★★★</span><span style="font-size:12.5px; color:#61645C;">(214)</span></div>
+                  <div style="margin-top:14px; border-top:1px solid #EFEDE6; padding-top:12px;">
+                    <div style="display:flex; justify-content:space-between; font-size:13px; padding:6px 0;"><span style="color:#61645C;">Services listed</span><span style="font-weight:700; color:#0B5D4E;">9 of 9</span></div>
+                    <div style="display:flex; justify-content:space-between; font-size:13px; padding:6px 0;"><span style="color:#61645C;">Photos this month</span><span style="font-weight:700; color:#0B5D4E;">6 added</span></div>
+                    <div style="display:flex; justify-content:space-between; font-size:13px; padding:6px 0;"><span style="color:#61645C;">Questions answered</span><span style="font-weight:700; color:#0B5D4E;">all</span></div>
+                  </div>
+                </div>
+              </div>
+              <div style="border:1px solid #E4E1DA; border-radius:18px; overflow:hidden; background:#FFFFFF;">
+                <div style="background:#F3F1EA; border-bottom:1px solid #E4E1DA; padding:12px 18px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.1em; color:#5A5F66;">CHART 03 · A REVIEW REPLY WE DRAFT</div>
+                <div style="padding:20px;">
+                  <div style="font-size:13px; color:#61645C; line-height:1.55; padding-left:12px; border-left:2px solid #E4E1DA;">"Waited 40 minutes past my appointment time."</div>
+                  <div style="font-size:14px; color:#3B3F45; line-height:1.6; margin-top:12px;">Thank you for telling us — a same-day emergency ran long that afternoon. We now hold two slots each day for exactly that, so scheduled patients are not pushed back.</div>
+                  <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:#0B5D4E; margin-top:12px;">DRAFTED FOR YOUR APPROVAL · NEVER POSTED WITHOUT IT</div>
+                </div>
+              </div>
+            </div>
+            <div style="grid-column:span 3; display:flex; flex-direction:column; gap:16px;">
+              <div style="border:1px solid #E4E1DA; border-radius:18px; overflow:hidden; background:#FFFFFF;">
+                <div style="background:#F3F1EA; border-bottom:1px solid #E4E1DA; padding:12px 18px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.1em; color:#5A5F66;">CHART 04 · VITALS</div>
+                <div style="padding:20px;">
+                  <div style="font-weight:800; font-size:40px; letter-spacing:-0.05em; color:#0B5D4E; line-height:1;">0.9s</div>
+                  <div style="font-size:13px; color:#61645C; margin-top:6px; line-height:1.5;">first content on 4G, mid-range Android</div>
+                  <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:#61645C; margin-top:6px;">REF &lt;1.2S · CLS &lt;0.10</div>
+                  <div style="margin-top:14px; display:flex; gap:4px;"><div style="flex:1; height:6px; background:#0B5D4E; border-radius:999px;"></div><div style="flex:1; height:6px; background:#0B5D4E; border-radius:999px;"></div><div style="flex:1; height:6px; background:#0B5D4E; border-radius:999px;"></div><div style="flex:1; height:6px; background:#0B5D4E; border-radius:999px;"></div><div style="flex:1; height:6px; background:#E4E1DA; border-radius:999px;"></div></div>
+                </div>
+              </div>
+              <div style="border:1px solid #E4E1DA; border-radius:18px; overflow:hidden; background:#FFFFFF; flex:1;">
+                <div style="background:#F3F1EA; border-bottom:1px solid #E4E1DA; padding:12px 18px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.1em; color:#5A5F66;">CHART 05 · PAGES PATIENTS SEARCH FOR</div>
+                <div style="padding:16px 20px;">
+                  <div style="font-size:13.5px; color:#3B3F45; line-height:2.05;">Root canal cost<br>Dental implants<br>Braces for adults<br>Child's first visit<br>Emergency tooth pain<br>Whitening</div>
+                  <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:#0B5D4E; margin-top:10px;">9 PAGES · WRITTEN, NOT SPUN</div>
+                </div>
+              </div>
+            </div>
+            <div style="grid-column:span 12; border:1px solid #E4E1DA; border-radius:18px; overflow:hidden; background:#101613;">
+              <div style="border-bottom:1px solid #24322E; padding:12px 24px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.1em; color:#8E9A95;">CHART 06 · THE ANSWER AN ASSISTANT GIVES ABOUT YOU</div>
+              <div style="padding:28px 24px; display:grid; grid-template-columns:1fr 1fr 300px; gap:40px; align-items:start;">
+                <div>
+                  <div style="font-size:13px; color:#8E9A95; margin-bottom:10px;">Patient asks: "which dentist in Mehsana does implants, and roughly what does it cost?"</div>
+                  <div style="font-size:15.5px; line-height:1.65; color:#EAE7E0;">Three clinics in Mehsana publish implant pricing. <span style="color:#7FC9B4; font-weight:600;">Shreeji Dental &amp; Implant Centre</span> lists single implants from ₹18,000, a two-visit protocol and recovery guidance, with hours and location confirmed.</div>
+                </div>
+                <div>
+                  <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.1em; color:#8E9A95; margin-bottom:12px;">WHY YOUR CLINIC IS IN THE ANSWER</div>
+                  <div style="font-size:14px; color:#B4C0BB; line-height:1.9;">Treatment facts published as data<br>Prices stated in plain text<br>Practice and doctor entities defined<br>Hours consistent across surfaces</div>
+                </div>
+                <div style="border:1px solid #24322E; border-radius:12px; padding:18px;">
+                  <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:#8E9A95; margin-bottom:10px;">STATUS</div>
+                  <div style="display:flex; justify-content:space-between; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#B4C0BB; padding:5px 0;"><span>SCHEMA</span><span style="color:#7FC9B4;">VALID</span></div>
+                  <div style="display:flex; justify-content:space-between; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#B4C0BB; padding:5px 0;"><span>ENTITY MATCH</span><span style="color:#7FC9B4;">YES</span></div>
+                  <div style="display:flex; justify-content:space-between; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#B4C0BB; padding:5px 0;"><span>FAQ COVERAGE</span><span style="color:#7FC9B4;">14/16</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding:110px 80px; border-top:1px solid #E4E1DA;">
+          <div style="display:grid; grid-template-columns:380px 1fr; gap:64px; align-items:start;">
+            <div>
+              <div style="height:7px; background:repeating-linear-gradient(to right,#D3D3CE 0 1px,transparent 1px 11px); margin-bottom:14px; max-width:200px;"></div><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.14em; color:#0B5D4E; margin-bottom:22px;">02 · PROTOCOL — HOW THE WORK RUNS</div>
+              <h2 style="font-weight:800; font-size:42px; line-height:1.06; letter-spacing:-0.04em; color:#101613; margin:0 0 18px;">We study the patient's route before we design a single screen.</h2>
+              <p style="font-size:17px; line-height:1.62; color:#4C5551; margin:0 0 24px;">Everyone else starts at design. Starting at research is why every structural decision can be explained — and why the site does not need rebuilding next year.</p>
+              <div style="border:1px solid #D3E4DC; background:#E9F2EE; border-radius:14px; padding:20px;">
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.1em; color:#0B5D4E; margin-bottom:10px;">WHERE WE ARE · JULY 2026</div>
+                <div style="font-size:15px; line-height:1.6; color:#143F35;">A new studio taking five founding practices at fixed written prices, with direct access to the people doing the work. We would rather say that than dress up a portfolio we do not have yet.</div>
+              </div>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px;">
+              <div style="border:1px solid #E4E1DA; border-radius:16px; padding:24px; background:#FFFFFF;"><div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:#0B5D4E; margin-bottom:14px;">WEEK 1</div><div style="font-weight:700; font-size:19px; letter-spacing:-0.02em; color:#101613; margin-bottom:8px;">Study</div><div style="font-size:14.5px; line-height:1.55; color:#5A5F66;">Your searches, listing, reviews and the three clinics ranking above you. Written up and yours to keep, free.</div></div>
+              <div style="border:1px solid #E4E1DA; border-radius:16px; padding:24px; background:#FFFFFF;"><div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:#0B5D4E; margin-bottom:14px;">WEEK 2</div><div style="font-weight:700; font-size:19px; letter-spacing:-0.02em; color:#101613; margin-bottom:8px;">Structure</div><div style="font-size:14.5px; line-height:1.55; color:#5A5F66;">Pages, order and final words signed off before any visual work begins.</div></div>
+              <div style="border:1px solid #E4E1DA; border-radius:16px; padding:24px; background:#FFFFFF;"><div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:#0B5D4E; margin-bottom:14px;">WEEK 3</div><div style="font-weight:700; font-size:19px; letter-spacing:-0.02em; color:#101613; margin-bottom:8px;">Build</div><div style="font-size:14.5px; line-height:1.55; color:#5A5F66;">Designed and coded in one pass on your real content, tested on mobile data first.</div></div>
+              <div style="border:1px solid #0B5D4E; border-radius:16px; padding:24px; background:#FFFFFF;"><div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:#0B5D4E; margin-bottom:14px;">WEEK 4 →</div><div style="font-weight:700; font-size:19px; letter-spacing:-0.02em; color:#101613; margin-bottom:8px;">Run it</div><div style="font-size:14.5px; line-height:1.55; color:#5A5F66;">Launch, measure, then monthly upkeep and a written quarterly review. This part never ends.</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding:110px 80px; border-top:1px solid #E4E1DA; background:#FFFFFF;">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start;">
+            <div>
+              <div style="height:7px; background:repeating-linear-gradient(to right,#D3D3CE 0 1px,transparent 1px 11px); margin-bottom:14px; max-width:200px;"></div><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.14em; color:#0B5D4E; margin-bottom:22px;">03 · INDICATION — WHY HEALTHCARE ONLY</div>
+              <h2 style="font-weight:800; font-size:44px; line-height:1.06; letter-spacing:-0.04em; color:#101613; margin:0 0 20px; text-wrap:pretty;">A café wants you hungry. A clinic needs you calm.</h2>
+              <p style="font-size:18px; line-height:1.62; color:#4C5551; margin:0 0 20px;">An agency that builds both will always solve your problem second. We only work with dental, dermatology, physiotherapy, ophthalmology, orthopaedic, paediatric, cosmetic and mental-health practices — so the patterns are learned once and reused for everyone.</p>
+              <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; border:1px solid #E4E1DA; color:#61645C; padding:8px 12px; border-radius:6px;">NO RANKING GUARANTEES</span>
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; border:1px solid #E4E1DA; color:#61645C; padding:8px 12px; border-radius:6px;">NO BOUGHT REVIEWS</span>
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; border:1px solid #E4E1DA; color:#61645C; padding:8px 12px; border-radius:6px;">NO RESOLD TEMPLATES</span>
+              </div>
+            </div>
+            <div style="border:1px solid #E4E1DA; border-radius:18px; overflow:hidden;">
+              <div style="background:#F3F1EA; border-bottom:1px solid #E4E1DA; padding:12px 20px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.1em; color:#5A5F66;">WHAT SPECIALISATION ACTUALLY BUYS YOU</div>
+              <div style="padding:8px 20px 16px;">
+                <div style="padding:16px 0; border-bottom:1px solid #EFEDE6;"><div style="font-weight:700; font-size:16px; color:#101613; margin-bottom:5px;">We know the questions patients will not ask at the desk</div><div style="font-size:14.5px; line-height:1.55; color:#5A5F66;">Cost, pain, recovery time, whether the doctor will be the one treating them. Answered on the page, before they leave it.</div></div>
+                <div style="padding:16px 0; border-bottom:1px solid #EFEDE6;"><div style="font-weight:700; font-size:16px; color:#101613; margin-bottom:5px;">We know where the legal and ethical lines are</div><div style="font-size:14.5px; line-height:1.55; color:#5A5F66;">Medical claims, before-and-after imagery, consent, patient data. A general agency does not.</div></div>
+                <div style="padding:16px 0;"><div style="font-weight:700; font-size:16px; color:#101613; margin-bottom:5px;">We know what your front desk can sustain</div><div style="font-size:14.5px; line-height:1.55; color:#5A5F66;">An enquiry flow nobody answers is worse than no flow. We build for the staff you actually have.</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding:110px 80px; border-top:1px solid #E4E1DA;">
+          <div style="border:1px solid #0B5D4E; border-radius:20px; overflow:hidden; background:#FFFFFF;">
+            <div style="background:#0B5D4E; padding:14px 32px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; color:#FFFFFF;">NEXT STEP · ONE MESSAGE</div>
+            <div style="padding:56px 32px 56px; display:grid; grid-template-columns:1fr 360px; gap:56px; align-items:center;">
+              <div>
+                <h2 style="font-weight:800; font-size:48px; line-height:1.05; letter-spacing:-0.045em; color:#101613; margin:0 0 20px; text-wrap:pretty;">Send your clinic's name. We send back the review you saw at the top of this page.</h2>
+                <p style="font-size:18px; line-height:1.62; color:#4C5551; margin:0 0 30px; max-width:560px;">Six checks on your own practice, in writing, free. No form, no call, no deck — and if the honest answer is "leave it as it is", we will say so.</p>
+                <div style="display:flex; align-items:center; gap:18px;">
+                  <span style="background:#0B5D4E; color:#FFFFFF; font-size:17px; font-weight:600; padding:18px 30px; border-radius:10px;">WhatsApp +91 97734 56668</span>
+                  <span style="font-size:14.5px; color:#61645C; line-height:1.5;">Usually answered the same day.<br>Mehsana, Gujarat.</span>
+                </div>
+              </div>
+              <div style="border:1px solid #E4E1DA; border-radius:14px; padding:24px; background:#F8F6F1;">
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.1em; color:#61645C; margin-bottom:16px;">FOUNDING PLACES</div>
+                <div style="display:flex; align-items:baseline; gap:10px; margin-bottom:16px;"><span style="font-weight:800; font-size:44px; letter-spacing:-0.05em; color:#0B5D4E; line-height:1;">5</span><span style="font-size:14px; color:#5A5F66;">practices, fixed written price</span></div>
+                <div style="display:flex; gap:5px;"><div style="flex:1; height:8px; background:#0B5D4E; border-radius:999px;"></div><div style="flex:1; height:8px; background:#E4E1DA; border-radius:999px;"></div><div style="flex:1; height:8px; background:#E4E1DA; border-radius:999px;"></div><div style="flex:1; height:8px; background:#E4E1DA; border-radius:999px;"></div><div style="flex:1; height:8px; background:#E4E1DA; border-radius:999px;"></div></div>
+                <div style="font-size:13.5px; color:#61645C; margin-top:14px; line-height:1.55;">One place is held for a Mehsana practice so the work can be done in person.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#101613; padding:60px 80px; display:flex; justify-content:space-between; align-items:flex-end;">
+          <div>
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;"><span style="width:20px; height:20px; border-radius:5px; background:#0B5D4E; display:inline-block;"></span><span style="font-weight:800; font-size:18px; letter-spacing:-0.03em; color:#FFFFFF;">CareInflow</span></div>
+            <div style="font-size:14px; line-height:1.7; color:#8E9A95;">Shop F-27, Platinum Plaza Complex, Radhanpur Road,<br>Mehsana, Gujarat, India · +91 97734 56668</div>
+          </div>
+          <div style="display:flex; gap:30px; font-size:14px; color:#8E9A95;"><span>Capabilities</span><span>Method</span><span>Practice</span><span>Privacy</span></div>
+        </div>
+      </div>
+
+      <sc-if value="{{ showPlans }}" hint-placeholder-val="{{ true }}">
+      <div style="margin-top:40px; background:#FFFFFF; border:1px solid #E4E1DA; border-radius:20px; padding:44px 52px;">
+        <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:#61645C; padding-bottom:14px; border-bottom:1px solid #EAE7E0; margin-bottom:30px;">Layout plan 2b — Capabilities page</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:32px;">
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <div style="border:1px dashed #CDC9BF; border-radius:14px; padding:16px 20px;"><div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.1em; color:#0B5D4E; margin-bottom:6px;">01 · OPENER + STATE LEGEND</div><div style="font-size:15px; color:#3B3F45;">Headline plus the three state chips defined (in order / needs work / not set up). Teaches the page's language in six seconds.</div></div>
+            <div style="border:1px dashed #CDC9BF; border-radius:14px; padding:16px 20px;"><div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.1em; color:#0B5D4E; margin-bottom:6px;">02 · THE SIX COMPONENTS</div><div style="font-size:15px; color:#3B3F45;">Same tile grid as the homepage, expanded: each tile links down to its own section. Sticky component rail on the left.</div></div>
+            <div style="border:1px dashed #CDC9BF; border-radius:14px; padding:16px 20px; min-height:96px;"><div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.1em; color:#0B5D4E; margin-bottom:6px;">03 · COMPONENT DETAIL ×8</div><div style="font-size:15px; color:#3B3F45;">Per service: what it is · what a patient notices · what you receive · time · what it does not include. Right column holds the live artifact tile.</div></div>
+            <div style="border:1px dashed #CDC9BF; border-radius:14px; padding:16px 20px;"><div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.1em; color:#0B5D4E; margin-bottom:6px;">04 · COVERAGE MATRIX</div><div style="font-size:15px; color:#3B3F45;">Treatments × areas grid with state chips — the single most persuasive artifact for local SEO work.</div></div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <div style="border:1px dashed #CDC9BF; border-radius:14px; padding:16px 20px;"><div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.1em; color:#0B5D4E; margin-bottom:6px;">05 · INK BAND — ENGAGEMENTS</div><div style="font-size:15px; color:#3B3F45;">Three starting points as tiles on the dark surface: fixed ₹ price, scope, exclusions, who it suits.</div></div>
+            <div style="border:1px dashed #CDC9BF; border-radius:14px; padding:16px 20px;"><div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.1em; color:#0B5D4E; margin-bottom:6px;">06 · THE RUNNING SCHEDULE</div><div style="font-size:15px; color:#3B3F45;">Weekly / monthly / quarterly table of what we actually do after launch, with the state chips reused.</div></div>
+            <div style="border:1px dashed #CDC9BF; border-radius:14px; padding:16px 20px;"><div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.1em; color:#0B5D4E; margin-bottom:6px;">07 · PLAIN WORDS + QUESTIONS</div><div style="font-size:15px; color:#3B3F45;">Jargon defined in one line each, then ten objections answered. Marked up as FAQ data for AI answers.</div></div>
+            <div style="border:1px dashed #CDC9BF; border-radius:14px; padding:16px 20px; min-height:96px;"><div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.1em; color:#0B5D4E; margin-bottom:6px;">08 · CLOSE</div><div style="font-size:15px; color:#3B3F45;">The green-headed CTA block from the homepage, identical, with the founding-places tile.</div></div>
+            <div style="padding:6px 20px; font-family:'IBM Plex Mono',monospace; font-size:11px; line-height:1.7; color:#61645C;">RHYTHM — OPENER / TILE GRID / DETAIL PAIRS / MATRIX / INK / TABLE / LIST / CTA</div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+    </div>
+
+    <div id="2c" style="width:1440px; flex:0 0 auto; font-family:'DM Sans',system-ui,sans-serif;">
+      <div style="display:flex; align-items:baseline; gap:16px; margin-bottom:14px;">
+        <span style="font-family:'Space Grotesk',monospace; font-size:13px; font-weight:700; background:#121917; color:#FFFFFF; padding:6px 12px; border-radius:4px;">2c</span>
+        <span style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:30px; color:#121917; letter-spacing:-0.03em;">Aperture</span>
+      </div>
+      <p style="font-family:'Manrope',sans-serif; font-size:15px; line-height:1.6; color:#4C5551; max-width:920px; margin:0 0 32px;">Image-led and architectural. Oversized tight display type, full-bleed photography of real clinics, and annotated build artifacts — a browser frame showing the actual page you made, with callouts explaining every decision. The most "design studio" of the three: it wins on craft and looks expensive, and it depends on getting real photography of the first practice.</p>
+
+      <sc-if value="{{ showSystem }}" hint-placeholder-val="{{ true }}">
+      <div style="background:#FFFFFF; border:1px solid #DFDBD2; padding:52px; margin-bottom:40px;">
+        <div style="font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:500; letter-spacing:0.16em; text-transform:uppercase; color:#61645C; padding-bottom:14px; border-bottom:1px solid #E7E3DA; margin-bottom:40px;">Design system 2c — paper, ink, eucalyptus</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:56px;">
+          <div>
+            <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:21px; letter-spacing:-0.02em; color:#121917; margin-bottom:18px;">Palette</div>
+            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px;">
+              <div><div style="height:70px; background:#F1EFEA; border:1px solid #DFDBD2;"></div><div style="font-family:'Space Grotesk',monospace; font-size:10px; color:#5A625E; margin-top:7px; line-height:1.5;">#F1EFEA<br>PAPER</div></div>
+              <div><div style="height:70px; background:#FFFFFF; border:1px solid #DFDBD2;"></div><div style="font-family:'Space Grotesk',monospace; font-size:10px; color:#5A625E; margin-top:7px; line-height:1.5;">#FFFFFF<br>SURFACE</div></div>
+              <div><div style="height:70px; background:#DFDBD2;"></div><div style="font-family:'Space Grotesk',monospace; font-size:10px; color:#5A625E; margin-top:7px; line-height:1.5;">#DFDBD2<br>RULE</div></div>
+              <div><div style="height:70px; background:#2E5A50;"></div><div style="font-family:'Space Grotesk',monospace; font-size:10px; color:#5A625E; margin-top:7px; line-height:1.5;">#2E5A50<br>EUCALYPTUS</div></div>
+              <div><div style="height:70px; background:#121917;"></div><div style="font-family:'Space Grotesk',monospace; font-size:10px; color:#5A625E; margin-top:7px; line-height:1.5;">#121917<br>INK</div></div>
+              <div><div style="height:70px; background:#5A625E;"></div><div style="font-family:'Space Grotesk',monospace; font-size:10px; color:#5A625E; margin-top:7px; line-height:1.5;">#5A625E<br>BODY</div></div>
+            </div>
+            <div style="font-size:14px; line-height:1.65; color:#5A625E; margin-top:18px;">Colour is almost absent so photography carries the warmth. Deep eucalyptus — the tone of surgical cloth, chosen originally because it is the opponent colour of blood red — appears only on annotations and links. The photography is the brand asset, which means it has to be real: your first practice, properly shot.</div>
+
+            <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:21px; letter-spacing:-0.02em; color:#121917; margin:40px 0 18px;">Components</div>
+            <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:20px;">
+              <div style="background:#121917; color:#FFFFFF; font-size:15px; font-weight:500; padding:15px 26px;">Message on WhatsApp</div>
+              <div style="border:1px solid #121917; color:#121917; font-size:15px; font-weight:500; padding:14px 25px;">Selected work</div>
+              <div style="font-family:'Space Grotesk',sans-serif; font-size:13px; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:#2E5A50; border-bottom:1px solid #2E5A50; padding-bottom:3px;">Read the method</div>
+            </div>
+            <div style="border:1px solid #DFDBD2; margin-bottom:16px;">
+              <div style="height:120px; background:repeating-linear-gradient(135deg,#E6E6E3 0 9px,#F2F2F0 9px 18px);"></div>
+              <div style="border-top:1px solid #DFDBD2; padding:12px 16px; display:flex; justify-content:space-between; font-family:'Space Grotesk',monospace; font-size:10.5px; letter-spacing:0.08em; color:#61645C;"><span>FIG 01 · IMAGE WITH CAPTION STRIP</span><span>MEHSANA, 2026</span></div>
+            </div>
+            <div style="display:flex; gap:12px; align-items:flex-start; border-left:2px solid #2E5A50; padding-left:14px;">
+              <div style="font-size:13.5px; line-height:1.6; color:#2E5A50;">Annotation — every build artifact on the site carries a numbered callout explaining the decision behind it. This is how the work demonstrates thinking rather than claiming it.</div>
+            </div>
+            <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:21px; letter-spacing:-0.02em; color:#121917; margin:38px 0 16px;">Motion</div>
+            <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px;">
+              <div style="border:1px solid #DFDBD2; padding:16px 20px; background:#FFFFFF; font-size:14px; font-weight:600; color:#121917; transition:transform 200ms cubic-bezier(.22,1,.36,1), border-color 200ms linear;" style-hover="transform:translateY(-2px); border-color:#2E5A50;">Hover me — 2px lift</div>
+              <div style="border:1px solid #DFDBD2; padding:16px 20px; background:#FFFFFF; font-family:'IBM Plex Mono',monospace; font-size:12px; color:#5A625E; animation:ci-rise 240ms cubic-bezier(.22,1,.36,1) both;">Entered — fade + 8px rise</div>
+              <div style="border:1px solid #DFDBD2; padding:16px 20px; background:#FFFFFF; display:flex; align-items:center; gap:9px; font-family:'IBM Plex Mono',monospace; font-size:12px; color:#5A625E;"><span style="width:7px; height:7px; border-radius:999px; background:#2E5A50; display:inline-block; animation:ci-live 2400ms ease-in-out infinite;"></span>Live state — opacity only</div>
+            </div>
+            <div style="font-size:14px; line-height:1.75; color:#5A625E;">One easing for everything: <span style="font-family:'IBM Plex Mono',monospace; font-size:12.5px;">cubic-bezier(.22, 1, .36, 1)</span>. Entrance 240ms, hover 200ms, state change 200ms — nothing longer, nothing bouncing, nothing driven by scroll.</div>
+            <div style="font-size:14px; line-height:1.75; color:#5A625E; margin-top:12px;"><strong style="color:#121917;">Why it costs nothing.</strong> Only <span style="font-family:'IBM Plex Mono',monospace; font-size:12.5px;">opacity</span> and <span style="font-family:'IBM Plex Mono',monospace; font-size:12.5px;">transform</span> animate, so the browser composites them on the GPU and never re-lays out the page — no width, height, top or shadow animation anywhere. It is pure CSS: no animation library, no scroll listeners, no JavaScript, so it cannot move the load time or the Core Web Vitals this system publishes. Entrances play once. <span style="font-family:'IBM Plex Mono',monospace; font-size:12.5px;">prefers-reduced-motion</span> turns all of it off.</div>
+          </div>
+          <div>
+            <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:21px; letter-spacing:-0.02em; color:#121917; margin-bottom:18px;">Typography</div>
+            <div style="border-bottom:1px solid #E7E3DA; padding-bottom:16px; margin-bottom:16px;">
+              <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:58px; line-height:1.0; letter-spacing:-0.045em; color:#121917;">Space Grotesk</div>
+              <div style="font-family:'Space Grotesk',monospace; font-size:10px; color:#61645C; margin-top:8px; letter-spacing:0.1em;">DISPLAY / 88 · 56 · 32PX · TRACKING -0.045EM</div>
+            </div>
+            <div style="border-bottom:1px solid #E7E3DA; padding-bottom:16px; margin-bottom:16px;">
+              <div style="font-size:18px; line-height:1.62; color:#3A4441; max-width:520px;">DM Sans handles all reading text. The pairing is deliberate: a distinctive, slightly technical display face over a completely neutral body face, so headlines carry the personality and paragraphs stay effortless.</div>
+              <div style="font-family:'Space Grotesk',monospace; font-size:10px; color:#61645C; margin-top:8px; letter-spacing:0.1em;">BODY / 18PX · 1.62 · MEASURE 640PX</div>
+            </div>
+            <div style="border-bottom:1px solid #E7E3DA; padding-bottom:16px; margin-bottom:16px;">
+              <div style="font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:500; letter-spacing:0.16em; text-transform:uppercase; color:#121917;">DISPLAY FACE ALSO SETS ALL LABELS AND CAPTIONS</div>
+              <div style="font-family:'Space Grotesk',monospace; font-size:10px; color:#61645C; margin-top:8px; letter-spacing:0.1em;">LABEL / 11–12PX · TRACKING 0.16EM</div>
+            </div>
+            <div style="display:flex; align-items:baseline; gap:18px;">
+              <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:60px; letter-spacing:-0.05em; color:#121917; line-height:1;">01</div>
+              <div style="font-size:14px; line-height:1.5; color:#5A625E; max-width:250px;">Oversized figure numbers organise the page like plates in a monograph.</div>
+            </div>
+            <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:21px; letter-spacing:-0.02em; color:#121917; margin:38px 0 16px;">Rules</div>
+            <div style="font-size:14px; line-height:1.75; color:#5A625E;">Radius 0 — square edges, because images are square. No shadows. Full-bleed image bands break the 1440 container deliberately; text never does. 160px section rhythm, 80px margin, 12 columns. Motion: 260ms opacity plus a 1.01 scale on image hover only.</div>
+            <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:21px; letter-spacing:-0.02em; color:#121917; margin:38px 0 16px;">Medical layer</div>
+            <div style="display:flex; align-items:flex-start; gap:14px; margin-bottom:14px;">
+              <div style="height:7px; width:88px; flex:0 0 auto; margin-top:7px; background:repeating-linear-gradient(to right,#D2D2CE 0 1px,transparent 1px 11px);"></div>
+              <div style="font-size:14px; line-height:1.6; color:#5A625E;">Chart ticks under every section label — a printed trace baseline, the single texture allowed on the paper.</div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:14px; margin-bottom:14px;">
+              <div style="font-family:'Space Grotesk',monospace; font-size:10.5px; color:#656963; flex:0 0 88px; margin-top:2px;">REF &lt;1.2S</div>
+              <div style="font-size:14px; line-height:1.6; color:#5A625E;">Measured values are quoted with their reference range, as a lab result is — the browser frame carries them in its own toolbar.</div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:14px;">
+              <div style="font-family:'Space Grotesk',monospace; font-size:10px; letter-spacing:0.1em; color:#2E5A50; flex:0 0 88px; margin-top:1px;">FIG / §</div>
+              <div style="font-size:14px; line-height:1.6; color:#5A625E;">Plates are numbered Fig 01…, annotations are case notes, and the close is a referral. The page reads as a clinical monograph.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <div style="background:#F1EFEA; border:1px solid #DFDBD2;">
+        <div style="padding:0 48px; height:76px; display:flex; align-items:center; justify-content:space-between; background:#F1EFEA; border-bottom:1px solid #DFDBD2;">
+          <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:19px; letter-spacing:0.02em; color:#121917;">CAREINFLOW</div>
+          <div style="display:flex; align-items:center; gap:34px; font-family:'Space Grotesk',sans-serif; font-size:12.5px; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; color:#5A625E;">
+            <span>Work</span><span>Capabilities</span><span>Method</span><span>Practice</span>
+            <span style="background:#121917; color:#FFFFFF; padding:12px 20px; letter-spacing:0.1em;">WhatsApp</span>
+          </div>
+        </div>
+
+        <div style="padding:110px 48px 72px;">
+          <div style="display:grid; grid-template-columns:1fr 320px; gap:64px; align-items:end;">
+            <h1 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:86px; line-height:0.98; letter-spacing:-0.05em; color:#121917; margin:0; max-width:1000px; text-wrap:pretty;">Digital work for clinics, made to the standard of the medicine practised inside them.</h1>
+            <div style="border-top:1px solid #121917; padding-top:18px;">
+              <div style="font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:500; letter-spacing:0.16em; text-transform:uppercase; color:#61645C; margin-bottom:12px;">Studio</div>
+              <div style="font-size:16px; line-height:1.6; color:#3A4441;">Websites, Google listings, local search and AI answers — for healthcare practices only. Mehsana, Gujarat.</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="border-top:1px solid #DFDBD2; border-bottom:1px solid #DFDBD2;">
+          <div style="height:520px; background:repeating-linear-gradient(135deg,#E4E1DA 0 12px,#EEEEEB 12px 24px); display:flex; align-items:flex-end; padding:32px 48px;">
+            <div style="font-family:'Space Grotesk',monospace; font-size:12px; color:#656963; line-height:1.65; max-width:560px;">IMAGE — FULL BLEED. The interior of the first practice you work with: waiting room, natural light, no people, no stock. Shot in one afternoon on a borrowed camera if necessary. This single photograph carries the whole direction.</div>
+          </div>
+          <div style="border-top:1px solid #DFDBD2; padding:16px 48px; display:flex; justify-content:space-between; background:#FFFFFF; font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; color:#61645C;">
+            <span>Fig 01 — Founding practice, Mehsana</span><span>Photography commissioned, not licensed</span>
+          </div>
+        </div>
+
+        <div style="padding:130px 48px; background:#FFFFFF;">
+          <div style="display:grid; grid-template-columns:1fr 620px; gap:80px; align-items:start;">
+            <div>
+              <div style="height:7px; background:repeating-linear-gradient(to right,#D2D2CE 0 1px,transparent 1px 11px); margin-bottom:14px; max-width:200px;"></div><div style="font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:500; letter-spacing:0.16em; text-transform:uppercase; color:#2E5A50; margin-bottom:26px;">01 — Presentation</div>
+              <h2 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:46px; line-height:1.05; letter-spacing:-0.04em; color:#121917; margin:0 0 24px; text-wrap:pretty;">A patient decides in four minutes, on a phone, before you ever meet.</h2>
+              <p style="font-size:18px; line-height:1.65; color:#3A4441; margin:0 0 18px; max-width:520px;">They search a symptom, glance at a map listing, read two reviews, open your site, and choose. Increasingly, they ask an assistant to choose for them.</p>
+              <p style="font-size:18px; line-height:1.65; color:#3A4441; margin:0; max-width:520px;">We design all four minutes as one piece of work. It is the only thing this studio does, and only for healthcare practices.</p>
+            </div>
+            <div>
+              <div style="border-top:1px solid #121917; padding:24px 0; display:grid; grid-template-columns:64px 1fr 150px; gap:24px; align-items:start;">
+                <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:26px; letter-spacing:-0.04em; color:#121917;">01</div>
+                <div><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:20px; letter-spacing:-0.02em; color:#121917; margin-bottom:6px;">The Google listing</div><div style="font-size:15.5px; line-height:1.6; color:#5A625E;">Rebuilt and then maintained — services, hours, photographs, questions, replies.</div></div>
+                <div style="font-family:'Space Grotesk',sans-serif; font-size:10.5px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; color:#61645C; line-height:1.7;">Where most first appointments are won</div>
+              </div>
+              <div style="border-top:1px solid #DFDBD2; padding:24px 0; display:grid; grid-template-columns:64px 1fr 150px; gap:24px; align-items:start;">
+                <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:26px; letter-spacing:-0.04em; color:#121917;">02</div>
+                <div><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:20px; letter-spacing:-0.02em; color:#121917; margin-bottom:6px;">The website</div><div style="font-size:15.5px; line-height:1.6; color:#5A625E;">Hand-built, under a second to open, a page for every treatment a patient searches.</div></div>
+                <div style="font-family:'Space Grotesk',sans-serif; font-size:10.5px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; color:#61645C; line-height:1.7;">Where hesitation is removed</div>
+              </div>
+              <div style="border-top:1px solid #DFDBD2; padding:24px 0; display:grid; grid-template-columns:64px 1fr 150px; gap:24px; align-items:start;">
+                <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:26px; letter-spacing:-0.04em; color:#121917;">03</div>
+                <div><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:20px; letter-spacing:-0.02em; color:#121917; margin-bottom:6px;">The AI answer</div><div style="font-size:15.5px; line-height:1.6; color:#5A625E;">Structured facts and schema so an assistant can quote your practice accurately.</div></div>
+                <div style="font-family:'Space Grotesk',sans-serif; font-size:10.5px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; color:#61645C; line-height:1.7;">Almost nobody here has prepared</div>
+              </div>
+              <div style="border-top:1px solid #DFDBD2; border-bottom:1px solid #121917; padding:24px 0; display:grid; grid-template-columns:64px 1fr 150px; gap:24px; align-items:start;">
+                <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:26px; letter-spacing:-0.04em; color:#121917;">04</div>
+                <div><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:20px; letter-spacing:-0.02em; color:#121917; margin-bottom:6px;">The first message</div><div style="font-size:15.5px; line-height:1.6; color:#5A625E;">One tap to WhatsApp, routed where your desk will actually answer it.</div></div>
+                <div style="font-family:'Space Grotesk',sans-serif; font-size:10.5px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; color:#61645C; line-height:1.7;">The only conversion that matters</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding:130px 48px; border-top:1px solid #DFDBD2;">
+          <div style="display:flex; justify-content:space-between; align-items:end; margin-bottom:48px;">
+            <div style="max-width:640px;">
+              <div style="height:7px; background:repeating-linear-gradient(to right,#D2D2CE 0 1px,transparent 1px 11px); margin-bottom:14px; max-width:200px;"></div><div style="font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:500; letter-spacing:0.16em; text-transform:uppercase; color:#2E5A50; margin-bottom:26px;">02 — Case notes: selected build</div>
+              <h2 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:46px; line-height:1.05; letter-spacing:-0.04em; color:#121917; margin:0;">Every decision on the page, annotated.</h2>
+            </div>
+            <div style="font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; color:#61645C; text-align:right; line-height:1.8;">Dental practice · Mehsana<br>Website · Listing · Local search</div>
+          </div>
+          <div style="border:1px solid #DFDBD2; background:#FFFFFF;">
+            <div style="border-bottom:1px solid #DFDBD2; padding:14px 20px; display:flex; align-items:center; gap:16px; background:#F4F2EC;">
+              <div style="display:flex; gap:6px;"><span style="width:10px; height:10px; border-radius:999px; background:#D9D5CC; display:inline-block;"></span><span style="width:10px; height:10px; border-radius:999px; background:#D9D5CC; display:inline-block;"></span><span style="width:10px; height:10px; border-radius:999px; background:#D9D5CC; display:inline-block;"></span></div>
+              <div style="flex:1; background:#FFFFFF; border:1px solid #DFDBD2; padding:7px 14px; font-family:'Space Grotesk',monospace; font-size:11.5px; color:#5A625E;">shreejidental.in/implants</div>
+              <div style="font-family:'Space Grotesk',monospace; font-size:10.5px; letter-spacing:0.08em; color:#2E5A50;">LCP 0.9S <span style="color:#656963;">REF &lt;1.2S</span> · CLS 0.00 <span style="color:#656963;">REF &lt;0.10</span> · AA</div>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 340px;">
+              <div style="border-right:1px solid #DFDBD2;">
+                <div style="height:460px; background:repeating-linear-gradient(135deg,#E6E6E3 0 11px,#F2F2F0 11px 22px); display:flex; align-items:flex-end; padding:24px;">
+                  <div style="font-family:'Space Grotesk',monospace; font-size:11.5px; color:#656963; line-height:1.6; max-width:420px;">IMAGE — a real treatment page you built, shown at full width. Screenshot, not a mockup.</div>
+                </div>
+              </div>
+              <div style="padding:28px 24px;">
+                <div style="font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:500; letter-spacing:0.16em; text-transform:uppercase; color:#61645C; margin-bottom:20px;">Case notes</div>
+                <div style="display:grid; grid-template-columns:26px 1fr; gap:14px; padding-bottom:18px; border-bottom:1px solid #E7E3DA;"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:13px; color:#2E5A50;">01</div><div style="font-size:14.5px; line-height:1.55; color:#3A4441;">Price stated in the first screen. Nine of ten patients search cost first; hiding it sends them back to results.</div></div>
+                <div style="display:grid; grid-template-columns:26px 1fr; gap:14px; padding:18px 0; border-bottom:1px solid #E7E3DA;"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:13px; color:#2E5A50;">02</div><div style="font-size:14.5px; line-height:1.55; color:#3A4441;">The doctor's own photograph and registration, not a stock clinician. Recognition is what makes the clinic feel real.</div></div>
+                <div style="display:grid; grid-template-columns:26px 1fr; gap:14px; padding:18px 0; border-bottom:1px solid #E7E3DA;"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:13px; color:#2E5A50;">03</div><div style="font-size:14.5px; line-height:1.55; color:#3A4441;">"What it feels like" written before "our technology". Patients fear the chair, not the equipment brand.</div></div>
+                <div style="display:grid; grid-template-columns:26px 1fr; gap:14px; padding:18px 0; border-bottom:1px solid #E7E3DA;"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:13px; color:#2E5A50;">04</div><div style="font-size:14.5px; line-height:1.55; color:#3A4441;">WhatsApp fixed to the bottom of the screen on mobile — one tap from anywhere on the page.</div></div>
+                <div style="display:grid; grid-template-columns:26px 1fr; gap:14px; padding-top:18px;"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:13px; color:#2E5A50;">05</div><div style="font-size:14.5px; line-height:1.55; color:#3A4441;">Treatment facts published as structured data, so the same answers reach search results and AI assistants.</div></div>
+              </div>
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1px; margin-top:1px; background:#DFDBD2;">
+            <div style="background:#FFFFFF; padding:26px;"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:34px; letter-spacing:-0.04em; color:#121917;">9</div><div style="font-size:14.5px; color:#5A625E; margin-top:6px; line-height:1.5;">treatment pages, each written for one real search</div></div>
+            <div style="background:#FFFFFF; padding:26px;"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:34px; letter-spacing:-0.04em; color:#121917;">0.9s</div><div style="font-size:14.5px; color:#5A625E; margin-top:6px; line-height:1.5;">to first content on 4G, mid-range Android</div></div>
+            <div style="background:#FFFFFF; padding:26px;"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:34px; letter-spacing:-0.04em; color:#121917;">1 tap</div><div style="font-size:14.5px; color:#5A625E; margin-top:6px; line-height:1.5;">from any page to a human on WhatsApp</div></div>
+          </div>
+          <div style="font-family:'Space Grotesk',monospace; font-size:10.5px; letter-spacing:0.08em; color:#61645C; margin-top:14px;">FIG 02 — ILLUSTRATIVE UNTIL THE FIRST FOUNDING PRACTICE LAUNCHES. NO INVENTED RESULTS ARE SHOWN ANYWHERE ON THIS SITE.</div>
+        </div>
+
+        <div style="padding:130px 48px; background:#FFFFFF; border-top:1px solid #DFDBD2;">
+          <div style="max-width:680px; margin-bottom:52px;">
+            <div style="height:7px; background:repeating-linear-gradient(to right,#D2D2CE 0 1px,transparent 1px 11px); margin-bottom:14px; max-width:200px;"></div><div style="font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:500; letter-spacing:0.16em; text-transform:uppercase; color:#2E5A50; margin-bottom:26px;">03 — Capabilities &amp; protocols</div>
+            <h2 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:46px; line-height:1.05; letter-spacing:-0.04em; color:#121917; margin:0 0 18px;">Eight services. Three usually matter first.</h2>
+            <p style="font-size:18px; line-height:1.62; color:#5A625E; margin:0;">We tell you which three in writing, before you pay anything.</p>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0 64px;">
+            <div style="border-top:1px solid #121917; padding:22px 0 24px;"><div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px;"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:21px; letter-spacing:-0.02em; color:#121917;">Practice website</div><div style="font-family:'Space Grotesk',monospace; font-size:10.5px; color:#61645C;">3–4 WEEKS</div></div><div style="font-size:16px; line-height:1.6; color:#5A625E;">Hand-built, fast on the cheapest phone, written for a patient who is slightly worried.</div></div>
+            <div style="border-top:1px solid #121917; padding:22px 0 24px;"><div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px;"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:21px; letter-spacing:-0.02em; color:#121917;">Google Business Profile</div><div style="font-family:'Space Grotesk',monospace; font-size:10.5px; color:#61645C;">1 WEEK</div></div><div style="font-size:16px; line-height:1.6; color:#5A625E;">Rebuilt and maintained: categories, services, hours, photographs, questions, replies.</div></div>
+            <div style="border-top:1px solid #DFDBD2; padding:22px 0 24px;"><div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px;"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:21px; letter-spacing:-0.02em; color:#121917;">Local search groundwork</div><div style="font-family:'Space Grotesk',monospace; font-size:10.5px; color:#61645C;">2 WEEKS</div></div><div style="font-size:16px; line-height:1.6; color:#5A625E;">A page per treatment and per area you serve, with consistent details everywhere.</div></div>
+            <div style="border-top:1px solid #DFDBD2; padding:22px 0 24px;"><div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px;"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:21px; letter-spacing:-0.02em; color:#121917;">AI answer readiness</div><div style="font-family:'Space Grotesk',monospace; font-size:10.5px; color:#61645C;">1 WEEK</div></div><div style="font-size:16px; line-height:1.6; color:#5A625E;">Schema, entities and plain facts so assistants quote your practice, not a competitor.</div></div>
+            <div style="border-top:1px solid #DFDBD2; padding:22px 0 24px;"><div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px;"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:21px; letter-spacing:-0.02em; color:#121917;">Speed &amp; accessibility</div><div style="font-family:'Space Grotesk',monospace; font-size:10.5px; color:#61645C;">3–7 DAYS</div></div><div style="font-size:16px; line-height:1.6; color:#5A625E;">Measured on real devices on mobile data, and readable for older eyes.</div></div>
+            <div style="border-top:1px solid #DFDBD2; padding:22px 0 24px;"><div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px;"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:21px; letter-spacing:-0.02em; color:#121917;">Enquiry flow</div><div style="font-family:'Space Grotesk',monospace; font-size:10.5px; color:#61645C;">2–4 DAYS</div></div><div style="font-size:16px; line-height:1.6; color:#5A625E;">WhatsApp done properly, routed where your front desk will actually see it.</div></div>
+            <div style="border-top:1px solid #DFDBD2; padding:22px 0 24px;"><div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px;"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:21px; letter-spacing:-0.02em; color:#121917;">Maintenance</div><div style="font-family:'Space Grotesk',monospace; font-size:10.5px; color:#61645C;">MONTHLY</div></div><div style="font-size:16px; line-height:1.6; color:#5A625E;">Hosting, security, edits, new treatment pages. The site does not quietly decay.</div></div>
+            <div style="border-top:1px solid #DFDBD2; padding:22px 0 24px;"><div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px;"><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:21px; letter-spacing:-0.02em; color:#121917;">Quarterly review</div><div style="font-family:'Space Grotesk',monospace; font-size:10.5px; color:#61645C;">QUARTERLY</div></div><div style="font-size:16px; line-height:1.6; color:#5A625E;">Written: what patients did, what changed nearby, what we do next.</div></div>
+          </div>
+        </div>
+
+        <div style="background:#121917; padding:130px 48px;">
+          <div style="display:grid; grid-template-columns:1fr 480px; gap:80px; align-items:start;">
+            <div>
+              <div style="font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:500; letter-spacing:0.16em; text-transform:uppercase; color:#86BFAF; margin-bottom:26px;">04 — Practice</div>
+              <h2 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:52px; line-height:1.04; letter-spacing:-0.045em; color:#FFFFFF; margin:0 0 24px; text-wrap:pretty;">We only work with clinics. That is a constraint, and it is the entire product.</h2>
+              <p style="font-size:18px; line-height:1.65; color:#A8B4AF; margin:0 0 20px; max-width:560px;">A café wants you hungry; a clinic needs you calm. An agency doing both will always solve yours second. Dental, dermatology, physiotherapy, ophthalmology, orthopaedics, paediatrics, cosmetic and mental health — nothing else.</p>
+              <p style="font-size:18px; line-height:1.65; color:#A8B4AF; margin:0; max-width:560px;">We are a new studio and say so plainly: five founding practices, fixed prices in writing, direct access to the people doing the work, and permission asked to publish the results honestly — including what does not work.</p>
+            </div>
+            <div style="border:1px solid #232F2B; padding:32px;">
+              <div style="font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:500; letter-spacing:0.16em; text-transform:uppercase; color:#A8B4AF; margin-bottom:22px;">How the work runs</div>
+              <div style="display:grid; grid-template-columns:70px 1fr; gap:20px; padding-bottom:18px; border-bottom:1px solid #232F2B;"><div style="font-family:'Space Grotesk',monospace; font-size:10.5px; letter-spacing:0.1em; color:#86BFAF;">WEEK 1</div><div><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:17px; color:#FFFFFF; margin-bottom:5px;">Study</div><div style="font-size:14.5px; line-height:1.55; color:#9EAAA5;">Your searches, listing, reviews and the three clinics above you — written up, free, yours to keep.</div></div></div>
+              <div style="display:grid; grid-template-columns:70px 1fr; gap:20px; padding:18px 0; border-bottom:1px solid #232F2B;"><div style="font-family:'Space Grotesk',monospace; font-size:10.5px; letter-spacing:0.1em; color:#86BFAF;">WEEK 2</div><div><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:17px; color:#FFFFFF; margin-bottom:5px;">Structure &amp; words</div><div style="font-size:14.5px; line-height:1.55; color:#9EAAA5;">Page order and final copy agreed before any visual decision is made.</div></div></div>
+              <div style="display:grid; grid-template-columns:70px 1fr; gap:20px; padding:18px 0; border-bottom:1px solid #232F2B;"><div style="font-family:'Space Grotesk',monospace; font-size:10.5px; letter-spacing:0.1em; color:#86BFAF;">WEEK 3</div><div><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:17px; color:#FFFFFF; margin-bottom:5px;">Design &amp; build</div><div style="font-size:14.5px; line-height:1.55; color:#9EAAA5;">One pass on real content, photographed properly, tested on mobile data first.</div></div></div>
+              <div style="display:grid; grid-template-columns:70px 1fr; gap:20px; padding-top:18px;"><div style="font-family:'Space Grotesk',monospace; font-size:10.5px; letter-spacing:0.1em; color:#86BFAF;">ONGOING</div><div><div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:17px; color:#FFFFFF; margin-bottom:5px;">Launch, then stay</div><div style="font-size:14.5px; line-height:1.55; color:#9EAAA5;">Monthly upkeep, quarterly written review. The presence grows with the practice.</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding:140px 48px; background:#F1EFEA;">
+          <div style="display:grid; grid-template-columns:1fr 340px; gap:72px; align-items:end;">
+            <div>
+              <div style="height:7px; background:repeating-linear-gradient(to right,#D2D2CE 0 1px,transparent 1px 11px); margin-bottom:14px; max-width:200px;"></div><div style="font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:500; letter-spacing:0.16em; text-transform:uppercase; color:#2E5A50; margin-bottom:26px;">05 — Referral</div>
+              <h2 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:64px; line-height:1.0; letter-spacing:-0.05em; color:#121917; margin:0 0 26px; text-wrap:pretty;">Send your clinic's name. We reply with what a patient sees.</h2>
+              <p style="font-size:19px; line-height:1.62; color:#3A4441; margin:0 0 36px; max-width:600px;">One WhatsApp message. No form, no call, no deck — and if the honest answer is "change nothing", we will say that instead of selling you a website.</p>
+              <span style="background:#121917; color:#FFFFFF; font-size:17px; font-weight:500; padding:19px 34px; display:inline-block;">WhatsApp +91 97734 56668</span>
+            </div>
+            <div style="border-top:1px solid #121917; padding-top:18px;">
+              <div style="font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:500; letter-spacing:0.16em; text-transform:uppercase; color:#61645C; margin-bottom:14px;">The review covers</div>
+              <div style="font-size:15.5px; color:#3A4441; line-height:2;">Listing accuracy<br>Mobile load time<br>Treatment page coverage<br>Review handling<br>AI answer readiness<br>The three clinics above you</div>
+              <div style="font-family:'Space Grotesk',monospace; font-size:10.5px; letter-spacing:0.08em; color:#2E5A50; margin-top:16px;">FREE · TWO WORKING DAYS</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="border-top:1px solid #DFDBD2; padding:52px 48px; display:flex; justify-content:space-between; align-items:flex-end; background:#FFFFFF;">
+          <div>
+            <div style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:17px; letter-spacing:0.02em; color:#121917; margin-bottom:12px;">CAREINFLOW</div>
+            <div style="font-size:14px; line-height:1.7; color:#61645C;">Shop F-27, Platinum Plaza Complex, Radhanpur Road,<br>Mehsana, Gujarat, India · +91 97734 56668</div>
+          </div>
+          <div style="display:flex; gap:32px; font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; color:#61645C;"><span>Work</span><span>Capabilities</span><span>Method</span><span>Privacy</span></div>
+        </div>
+      </div>
+
+      <sc-if value="{{ showPlans }}" hint-placeholder-val="{{ true }}">
+      <div style="margin-top:40px; background:#FFFFFF; border:1px solid #DFDBD2; padding:44px 52px;">
+        <div style="font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:500; letter-spacing:0.16em; text-transform:uppercase; color:#61645C; padding-bottom:14px; border-bottom:1px solid #E7E3DA; margin-bottom:30px;">Layout plan 2c — Capabilities page</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:32px;">
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <div style="border:1px dashed #C9C5BB; padding:16px 20px;"><div style="font-family:'Space Grotesk',monospace; font-size:10px; letter-spacing:0.1em; color:#2E5A50; margin-bottom:6px;">01 — OPENING PLATE</div><div style="font-size:15px; color:#3A4441;">Oversized headline, small meta column, then a full-bleed image band with caption strip. No cards above the fold.</div></div>
+            <div style="border:1px dashed #C9C5BB; padding:16px 20px;"><div style="font-family:'Space Grotesk',monospace; font-size:10px; letter-spacing:0.1em; color:#2E5A50; margin-bottom:6px;">02 — INDEX</div><div style="font-size:15px; color:#3A4441;">Eight services as numbered rows with duration on the right; each row links to its plate below.</div></div>
+            <div style="border:1px dashed #C9C5BB; padding:16px 20px; min-height:96px;"><div style="font-family:'Space Grotesk',monospace; font-size:10px; letter-spacing:0.1em; color:#2E5A50; margin-bottom:6px;">03 — PLATE PER SERVICE ×8</div><div style="font-size:15px; color:#3A4441;">Each plate: browser-frame or listing artifact at full width, annotation column beside it, prose beneath. Alternate which side the annotations sit on.</div></div>
+            <div style="border:1px dashed #C9C5BB; padding:16px 20px;"><div style="font-family:'Space Grotesk',monospace; font-size:10px; letter-spacing:0.1em; color:#2E5A50; margin-bottom:6px;">04 — FULL-BLEED BREATHER</div><div style="font-size:15px; color:#3A4441;">One photograph, one caption. Resets the eye between the build plates and the commercial section.</div></div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <div style="border:1px dashed #C9C5BB; padding:16px 20px;"><div style="font-family:'Space Grotesk',monospace; font-size:10px; letter-spacing:0.1em; color:#2E5A50; margin-bottom:6px;">05 — INK BAND: ENGAGEMENTS</div><div style="font-size:15px; color:#3A4441;">Three starting points in three columns on ink: fixed ₹ price, scope, exclusions, who it suits.</div></div>
+            <div style="border:1px dashed #C9C5BB; padding:16px 20px;"><div style="font-family:'Space Grotesk',monospace; font-size:10px; letter-spacing:0.1em; color:#2E5A50; margin-bottom:6px;">06 — AFTER LAUNCH</div><div style="font-size:15px; color:#3A4441;">The maintenance schedule as a plain table. Answers the objection nobody else answers.</div></div>
+            <div style="border:1px dashed #C9C5BB; padding:16px 20px;"><div style="font-family:'Space Grotesk',monospace; font-size:10px; letter-spacing:0.1em; color:#2E5A50; margin-bottom:6px;">07 — DEFINITIONS &amp; QUESTIONS</div><div style="font-size:15px; color:#3A4441;">Glossary in one line each, ten objections answered. Structured as FAQ data — the page assistants quote.</div></div>
+            <div style="border:1px dashed #C9C5BB; padding:16px 20px; min-height:96px;"><div style="font-family:'Space Grotesk',monospace; font-size:10px; letter-spacing:0.1em; color:#2E5A50; margin-bottom:6px;">08 — CLOSING PLATE</div><div style="font-size:15px; color:#3A4441;">Same oversized WhatsApp close as the homepage, with the free-review checklist repeated verbatim.</div></div>
+            <div style="padding:6px 20px; font-family:'Space Grotesk',monospace; font-size:11px; line-height:1.7; color:#61645C;">RHYTHM — PLATE / INDEX / ANNOTATED PLATES / IMAGE / INK / TABLE / LIST / PLATE</div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+    </div>
+
+  </div>
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showSystem&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Document&quot;},&quot;showPlans&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Document&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      showSystem: this.props.showSystem ?? true,
+      showPlans: this.props.showPlans ?? true,
+    };
+  }
+}
+</script>
+</body>
+</html>

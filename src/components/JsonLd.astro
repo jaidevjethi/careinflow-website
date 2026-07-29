@@ -1,0 +1,9 @@
+---
+interface Props {
+  /** A complete JSON-LD document, usually built with graph(...) from lib/schema. */
+  data: object;
+}
+const { data } = Astro.props;
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(data)} is:inline />

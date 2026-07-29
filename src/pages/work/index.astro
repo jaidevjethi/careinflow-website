@@ -1,0 +1,92 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import CtaPanel from '@/components/CtaPanel.astro';
+import { href } from '@/lib/url';
+import {
+  graph,
+  organizationSchema,
+  webSiteSchema,
+  webPageSchema,
+  breadcrumbSchema,
+} from '@/lib/schema';
+
+const title = 'Work — real projects, shown honestly | CareInflow';
+const description =
+  'Selected work by CareInflow: a bilingual dental clinic website in Mehsana and a search-focused services site. Real projects only — no padded portfolio.';
+
+const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.order - b.data.order);
+
+const schema = graph(
+  organizationSchema(),
+  webSiteSchema(),
+  webPageSchema({ path: '/work', title, description, type: 'CollectionPage' }),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Work', path: '/work' },
+  ]),
+);
+---
+
+<BaseLayout {title} {description} path="/work" {schema}>
+  <section class="mx-auto max-w-[1440px] px-5 pb-14 pt-14 sm:px-10 sm:pt-20 xl:px-20">
+    <div class="tick-rule mb-3.5" aria-hidden="true"></div>
+    <p class="label-mono mb-5 text-surgical">Findings — the record so far</p>
+    <h1 class="max-w-[820px] text-[clamp(34px,5vw,62px)] font-extrabold leading-[1.04] tracking-[-0.045em] text-ink">
+      A short portfolio, shown honestly.
+    </h1>
+    <p class="mt-6 max-w-[680px] text-lg leading-[1.62] text-body">
+      We are a new studio, so this page is short — and everything on it is
+      real. As the five founding practices launch, we will publish what
+      happened for each one, including what did not work.
+    </p>
+  </section>
+
+  <section class="border-t border-hairline bg-surface" aria-label="Case studies">
+    <div class="mx-auto grid max-w-[1440px] gap-8 px-5 py-16 sm:px-10 sm:py-20 lg:grid-cols-2 xl:px-20">
+      {caseStudies.map((cs) => (
+        <a
+          href={href(`/work/${cs.id}`)}
+          class="card-hover flex flex-col rounded-3xl border border-line bg-canvas p-8 hover:no-underline"
+        >
+          <p class="mb-5 flex flex-wrap items-center gap-2">
+            <span class="chip border border-line bg-surface text-body-deep">{cs.data.sector}</span>
+            {!cs.data.healthcare && <span class="chip bg-hairline-soft text-muted">Non-healthcare</span>}
+            <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{cs.data.year}</span>
+          </p>
+          <h2 class="text-[clamp(22px,2.4vw,28px)] font-extrabold leading-[1.15] tracking-[-0.03em] text-ink">
+            {cs.data.title}
+          </h2>
+          <p class="mt-2 text-[14.5px] font-semibold text-muted">{cs.data.client} · {cs.data.location}</p>
+          <p class="mt-4 text-[15.5px] leading-[1.65] text-body">{cs.data.summary}</p>
+          <dl class="mt-auto grid grid-cols-2 gap-x-6 gap-y-4 border-t border-line pt-6 sm:grid-cols-4">
+            {cs.data.highlights.map((h) => (
+              <div>
+                <dt class="font-mono text-[9.5px] uppercase tracking-[0.08em] text-faint">{h.label}</dt>
+                <dd class="mt-1 text-lg font-extrabold tracking-[-0.03em] text-ink">{h.value}</dd>
+                {h.ref && <dd class="mt-0.5 font-mono text-[9.5px] uppercase tracking-[0.06em] text-muted">{h.ref}</dd>}
+              </div>
+            ))}
+          </dl>
+          <p class="prose-link mt-6 text-[15px]">Read the case study →</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 xl:px-20">
+    <div class="max-w-[680px] rounded-3xl border border-line bg-surface p-8">
+      <h2 class="label-mono mb-4 text-faint">Status</h2>
+      <p class="text-[15.5px] leading-[1.65] text-body">
+        Five founding places are open for healthcare practices — fixed price in
+        writing, direct access to the people doing the work, and a published
+        record afterwards. The <a href={href('/about')} class="prose-link">about page</a>
+        explains who is behind the work, and the
+        <a href={href('/process')} class="prose-link">method page</a> shows how a
+        four-week build runs.
+      </p>
+    </div>
+  </section>
+
+  <CtaPanel />
+</BaseLayout>

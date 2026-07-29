@@ -1,0 +1,52 @@
+---
+import '@/styles/global.css';
+import SEO from '@/components/SEO.astro';
+import JsonLd from '@/components/JsonLd.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import { href } from '@/lib/url';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Site-relative path without base, e.g. "/services/local-seo". */
+  path: string;
+  /** Composed JSON-LD document (graph(...)); rendered once per page. */
+  schema?: object;
+  ogType?: 'website' | 'article';
+  publishDate?: Date;
+  updatedDate?: Date;
+}
+
+const { title, description, path, schema, ogType, publishDate, updatedDate } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#F7F6F3" />
+    <link rel="icon" href={href('/favicon.svg')} type="image/svg+xml" />
+    <link rel="icon" href={href('/favicon.ico')} sizes="32x32" />
+    <link rel="apple-touch-icon" href={href('/apple-touch-icon.png')} />
+    <link rel="manifest" href={href('/site.webmanifest')} />
+    <link rel="sitemap" href={href('/sitemap-index.xml')} />
+    <SEO {title} {description} {path} {ogType} {publishDate} {updatedDate} />
+    {schema && <JsonLd data={schema} />}
+  </head>
+  <body>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-100 focus:rounded-[10px] focus:bg-ink focus:px-4 focus:py-3 focus:text-sm focus:font-semibold focus:text-surface"
+    >
+      Skip to content
+    </a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

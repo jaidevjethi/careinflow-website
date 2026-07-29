@@ -1,0 +1,44 @@
+---
+import { CANONICAL_HOST, BUSINESS } from '@/config/site';
+import { canonicalUrl } from '@/lib/url';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Site-relative path without base, e.g. "/services/local-seo". */
+  path: string;
+  ogType?: 'website' | 'article';
+  publishDate?: Date;
+  updatedDate?: Date;
+}
+
+const { title, description, path, ogType = 'website', publishDate, updatedDate } = Astro.props;
+const canonical = canonicalUrl(path);
+const ogImage = `${CANONICAL_HOST}/og-default.png`;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+
+<meta property="og:type" content={ogType} />
+<meta property="og:site_name" content={BUSINESS.name} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="CareInflow — healthcare-focused web design and digital growth studio" />
+<meta property="og:locale" content="en_IN" />
+{ogType === 'article' && publishDate && (
+  <meta property="article:published_time" content={publishDate.toISOString()} />
+)}
+{ogType === 'article' && updatedDate && (
+  <meta property="article:modified_time" content={updatedDate.toISOString()} />
+)}
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />

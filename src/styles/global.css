@@ -1,0 +1,296 @@
+@import '@fontsource-variable/manrope';
+@import '@fontsource-variable/jetbrains-mono';
+@import 'tailwindcss';
+
+/*
+ * CareInflow design system — direction 2a "Instrument".
+ * Source: docs/design/careinflow-design-system.dc.html
+ * Rules: warm neutrals (never pure-white pages), surgical green accents,
+ * pass green only on verified measurements, max one dark ink panel per page,
+ * one shadow recipe, one easing, opacity/transform-only motion.
+ */
+@theme {
+  --font-sans: 'Manrope Variable', system-ui, ui-sans-serif, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, 'Cascadia Mono', monospace;
+
+  /* Light surfaces */
+  --color-canvas: #f7f6f3;
+  --color-surface: #ffffff;
+  --color-line: #e4e1da;
+  --color-line-strong: #d8d4cb;
+  --color-hairline: #ece9e2;
+  --color-hairline-soft: #f1efe9;
+  --color-line-hover: #c7d9d3;
+
+  /* Brand */
+  --color-surgical: #0b5d4e;
+  --color-pass: #0b7d57;
+  --color-ink: #101613;
+
+  /* Text */
+  --color-body: #4c5551;
+  --color-body-deep: #3a4441;
+  --color-muted: #5a625e;
+  --color-faint: #61645c;
+
+  /* Tints */
+  --color-surgical-tint: #e8f0ed;
+  --color-pass-tint: #eaf7f1;
+  --color-star: #b8862f;
+
+  /* Dark ink panel family (one panel per page, never a theme) */
+  --color-panel: #0e1714;
+  --color-panel-card: #142020;
+  --color-panel-line: #24322e;
+  --color-panel-line-alt: #26332f;
+  --color-panel-divider: #1d2926;
+  --color-panel-chip: #12352e;
+  --color-panel-text: #a8b4af;
+  --color-panel-text-dim: #93a09b;
+  --color-panel-text-faint: #7f8c87;
+  --color-panel-accent: #7fc9b4;
+
+  /* One easing for everything */
+  --ease-instrument: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* One shadow recipe */
+  --shadow-card: 0 1px 2px rgba(10, 12, 15, 0.04), 0 16px 36px rgba(10, 12, 15, 0.05);
+  --shadow-card-lg: 0 1px 2px rgba(10, 12, 15, 0.04), 0 24px 56px rgba(10, 12, 15, 0.06);
+
+  --animate-rise: ci-rise 240ms var(--ease-instrument) both;
+  --animate-fade: ci-fade 240ms var(--ease-instrument) both;
+  --animate-live: ci-live 2400ms ease-in-out infinite;
+
+  @keyframes ci-rise {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes ci-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes ci-live {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.35;
+    }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-surgical);
+    color: #ffffff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-surgical);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: pretty;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+@layer components {
+  /* Dashed chart-tick rule — the system's only texture. */
+  .tick-rule {
+    height: 7px;
+    max-width: 200px;
+    background: repeating-linear-gradient(
+      to right,
+      #d5d9de 0 1px,
+      transparent 1px 11px
+    );
+  }
+  .tick-rule-dark {
+    background: repeating-linear-gradient(
+      to right,
+      #2c3540 0 1px,
+      transparent 1px 11px
+    );
+  }
+
+  /* Uppercase mono section label (record vocabulary). */
+  .label-mono {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  /* Mono chip / measurement pill. */
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 11px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  /* Buttons — black primary, outlined secondary, green text link. */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: var(--color-ink);
+    color: #ffffff;
+    font-weight: 600;
+    border-radius: 12px;
+    transition:
+      transform 200ms var(--ease-instrument),
+      opacity 200ms linear;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    text-decoration: none;
+  }
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 1px solid var(--color-line-strong);
+    background: var(--color-surface);
+    color: var(--color-ink);
+    font-weight: 600;
+    border-radius: 12px;
+    transition:
+      transform 200ms var(--ease-instrument),
+      border-color 200ms linear;
+  }
+  .btn-secondary:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-surgical);
+    text-decoration: none;
+  }
+
+  /* Card that lifts 2px and darkens its border on hover. */
+  .card-hover {
+    transition:
+      transform 200ms var(--ease-instrument),
+      border-color 200ms linear;
+  }
+  .card-hover:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-line-hover);
+  }
+
+  .prose-link {
+    color: var(--color-surgical);
+    font-weight: 600;
+  }
+  .prose-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* Long-form content rendered from MDX (services, resources, case studies). */
+  .prose-ci {
+    max-width: 680px;
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--color-body);
+  }
+  .prose-ci h2 {
+    margin: 52px 0 16px;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    color: var(--color-ink);
+  }
+  .prose-ci h2:first-child {
+    margin-top: 0;
+  }
+  .prose-ci h3 {
+    margin: 36px 0 12px;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+  }
+  .prose-ci p {
+    margin: 0 0 18px;
+  }
+  .prose-ci ul,
+  .prose-ci ol {
+    margin: 0 0 18px;
+    padding-left: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .prose-ci ul {
+    list-style: disc;
+  }
+  .prose-ci ol {
+    list-style: decimal;
+  }
+  .prose-ci a {
+    color: var(--color-surgical);
+    font-weight: 600;
+  }
+  .prose-ci a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .prose-ci strong {
+    color: var(--color-ink);
+    font-weight: 700;
+  }
+  .prose-ci em {
+    color: var(--color-body-deep);
+  }
+  .prose-ci blockquote {
+    margin: 0 0 18px;
+    border-left: 3px solid var(--color-surgical);
+    padding: 4px 0 4px 20px;
+    color: var(--color-body-deep);
+  }
+}

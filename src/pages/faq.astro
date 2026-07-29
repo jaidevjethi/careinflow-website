@@ -1,0 +1,74 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import CtaPanel from '@/components/CtaPanel.astro';
+import {
+  graph,
+  organizationSchema,
+  webSiteSchema,
+  webPageSchema,
+  breadcrumbSchema,
+  faqSchema,
+} from '@/lib/schema';
+
+const title = 'Questions, answered plainly — FAQ | CareInflow';
+const description =
+  'Straight answers about working with CareInflow: cost, timelines, ranking promises we will not make, what happens after launch, and who owns your website (you do).';
+
+const faqEntries = (await getCollection('faqs', ({ data }) => data.pages.includes('faq')))
+  .map(({ data }) => data)
+  .sort((a, b) => a.order - b.order);
+
+const schema = graph(
+  organizationSchema(),
+  webSiteSchema(),
+  webPageSchema({ path: '/faq', title, description, type: 'FAQPage' }),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Questions', path: '/faq' },
+  ]),
+  faqSchema(faqEntries.map((f) => ({ question: f.question, answer: f.answer }))),
+);
+---
+
+<BaseLayout {title} {description} path="/faq" {schema}>
+  <section class="mx-auto max-w-[1440px] px-5 pb-4 pt-14 sm:px-10 sm:pt-20 xl:px-20">
+    <div class="tick-rule mb-3.5" aria-hidden="true"></div>
+    <p class="label-mono mb-5 text-surgical">Triage — your concerns first</p>
+    <h1 class="max-w-[820px] text-[clamp(34px,5vw,62px)] font-extrabold leading-[1.04] tracking-[-0.045em] text-ink">
+      Every doubt we hear, answered before you have to ask it.
+    </h1>
+    <p class="mt-6 max-w-[680px] text-lg leading-[1.62] text-body">
+      These are real questions from real conversations with clinic owners.
+      If yours is missing, one WhatsApp message gets it answered — and
+      probably added here.
+    </p>
+  </section>
+
+  <div class="mt-6 border-t border-hairline bg-surface">
+    <div class="mx-auto max-w-[1440px] px-5 py-14 sm:px-10 sm:py-16 xl:px-20">
+      <div class="grid gap-3.5 lg:max-w-[880px]">
+        {faqEntries.map((faq) => (
+          <details class="group rounded-2xl border border-line bg-canvas open:shadow-card">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-6 px-6 py-5 text-[17px] font-bold tracking-[-0.01em] text-ink [&::-webkit-details-marker]:hidden">
+              {faq.question}
+              <svg
+                class="shrink-0 text-faint transition-transform duration-200 ease-instrument group-open:rotate-45"
+                width="14"
+                height="14"
+                viewBox="0 0 14 14"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </summary>
+            <p class="px-6 pb-6 text-[15.5px] leading-[1.65] text-body">{faq.answer}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <CtaPanel />
+</BaseLayout>

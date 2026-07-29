@@ -1,0 +1,155 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SectionHead from '@/components/SectionHead.astro';
+import FaqSection from '@/components/FaqSection.astro';
+import CtaPanel from '@/components/CtaPanel.astro';
+import { BUSINESS } from '@/config/site';
+import { href } from '@/lib/url';
+import {
+  graph,
+  organizationSchema,
+  founderSchema,
+  webSiteSchema,
+  webPageSchema,
+  breadcrumbSchema,
+  faqSchema,
+} from '@/lib/schema';
+
+const title = 'About CareInflow — a healthcare-only web studio in Mehsana | CareInflow';
+const description =
+  'Who is behind CareInflow: founder Jaidev Jethi — IT and web development in Gujarat, cybersecurity in Canada, a year-plus at Microsoft — and why the studio works with healthcare practices only.';
+
+const faqEntries = (await getCollection('faqs', ({ data }) => data.pages.includes('about')))
+  .map(({ data }) => data)
+  .sort((a, b) => a.order - b.order);
+
+const schema = graph(
+  organizationSchema(),
+  founderSchema(),
+  webSiteSchema(),
+  webPageSchema({ path: '/about', title, description, type: 'AboutPage' }),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'About', path: '/about' },
+  ]),
+  faqSchema(faqEntries.map((f) => ({ question: f.question, answer: f.answer }))),
+);
+
+const standards = [
+  { value: '<1.2s', caption: 'load reference, 4G — this site included' },
+  { value: 'AA', caption: 'accessibility on every build' },
+  { value: '100%', caption: 'client-owned accounts from day one' },
+  { value: '0', caption: 'templates resold as bespoke' },
+];
+
+const notList = [
+  'an advertising agency',
+  'a branding or creative agency',
+  'an app development company',
+  'an IT consultancy',
+];
+---
+
+<BaseLayout {title} {description} path="/about" {schema}>
+  <section class="mx-auto max-w-[1440px] px-5 pb-14 pt-14 sm:px-10 sm:pt-20 xl:px-20">
+    <div class="tick-rule mb-3.5" aria-hidden="true"></div>
+    <p class="label-mono mb-5 text-surgical">About — the studio</p>
+    <h1 class="max-w-[860px] text-[clamp(34px,5vw,62px)] font-extrabold leading-[1.04] tracking-[-0.045em] text-ink">
+      A small studio in Mehsana that does one thing for one kind of client.
+    </h1>
+    <p class="mt-6 max-w-[680px] text-lg leading-[1.62] text-body">
+      CareInflow exists because good clinics are routinely represented by bad
+      websites. We build the online presence a healthcare practice actually
+      deserves — with the same professionalism patients experience inside it.
+    </p>
+  </section>
+
+  <section class="border-t border-hairline bg-surface" aria-labelledby="founder-title">
+    <div class="mx-auto grid max-w-[1440px] items-start gap-14 px-5 py-16 sm:px-10 sm:py-20 lg:grid-cols-[1fr_400px] lg:gap-20 xl:px-20">
+      <div class="prose-ci">
+        <h2 id="founder-title">The person behind it</h2>
+        <p>
+          CareInflow was founded by <strong>{BUSINESS.founder}</strong>. He
+          studied Information Technology and web development in Gujarat, then
+          continued his education in Canada with a focus on cybersecurity,
+          and went on to work at Microsoft for more than a year — long enough
+          to learn what professional engineering standards actually look like
+          from the inside.
+        </p>
+        <p>
+          He had the option to stay abroad. He came back to Gujarat instead,
+          to build something of his own.
+        </p>
+        <p>
+          The problem he chose is easy to see and oddly neglected: many
+          practices here provide outstanding care and are represented online
+          by outdated, generic, or simply broken websites. Patients notice
+          the gap before they ever meet the doctor.
+        </p>
+        <p>
+          Rather than opening one more general web agency, he narrowed
+          CareInflow to healthcare only. Not because clinics are a
+          "market segment", but because doing one kind of work repeatedly is
+          how the work gets genuinely good — the same reason a specialist
+          exists in medicine.
+        </p>
+        <h2>How we behave</h2>
+        <p>
+          The standards are published because published standards are harder
+          to quietly drop: measured speed with a stated reference,
+          accessibility on every build, everything registered in the client's
+          name, and honest answers even when they cost us a project. The
+          <a href="/process">method page</a> shows how that plays out week by
+          week, and the <a href="/work">work page</a> shows the record so far
+          — short, because we are new, and honest for the same reason.
+        </p>
+      </div>
+
+      <aside class="top-24 grid gap-4 lg:sticky">
+        <div class="rounded-3xl border border-line bg-canvas p-7">
+          <h2 class="label-mono mb-5 text-faint" style="letter-spacing:0.12em">Standards held</h2>
+          <dl class="grid gap-5">
+            {standards.map((s) => (
+              <div class="border-b border-hairline pb-4 last:border-b-0 last:pb-0">
+                <dd class="text-[28px] font-extrabold tracking-[-0.04em] text-ink">{s.value}</dd>
+                <dt class="mt-0.5 text-[13px] text-muted">{s.caption}</dt>
+              </div>
+            ))}
+          </dl>
+        </div>
+        <div class="rounded-3xl border border-line bg-canvas p-7">
+          <h2 class="label-mono mb-4 text-faint" style="letter-spacing:0.12em">What CareInflow is not</h2>
+          <ul class="grid gap-2 text-[14.5px] leading-[1.6] text-muted">
+            {notList.map((n) => (
+              <li>· not {n}</li>
+            ))}
+          </ul>
+          <p class="mt-4 border-t border-hairline pt-4 text-[13.5px] leading-[1.6] text-muted">
+            Websites, local SEO, Google Business Profile, ongoing care — for
+            healthcare practices. That is the whole list.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[110px] xl:px-20">
+    <SectionHead
+      label="Status — where we are today"
+      title="New studio. Five founding places. One held for Mehsana."
+      lede="We would rather you heard it from us: CareInflow is at the beginning. Founding practices get fixed terms in writing and direct access to the people doing the work — and we publish what happens, honestly."
+    />
+    <p class="mt-7">
+      <a href={href('/contact')} class="btn-secondary px-6 py-3.5 text-[15px]">Talk to us about a founding place</a>
+    </p>
+  </section>
+
+  <FaqSection
+    faqs={faqEntries.map((f) => ({ question: f.question, answer: f.answer }))}
+    label="Questions about the studio"
+    title="Fair questions for a new studio"
+  />
+
+  <CtaPanel />
+</BaseLayout>

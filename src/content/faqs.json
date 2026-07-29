@@ -1,0 +1,86 @@
+[
+  {
+    "id": "why-healthcare-only",
+    "question": "Why does CareInflow only work with healthcare practices?",
+    "answer": "Because narrowness is the product. A café wants you hungry; a clinic needs you calm. By working only with dental, dermatology, physiotherapy, eye, orthopedic, pediatric, gynecology, cosmetic and mental health practices, we learn the patterns once — how patients search, what they worry about, what earns their trust — and apply them to every practice we take on.",
+    "pages": ["faq", "home", "about"],
+    "order": 1
+  },
+  {
+    "id": "new-studio",
+    "question": "How established is CareInflow?",
+    "answer": "We are a new studio, and we would rather you heard that from us. CareInflow is currently choosing five founding practices, who get a fixed price agreed in writing and direct access to the people doing the work. In return we ask to publish what happened — honestly, including what did not work.",
+    "pages": ["faq", "about", "pricing"],
+    "order": 2
+  },
+  {
+    "id": "what-does-it-cost",
+    "question": "What does a clinic website cost?",
+    "answer": "Every engagement is a fixed price agreed in writing before any work starts — no hourly billing, no surprise invoices. The exact figure depends on scope: how many treatments need pages, whether you need Gujarati as well as English, and what state your Google presence is in. The free written review is where we tell you what you actually need; sometimes the honest answer is 'less than you expected'.",
+    "pages": ["faq", "pricing"],
+    "order": 3
+  },
+  {
+    "id": "why-premium",
+    "question": "Why not use a cheap website builder or a freelancer?",
+    "answer": "You can, and for some practices that is genuinely enough. What you are paying us for is different: healthcare specialization, custom design around your practice, measured performance on real phones, search groundwork done properly, and someone still answering a year after launch. A website is your practice's first impression for years — it earns back far more than it costs, or we will tell you not to build it.",
+    "pages": ["faq", "pricing"],
+    "order": 4
+  },
+  {
+    "id": "how-long",
+    "question": "How long does the whole process take?",
+    "answer": "A typical practice website takes four weeks: study, structure and words, design and build, then launch and measurement. Google Business Profile work runs alongside. We agree the timeline in writing before starting, and if something will take longer we say so at week one, not week four.",
+    "pages": ["faq", "process", "home"],
+    "order": 5
+  },
+  {
+    "id": "after-launch",
+    "question": "What happens after my website launches?",
+    "answer": "Whatever you choose. With ongoing care, we monitor weekly, maintain monthly, and send a written quarterly review of what patients did and what to do next. Without it, you still own everything — domain, hosting, code and accounts are in your name from day one, and that is written into every agreement.",
+    "pages": ["faq", "process"],
+    "order": 6
+  },
+  {
+    "id": "ranking-guarantee",
+    "question": "Will my clinic rank number one on Google?",
+    "answer": "We do not promise rankings, and we would be careful with anyone who does. Rankings depend on competition, reviews, and time — no honest agency controls them. What we control, and commit to in writing, is the groundwork rankings are built on: real pages for real searches, a properly maintained Google Business Profile, valid structured data, and speed that passes Google's own measurements.",
+    "pages": ["faq", "home"],
+    "order": 7
+  },
+  {
+    "id": "current-site-good-enough",
+    "question": "My clinic already has a website. Is that not enough?",
+    "answer": "Maybe — and the free review will tell you honestly. But check three things tonight on your own phone: how long your site takes to load on mobile data, whether your Google listing shows the right hours and recent photos, and whether searching a treatment you offer brings up your site at all. Most practices find at least one surprise.",
+    "pages": ["faq", "home"],
+    "order": 8
+  },
+  {
+    "id": "do-you-do-apps",
+    "question": "Do you build apps, do branding, or run advertising?",
+    "answer": "No. We are not an advertising agency, a branding studio, or an app developer. We do websites, local SEO, Google Business Profile management, and ongoing website care — for healthcare practices. We can support with small complementary things like basic social media assets, but the core four are what we are good at, and we would rather stay good at them.",
+    "pages": ["faq", "about"],
+    "order": 9
+  },
+  {
+    "id": "how-to-start",
+    "question": "How do we start?",
+    "answer": "Send your clinic's name on WhatsApp. Within two working days you get a free written review of what a patient currently sees — your listing, your site, your search results, and the three clinics above you. If the answer is 'change nothing', we will say that. If there is work worth doing, the review becomes the plan we quote against.",
+    "pages": ["faq", "contact", "process"],
+    "order": 10
+  },
+  {
+    "id": "where-based",
+    "question": "Where is CareInflow based, and do you only work locally?",
+    "answer": "We work from Shop F-27, Platinum Plaza Complex, Radhanpur Road, Mehsana — and primarily serve practices across North Gujarat: Mehsana, Ahmedabad, Gandhinagar, Visnagar, Unjha, Patan, Kalol, Siddhpur and Palanpur. Being nearby means we can visit your practice and photograph it properly. For practices further away, everything except the photography works remotely.",
+    "pages": ["faq", "contact"],
+    "order": 11
+  },
+  {
+    "id": "own-the-site",
+    "question": "Who owns the website — you or my practice?",
+    "answer": "Your practice, entirely. The domain, hosting, code, content, analytics and search accounts are all registered in your name from day one. If we ever part ways, you lose nothing and owe nothing further. We keep clients by being useful, not by holding their website hostage.",
+    "pages": ["faq", "pricing", "process"],
+    "order": 12
+  }
+]

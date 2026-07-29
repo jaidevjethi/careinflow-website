@@ -1,0 +1,128 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import FaqSection from '@/components/FaqSection.astro';
+import { BUSINESS, WHATSAPP_URL, whatsappWithMessage } from '@/config/site';
+import {
+  graph,
+  organizationSchema,
+  webSiteSchema,
+  webPageSchema,
+  breadcrumbSchema,
+  faqSchema,
+} from '@/lib/schema';
+
+const title = 'Contact CareInflow — send your clinic\'s name on WhatsApp';
+const description =
+  'Contact CareInflow in Mehsana: one WhatsApp message gets you a free written review of your clinic\'s online presence within two working days. No form, no call, no deck.';
+
+const faqEntries = (await getCollection('faqs', ({ data }) => data.pages.includes('contact')))
+  .map(({ data }) => data)
+  .sort((a, b) => a.order - b.order);
+
+const schema = graph(
+  organizationSchema(),
+  webSiteSchema(),
+  webPageSchema({ path: '/contact', title, description, type: 'ContactPage' }),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Contact', path: '/contact' },
+  ]),
+  faqSchema(faqEntries.map((f) => ({ question: f.question, answer: f.answer }))),
+);
+
+const whatsappHref = whatsappWithMessage(
+  "Hi CareInflow — I'd like a free written review of my practice's online presence. Clinic name: ",
+);
+
+const reviewCovers = [
+  'Listing accuracy',
+  'Mobile load time',
+  'Treatment page coverage',
+  'Review handling',
+  'AI answer readiness',
+  'The three clinics above you',
+];
+
+const steps = [
+  { step: '01', text: 'Send your clinic\'s name — the pre-written message needs only that.' },
+  { step: '02', text: 'Within two working days you get the written review, free.' },
+  { step: '03', text: 'If work is worth doing, the review becomes the plan we quote against — fixed, in writing.' },
+];
+---
+
+<BaseLayout {title} {description} path="/contact" {schema}>
+  <section class="mx-auto max-w-[1440px] px-5 pb-16 pt-14 sm:px-10 sm:pb-20 sm:pt-20 xl:px-20">
+    <div class="tick-rule mb-3.5" aria-hidden="true"></div>
+    <p class="label-mono mb-5 text-surgical">Contact — the first message</p>
+    <h1 class="max-w-[860px] text-[clamp(34px,5vw,62px)] font-extrabold leading-[1.04] tracking-[-0.045em] text-ink">
+      Send your clinic's name. We reply with what a patient sees.
+    </h1>
+    <p class="mt-6 max-w-[660px] text-lg leading-[1.62] text-body">
+      No form, no discovery call, no slide deck. One WhatsApp message starts
+      it, and if the honest answer is "change nothing", that is the answer
+      you will get.
+    </p>
+    <div class="mt-8 flex flex-wrap items-center gap-4">
+      <a href={whatsappHref} rel="noopener" class="btn-primary px-7 py-4 text-[17px]">
+        WhatsApp {BUSINESS.phoneDisplay}
+      </a>
+      <a href={`mailto:${BUSINESS.email}`} class="btn-secondary px-6 py-[15px] text-base">
+        Or email us
+      </a>
+    </div>
+    <p class="mt-4 text-[14.5px] text-faint">Usually answered the same day.</p>
+  </section>
+
+  <section class="border-t border-hairline bg-surface" aria-label="What happens next">
+    <div class="mx-auto grid max-w-[1440px] items-start gap-10 px-5 py-16 sm:px-10 sm:py-20 lg:grid-cols-[1fr_380px] lg:gap-20 xl:px-20">
+      <div>
+        <h2 class="text-[clamp(24px,3vw,34px)] font-extrabold leading-[1.1] tracking-[-0.03em] text-ink">
+          What happens after you press send
+        </h2>
+        <ol class="mt-8 grid max-w-[640px] gap-4">
+          {steps.map((s) => (
+            <li class="grid grid-cols-[40px_1fr] gap-4 rounded-2xl border border-line bg-canvas p-6">
+              <span class="font-mono text-[13px] text-surgical">{s.step}</span>
+              <p class="text-[15.5px] leading-[1.6] text-body">{s.text}</p>
+            </li>
+          ))}
+        </ol>
+
+        <h2 class="mt-14 text-[clamp(24px,3vw,34px)] font-extrabold leading-[1.1] tracking-[-0.03em] text-ink">
+          Where we are
+        </h2>
+        <address class="mt-5 max-w-[640px] text-[15.5px] not-italic leading-[1.7] text-body">
+          {BUSINESS.name} · {BUSINESS.address.street},<br />
+          {BUSINESS.address.locality}, {BUSINESS.address.region}, India<br />
+          <a href={WHATSAPP_URL} rel="noopener" class="prose-link">{BUSINESS.phoneDisplay}</a> ·
+          <a href={`mailto:${BUSINESS.email}`} class="prose-link">{BUSINESS.email}</a>
+        </address>
+        <p class="mt-5 max-w-[640px] text-[14.5px] leading-[1.65] text-muted">
+          We primarily serve practices across {BUSINESS.serviceAreas.slice(0, -1).join(', ')} and
+          {BUSINESS.serviceAreas.at(-1)} — close enough to visit your practice
+          and photograph it properly. Everything except the photography also
+          works remotely.
+        </p>
+      </div>
+
+      <aside class="top-24 rounded-[20px] border border-line bg-canvas p-7 lg:sticky">
+        <h2 class="label-mono mb-4 text-faint" style="letter-spacing:0.12em">The review covers</h2>
+        <ul class="text-[14.5px] leading-[2.05] text-body-deep">
+          {reviewCovers.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+        <p class="mt-4 border-t border-line pt-3.5 font-mono text-[11px] uppercase tracking-[0.08em] text-surgical">
+          Free · 2 working days
+        </p>
+      </aside>
+    </div>
+  </section>
+
+  <FaqSection
+    faqs={faqEntries.map((f) => ({ question: f.question, answer: f.answer }))}
+    label="Before you message"
+    title="Two things people check first"
+  />
+</BaseLayout>

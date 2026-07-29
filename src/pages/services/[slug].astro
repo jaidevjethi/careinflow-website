@@ -1,0 +1,118 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import FaqSection from '@/components/FaqSection.astro';
+import CtaPanel from '@/components/CtaPanel.astro';
+import { href } from '@/lib/url';
+import {
+  graph,
+  organizationSchema,
+  webSiteSchema,
+  webPageSchema,
+  breadcrumbSchema,
+  serviceSchema,
+  faqSchema,
+} from '@/lib/schema';
+
+export async function getStaticPaths() {
+  const services = await getCollection('services');
+  return services.map((service) => ({
+    params: { slug: service.id },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+const { Content } = await render(service);
+
+const allServices = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+const related = allServices.filter((s) => service.data.related.includes(s.id));
+
+const path = `/services/${service.id}`;
+const title = `${service.data.title} | CareInflow`;
+const description = service.data.description;
+
+const schema = graph(
+  organizationSchema(),
+  webSiteSchema(),
+  webPageSchema({ path, title, description }),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Services', path: '/services' },
+    { name: service.data.navLabel, path },
+  ]),
+  serviceSchema({ name: service.data.navLabel, description, path }),
+  faqSchema(service.data.faqs.map((f) => ({ question: f.q, answer: f.a }))),
+);
+---
+
+<BaseLayout {title} {description} {path} {schema}>
+  <article>
+    <!-- OPENER -->
+    <header class="mx-auto max-w-[1440px] px-5 pb-14 pt-14 sm:px-10 sm:pt-20 xl:px-20">
+      <nav aria-label="Breadcrumb" class="mb-8">
+        <a href={href('/services')} class="font-mono text-[11px] uppercase tracking-[0.1em] text-faint hover:text-surgical">
+          ← All services
+        </a>
+      </nav>
+      <p class="mb-4 font-mono text-[10.5px] uppercase tracking-[0.06em] text-surgical">{service.data.code}</p>
+      <h1 class="max-w-[820px] text-[clamp(34px,5vw,58px)] font-extrabold leading-[1.05] tracking-[-0.045em] text-ink">
+        {service.data.title}
+      </h1>
+      <p class="mt-6 max-w-[660px] text-lg leading-[1.62] text-body">{service.data.summary}</p>
+    </header>
+
+    <!-- BODY + DELIVERABLES -->
+    <div class="border-t border-hairline bg-surface">
+      <div class="mx-auto grid max-w-[1440px] items-start gap-14 px-5 py-16 sm:px-10 sm:py-20 lg:grid-cols-[1fr_400px] lg:gap-20 xl:px-20">
+        <div class="prose-ci">
+          <Content />
+        </div>
+
+        <aside class="top-24 rounded-3xl border border-line bg-canvas p-7 lg:sticky">
+          <h2 class="label-mono mb-4 text-faint" style="letter-spacing:0.12em">What you receive</h2>
+          <dl>
+            {service.data.deliverables.map((d, j) => (
+              <div
+                class:list={[
+                  'flex items-baseline justify-between gap-6 py-2.5 text-[14px]',
+                  j < service.data.deliverables.length - 1 && 'border-b border-hairline',
+                ]}
+              >
+                <dt class="text-muted">{d.item}</dt>
+                <dd class="whitespace-nowrap font-semibold text-pass">{d.status}</dd>
+              </div>
+            ))}
+          </dl>
+          <p class="mt-5 border-t border-line pt-4 text-[13.5px] leading-[1.6] text-muted">
+            Fixed price agreed in writing after the
+            <a href={href('/contact')} class="prose-link">free review</a>.
+          </p>
+        </aside>
+      </div>
+    </div>
+
+    {related.length > 0 && (
+      <section class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20" aria-label="Related services">
+        <h2 class="label-mono mb-6 text-faint">Works best with</h2>
+        <div class="grid gap-4 sm:grid-cols-2 lg:max-w-[880px]">
+          {related.map((r) => (
+            <a href={href(`/services/${r.id}`)} class="card-hover block rounded-[18px] border border-line bg-surface p-6.5 hover:no-underline">
+              <p class="mb-3 font-mono text-[10.5px] uppercase tracking-[0.06em] text-surgical">{r.data.code}</p>
+              <h3 class="text-lg font-bold tracking-[-0.02em] text-ink">{r.data.navLabel}</h3>
+              <p class="mt-2 text-[14.5px] leading-[1.55] text-muted">{r.data.summary}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+  </article>
+
+  <FaqSection
+    faqs={service.data.faqs.map((f) => ({ question: f.q, answer: f.a }))}
+    label={`${service.data.code} · Questions`}
+    title="Asked about this service"
+  />
+
+  <CtaPanel />
+</BaseLayout>

@@ -1,0 +1,40 @@
+---
+interface Props {
+  faqs: Array<{ question: string; answer: string }>;
+  label?: string;
+  title?: string;
+  lede?: string;
+}
+import SectionHead from '@/components/SectionHead.astro';
+
+const {
+  faqs,
+  label = 'Questions',
+  title = 'Asked before, answered plainly.',
+  lede,
+} = Astro.props;
+---
+
+<section class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[120px] xl:px-20" aria-label="Frequently asked questions">
+  <SectionHead {label} {title} {lede} />
+  <div class="mt-12 grid gap-3.5 lg:max-w-[880px]">
+    {faqs.map((faq) => (
+      <details class="group rounded-2xl border border-line bg-surface open:shadow-card">
+        <summary class="flex cursor-pointer list-none items-center justify-between gap-6 px-6 py-5 text-[17px] font-bold tracking-[-0.01em] text-ink [&::-webkit-details-marker]:hidden">
+          {faq.question}
+          <svg
+            class="shrink-0 text-faint transition-transform duration-200 ease-instrument group-open:rotate-45"
+            width="14"
+            height="14"
+            viewBox="0 0 14 14"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </summary>
+        <p class="px-6 pb-6 text-[15.5px] leading-[1.65] text-body">{faq.answer}</p>
+      </details>
+    ))}
+  </div>
+</section>

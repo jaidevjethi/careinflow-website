@@ -1,0 +1,87 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import CtaPanel from '@/components/CtaPanel.astro';
+import { href } from '@/lib/url';
+import {
+  graph,
+  organizationSchema,
+  founderSchema,
+  webSiteSchema,
+  webPageSchema,
+  breadcrumbSchema,
+  articleSchema,
+} from '@/lib/schema';
+
+export async function getStaticPaths() {
+  const resources = await getCollection('resources');
+  return resources.map((resource) => ({
+    params: { slug: resource.id },
+    props: { resource },
+  }));
+}
+
+const { resource } = Astro.props;
+const { Content } = await render(resource);
+
+const path = `/resources/${resource.id}`;
+const title = `${resource.data.title} | CareInflow`;
+const description = resource.data.description;
+
+const schema = graph(
+  organizationSchema(),
+  founderSchema(),
+  webSiteSchema(),
+  webPageSchema({ path, title, description }),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Resources', path: '/resources' },
+    { name: resource.data.title, path },
+  ]),
+  articleSchema({
+    path,
+    title: resource.data.title,
+    description,
+    publishDate: resource.data.publishDate,
+    updatedDate: resource.data.updatedDate,
+  }),
+);
+
+const dateFmt = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<BaseLayout
+  {title}
+  {description}
+  {path}
+  {schema}
+  ogType="article"
+  publishDate={resource.data.publishDate}
+  updatedDate={resource.data.updatedDate}
+>
+  <article>
+    <header class="mx-auto max-w-[1440px] px-5 pb-12 pt-14 sm:px-10 sm:pt-20 xl:px-20">
+      <nav aria-label="Breadcrumb" class="mb-8">
+        <a href={href('/resources')} class="font-mono text-[11px] uppercase tracking-[0.1em] text-faint hover:text-surgical">
+          ← All resources
+        </a>
+      </nav>
+      <h1 class="max-w-[840px] text-[clamp(30px,4.4vw,52px)] font-extrabold leading-[1.08] tracking-[-0.04em] text-ink">
+        {resource.data.title}
+      </h1>
+      <p class="mt-5 font-mono text-[11px] uppercase tracking-[0.1em] text-faint">
+        {dateFmt.format(resource.data.publishDate)} · {resource.data.minutesRead} min read · CareInflow
+      </p>
+    </header>
+
+    <div class="border-t border-hairline bg-surface">
+      <div class="mx-auto max-w-[1440px] px-5 py-14 sm:px-10 sm:py-20 xl:px-20">
+        <div class="prose-ci">
+          <Content />
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <CtaPanel />
+</BaseLayout>
