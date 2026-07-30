@@ -6,7 +6,7 @@ Healthcare-focused web design & digital growth studio site. This site is itself 
 - [docs/context/business-context.md](docs/context/business-context.md) — what CareInflow is, services, audience, positioning, voice
 - [docs/context/website-strategy.md](docs/context/website-strategy.md) — page-by-page persuasion strategy, CTAs, founder framing
 - [docs/context/technical-seo-spec.md](docs/context/technical-seo-spec.md) — SEO/performance/a11y quality bar
-- [docs/design/careinflow-design-system.dc.html](docs/design/careinflow-design-system.dc.html) — original design source (2a "Instrument"). Its type, layout and motion still stand; its **colour section is superseded** by the "Clinical Cyan" palette in `src/styles/global.css`.
+- [docs/design/careinflow-design-system.dc.html](docs/design/careinflow-design-system.dc.html) — original design source (2a "Instrument"). Its type, layout and motion still stand; its **colour section is superseded** by the "Midnight & Citrus" palette in `src/styles/global.css`.
 
 ## Stack
 

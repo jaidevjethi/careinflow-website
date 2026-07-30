@@ -3,44 +3,47 @@ name: careinflow-design
 description: Design system rules for the CareInflow website — tokens, type, layout, motion, component patterns. Use whenever building or editing any page, component or style in this repo.
 ---
 
-# CareInflow design system — "Clinical Cyan"
+# CareInflow design system — "Midnight & Citrus"
 
 Source of truth: `docs/design/careinflow-design-system.dc.html` (direction 2a only; 2b/2c are historical). Tokens live in `src/styles/global.css` under `@theme` — always use the token, never a raw hex.
 
-## Palette — "Clinical Cyan"
+## Palette — "Midnight & Citrus"
 
-Cool base, navy-black ink, vivid clinical teal. Direction 2a's *colour* section is superseded; its type, layout, spacing and motion still stand.
+Warm stone base with real depth, midnight navy for the moments that matter, citrus amber as the signature. Direction 2a's *colour* section is superseded; its type, layout, spacing and motion still stand.
 
 | Token | Value | Use |
 |---|---|---|
-| `canvas` / `surface` | `#F5F8FA` / `#FFF` | cool page base — never warm beige |
-| `line` / `hairline` | `#DDE5EA` / `#E9EFF3` | borders, dividers |
-| `ink` | `#0A1622` | headings, primary buttons, text on vivid teal |
-| `surgical` | `#076C63` | the AA-safe teal for text, labels, links |
-| `vivid` | `#00B3A4` | fills and colour blocks — **never text on light** |
-| `pass` | `#007A59` | verified measurements only |
-| `body` / `muted` / `faint` | `#47576B` / `#5A6B7D` / `#606E7C` | text hierarchy |
-| `panel*` | `#0A1622` … `#45E0CE` | navy block family |
+| `canvas` / `surface` | `#E9E4DA` / `#F7F4EE` | warm stone body — **never white, never pastel** |
+| `line` / `hairline` | `#D6CFC2` / `#DFD9CE` | borders on stone |
+| `ink` | `#0A1628` | headings and text on stone; text on every vivid fill |
+| `vivid` | `#FFB020` | citrus — CTAs, the headline accent, active nav |
+| `surgical` | `#0A6B63` | AA-safe teal for small labels on light |
+| `body` / `muted` / `faint` | `#3E4A5C` / `#4F5A6B` / `#59636F` | text hierarchy |
+| `panel*` | `#0A1628` … `#FFB020` | midnight family |
 
-**Contrast rules that were measured, not assumed.** White on vivid teal is 2.6:1 — a vivid block takes **ink** text. Vivid teal alone cannot carry a UI boundary against white (2.6:1), so focus rings use `surgical` (6.3:1). Every deep accent clears 4.5:1 on both canvas and its own tint.
+**Measured, not assumed.** White on citrus and white on vivid teal both fail — every vivid fill takes **ink** text (ink on citrus is 9.9:1). On midnight, `panel-text` is 10.5:1 and citrus is 9.9:1. All 21 pairs were computed before shipping.
+
+## Where midnight goes
+
+Midnight is a *moment*, not a theme. It owns the **header, the hero, the CTA panel, the footer and the mobile bar** — so the top and bottom of every page are one continuous dark block with the stone body between them. At most one additional midnight section per page. The body never goes dark.
 
 ## Accents
 
-Five hues, assigned in `src/lib/accents.ts` — never hand-picked. Each has three values: `-vivid` (fills, top rules, dots), the bare name (AA-safe text), `-tint` (large light areas).
+Five hues in `src/lib/accents.ts` — never hand-picked. Each has `-vivid` (fills, top rules, numerals), the bare name (AA-safe text), `-tint` (large light areas).
 
 | Accent | Owns |
 |---|---|
-| green/teal `#00B3A4` | brand, healthcare websites |
-| amber `#D97706` | Google Business Profile |
-| blue/indigo `#4338CA` | local SEO |
-| teal/cyan `#0E7490` | website care, free review |
-| plum/violet `#7C3AED` | social media, patient articles |
+| green = clinical teal `#0E8C82` | brand, healthcare websites |
+| amber = citrus `#FFB020` | Google Business Profile, and the signature |
+| blue = indigo `#4B4BD6` | local SEO |
+| teal = slate `#2E7D9A` | website care |
+| plum = coral `#FF6B4A` | social media |
 
-## Colour blocking
+## Personality: oversized numerals
 
-Colour is structural, not decorative. Sections alternate `surface → canvas → accent tint band → navy block`, and small elements (chips, step numbers, card top rules, the live dot) carry real saturation.
+The one deliberate quirk. Where a number already exists — hero stats, method weeks, review checks, pricing principles, contact steps — it is set large and tight via `.numeral` in its accent colour. Confidence comes from scale and restraint, never from rounded blobs, mascots or rainbow gradients.
 
-**No gradients, no glassmorphism, no glowing borders** — crisp edges are deliberate, so the site does not read like every AI-generated template. One navy block and one tint band per page; at most one vivid block.
+**No gradients, no glassmorphism, no glowing borders.** Crisp edges are deliberate, so the site does not read like every AI-generated template.
 
 ## Type
 
