@@ -60,7 +60,7 @@ const dateFmt = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short
           href={href(`/resources/${r.id}`)}
           class="card-hover flex flex-col overflow-hidden rounded-3xl border border-line bg-canvas hover:no-underline"
         >
-          <span class:list={['block h-1.5 w-full', topicAccent(r.data.topic).bar]} aria-hidden="true"></span>
+          <span class:list={['accent-bar block h-1.5 w-full', topicAccent(r.data.topic).bar]} aria-hidden="true"></span>
           <div class="flex flex-1 flex-col p-7">
           <p class="mb-4 flex items-center gap-2">
             <span class:list={['chip', topicAccent(r.data.topic).chip]}>{topicLabels[r.data.topic]}</span>

@@ -163,21 +163,21 @@ Prices are public, on `/pricing`, and defined once in
 positioning decision: a clinic owner who has to book a call to hear a number
 assumes the number is negotiable, and negotiable is the opposite of premium.
 
-| | Starting price |
-|---|---|
-| Single practice website | ₹40,000 one-time |
-| Established clinic website | ₹75,000 one-time |
-| Multi-specialty website | ₹1,35,000 one-time |
-| Care plan | ₹4,500 / month |
-| Care + Google plan | ₹9,500 / month |
-| Full visibility plan | ₹22,000 / month |
-| Google Business Profile management | ₹6,500 / month |
-| Local SEO, standalone | ₹16,000 / month |
-| Social media content (support) | ₹9,500 / month |
-| Google Business Profile rebuild | ₹15,000 once |
-| Website takeover audit | ₹9,500 once |
-| Extra treatment or area page | ₹4,500 per page |
-| Gujarati version of an existing site | from ₹18,000 |
+| | Starting price | Usual range |
+|---|---|---|
+| Single practice website | ₹28,999 one-time | ₹28,999 – ₹44,999 |
+| Established clinic website | ₹58,999 one-time | ₹58,999 – ₹89,999 |
+| Multi-specialty website | ₹1,09,999 one-time | ₹1,09,999 – ₹1,79,999 |
+| Care plan | ₹3,499 / month | |
+| Care + Google plan | ₹7,999 / month | |
+| Full visibility plan | ₹17,999 / month | |
+| Google Business Profile management | ₹5,499 / month | |
+| Local SEO, standalone | ₹12,999 / month | |
+| Social media content (support) | ₹7,999 / month | |
+| Google Business Profile rebuild | ₹11,999 once | |
+| Website takeover audit | ₹6,999 once | |
+| Extra treatment or area page | ₹3,499 per page | |
+| Gujarati version of an existing site | from ₹14,999 | |
 
 **Where the value sits.** The builds are deliberately priced below agency
 quotes for comparable work, because CareInflow does not build the expensive
@@ -196,9 +196,9 @@ Rules that hold the list together:
 - Combined plans cost less than their parts because the work genuinely
   overlaps — one monthly pass, one set of measurements, one report. The site
   says so in those words. It is never framed as a discount or an offer.
-- Founding prices are **held, not discounted**: for the five founding
-  practices the agreed price stays fixed as studio rates rise. No deadline is
-  ever attached to this.
+- The agreed price is **held**: whatever is fixed in writing stays fixed for
+  as long as the engagement runs, even as studio rates rise. No deadline is
+  ever attached to a quote, and nothing is taken off for deciding sooner.
 - Prices exclude GST where it applies. Domain and hosting are paid by the
   client, in the client's own name, and are never marked up.
 - Payment: a standard build in two halves (start, launch); larger builds in
@@ -281,4 +281,4 @@ the honest escape hatch — if the answer is "change nothing", we say so.
 - WhatsApp / phone: +91 97734 56668
 - Email: jaydevjethi123@gmail.com (until a careinflow.com mailbox exists)
 - Canonical domain: https://careinflow.com
-- Status: new studio, onboarding five founding practices (one place held for a Mehsana practice); honest about this — no invented track record, no fabricated testimonials.
+- Positioning on the site: no scarcity, no counts, no "we are new" framing, and no limits on geography or client numbers. Anything about capacity or who we are currently taking on is handled in the sales conversation after someone makes contact — never stated on the site. The integrity rules are unchanged: no invented track record, no fabricated testimonials, no ranking guarantees.

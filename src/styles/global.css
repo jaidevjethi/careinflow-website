@@ -238,10 +238,37 @@
   }
 
   /*
-   * Colour blocking. A full-bleed band of flat colour is how sections are
-   * separated now — no gradients, no glass. `band-vivid` carries ink text
-   * because white on vivid teal measures only 2.6:1.
+   * Colour blocking. Sections are separated by flat colour fields. Gradients
+   * are used in exactly three places and never behind long-form text:
+   * depth on large midnight fields, a tactile primary button, and a sheen on
+   * decorative accent rules. Every gradient was contrast-checked at its
+   * LIGHTEST stop, which is the worst case for the light text sitting on it.
    */
+
+  /*
+   * Depth for large midnight fields. A flat dark rectangle reads unfinished
+   * at hero scale; this lifts the top-left corner just enough to give the
+   * field dimension. At the lightest stop (#1A2F54) surface text is still
+   * 12.1:1 and citrus 7.3:1.
+   */
+  .panel-depth {
+    background-color: var(--color-panel);
+    background-image: radial-gradient(
+      125% 105% at 12% 0%,
+      #1a2f54 0%,
+      #101f39 42%,
+      var(--color-panel) 100%
+    );
+  }
+
+  /* Decorative sheen for accent rules — pairs with a bg-a-*-vivid class. */
+  .accent-bar {
+    background-image: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.42) 0%,
+      rgba(255, 255, 255, 0) 62%
+    );
+  }
   .band-vivid {
     background: var(--color-vivid);
     color: var(--color-ink);
@@ -301,7 +328,8 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
-    background: var(--color-vivid);
+    background-color: var(--color-vivid);
+    background-image: linear-gradient(180deg, #ffc24e 0%, var(--color-vivid) 100%);
     color: var(--color-ink);
     font-weight: 700;
     border-radius: 12px;

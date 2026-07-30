@@ -91,7 +91,7 @@ const steps = [
         </ol>
 
         <h2 class="mt-14 text-[clamp(24px,3vw,34px)] font-extrabold leading-[1.1] tracking-[-0.03em] text-ink">
-          Our only office
+          Where we are
         </h2>
         <address class="mt-5 max-w-[640px] text-[15.5px] not-italic leading-[1.7] text-body">
           {BUSINESS.name} · {BUSINESS.address.street},<br />
@@ -100,11 +100,11 @@ const steps = [
           <a href={`mailto:${BUSINESS.email}`} class="prose-link">{BUSINESS.email}</a>
         </address>
         <p class="mt-5 max-w-[640px] text-[14.5px] leading-[1.65] text-muted">
-          One studio, in Mehsana — no branches. From here we serve practices
-          across {BUSINESS.serviceAreas.slice(0, -1).join(', ')} and
-          {BUSINESS.serviceAreas.at(-1)}: close enough to visit your practice
-          and photograph it properly, and everything except the photography
-          also works remotely.
+          We are based in Mehsana and work with clinics across
+          {BUSINESS.serviceAreas.slice(0, -1).join(', ')} and
+          {BUSINESS.serviceAreas.at(-1)} — and further afield where the work
+          suits it. Close enough to visit and photograph your practice
+          properly; everything else works just as well at a distance.
         </p>
       </div>
 

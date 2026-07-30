@@ -107,8 +107,8 @@ const faqs = defineCollection({
 });
 
 /**
- * Testimonials — intentionally ships empty. CareInflow is a new studio and
- * does not fabricate feedback; sections render only when real entries exist.
+ * Testimonials — ships empty until real ones exist. We never fabricate
+ * feedback; sections render only when there are genuine entries.
  */
 const testimonials = defineCollection({
   loader: glob({ pattern: '**/*.json', base: './src/content/testimonials' }),

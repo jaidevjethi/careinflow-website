@@ -175,18 +175,18 @@ const notList = [
   <section class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[110px] xl:px-20">
     <SectionHead
       label="Where we are today"
-      title="New studio. Five founding places. One held for Mehsana."
-      lede="We would rather you heard it from us: CareInflow is at the beginning. Founding practices get fixed terms in writing and direct access to the people doing the work — and we publish what happens, honestly."
+      title="Based in Mehsana. Working with clinics anywhere."
+      lede="Every practice gets fixed terms in writing and direct access to the person doing the work. We are near enough to visit clinics across Gujarat and photograph them properly, and everything except the photography works just as well at a distance."
     />
     <p class="mt-7">
-      <a href={href('/contact')} class="btn-secondary px-6 py-3.5 text-[15px]">Talk to us about a founding place</a>
+      <a href={href('/free-review')} class="btn-secondary px-6 py-3.5 text-[15px]">Start with a free review</a>
     </p>
   </section>
 
   <FaqSection
     faqs={faqEntries.map((f) => ({ question: f.question, answer: f.answer }))}
     label="Questions about the studio"
-    title="Fair questions for a new studio"
+    title="Questions about the studio"
   />
 
   <CtaPanel nextStep={{ label: 'See the work', href: '/work' }} />

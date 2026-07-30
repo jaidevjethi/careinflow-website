@@ -17,7 +17,8 @@ import {
   WHERE_RETURN_COMES_FROM,
   NEVER_CHARGED,
   PRICE_NOTES,
-  FOUNDING_TERMS,
+  PRICE_PROMISE,
+  STANDALONE_MONTHLY,
   partsTotal,
   rupees,
 } from '@/config/pricing';
@@ -32,8 +33,9 @@ import {
 } from '@/lib/schema';
 
 const title = 'Pricing for clinic websites, local SEO and Google listings | CareInflow';
+/** Built from the config so the meta description can never drift from the page. */
 const description =
-  'What CareInflow charges: clinic websites from ₹40,000, monthly care from ₹4,500, Google Business Profile management from ₹6,500. Published prices, fixed in writing after a free review — no hourly billing, no discounts.';
+  `What CareInflow charges: clinic websites from ${rupees(BUILDS[0]!.from)}, monthly care from ${rupees(PLANS[0]!.monthly)}, Google Business Profile management from ${rupees(STANDALONE_MONTHLY.gbp)}. Published prices, fixed in writing after a free review — no hourly billing, no discounts.`;
 
 const faqEntries = (await getCollection('faqs', ({ data }) => data.pages.includes('pricing')))
   .map(({ data }) => data)
@@ -173,7 +175,7 @@ const principles = [
               build.recommended ? 'border-surgical shadow-card' : 'border-line',
             ]}
           >
-            <span class:list={['block h-1 w-full', cycleAccent(i).bar]} aria-hidden="true"></span>
+            <span class:list={['accent-bar block h-1 w-full', cycleAccent(i).bar]} aria-hidden="true"></span>
             <div class="flex h-full flex-col p-7 sm:p-8">
               <div class="flex flex-wrap items-center gap-2.5">
                 <h3 class="text-[21px] font-bold tracking-[-0.025em] text-ink">{build.name}</h3>
@@ -185,9 +187,12 @@ const principles = [
 
               <p class="mt-6 flex items-baseline gap-2.5">
                 <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">from</span>
-                <span class="text-[clamp(30px,3.6vw,40px)] font-extrabold leading-none tracking-[-0.045em] text-ink">
+                <span class="numeral text-[clamp(32px,3.8vw,44px)] text-ink">
                   {rupees(build.from)}
                 </span>
+              </p>
+              <p class="mt-2 font-mono text-[10.5px] uppercase tracking-[0.08em] text-faint">
+                Usually {rupees(build.from)} – {rupees(build.typicalTo)}
               </p>
               <p class="mt-3.5 flex flex-wrap gap-2">
                 <span class="chip border border-line bg-surface text-body-deep">{build.pages}</span>
@@ -230,7 +235,7 @@ const principles = [
     <div class="reveal-group mt-11 grid gap-4 sm:grid-cols-2">
       {WHERE_RETURN_COMES_FROM.points.map((p, i) => (
         <article class="card-hover overflow-hidden rounded-3xl border border-line bg-surface">
-          <span class:list={['block h-1 w-full', cycleAccent(i).bar]} aria-hidden="true"></span>
+          <span class:list={['accent-bar block h-1 w-full', cycleAccent(i).bar]} aria-hidden="true"></span>
           <div class="p-7">
             <h3 class="text-[19px] font-bold tracking-[-0.02em] text-ink">{p.title}</h3>
             <p class="mt-2.5 text-[15.5px] leading-[1.62] text-body">{p.text}</p>
@@ -398,58 +403,48 @@ const principles = [
 
   <CtaStrip text="Not sure which of these your practice actually needs? The free review will say so, honestly." />
 
-  <!-- FOUNDING TERMS — the page's one dark panel -->
-  <section class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[120px] xl:px-20" aria-labelledby="founding-title">
-    <div class="rounded-[28px] bg-panel p-8 sm:p-12 lg:p-16">
+  <!-- THE PRICE PROMISE — the page's one dark panel -->
+  <section class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[120px] xl:px-20" aria-labelledby="promise-title">
+    <div class="panel-depth rounded-[28px] p-8 sm:p-12 lg:p-16">
       <div class="grid items-start gap-12 lg:grid-cols-[1fr_360px] lg:gap-16">
         <div>
           <SectionHead
             dark
-            id="founding-title"
-            label="Founding practices"
-            title={FOUNDING_TERMS.headline}
-            lede={FOUNDING_TERMS.body}
+            id="promise-title"
+            label="What the number does"
+            title={PRICE_PROMISE.headline}
+            lede={PRICE_PROMISE.body}
           />
           <p class="mt-7 max-w-[620px] text-[15.5px] leading-[1.65] text-panel-text-dim">
-            What we ask in return is permission to publish what happened —
-            honestly, including what did not work. That published record
-            becomes the proof the next practice reads.
+            You will never be asked to decide on a call. The figure, the scope
+            and the exclusions arrive in writing after the free review, and
+            they stay there while you think about it.
           </p>
           <p class="mt-8 flex flex-wrap gap-4">
-            <a href={href('/free-review')} class="btn-primary bg-surface px-6 py-3.5 text-[15px] text-ink">
+            <a href={href('/free-review')} class="btn-accent px-6 py-3.5 text-[15px]">
               Start with the free review
             </a>
-            <a href={href('/services')} class="prose-link self-center text-base text-panel-accent">
+            <a href={href('/services')} class="self-center text-base font-semibold text-panel-accent hover:underline">
               See what each engagement includes →
             </a>
           </p>
         </div>
 
         <div class="rounded-[20px] border border-panel-line bg-panel-card p-7">
-          <p class="flex items-baseline justify-between">
-            <span class="label-mono text-panel-text-faint" style="letter-spacing:0.12em">Founding places</span>
-            <span class="text-[34px] font-extrabold tracking-[-0.04em] text-surface">
-              {BUSINESS.founding.totalPlaces}
-            </span>
-          </p>
-          <div
-            class="mt-5 flex gap-1.5"
-            role="img"
-            aria-label={`${BUSINESS.founding.filledPlaces} of ${BUSINESS.founding.totalPlaces} founding places taken`}
-          >
-            {Array.from({ length: BUSINESS.founding.totalPlaces }, (_, i) => (
-              <span
-                class:list={[
-                  'h-2 flex-1 rounded-full',
-                  i < BUSINESS.founding.filledPlaces ? 'bg-panel-accent' : 'bg-panel-line-alt',
-                ]}
-              ></span>
+          <p class="label-mono text-panel-text-faint" style="letter-spacing:0.12em">What is fixed</p>
+          <dl class="mt-5">
+            {[
+              ['One number', 'agreed before work starts'],
+              ['Scope and exclusions', 'listed with equal weight'],
+              ['Monthly plans', 'month to month, no lock-in'],
+              ['Your accounts', 'in your name from day one'],
+            ].map(([term, detail], i, arr) => (
+              <div class:list={['py-3', i < arr.length - 1 && 'border-b border-panel-divider']}>
+                <dt class="text-[15px] font-bold text-surface">{term}</dt>
+                <dd class="mt-0.5 text-[14px] leading-[1.55] text-panel-text-dim">{detail}</dd>
+              </div>
             ))}
-          </div>
-          <p class="mt-5 text-[14.5px] leading-[1.6] text-panel-text">
-            One place is held for a practice in Mehsana so the work can be done
-            in person, start to finish.
-          </p>
+          </dl>
         </div>
       </div>
     </div>
@@ -466,7 +461,7 @@ const principles = [
       <div class="mt-11 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {paysFor.map((p, i) => (
           <article class="card-hover overflow-hidden rounded-[18px] border border-line bg-canvas">
-            <span class:list={['block h-1 w-full', cycleAccent(i).bar]} aria-hidden="true"></span>
+            <span class:list={['accent-bar block h-1 w-full', cycleAccent(i).bar]} aria-hidden="true"></span>
             <div class="p-6.5">
             <h3 class="text-lg font-bold tracking-[-0.02em] text-ink">{p.title}</h3>
             <p class="mt-2 text-[14.5px] leading-[1.6] text-muted">{p.text}</p>

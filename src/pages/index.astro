@@ -50,7 +50,7 @@ const priceHeadlines = [
     name: 'Your Google listing',
     value: rupees(STANDALONE_MONTHLY.gbp),
     unit: '/ month',
-    note: 'Managed properly, month to month. Or a one-time rebuild at ₹15,000 with nothing attached.',
+    note: 'Managed properly, month to month. Or a one-time rebuild, with nothing attached.',
   },
   {
     name: 'Website + Google, together',
@@ -167,6 +167,13 @@ const method = [
   },
 ];
 
+/** Specialties we build for — expansive, and good keyword coverage. */
+const SPECIALTIES = [
+  'Dental', 'Dermatology', 'Physiotherapy', 'Ophthalmology', 'Orthopaedics',
+  'Paediatrics', 'Gynaecology', 'Cosmetic', 'Mental health', 'ENT',
+  'Cardiology', 'Diagnostic centres', 'Multi-specialty',
+];
+
 const whatsappHref = whatsappWithMessage(
   "Hi CareInflow — I'd like a free written review of my practice's online presence. Clinic name: ",
 );
@@ -174,7 +181,7 @@ const whatsappHref = whatsappWithMessage(
 
 <BaseLayout {title} {description} path="/" {schema}>
   <!-- HERO — the site's first midnight moment -->
-  <section class="bg-panel">
+  <section class="panel-depth">
     <div class="mx-auto max-w-[1440px] px-5 pb-20 pt-16 sm:px-10 sm:pb-[110px] sm:pt-24 xl:px-20">
       <div class="grid items-center gap-14 lg:grid-cols-[1fr_560px] lg:gap-16">
         <div class="animate-rise">
@@ -345,7 +352,7 @@ const whatsappHref = whatsappWithMessage(
           href={href(p.link)}
           class="card-hover block overflow-hidden rounded-[18px] border border-line bg-surface hover:no-underline"
         >
-          <span class:list={['block h-1 w-full', serviceAccent(p.link.split('/').pop()!).bar]} aria-hidden="true"></span>
+          <span class:list={['accent-bar block h-1 w-full', serviceAccent(p.link.split('/').pop()!).bar]} aria-hidden="true"></span>
           <div class="p-6.5">
           <p class:list={['mb-4 font-mono text-[10.5px] uppercase tracking-[0.06em]', serviceAccent(p.link.split('/').pop()!).text]}>{p.code}</p>
           <h3 class="text-lg font-bold tracking-[-0.02em] text-ink">{p.title}</h3>
@@ -358,7 +365,7 @@ const whatsappHref = whatsappWithMessage(
 
   <!-- 03 · INDICATION — WHY HEALTHCARE ONLY (the page's one dark panel) -->
   <section class="mx-auto max-w-[1440px] px-5 pb-20 sm:px-10 sm:pb-[120px] xl:px-20" aria-labelledby="indication-title">
-    <div class="rounded-[28px] bg-panel p-8 sm:p-12 lg:p-16">
+    <div class="panel-depth rounded-[28px] p-8 sm:p-12 lg:p-16">
       <div class="grid items-start gap-12 lg:grid-cols-[1fr_520px] lg:gap-16">
         <div>
           <SectionHead
@@ -472,7 +479,7 @@ const whatsappHref = whatsappWithMessage(
       <div class="reveal-group grid gap-4 sm:grid-cols-3">
         {priceHeadlines.map((p, i) => (
           <article class="card-hover overflow-hidden rounded-3xl border border-line bg-canvas">
-            <span class:list={['block h-1 w-full', cycleAccent(i).bar]} aria-hidden="true"></span>
+            <span class:list={['accent-bar block h-1 w-full', cycleAccent(i).bar]} aria-hidden="true"></span>
             <div class="p-7">
               <h3 class="text-[17px] font-bold tracking-[-0.02em] text-ink">{p.name}</h3>
               <p class="mt-4 flex items-baseline gap-2">
@@ -532,43 +539,39 @@ const whatsappHref = whatsappWithMessage(
     </div>
   </section>
 
-  <!-- 05 · STATUS — WHERE WE ARE TODAY -->
-  <section class="border-t border-hairline bg-surface" aria-labelledby="status-title">
+  <!-- WHO WE WORK WITH -->
+  <section class="border-t border-hairline bg-surface" aria-labelledby="who-title">
     <div class="mx-auto grid max-w-[1440px] items-center gap-12 px-5 py-20 sm:px-10 sm:py-[110px] lg:grid-cols-[1fr_440px] lg:gap-16 xl:px-20">
       <div>
         <SectionHead
-          label="Where we are today"
-          title="We are a new studio, and we would rather you heard that from us."
+          id="who-title"
+          label="Who we work with"
+          title="Built for the practice you actually run."
         />
         <p class="mt-5 max-w-[620px] text-lg leading-[1.62] text-body">
-          CareInflow is choosing five founding practices. Fixed price agreed in
-          writing, direct access to the people doing the work, and the same
-          standards we intend to hold for the next decade.
+          A single dentist and a twelve-doctor multi-specialty centre need very
+          different websites, and we build both. What stays the same is the
+          method: study first, words before visuals, and a fixed price agreed
+          in writing before anything begins.
         </p>
         <p class="mt-4 max-w-[620px] text-lg leading-[1.62] text-body">
-          In return we ask to publish what happened — honestly, including what
-          did not work. That published record becomes the proof the next
-          practice reads.
+          We are based in Mehsana and work with clinics across Gujarat — and,
+          where the work suits it, well beyond. Everything except the
+          photography runs perfectly well at a distance.
+        </p>
+        <p class="mt-7">
+          <a href={href('/pricing')} class="prose-link text-base">See what it costs →</a>
         </p>
       </div>
       <div class="card-hover rounded-3xl border border-line bg-canvas p-8">
-        <p class="flex items-baseline justify-between">
-          <span class="label-mono text-faint" style="letter-spacing:0.12em">Founding places</span>
-          <span class="text-[34px] font-extrabold tracking-[-0.04em] text-ink">{BUSINESS.founding.totalPlaces}</span>
-        </p>
-        <div class="mt-5 flex gap-1.5" role="img" aria-label={`${BUSINESS.founding.filledPlaces} of ${BUSINESS.founding.totalPlaces} founding places taken`}>
-          {Array.from({ length: BUSINESS.founding.totalPlaces }, (_, i) => (
-            <span
-              class:list={[
-                'h-2 flex-1 rounded-full',
-                i < BUSINESS.founding.filledPlaces ? 'bg-ink' : 'bg-line-strong',
-              ]}
-            ></span>
+        <p class="label-mono text-faint" style="letter-spacing:0.12em">Specialties we build for</p>
+        <ul class="mt-5 flex flex-wrap gap-2">
+          {SPECIALTIES.map((s) => (
+            <li class="chip border border-line bg-surface text-body-deep">{s}</li>
           ))}
-        </div>
-        <p class="mt-5 text-[14.5px] leading-[1.6] text-muted">
-          One place is held for a practice in Mehsana so the work can be done
-          in person, start to finish.
+        </ul>
+        <p class="mt-6 border-t border-hairline pt-5 text-[14.5px] leading-[1.6] text-muted">
+          If your specialty is not listed, it almost certainly still fits — ask.
         </p>
       </div>
     </div>

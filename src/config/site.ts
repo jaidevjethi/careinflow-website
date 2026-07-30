@@ -35,10 +35,6 @@ export const BUSINESS = {
     'Siddhpur',
     'Palanpur',
   ],
-  founding: {
-    totalPlaces: 5,
-    filledPlaces: 1,
-  },
 } as const;
 
 export const WHATSAPP_URL = `https://wa.me/${BUSINESS.phone.replace('+', '')}`;
@@ -62,7 +58,7 @@ export const PREFILLS = {
   care:
     "Hi CareInflow — my clinic already has a website and I'd like to talk about maintaining it. Clinic name: ",
   pricing:
-    "Hi CareInflow — I'd like the founding-practice terms in writing, starting with the free review. Clinic name: ",
+    "Hi CareInflow — I'd like a quote in writing, starting with the free review. Clinic name: ",
   work:
     "Hi CareInflow — I saw your work and I'd like a free written review for my own practice. Clinic name: ",
   social:

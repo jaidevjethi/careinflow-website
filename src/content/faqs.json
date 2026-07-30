@@ -13,7 +13,7 @@
   {
     "id": "new-studio",
     "question": "How established is CareInflow?",
-    "answer": "We are a new studio, and we would rather you heard that from us. CareInflow is currently choosing five founding practices, who get a fixed price agreed in writing and direct access to the people doing the work. In return we ask to publish what happened — honestly, including what did not work.",
+    "answer": "CareInflow is a specialist studio in Mehsana working only with healthcare practices. Every engagement runs the same way: a fixed price agreed in writing before work starts, direct access to the person actually building your site, and a written record of what we changed and what it did. You can see real work on our work page, and the free review shows you how we think before you commit to anything.",
     "pages": [
       "faq",
       "about",
@@ -25,7 +25,7 @@
   {
     "id": "what-does-it-cost",
     "question": "What does a clinic website cost?",
-    "answer": "Our prices are published, so you do not have to ask. A single-practice website starts at ₹40,000, an established clinic with a page per treatment starts at ₹75,000, and a multi-specialty or diagnostic centre starts at ₹1,35,000. Monthly care starts at ₹4,500, and Google Business Profile management at ₹6,500. Those are starting points for a described scope — your exact number is fixed in writing after the free review, and sometimes the honest answer is 'less than you expected'.",
+    "answer": "Our prices are published, so you do not have to ask. A single-practice website starts at ₹28,999, an established clinic with a page per treatment starts at ₹58,999, and a multi-specialty or diagnostic centre starts at ₹1,09,999. Monthly care starts at ₹3,499, and Google Business Profile management at ₹5,499. Those are starting points for a described scope — your exact number is fixed in writing after the free review, and sometimes the honest answer is 'less than you expected'.",
     "pages": [
       "faq",
       "pricing",
@@ -110,7 +110,7 @@
   {
     "id": "where-based",
     "question": "Where is CareInflow based, and do you only work locally?",
-    "answer": "We work from Shop F-27, Platinum Plaza Complex, Radhanpur Road, Mehsana — and primarily serve practices across North Gujarat: Mehsana, Ahmedabad, Gandhinagar, Visnagar, Unjha, Patan, Kalol, Siddhpur and Palanpur. Being nearby means we can visit your practice and photograph it properly. For practices further away, everything except the photography works remotely.",
+    "answer": "We work from Shop F-27, Platinum Plaza Complex, Radhanpur Road, Mehsana, and with clinics across Gujarat — Mehsana, Ahmedabad, Gandhinagar, Visnagar, Unjha, Patan, Kalol, Siddhpur, Palanpur — and further afield where the work suits it. Being nearby means we can visit your practice and photograph it properly. Everything except the photography works just as well remotely.",
     "pages": [
       "faq",
       "contact"
@@ -189,8 +189,8 @@
   },
   {
     "id": "prices-going-up",
-    "question": "Will these prices go up later?",
-    "answer": "The studio's rates will move as the work behind them does. For the five founding practices the price agreed at the start is held for as long as we work together, even after our rates change. That is the whole of the founding arrangement — there is no deadline attached to it, and nothing comes off the number if you decide this week instead of next.",
+    "question": "Will the price go up later?",
+    "answer": "The studio's rates will move as the work behind them does, but the price agreed at the start of your engagement is held for as long as we work together — even after our rates change. There is no deadline attached to a quote, and nothing comes off the number for deciding this week instead of next.",
     "pages": [
       "faq",
       "pricing"

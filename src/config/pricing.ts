@@ -41,6 +41,8 @@ export interface Build {
   /** Who this shape of practice actually is. */
   suits: string;
   from: number;
+  /** Upper end of the usual range for this shape of practice. */
+  typicalTo: number;
   timeline: string;
   pages: string;
   includes: string[];
@@ -55,7 +57,8 @@ export const BUILDS: Build[] = [
     id: 'single-practice',
     name: 'Single practice',
     suits: 'One doctor, one location, a few treatments that matter most.',
-    from: 40000,
+    from: 28999,
+    typicalTo: 44999,
     timeline: '3 weeks',
     pages: 'Up to 7 pages',
     includes: [
@@ -74,7 +77,8 @@ export const BUILDS: Build[] = [
     id: 'established-clinic',
     name: 'Established clinic',
     suits: 'Several treatments, each worth its own page. The common case.',
-    from: 75000,
+    from: 58999,
+    typicalTo: 89999,
     timeline: '4–5 weeks',
     pages: 'Up to 14 pages',
     includes: [
@@ -95,7 +99,8 @@ export const BUILDS: Build[] = [
     id: 'multi-specialty',
     name: 'Multi-specialty',
     suits: 'Several doctors or departments, or a diagnostic centre.',
-    from: 135000,
+    from: 109999,
+    typicalTo: 179999,
     timeline: '6–8 weeks',
     pages: '20+ pages',
     includes: [
@@ -163,10 +168,10 @@ export interface Plan {
 
 /** Standalone monthly prices, for practices we did not build a site for. */
 export const STANDALONE_MONTHLY = {
-  care: 4500,
-  gbp: 6500,
-  seo: 16000,
-  social: 9500,
+  care: 3499,
+  gbp: 5499,
+  seo: 12999,
+  social: 7999,
 } as const;
 
 export const PLANS: Plan[] = [
@@ -188,7 +193,7 @@ export const PLANS: Plan[] = [
   {
     id: 'care-google',
     name: 'Care + Google',
-    monthly: 9500,
+    monthly: 7999,
     summary: 'Both places a patient actually looks, handled together.',
     includes: [
       'Everything in Care',
@@ -205,7 +210,7 @@ export const PLANS: Plan[] = [
   {
     id: 'full-visibility',
     name: 'Full visibility',
-    monthly: 22000,
+    monthly: 17999,
     summary: 'The whole presence, growing every month.',
     includes: [
       'Everything in Care + Google',
@@ -263,25 +268,25 @@ export const STANDALONE_ITEMS: LineItem[] = [
 export const ONE_TIME_ITEMS: LineItem[] = [
   {
     item: 'Google Business Profile rebuild',
-    price: 15000,
+    price: 11999,
     unit: 'once',
     note: 'Claimed or verified, categories and services rebuilt, hours, photos, questions seeded, review flow set up. No monthly commitment attached.',
   },
   {
     item: 'Website takeover audit',
-    price: 9500,
+    price: 6999,
     unit: 'once',
     note: 'For a site someone else built, before we agree to maintain it. Written, with a plan — including the plain answer if the site is beyond saving.',
   },
   {
     item: 'Extra treatment or area page',
-    price: 4500,
+    price: 3499,
     unit: 'page',
     note: 'After launch, per page: researched, written, designed and published.',
   },
   {
     item: 'Gujarati version of an existing site',
-    price: 18000,
+    price: 14999,
     unit: 'once',
     from: true,
     note: 'Written properly rather than machine-translated, with the language markup search engines need.',
@@ -334,14 +339,13 @@ export const PRICE_NOTES: string[] = [
 ];
 
 /**
- * Founding terms. Deliberately a promise about the future rather than a
- * deadline: the founding-five count is real and stated plainly, never dressed
- * as pressure.
+ * A promise about the future rather than a deadline. No count, no countdown,
+ * and nothing taken off for deciding sooner — the value is that it holds.
  */
-export const FOUNDING_TERMS = {
-  headline: 'Founding prices are held, not discounted.',
-  body: 'These are founding prices. For the five founding practices they stay fixed for as long as we work together, even after the studio\'s rates move. That is the whole of it — no deadline, no countdown, and nothing taken off the number if you decide this week instead of next.',
+export const PRICE_PROMISE = {
+  headline: 'The price we agree is the price that holds.',
+  body: 'Whatever we agree in writing stays fixed for as long as we work together, even after the studio\'s rates move. Monthly plans run month to month with no lock-in, and no deadline is ever attached to a quote — nothing is taken off the number for deciding this week instead of next.',
 };
 
 /** Range used for `priceRange` in structured data. */
-export const PRICE_RANGE = `${rupees(STANDALONE_MONTHLY.care)}–${rupees(BUILDS[2]!.from)}+`;
+export const PRICE_RANGE = `${rupees(STANDALONE_MONTHLY.care)}–${rupees(BUILDS[2]!.typicalTo)}`;
