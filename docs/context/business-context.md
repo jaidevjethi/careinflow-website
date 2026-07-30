@@ -165,9 +165,9 @@ assumes the number is negotiable, and negotiable is the opposite of premium.
 
 | | Starting price |
 |---|---|
-| Single practice website | ₹55,000 one-time |
-| Established clinic website | ₹1,10,000 one-time |
-| Multi-specialty website | ₹1,95,000 one-time |
+| Single practice website | ₹40,000 one-time |
+| Established clinic website | ₹75,000 one-time |
+| Multi-specialty website | ₹1,35,000 one-time |
 | Care plan | ₹4,500 / month |
 | Care + Google plan | ₹9,500 / month |
 | Full visibility plan | ₹22,000 / month |
@@ -178,6 +178,16 @@ assumes the number is negotiable, and negotiable is the opposite of premium.
 | Website takeover audit | ₹9,500 once |
 | Extra treatment or area page | ₹4,500 per page |
 | Gujarati version of an existing site | from ₹18,000 |
+
+**Where the value sits.** The builds are deliberately priced below agency
+quotes for comparable work, because CareInflow does not build the expensive
+kind: the sites are hand-built and static, with no application behind them.
+What earns a clinic its return — and what the price actually buys — is the
+layer above the code: the path a patient takes from landing to enquiry, the
+words on every page, and brand alignment between the site and the practice a
+patient walks into. Copy and funnel work is therefore the bulk of every
+build, and continues inside the monthly plans. Never sell or describe a build
+as a technical deliverable measured in pages.
 
 Rules that hold the list together:
 

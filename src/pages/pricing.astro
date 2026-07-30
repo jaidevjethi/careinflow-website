@@ -14,6 +14,7 @@ import {
   STANDALONE_ITEMS,
   ONE_TIME_ITEMS,
   PRICE_MOVERS,
+  WHERE_RETURN_COMES_FROM,
   NEVER_CHARGED,
   PRICE_NOTES,
   FOUNDING_TERMS,
@@ -32,7 +33,7 @@ import {
 
 const title = 'Pricing for clinic websites, local SEO and Google listings | CareInflow';
 const description =
-  'What CareInflow charges: clinic websites from ₹55,000, monthly care from ₹4,500, Google Business Profile management from ₹6,500. Published prices, fixed in writing after a free review — no hourly billing, no discounts.';
+  'What CareInflow charges: clinic websites from ₹40,000, monthly care from ₹4,500, Google Business Profile management from ₹6,500. Published prices, fixed in writing after a free review — no hourly billing, no discounts.';
 
 const faqEntries = (await getCollection('faqs', ({ data }) => data.pages.includes('pricing')))
   .map(({ data }) => data)
@@ -82,28 +83,28 @@ const headline = [
 
 const paysFor = [
   {
+    title: 'The words on every page',
+    text: 'Most of the work is writing: what a treatment involves, what affects the cost, what recovery feels like. Filler text is why most clinic sites earn nothing.',
+  },
+  {
+    title: 'The path to the enquiry',
+    text: 'Where a patient lands, what they read next, and how few taps it takes to message you — planned before anything is designed.',
+  },
+  {
+    title: 'Brand alignment',
+    text: 'The site matches how your practice already looks and sounds, so a patient meets the same practice online and at your reception.',
+  },
+  {
     title: 'Healthcare specialization',
     text: 'Patterns learned across practices — how patients search, what they fear, what earns trust — applied to yours from day one.',
-  },
-  {
-    title: 'Custom design',
-    text: 'Designed around your practice, never adapted from a template. Your site will not look like the clinic across the road.',
-  },
-  {
-    title: 'Modern development',
-    text: 'Hand-built, nearly zero JavaScript, measured on real phones against a published reference.',
   },
   {
     title: 'Search groundwork',
     text: 'Treatment pages, structured data, consistent details, Search Console — the foundation rankings are built on.',
   },
   {
-    title: 'Long-term support',
-    text: 'A written maintenance schedule and a quarterly review. We are pricing a relationship, not a handover.',
-  },
-  {
-    title: 'Personal attention',
-    text: 'You talk to the people doing the work. There is no account manager between you and the person building your site.',
+    title: 'Build quality you can measure',
+    text: 'Hand-built, nearly zero JavaScript, timed on a mid-range Android against a published reference rather than on our own laptops.',
   },
 ];
 
@@ -161,7 +162,7 @@ const principles = [
         id="builds-title"
         label="Websites, one-time"
         title="Three shapes of practice, three starting prices."
-        lede="Every build is a fixed price agreed in writing before any work begins — no hourly billing, no surprise invoices. Exclusions are listed with the same weight as inclusions."
+        lede="Most of what you are paying for here is the writing and the enquiry path, not the building — so these are lower than agency quotes for the same work. Fixed in writing before anything begins, with exclusions listed as plainly as inclusions."
       />
 
       <div class="mt-12 grid items-start gap-5 xl:grid-cols-3">
@@ -216,6 +217,30 @@ const principles = [
         answers — and it often answers "less than you expected".
       </p>
     </div>
+  </section>
+
+  <!-- WHERE THE RETURN COMES FROM -->
+  <section class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[110px] xl:px-20" aria-labelledby="return-title">
+    <SectionHead
+      id="return-title"
+      label="Where the return comes from"
+      title={WHERE_RETURN_COMES_FROM.headline}
+      lede={WHERE_RETURN_COMES_FROM.lede}
+    />
+    <div class="reveal-group mt-11 grid gap-4 sm:grid-cols-2">
+      {WHERE_RETURN_COMES_FROM.points.map((p, i) => (
+        <article class="card-hover overflow-hidden rounded-3xl border border-line bg-surface">
+          <span class:list={['block h-1 w-full', cycleAccent(i).bar]} aria-hidden="true"></span>
+          <div class="p-7">
+            <h3 class="text-[19px] font-bold tracking-[-0.02em] text-ink">{p.title}</h3>
+            <p class="mt-2.5 text-[15.5px] leading-[1.62] text-body">{p.text}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+    <p class="mt-8 max-w-[760px] rounded-2xl border border-line bg-surface px-6 py-5 text-[15.5px] leading-[1.65] text-body sm:px-7">
+      {WHERE_RETURN_COMES_FROM.closing}
+    </p>
   </section>
 
   <!-- WHAT MOVES THE PRICE -->

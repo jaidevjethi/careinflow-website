@@ -55,17 +55,17 @@ export const BUILDS: Build[] = [
     id: 'single-practice',
     name: 'Single practice',
     suits: 'One doctor, one location, a few treatments that matter most.',
-    from: 55000,
+    from: 40000,
     timeline: '3 weeks',
     pages: 'Up to 7 pages',
     includes: [
-      'Custom design around your practice — never a template',
+      'The path planned first: where a patient lands, what they read, how they message you',
+      'Every page written to answer what the patient came worried about',
+      'Designed to match how your practice already looks and sounds',
       'Home, about, three treatment pages, contact, one area page',
-      'Words written for you, corrected by you before publishing',
-      'WhatsApp enquiry, tap-to-call and directions on every page',
+      'WhatsApp enquiry with the message part-written, tap-to-call and directions',
       'Speed measured on a mid-range Android — REF <1.2s',
       'Schema, Search Console and analytics configured at launch',
-      'Two rounds of changes before we go live',
     ],
     excludes:
       'Excludes ongoing Google Business Profile management, Gujarati, and more than one location.',
@@ -74,16 +74,17 @@ export const BUILDS: Build[] = [
     id: 'established-clinic',
     name: 'Established clinic',
     suits: 'Several treatments, each worth its own page. The common case.',
-    from: 110000,
+    from: 75000,
     timeline: '4–5 weeks',
     pages: 'Up to 14 pages',
     includes: [
       'Everything in Single practice',
-      'A page for every treatment you offer, written to what patients search',
+      'A page for every treatment, written to what patients search and worry about',
+      'A separate enquiry path per treatment — an implant is not the same decision as a cleaning',
       'Three area pages for the towns you actually serve',
       'Google Business Profile rebuilt, verified and matched to the site',
       'A review flow set up for genuinely happy patients',
-      'A photography shot list you can hand to your own photographer',
+      'A photography shot list, so the pictures match the words',
       'The first month of Care included, so the launch is watched',
     ],
     excludes:
@@ -94,13 +95,13 @@ export const BUILDS: Build[] = [
     id: 'multi-specialty',
     name: 'Multi-specialty',
     suits: 'Several doctors or departments, or a diagnostic centre.',
-    from: 195000,
+    from: 135000,
     timeline: '6–8 weeks',
     pages: '20+ pages',
     includes: [
       'Everything in Established clinic',
       'Structured by department, so a patient lands where they meant to',
-      'A profile page for each doctor, with their own schema',
+      'A profile page for each doctor, written to earn trust before the first visit',
       'English and Gujarati, both written properly rather than translated by machine',
       'A page and a listing for each location you run',
       'Search Console and reporting split by department',
@@ -109,6 +110,38 @@ export const BUILDS: Build[] = [
       'Excludes paid advertising and app development. We do not offer either, and we will say so plainly.',
   },
 ];
+
+/**
+ * Why the build prices are what they are. The sites are hand-built and
+ * static — there is no application to maintain — so the studio does not
+ * charge like a software project. What is actually being sold, and what
+ * decides whether a clinic site earns anything, is the layer above the code.
+ */
+export const WHERE_RETURN_COMES_FROM = {
+  headline: 'The build is the cheap part. The thinking is what earns.',
+  lede:
+    'A clinic website does not earn its money by being built well. It earns it by taking a worried patient from a search to a message without losing them. That is where our work actually goes, and it is why the build itself does not cost what agencies usually charge for it.',
+  points: [
+    {
+      title: 'The path from landing to enquiry',
+      text: 'A patient arrives in a hurry, usually at night, usually worried. What they see first, what they read next, and how few taps it takes to reach you decides everything. We plan that path before a single screen is designed.',
+    },
+    {
+      title: 'The words on the page',
+      text: 'Most clinic websites describe the clinic. Yours has to answer what the patient came with — what this costs, whether it hurts, how long it takes, when to come in urgently. Writing that honestly is the bulk of the work, and it is included.',
+    },
+    {
+      title: 'Brand alignment',
+      text: 'A site that feels like a different practice from the one a patient walks into breaks trust quietly. We match the site to your signage, your reception and the way you already speak to patients, so it is the same practice in both places.',
+    },
+    {
+      title: 'What happens after they message',
+      text: 'A good site with no follow-through earns nothing. The enquiry arrives on WhatsApp where you will actually see it, already carrying what the patient was reading, so you are not starting the conversation cold.',
+    },
+  ],
+  closing:
+    'The sites themselves are hand-built and static — nothing to break, nearly nothing to host. We do not price them like software, because they are not software. You are paying for the decisions, not the code.',
+};
 
 /* -------------------------------------------------------------------------
  * Monthly plans — month to month
@@ -163,6 +196,7 @@ export const PLANS: Plan[] = [
       'Every review answered — drafted for your approval, never posted blind',
       'Questions on your listing watched and answered',
       'Listing details kept matched to your website, month after month',
+      'Page wording and enquiry messages adjusted when something is not landing',
     ],
     suits: 'Suits most practices, and it is where we suggest starting.',
     recommended: true,
@@ -175,7 +209,8 @@ export const PLANS: Plan[] = [
     summary: 'The whole presence, growing every month.',
     includes: [
       'Everything in Care + Google',
-      'A new treatment or area page every month, researched and published',
+      'A new treatment or area page every month, researched and written',
+      'The path from landing to enquiry reviewed quarterly, and changed where patients drop off',
       'Technical SEO maintained as the site grows',
       'Search Console watched — you see exactly the data we see',
       'Directory and citation details corrected as they drift',
@@ -261,7 +296,7 @@ export const PRICE_MOVERS: Array<{ factor: string; effect: string }> = [
   {
     factor: 'How many treatments need their own page',
     effect:
-      'The largest single factor. Every page is researched, written and designed, so ten treatments is not the same job as three.',
+      'The largest single factor, and it is a writing cost rather than a building one. The design repeats; the words cannot, because each treatment answers a different worry.',
   },
   {
     factor: 'Gujarati as well as English',

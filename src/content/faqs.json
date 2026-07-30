@@ -25,7 +25,7 @@
   {
     "id": "what-does-it-cost",
     "question": "What does a clinic website cost?",
-    "answer": "Our prices are published, so you do not have to ask. A single-practice website starts at ₹55,000, an established clinic with a page per treatment starts at ₹1,10,000, and a multi-specialty or diagnostic centre starts at ₹1,95,000. Monthly care starts at ₹4,500, and Google Business Profile management at ₹6,500. Those are starting points for a described scope — your exact number is fixed in writing after the free review, and sometimes the honest answer is 'less than you expected'.",
+    "answer": "Our prices are published, so you do not have to ask. A single-practice website starts at ₹40,000, an established clinic with a page per treatment starts at ₹75,000, and a multi-specialty or diagnostic centre starts at ₹1,35,000. Monthly care starts at ₹4,500, and Google Business Profile management at ₹6,500. Those are starting points for a described scope — your exact number is fixed in writing after the free review, and sometimes the honest answer is 'less than you expected'.",
     "pages": [
       "faq",
       "pricing",
@@ -36,7 +36,7 @@
   {
     "id": "why-premium",
     "question": "Why not use a cheap website builder or a freelancer?",
-    "answer": "You can, and for some practices that is genuinely enough. A freelancer or a site builder will usually cost a fraction of our ₹55,000 starting price, and if all you need is a page with your address on it, that is the sensible choice. What you are paying us for is different: healthcare specialization, custom design around your practice, measured performance on real phones, search groundwork done properly, and someone still answering a year after launch. A website is your practice's first impression for years — it earns back far more than it costs, or we will tell you not to build it.",
+    "answer": "You can, and for some practices that is genuinely enough. What you are paying us for is a different thing from the building. A freelancer will build you pages; we plan the path a worried patient takes from a search to a message, write every page to answer what they actually came with, and match the site to how your practice already looks and sounds. That layer is what decides whether a website earns anything, and it is why our sites cost more than a template and less than an agency charges for the same work.",
     "pages": [
       "faq",
       "pricing"
@@ -196,5 +196,15 @@
       "pricing"
     ],
     "order": 19
+  },
+  {
+    "id": "why-not-more-expensive",
+    "question": "Why is the website cheaper than the quotes I have had elsewhere?",
+    "answer": "Because we do not build the expensive kind. Our sites are hand-built and static — there is no application running behind them, nothing to break, and almost nothing to host. Agencies price a clinic website like a software project; it is not one. What we do charge properly for is the part that decides whether the site earns anything: the path a patient takes from landing to messaging you, the words on every page, and matching the site to how your practice already presents itself.",
+    "pages": [
+      "faq",
+      "pricing"
+    ],
+    "order": 20
   }
 ]
