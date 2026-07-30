@@ -7,6 +7,7 @@ import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import CtaStrip from '@/components/CtaStrip.astro';
 import type { PrefillKey } from '@/config/site';
+import { rupees } from '@/config/pricing';
 import { href } from '@/lib/url';
 import {
   graph,
@@ -55,9 +56,18 @@ const schema = graph(
     { name: 'Services', path: '/services' },
     { name: service.data.navLabel, path },
   ]),
-  serviceSchema({ name: service.data.navLabel, description, path }),
+  serviceSchema({
+    name: service.data.navLabel,
+    description,
+    path,
+    ...(service.data.pricing
+      ? { offer: { from: service.data.pricing.from, unit: service.data.pricing.unit } }
+      : {}),
+  }),
   faqSchema(service.data.faqs.map((f) => ({ question: f.q, answer: f.a }))),
 );
+
+const pricing = service.data.pricing;
 ---
 
 <BaseLayout {title} {description} {path} {schema}>
@@ -111,9 +121,26 @@ const schema = graph(
               </div>
             ))}
           </dl>
+          {pricing && (
+            <div class="mt-6 border-t border-line pt-5">
+              <p class="label-mono mb-3 text-faint" style="letter-spacing:0.12em">Starts at</p>
+              <p class="flex items-baseline gap-2">
+                <span class="text-[32px] font-extrabold leading-none tracking-[-0.045em] text-ink">
+                  {rupees(pricing.from)}
+                </span>
+                <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">
+                  {pricing.unit === 'month' ? '/ month' : 'one-time'}
+                </span>
+              </p>
+              <p class="mt-3 text-[13.5px] leading-[1.6] text-muted">{pricing.note}</p>
+              <a href={href('/pricing')} class="prose-link mt-3 inline-block text-[14px]">
+                See the full price list →
+              </a>
+            </div>
+          )}
           <p class="mt-5 border-t border-line pt-4 text-[13.5px] leading-[1.6] text-muted">
-            Fixed price agreed in writing after the
-            <a href={href('/contact')} class="prose-link">free review</a>.
+            Your exact figure is fixed in writing after the
+            <a href={href('/free-review')} class="prose-link">free review</a>.
           </p>
         </aside>
       </div>

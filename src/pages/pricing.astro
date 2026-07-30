@@ -4,20 +4,35 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import SectionHead from '@/components/SectionHead.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
+import CtaStrip from '@/components/CtaStrip.astro';
 import { href } from '@/lib/url';
 import { cycleAccent } from '@/lib/accents';
+import { BUSINESS } from '@/config/site';
+import {
+  BUILDS,
+  PLANS,
+  STANDALONE_ITEMS,
+  ONE_TIME_ITEMS,
+  PRICE_MOVERS,
+  NEVER_CHARGED,
+  PRICE_NOTES,
+  FOUNDING_TERMS,
+  partsTotal,
+  rupees,
+} from '@/config/pricing';
 import {
   graph,
   organizationSchema,
   webSiteSchema,
   webPageSchema,
   breadcrumbSchema,
+  offerCatalogSchema,
   faqSchema,
 } from '@/lib/schema';
 
-const title = 'Pricing philosophy — fixed prices, agreed in writing | CareInflow';
+const title = 'Pricing for clinic websites, local SEO and Google listings | CareInflow';
 const description =
-  'How CareInflow prices its work: a fixed price in writing after a free review, no hourly billing, no surprise invoices. Premium work priced on value — what you are paying for, stated plainly.';
+  'What CareInflow charges: clinic websites from ₹55,000, monthly care from ₹4,500, Google Business Profile management from ₹6,500. Published prices, fixed in writing after a free review — no hourly billing, no discounts.';
 
 const faqEntries = (await getCollection('faqs', ({ data }) => data.pages.includes('pricing')))
   .map(({ data }) => data)
@@ -31,8 +46,39 @@ const schema = graph(
     { name: 'Home', path: '/' },
     { name: 'Pricing', path: '/pricing' },
   ]),
+  offerCatalogSchema({
+    name: 'CareInflow published prices',
+    path: '/pricing',
+    offers: [
+      ...BUILDS.map((b) => ({
+        name: `${b.name} website`,
+        description: `${b.suits} ${b.pages}, ${b.timeline}.`,
+        from: b.from,
+        unit: 'project' as const,
+      })),
+      ...PLANS.map((p) => ({
+        name: `${p.name} plan`,
+        description: p.summary,
+        from: p.monthly,
+        unit: 'month' as const,
+      })),
+      ...ONE_TIME_ITEMS.map((o) => ({
+        name: o.item,
+        description: o.note,
+        from: o.price,
+        unit: o.unit,
+      })),
+    ],
+  }),
   faqSchema(faqEntries.map((f) => ({ question: f.question, answer: f.answer }))),
 );
+
+/** The three figures a visitor is really scanning for. */
+const headline = [
+  { label: 'Websites, one-time', value: rupees(BUILDS[0]!.from), suffix: 'from' },
+  { label: 'Monthly care', value: rupees(PLANS[0]!.monthly), suffix: 'from, a month' },
+  { label: 'Google listing', value: rupees(STANDALONE_ITEMS[0]!.price), suffix: 'from, a month' },
+];
 
 const paysFor = [
   {
@@ -63,8 +109,8 @@ const paysFor = [
 
 const principles = [
   {
-    title: 'Fixed price, in writing, before we start',
-    text: 'After the free review you receive a scope with one number on it. That number does not move unless you change the scope — and then it changes in writing too.',
+    title: 'Published prices, then one fixed number in writing',
+    text: 'The figures on this page are real starting points, not a range invented to open a conversation. After the free review you receive a scope with one number on it, and that number does not move unless you change the scope — and then it changes in writing too.',
   },
   {
     title: 'The review is free and sometimes the answer is "change nothing"',
@@ -82,23 +128,313 @@ const principles = [
 ---
 
 <BaseLayout {title} {description} path="/pricing" {schema}>
+  <!-- OPENER -->
   <section class="mx-auto max-w-[1440px] px-5 pb-14 pt-14 sm:px-10 sm:pt-20 xl:px-20">
     <div class="tick-rule mb-3.5" aria-hidden="true"></div>
     <p class="label-mono mb-5 text-surgical">Pricing</p>
-    <h1 class="max-w-[820px] text-[clamp(34px,5vw,62px)] font-extrabold leading-[1.04] tracking-[-0.045em] text-ink">
-      One fixed number, agreed in writing, before any work begins.
+    <h1 class="max-w-[860px] text-[clamp(34px,5vw,62px)] font-extrabold leading-[1.04] tracking-[-0.045em] text-ink">
+      Our prices are on this page, because you should not have to ask.
     </h1>
     <p class="mt-6 max-w-[680px] text-lg leading-[1.62] text-body">
-      A professional online presence is an investment in your practice's
-      credibility — like the interior of your clinic, patients read quality
-      from it. This page explains how we price that work and what the price
-      buys, plainly.
+      Most studios make you sit through a call before they say a number. Here
+      is what things cost, what moves the figure up, and what we never charge
+      for. Your exact price is fixed in writing after the free review.
     </p>
+
+    <dl class="mt-11 grid max-w-[900px] gap-4 sm:grid-cols-3">
+      {headline.map((h) => (
+        <div class="rounded-2xl border border-line bg-surface px-6 py-5">
+          <dt class="label-mono text-faint" style="letter-spacing:0.12em">{h.label}</dt>
+          <dd class="mt-3 text-[clamp(28px,3.4vw,38px)] font-extrabold leading-none tracking-[-0.045em] text-ink">
+            {h.value}
+          </dd>
+          <dd class="mt-2 font-mono text-[11px] uppercase tracking-[0.08em] text-surgical">{h.suffix}</dd>
+        </div>
+      ))}
+    </dl>
   </section>
 
+  <!-- WEBSITE BUILDS -->
+  <section class="border-t border-hairline bg-surface" aria-labelledby="builds-title">
+    <div class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[110px] xl:px-20">
+      <SectionHead
+        id="builds-title"
+        label="Websites, one-time"
+        title="Three shapes of practice, three starting prices."
+        lede="Every build is a fixed price agreed in writing before any work begins — no hourly billing, no surprise invoices. Exclusions are listed with the same weight as inclusions."
+      />
+
+      <div class="mt-12 grid items-start gap-5 xl:grid-cols-3">
+        {BUILDS.map((build, i) => (
+          <article
+            class:list={[
+              'card-hover flex h-full flex-col overflow-hidden rounded-3xl border bg-canvas',
+              build.recommended ? 'border-surgical shadow-card' : 'border-line',
+            ]}
+          >
+            <span class:list={['block h-1 w-full', cycleAccent(i).bar]} aria-hidden="true"></span>
+            <div class="flex h-full flex-col p-7 sm:p-8">
+              <div class="flex flex-wrap items-center gap-2.5">
+                <h3 class="text-[21px] font-bold tracking-[-0.025em] text-ink">{build.name}</h3>
+                {build.recommended && (
+                  <span class="chip bg-surgical-tint text-surgical">Our recommendation</span>
+                )}
+              </div>
+              <p class="mt-2.5 text-[15px] leading-[1.6] text-muted">{build.suits}</p>
+
+              <p class="mt-6 flex items-baseline gap-2.5">
+                <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">from</span>
+                <span class="text-[clamp(30px,3.6vw,40px)] font-extrabold leading-none tracking-[-0.045em] text-ink">
+                  {rupees(build.from)}
+                </span>
+              </p>
+              <p class="mt-3.5 flex flex-wrap gap-2">
+                <span class="chip border border-line bg-surface text-body-deep">{build.pages}</span>
+                <span class="chip border border-line bg-surface text-body-deep">{build.timeline}</span>
+              </p>
+
+              <ul class="mt-6 grow border-t border-hairline pt-5 text-[14.5px] leading-[1.55] text-body">
+                {build.includes.map((line) => (
+                  <li class="flex gap-3 py-1.5">
+                    <span class="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-pass" aria-hidden="true"></span>
+                    <span>{line}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <p class="mt-5 border-t border-hairline pt-4 text-[13.5px] leading-[1.6] text-muted">
+                {build.excludes}
+              </p>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <p class="mt-8 max-w-[680px] text-[15.5px] leading-[1.65] text-muted">
+        Not sure which shape your practice is? That is exactly what the
+        <a href={href('/free-review')} class="prose-link">free written review</a>
+        answers — and it often answers "less than you expected".
+      </p>
+    </div>
+  </section>
+
+  <!-- WHAT MOVES THE PRICE -->
+  <section class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[110px] xl:px-20" aria-labelledby="movers-title">
+    <SectionHead
+      id="movers-title"
+      label="What moves the number"
+      title="Five things decide where your price lands."
+      lede="A quotation with no explanation is just a number to argue about. These are the factors we actually price against, in the order they matter."
+    />
+    <div class="mt-10 max-w-[900px] overflow-x-auto">
+      <table class="w-full border-collapse text-left">
+        <caption class="sr-only">Factors that change the price of an engagement</caption>
+        <thead>
+          <tr class="border-b border-line">
+            <th scope="col" class="label-mono py-3 pr-6 text-faint">Factor</th>
+            <th scope="col" class="label-mono py-3 text-faint">What it does to the price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {PRICE_MOVERS.map((m) => (
+            <tr class="border-b border-hairline align-top">
+              <th scope="row" class="w-[38%] py-4 pr-6 text-[15px] font-semibold leading-[1.5] text-ink">
+                {m.factor}
+              </th>
+              <td class="py-4 text-[15.5px] leading-[1.6] text-body">{m.effect}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- MONTHLY PLANS -->
+  <section class="border-t border-hairline bg-surface" aria-labelledby="plans-title">
+    <div class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[110px] xl:px-20">
+      <SectionHead
+        id="plans-title"
+        label="Monthly, after launch"
+        title="Launch is the start. These are the plans that keep it working."
+        lede="Month to month, no lock-in, cancel by sending a message. Whatever you choose, the website and every account stay in your name."
+      />
+
+      <div class="mt-12 grid items-start gap-5 xl:grid-cols-3">
+        {PLANS.map((plan, i) => (
+          <article
+            class:list={[
+              'card-hover flex h-full flex-col overflow-hidden rounded-3xl border bg-canvas',
+              plan.recommended ? 'border-surgical shadow-card' : 'border-line',
+            ]}
+          >
+            <span class:list={['block h-1 w-full', cycleAccent(i + 3).bar]} aria-hidden="true"></span>
+            <div class="flex h-full flex-col p-7 sm:p-8">
+              <div class="flex flex-wrap items-center gap-2.5">
+                <h3 class="text-[21px] font-bold tracking-[-0.025em] text-ink">{plan.name}</h3>
+                {plan.recommended && (
+                  <span class="chip bg-surgical-tint text-surgical">Our recommendation</span>
+                )}
+              </div>
+              <p class="mt-2.5 text-[15px] leading-[1.6] text-muted">{plan.summary}</p>
+
+              <p class="mt-6 flex items-baseline gap-2">
+                <span class="text-[clamp(30px,3.6vw,40px)] font-extrabold leading-none tracking-[-0.045em] text-ink">
+                  {rupees(plan.monthly)}
+                </span>
+                <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">/ month</span>
+              </p>
+              <p class="mt-3 font-mono text-[11px] uppercase leading-[1.5] tracking-[0.06em] text-surgical">
+                {plan.combines ? `${rupees(partsTotal(plan))} bought separately` : plan.priceNote}
+              </p>
+
+              <ul class="mt-6 grow border-t border-hairline pt-5 text-[14.5px] leading-[1.55] text-body">
+                {plan.includes.map((line) => (
+                  <li class="flex gap-3 py-1.5">
+                    <span class="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-pass" aria-hidden="true"></span>
+                    <span>{line}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <p class="mt-5 border-t border-hairline pt-4 text-[13.5px] leading-[1.6] text-muted">
+                {plan.suits}
+              </p>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div class="mt-8 max-w-[820px] rounded-2xl border border-line bg-canvas px-6 py-5 sm:px-7">
+        <p class="label-mono mb-3 text-faint" style="letter-spacing:0.12em">Why the combined price is lower</p>
+        <p class="text-[15.5px] leading-[1.65] text-body">
+          Because the work genuinely overlaps, not because it is an offer. Run
+          together, these share one monthly pass over your presence, one set of
+          measurements and one written report instead of three. We have passed
+          the difference on rather than charged you for our own convenience.
+          There is no discount here to ask us for.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOUGHT ON ITS OWN -->
+  <section class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[110px] xl:px-20" aria-labelledby="separate-title">
+    <SectionHead
+      id="separate-title"
+      label="Bought on its own"
+      title="Single pieces, for practices that only need one thing."
+      lede="You do not have to buy a website to work with us. Each of these stands alone, at a published price."
+    />
+
+    <div class="mt-10 grid gap-10 lg:grid-cols-2 lg:gap-14">
+      <div>
+        <h3 class="label-mono mb-4 text-surgical">Monthly</h3>
+        <dl class="border-t border-line">
+          {STANDALONE_ITEMS.map((item) => (
+            <div class="flex flex-wrap items-baseline justify-between gap-x-6 border-b border-hairline py-4.5">
+              <dt class="text-[15.5px] font-semibold leading-[1.45] text-ink">{item.item}</dt>
+              <dd class="whitespace-nowrap font-mono text-[14px] font-semibold text-pass">
+                {rupees(item.price)}/mo
+              </dd>
+              <dd class="mt-1.5 w-full text-[14px] leading-[1.55] text-muted">{item.note}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+
+      <div>
+        <h3 class="label-mono mb-4 text-surgical">One-time</h3>
+        <dl class="border-t border-line">
+          {ONE_TIME_ITEMS.map((item) => (
+            <div class="flex flex-wrap items-baseline justify-between gap-x-6 border-b border-hairline py-4.5">
+              <dt class="text-[15.5px] font-semibold leading-[1.45] text-ink">{item.item}</dt>
+              <dd class="whitespace-nowrap font-mono text-[14px] font-semibold text-pass">
+                {item.from ? 'from ' : ''}{rupees(item.price)}{item.unit === 'page' ? '/page' : ''}
+              </dd>
+              <dd class="mt-1.5 w-full text-[14px] leading-[1.55] text-muted">{item.note}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </div>
+
+    <div class="mt-12 max-w-[820px] rounded-3xl border border-line bg-surface p-7 sm:p-8">
+      <h3 class="text-[19px] font-bold tracking-[-0.02em] text-ink">What we never charge for</h3>
+      <ul class="mt-4 text-[15.5px] leading-[1.6] text-body">
+        {NEVER_CHARGED.map((line) => (
+          <li class="flex gap-3 border-b border-hairline py-3 last:border-0">
+            <span class="mt-[10px] h-1.5 w-1.5 shrink-0 rounded-full bg-pass" aria-hidden="true"></span>
+            <span>{line}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CtaStrip text="Not sure which of these your practice actually needs? The free review will say so, honestly." />
+
+  <!-- FOUNDING TERMS — the page's one dark panel -->
+  <section class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[120px] xl:px-20" aria-labelledby="founding-title">
+    <div class="rounded-[28px] bg-panel p-8 sm:p-12 lg:p-16">
+      <div class="grid items-start gap-12 lg:grid-cols-[1fr_360px] lg:gap-16">
+        <div>
+          <SectionHead
+            dark
+            id="founding-title"
+            label="Founding practices"
+            title={FOUNDING_TERMS.headline}
+            lede={FOUNDING_TERMS.body}
+          />
+          <p class="mt-7 max-w-[620px] text-[15.5px] leading-[1.65] text-panel-text-dim">
+            What we ask in return is permission to publish what happened —
+            honestly, including what did not work. That published record
+            becomes the proof the next practice reads.
+          </p>
+          <p class="mt-8 flex flex-wrap gap-4">
+            <a href={href('/free-review')} class="btn-primary bg-surface px-6 py-3.5 text-[15px] text-ink">
+              Start with the free review
+            </a>
+            <a href={href('/services')} class="prose-link self-center text-base text-panel-accent">
+              See what each engagement includes →
+            </a>
+          </p>
+        </div>
+
+        <div class="rounded-[20px] border border-panel-line bg-panel-card p-7">
+          <p class="flex items-baseline justify-between">
+            <span class="label-mono text-panel-text-faint" style="letter-spacing:0.12em">Founding places</span>
+            <span class="text-[34px] font-extrabold tracking-[-0.04em] text-surface">
+              {BUSINESS.founding.totalPlaces}
+            </span>
+          </p>
+          <div
+            class="mt-5 flex gap-1.5"
+            role="img"
+            aria-label={`${BUSINESS.founding.filledPlaces} of ${BUSINESS.founding.totalPlaces} founding places taken`}
+          >
+            {Array.from({ length: BUSINESS.founding.totalPlaces }, (_, i) => (
+              <span
+                class:list={[
+                  'h-2 flex-1 rounded-full',
+                  i < BUSINESS.founding.filledPlaces ? 'bg-panel-accent' : 'bg-panel-line-alt',
+                ]}
+              ></span>
+            ))}
+          </div>
+          <p class="mt-5 text-[14.5px] leading-[1.6] text-panel-text">
+            One place is held for a practice in Mehsana so the work can be done
+            in person, start to finish.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT YOU PAY FOR -->
   <section class="border-t border-hairline bg-surface" aria-labelledby="paysfor-title">
     <div class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20">
       <SectionHead
+        id="paysfor-title"
         label="What you pay for"
         title="What does the price include?"
       />
@@ -116,8 +452,10 @@ const principles = [
     </div>
   </section>
 
+  <!-- HOW PRICING BEHAVES -->
   <section class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[110px] xl:px-20" aria-labelledby="principles-title">
     <SectionHead
+      id="principles-title"
       label="How pricing works"
       title="How our pricing behaves"
     />
@@ -132,19 +470,14 @@ const principles = [
         </article>
       ))}
     </div>
-  </section>
 
-  <section class="border-t border-hairline bg-surface" aria-labelledby="founding-title">
-    <div class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20">
-      <SectionHead
-        label="Founding practices"
-        title="Founding practice terms"
-        lede="Fixed founding pricing in exchange for one thing: permission to publish what happened, honestly, including what did not work. Ask about the terms on WhatsApp — they are written down, like everything else."
-      />
-      <p class="mt-7 flex flex-wrap gap-4">
-        <a href={href('/contact')} class="btn-secondary px-6 py-3.5 text-[15px]">Start with the free review</a>
-        <a href={href('/services')} class="prose-link self-center text-base">See what each engagement includes →</a>
-      </p>
+    <div class="mt-10 max-w-[920px] rounded-2xl border border-line bg-surface px-6 py-5 sm:px-7">
+      <p class="label-mono mb-3 text-faint" style="letter-spacing:0.12em">The small print, in full</p>
+      <ul class="text-[14.5px] leading-[1.6] text-muted">
+        {PRICE_NOTES.map((note) => (
+          <li class="border-b border-hairline py-2.5 last:border-0 last:pb-0">{note}</li>
+        ))}
+      </ul>
     </div>
   </section>
 

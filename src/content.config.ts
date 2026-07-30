@@ -26,6 +26,19 @@ const services = defineCollection({
     deliverables: z.array(
       z.object({ item: z.string(), status: z.string() }),
     ),
+    /**
+     * Published starting price, mirroring `src/config/pricing.ts`. Drives the
+     * price line on service cards and the `Offer` in the Service schema. The
+     * real figure is still fixed in writing after the free review.
+     */
+    pricing: z
+      .object({
+        from: z.number(),
+        unit: z.enum(['project', 'month']),
+        /** One line on what that figure buys, in the service's own terms. */
+        note: z.string(),
+      })
+      .optional(),
     faqs: z.array(z.object({ q: z.string(), a: z.string() })),
     related: z.array(z.string()).default([]),
   }),

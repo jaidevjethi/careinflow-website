@@ -27,7 +27,8 @@ Astro 5 · TypeScript strict · Tailwind CSS v4 (`@tailwindcss/vite`, tokens in 
 ## Voice & integrity (non-negotiable)
 
 - Simple English for busy doctors. Short paragraphs. Clarity over cleverness. No buzzwords, no urgency CTAs ("Buy now", "Limited time"), no discount messaging — premium positioning.
-- Honest register: CareInflow is a new studio choosing five founding practices. **Never fabricate testimonials, reviews, ratings, client counts, or prices.** Sample interface artifacts keep their `ILLUSTRATIVE` label. Real portfolio: Pramukh Multispeciality Dental Clinic (Mehsana, healthcare flagship), Divyam Tours (labeled non-healthcare).
+- Honest register: CareInflow is a new studio choosing five founding practices. **Never fabricate testimonials, reviews, ratings or client counts.** Sample interface artifacts keep their `ILLUSTRATIVE` label. Real portfolio: Pramukh Multispeciality Dental Clinic (Mehsana, healthcare flagship), Divyam Tours (labeled non-healthcare).
+- **Prices come from `src/config/pricing.ts` and nowhere else** — never invent a figure inline, in copy, in a FAQ answer or in schema. Published numbers are *starting points* for a described scope; the real figure is fixed in writing after the free review. No discounts, no offers, no countdowns: where a combined plan costs less than its parts, the page states the overlap that makes it true.
 - No ranking guarantees, no bought reviews, no templates resold as bespoke.
 - One studio, in Mehsana — no branches or other offices. Service areas are places served, not places staffed.
 

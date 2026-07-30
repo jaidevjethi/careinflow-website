@@ -1,4 +1,5 @@
 import { BUSINESS, CANONICAL_HOST, WHATSAPP_URL } from '@/config/site';
+import { CURRENCY, PRICE_RANGE, type PriceUnit } from '@/config/pricing';
 import { canonicalUrl } from '@/lib/url';
 
 /**
@@ -38,6 +39,8 @@ export function organizationSchema() {
       'Website maintenance',
     ],
     slogan: 'Websites, local search, and Google presence for healthcare practices.',
+    priceRange: PRICE_RANGE,
+    currenciesAccepted: CURRENCY,
   };
 }
 
@@ -91,7 +94,48 @@ export function breadcrumbSchema(items: Array<{ name: string; path: string }>) {
   };
 }
 
-export function serviceSchema(opts: { name: string; description: string; path: string }) {
+/**
+ * A published starting price. `from` prices are modelled as `minPrice` on a
+ * price specification rather than a flat `price`, because that is what they
+ * honestly are — the real figure is fixed in writing after the free review.
+ */
+export interface PriceOffer {
+  from: number;
+  unit: PriceUnit;
+}
+
+function priceSpecification({ from, unit }: PriceOffer) {
+  const recurring = unit === 'month';
+  return {
+    '@type': recurring ? 'UnitPriceSpecification' : 'PriceSpecification',
+    priceCurrency: CURRENCY,
+    minPrice: from,
+    valueAddedTaxIncluded: false,
+    ...(recurring
+      ? { unitText: 'MONTH', billingDuration: 1, billingIncrement: 1 }
+      : {}),
+  };
+}
+
+function offer(opts: PriceOffer & { name?: string; description?: string; url?: string }) {
+  return {
+    '@type': 'Offer',
+    ...(opts.name ? { name: opts.name } : {}),
+    ...(opts.description ? { description: opts.description } : {}),
+    ...(opts.url ? { url: canonicalUrl(opts.url) } : {}),
+    priceCurrency: CURRENCY,
+    priceSpecification: priceSpecification(opts),
+    availability: 'https://schema.org/InStock',
+    seller: { '@id': ORG_ID },
+  };
+}
+
+export function serviceSchema(opts: {
+  name: string;
+  description: string;
+  path: string;
+  offer?: PriceOffer;
+}) {
   return {
     '@type': 'Service',
     name: opts.name,
@@ -100,6 +144,42 @@ export function serviceSchema(opts: { name: string; description: string; path: s
     provider: { '@id': ORG_ID },
     areaServed: BUSINESS.serviceAreas.map((name) => ({ '@type': 'City', name })),
     serviceType: opts.name,
+    ...(opts.offer ? { offers: offer({ ...opts.offer, url: opts.path }) } : {}),
+  };
+}
+
+/**
+ * The published price list, as one catalog. Rendered on /pricing only — it
+ * must describe exactly what that page shows, so search engines and AI
+ * assistants quote the same numbers a visitor reads.
+ */
+export function offerCatalogSchema(opts: {
+  name: string;
+  path: string;
+  offers: Array<{ name: string; description: string; from: number; unit: PriceUnit }>;
+}) {
+  return {
+    '@type': 'OfferCatalog',
+    '@id': `${canonicalUrl(opts.path)}#offers`,
+    name: opts.name,
+    url: canonicalUrl(opts.path),
+    provider: { '@id': ORG_ID },
+    itemListElement: opts.offers.map((o, i) => ({
+      '@type': 'Offer',
+      position: i + 1,
+      name: o.name,
+      description: o.description,
+      priceCurrency: CURRENCY,
+      priceSpecification: priceSpecification(o),
+      availability: 'https://schema.org/InStock',
+      seller: { '@id': ORG_ID },
+      itemOffered: {
+        '@type': 'Service',
+        name: o.name,
+        provider: { '@id': ORG_ID },
+        areaServed: BUSINESS.serviceAreas.map((name) => ({ '@type': 'City', name })),
+      },
+    })),
   };
 }
 

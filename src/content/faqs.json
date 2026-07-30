@@ -3,98 +3,198 @@
     "id": "why-healthcare-only",
     "question": "Why does CareInflow only work with healthcare practices?",
     "answer": "Because doing one kind of work makes the work better. A café wants you hungry; a clinic needs you calm. By working only with dental, dermatology, physiotherapy, eye, orthopedic, pediatric, gynecology, cosmetic and mental health practices, we learn the patterns once — how patients search, what worries them, what earns their trust — and bring them to every practice we take on.",
-    "pages": ["faq", "home", "about"],
+    "pages": [
+      "faq",
+      "home",
+      "about"
+    ],
     "order": 1
   },
   {
     "id": "new-studio",
     "question": "How established is CareInflow?",
     "answer": "We are a new studio, and we would rather you heard that from us. CareInflow is currently choosing five founding practices, who get a fixed price agreed in writing and direct access to the people doing the work. In return we ask to publish what happened — honestly, including what did not work.",
-    "pages": ["faq", "about", "pricing", "free-review"],
+    "pages": [
+      "faq",
+      "about",
+      "pricing",
+      "free-review"
+    ],
     "order": 2
   },
   {
     "id": "what-does-it-cost",
     "question": "What does a clinic website cost?",
-    "answer": "Every engagement is a fixed price agreed in writing before any work starts — no hourly billing, no surprise invoices. The exact figure depends on scope: how many treatments need pages, whether you need Gujarati as well as English, and what state your Google presence is in. The free written review is where we tell you what you actually need; sometimes the honest answer is 'less than you expected'.",
-    "pages": ["faq", "pricing", "free-review"],
+    "answer": "Our prices are published, so you do not have to ask. A single-practice website starts at ₹55,000, an established clinic with a page per treatment starts at ₹1,10,000, and a multi-specialty or diagnostic centre starts at ₹1,95,000. Monthly care starts at ₹4,500, and Google Business Profile management at ₹6,500. Those are starting points for a described scope — your exact number is fixed in writing after the free review, and sometimes the honest answer is 'less than you expected'.",
+    "pages": [
+      "faq",
+      "pricing",
+      "free-review"
+    ],
     "order": 3
   },
   {
     "id": "why-premium",
     "question": "Why not use a cheap website builder or a freelancer?",
-    "answer": "You can, and for some practices that is genuinely enough. What you are paying us for is different: healthcare specialization, custom design around your practice, measured performance on real phones, search groundwork done properly, and someone still answering a year after launch. A website is your practice's first impression for years — it earns back far more than it costs, or we will tell you not to build it.",
-    "pages": ["faq", "pricing"],
+    "answer": "You can, and for some practices that is genuinely enough. A freelancer or a site builder will usually cost a fraction of our ₹55,000 starting price, and if all you need is a page with your address on it, that is the sensible choice. What you are paying us for is different: healthcare specialization, custom design around your practice, measured performance on real phones, search groundwork done properly, and someone still answering a year after launch. A website is your practice's first impression for years — it earns back far more than it costs, or we will tell you not to build it.",
+    "pages": [
+      "faq",
+      "pricing"
+    ],
     "order": 4
   },
   {
     "id": "how-long",
     "question": "How long does the whole process take?",
     "answer": "A typical practice website takes four weeks: study, structure and words, design and build, then launch and measurement. Google Business Profile work runs alongside. We agree the timeline in writing before starting, and if something will take longer we say so at week one, not week four.",
-    "pages": ["faq", "process", "home"],
+    "pages": [
+      "faq",
+      "process",
+      "home"
+    ],
     "order": 5
   },
   {
     "id": "after-launch",
     "question": "What happens after my website launches?",
     "answer": "Whatever you choose. With ongoing care, we monitor weekly, maintain monthly, and send a written quarterly review of what patients did and what to do next. Without it, you still own everything — domain, hosting, code and accounts are in your name from day one, and that is written into every agreement.",
-    "pages": ["faq", "process"],
+    "pages": [
+      "faq",
+      "process"
+    ],
     "order": 6
   },
   {
     "id": "ranking-guarantee",
     "question": "Will my clinic rank number one on Google?",
     "answer": "We do not promise rankings, and we would be careful with anyone who does. Rankings depend on competition, reviews, and time — no honest agency controls them. What we control, and commit to in writing, is the groundwork rankings are built on: real pages for real searches, a properly maintained Google Business Profile, valid structured data, and speed that passes Google's own measurements.",
-    "pages": ["faq", "home"],
+    "pages": [
+      "faq",
+      "home"
+    ],
     "order": 7
   },
   {
     "id": "current-site-good-enough",
     "question": "My clinic already has a website. Is that not enough?",
     "answer": "Maybe — and the free review will tell you honestly. But check three things tonight on your own phone: how long your site takes to load on mobile data, whether your Google listing shows the right hours and recent photos, and whether searching a treatment you offer brings up your site at all. Most practices find at least one surprise.",
-    "pages": ["faq", "home", "free-review"],
+    "pages": [
+      "faq",
+      "home",
+      "free-review"
+    ],
     "order": 8
   },
   {
     "id": "do-you-do-apps",
     "question": "Do you build apps, do branding, or run advertising?",
     "answer": "No. We are not an advertising agency, a branding studio, or an app developer. We do websites, local SEO, Google Business Profile management, and ongoing website care — for healthcare practices. We can support with small complementary things like basic social media assets, but the core four are what we are good at, and we would rather stay good at them.",
-    "pages": ["faq", "about"],
+    "pages": [
+      "faq",
+      "about"
+    ],
     "order": 9
   },
   {
     "id": "how-to-start",
     "question": "How do we start?",
     "answer": "Send your clinic's name on WhatsApp. Within two working days you get a free written review of what a patient currently sees — your listing, your site, your search results, and the three clinics above you. If the answer is 'change nothing', we will say that. If there is work worth doing, the review becomes the plan we quote against.",
-    "pages": ["faq", "contact", "process", "free-review"],
+    "pages": [
+      "faq",
+      "contact",
+      "process",
+      "free-review"
+    ],
     "order": 10
   },
   {
     "id": "where-based",
     "question": "Where is CareInflow based, and do you only work locally?",
     "answer": "We work from Shop F-27, Platinum Plaza Complex, Radhanpur Road, Mehsana — and primarily serve practices across North Gujarat: Mehsana, Ahmedabad, Gandhinagar, Visnagar, Unjha, Patan, Kalol, Siddhpur and Palanpur. Being nearby means we can visit your practice and photograph it properly. For practices further away, everything except the photography works remotely.",
-    "pages": ["faq", "contact"],
+    "pages": [
+      "faq",
+      "contact"
+    ],
     "order": 11
+  },
+  {
+    "id": "own-the-site",
+    "question": "Who owns the website — you or my practice?",
+    "answer": "Your practice, entirely. The domain, hosting, code, content, analytics and search accounts are all registered in your name from day one. If we ever part ways, you lose nothing and owe nothing further. We keep clients by being useful, not by holding their website hostage.",
+    "pages": [
+      "faq",
+      "pricing",
+      "process"
+    ],
+    "order": 12
   },
   {
     "id": "keep-domain",
     "question": "Can I keep my current domain name and email?",
     "answer": "Yes. We build the new website and point your existing domain at it, so patients who already know your address still find you. We also set up redirects so the pages Google has indexed keep working instead of turning into errors. Your email keeps running throughout — we plan the switch so nothing goes down during clinic hours.",
-    "pages": ["faq"],
+    "pages": [
+      "faq"
+    ],
     "order": 13
   },
   {
     "id": "do-you-do-social",
     "question": "Do you handle social media for clinics?",
     "answer": "Yes, as a support service rather than a main one. We write educational posts — treatment explainers, clinic updates, honest answers to the questions patients ask in the chair — within the limits patient privacy sets. We do not run paid ads or chase follower counts. And if your website or Google listing still needs work, we will tell you to fix those first, because that is where patients actually decide.",
-    "pages": ["faq", "social-media"],
+    "pages": [
+      "faq",
+      "social-media"
+    ],
     "order": 14
   },
   {
-    "id": "own-the-site",
-    "question": "Who owns the website — you or my practice?",
-    "answer": "Your practice, entirely. The domain, hosting, code, content, analytics and search accounts are all registered in your name from day one. If we ever part ways, you lose nothing and owe nothing further. We keep clients by being useful, not by holding their website hostage.",
-    "pages": ["faq", "pricing", "process"],
-    "order": 12
+    "id": "payment-schedule",
+    "question": "Do I have to pay everything upfront?",
+    "answer": "No. A standard build is paid in two halves — one to begin, one at launch. Larger builds split into three: at the start, at design approval, and at launch. Monthly plans are billed monthly in advance and you can stop by sending a message. There is no deposit that we keep if you change your mind before work begins.",
+    "pages": [
+      "faq",
+      "pricing"
+    ],
+    "order": 15
+  },
+  {
+    "id": "gst-on-top",
+    "question": "Are the published prices inclusive of GST?",
+    "answer": "The prices on the pricing page are in Indian rupees and exclude GST where it applies. Your written scope shows the figure, the tax and the total separately, so there is nothing to work out afterwards. Domain and hosting are not marked up by us at all — you pay those directly, in your own name.",
+    "pages": [
+      "faq",
+      "pricing"
+    ],
+    "order": 16
+  },
+  {
+    "id": "packages-or-separate",
+    "question": "Why does a combined monthly plan cost less than buying the parts?",
+    "answer": "Because the work genuinely overlaps, not because it is a discount — we do not run offers. Website care is ₹4,500 a month and Google Business Profile management is ₹6,500; together they are ₹9,500, because they share one monthly pass over your presence, one set of measurements and one written report instead of three. The same arithmetic makes Full visibility ₹22,000 rather than ₹27,000.",
+    "pages": [
+      "faq",
+      "pricing"
+    ],
+    "order": 17
+  },
+  {
+    "id": "only-google-listing",
+    "question": "What if I only want my Google listing fixed?",
+    "answer": "Then that is all we will sell you. A one-time Google Business Profile rebuild is ₹15,000 — claimed or verified, categories and services rebuilt, hours, photos, questions seeded and a review flow set up, with no monthly commitment attached. If you want it kept that way afterwards, management is ₹6,500 a month, and if you do not, nothing changes and you owe nothing further.",
+    "pages": [
+      "faq",
+      "pricing"
+    ],
+    "order": 18
+  },
+  {
+    "id": "prices-going-up",
+    "question": "Will these prices go up later?",
+    "answer": "The studio's rates will move as the work behind them does. For the five founding practices the price agreed at the start is held for as long as we work together, even after our rates change. That is the whole of the founding arrangement — there is no deadline attached to it, and nothing comes off the number if you decide this week instead of next.",
+    "pages": [
+      "faq",
+      "pricing"
+    ],
+    "order": 19
   }
 ]

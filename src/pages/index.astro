@@ -10,7 +10,8 @@ import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import { BUSINESS, whatsappWithMessage } from '@/config/site';
 import { href } from '@/lib/url';
-import { serviceAccent, ACCENTS } from '@/lib/accents';
+import { BUILDS, PLANS, STANDALONE_MONTHLY, rupees } from '@/config/pricing';
+import { serviceAccent, ACCENTS, cycleAccent } from '@/lib/accents';
 import {
   graph,
   organizationSchema,
@@ -37,6 +38,28 @@ const schema = graph(
   webPageSchema({ path: '/', title, description }),
   faqSchema(faqEntries.map((f) => ({ question: f.question, answer: f.answer }))),
 );
+
+/** The three figures a clinic owner is actually scanning for. */
+const priceHeadlines = [
+  {
+    name: 'A practice website',
+    value: rupees(BUILDS[0]!.from),
+    unit: '',
+    note: `One-time, fixed in writing. An established clinic with a page for every treatment starts at ${rupees(BUILDS[1]!.from)}.`,
+  },
+  {
+    name: 'Your Google listing',
+    value: rupees(STANDALONE_MONTHLY.gbp),
+    unit: '/ month',
+    note: 'Managed properly, month to month. Or a one-time rebuild at ₹15,000 with nothing attached.',
+  },
+  {
+    name: 'Website + Google, together',
+    value: rupees(PLANS[1]!.monthly),
+    unit: '/ month',
+    note: 'Both places a patient looks, maintained as one job. No lock-in — stop by sending a message.',
+  },
+];
 
 const heroStats = [
   { value: '<1.2s', caption: 'load target on 4G' },
@@ -423,6 +446,45 @@ const whatsappHref = whatsappWithMessage(
           More about the studio →
         </a>
       </div>
+    </div>
+  </section>
+
+  <!-- WHAT IT COSTS -->
+  <section class="border-t border-hairline bg-surface" aria-labelledby="cost-title">
+    <div class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[110px] xl:px-20">
+      <div class="mb-12 flex flex-wrap items-end justify-between gap-6">
+        <SectionHead
+          id="cost-title"
+          label="What it costs"
+          title="Our prices are published, so you do not have to ask."
+          lede="Most studios make you sit through a call before they say a number. Here are the starting points; your exact figure is fixed in writing after the free review."
+        />
+        <a href={href('/pricing')} class="prose-link whitespace-nowrap text-base">See the full price list →</a>
+      </div>
+      <div class="reveal-group grid gap-4 sm:grid-cols-3">
+        {priceHeadlines.map((p, i) => (
+          <article class="card-hover overflow-hidden rounded-3xl border border-line bg-canvas">
+            <span class:list={['block h-1 w-full', cycleAccent(i).bar]} aria-hidden="true"></span>
+            <div class="p-7">
+              <h3 class="text-[17px] font-bold tracking-[-0.02em] text-ink">{p.name}</h3>
+              <p class="mt-4 flex items-baseline gap-2">
+                <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">from</span>
+                <span class="text-[clamp(28px,3.2vw,36px)] font-extrabold leading-none tracking-[-0.045em] text-ink">
+                  {p.value}
+                </span>
+                {p.unit && (
+                  <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{p.unit}</span>
+                )}
+              </p>
+              <p class="mt-3.5 text-[14.5px] leading-[1.6] text-muted">{p.note}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+      <p class="mt-8 max-w-[680px] text-[15.5px] leading-[1.65] text-muted">
+        Prices exclude GST where it applies. Domain and hosting are paid by you,
+        directly, in your own name — we do not mark them up.
+      </p>
     </div>
   </section>
 

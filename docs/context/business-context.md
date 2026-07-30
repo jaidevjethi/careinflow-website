@@ -156,6 +156,45 @@ Clients should understand that they are paying for:
 
 Do not use discount messaging or "cheap website" positioning. Instead, communicate that investing in a professional digital presence is an investment in the clinic's credibility and long-term growth.
 
+### Published price list
+
+Prices are public, on `/pricing`, and defined once in
+[`src/config/pricing.ts`](../../src/config/pricing.ts). Publishing them is a
+positioning decision: a clinic owner who has to book a call to hear a number
+assumes the number is negotiable, and negotiable is the opposite of premium.
+
+| | Starting price |
+|---|---|
+| Single practice website | ₹55,000 one-time |
+| Established clinic website | ₹1,10,000 one-time |
+| Multi-specialty website | ₹1,95,000 one-time |
+| Care plan | ₹4,500 / month |
+| Care + Google plan | ₹9,500 / month |
+| Full visibility plan | ₹22,000 / month |
+| Google Business Profile management | ₹6,500 / month |
+| Local SEO, standalone | ₹16,000 / month |
+| Social media content (support) | ₹9,500 / month |
+| Google Business Profile rebuild | ₹15,000 once |
+| Website takeover audit | ₹9,500 once |
+| Extra treatment or area page | ₹4,500 per page |
+| Gujarati version of an existing site | from ₹18,000 |
+
+Rules that hold the list together:
+
+- Published figures are **starting points** for the scope described on the
+  page. The exact number is fixed in writing after the free review.
+- Combined plans cost less than their parts because the work genuinely
+  overlaps — one monthly pass, one set of measurements, one report. The site
+  says so in those words. It is never framed as a discount or an offer.
+- Founding prices are **held, not discounted**: for the five founding
+  practices the agreed price stays fixed as studio rates rise. No deadline is
+  ever attached to this.
+- Prices exclude GST where it applies. Domain and hosting are paid by the
+  client, in the client's own name, and are never marked up.
+- Payment: a standard build in two halves (start, launch); larger builds in
+  three (start, design approval, launch). Monthly plans are billed in advance
+  and run month to month.
+
 ## Brand Personality
 
 The brand should feel:
