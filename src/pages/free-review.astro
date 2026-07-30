@@ -113,8 +113,8 @@ const outline = [
       <div class="mt-11 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {covers.map((c, i) => (
           <article class="card-hover rounded-[18px] border border-line bg-canvas p-6.5">
-            <p class:list={['mb-3 font-mono text-[10.5px] uppercase tracking-[0.08em]', cycleAccent(i).text]}>
-              Check {String(i + 1).padStart(2, '0')}
+            <p class:list={['numeral mb-2 text-[clamp(38px,4vw,52px)]', cycleAccent(i).text]}>
+              {String(i + 1).padStart(2, '0')}
             </p>
             <h3 class="text-lg font-bold tracking-[-0.02em] text-ink">{c.item}</h3>
             <p class="mt-2 text-[14.5px] leading-[1.6] text-muted">{c.detail}</p>

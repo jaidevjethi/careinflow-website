@@ -49,22 +49,22 @@ console.log('wrote favicon.ico');
 
 // OG image 1200×630 — navy block on cool canvas, vivid teal rule, wordmark.
 const ogSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
-  <rect width="1200" height="630" fill="#F5F8FA"/>
-  <rect x="0" y="0" width="14" height="630" fill="#00B3A4"/>
-  <text x="96" y="120" font-family="Segoe UI, Arial, sans-serif" font-size="21" letter-spacing="4" fill="#076C63">HEALTHCARE PRACTICES ONLY · MEHSANA, GUJARAT</text>
-  ${markAt(96, 168 + (72 - (72 * markViewH) / 1000) / 2, 72, '#0A1622')}
-  <text x="192" y="220" font-family="Segoe UI, Arial, sans-serif" font-size="58" font-weight="800" letter-spacing="-2" fill="#0A1622">CareInflow</text>
-  <text x="96" y="336" font-family="Segoe UI, Arial, sans-serif" font-size="46" font-weight="700" letter-spacing="-1" fill="#0A1622">Healthcare websites that patients</text>
-  <text x="96" y="394" font-family="Segoe UI, Arial, sans-serif" font-size="46" font-weight="700" letter-spacing="-1" fill="#0A1622">find, trust and book.</text>
+  <rect width="1200" height="630" fill="#0A1628"/>
+  <rect x="0" y="0" width="14" height="630" fill="#FFB020"/>
+  <text x="96" y="120" font-family="Segoe UI, Arial, sans-serif" font-size="21" letter-spacing="4" fill="#FFB020">HEALTHCARE PRACTICES ONLY · MEHSANA, GUJARAT</text>
+  ${markAt(96, 168 + (72 - (72 * markViewH) / 1000) / 2, 72, '#F7F4EE')}
+  <text x="192" y="220" font-family="Segoe UI, Arial, sans-serif" font-size="58" font-weight="800" letter-spacing="-2" fill="#F7F4EE">CareInflow</text>
+  <text x="96" y="336" font-family="Segoe UI, Arial, sans-serif" font-size="46" font-weight="700" letter-spacing="-1" fill="#F7F4EE">Healthcare websites that patients</text>
+  <text x="96" y="394" font-family="Segoe UI, Arial, sans-serif" font-size="46" font-weight="700" letter-spacing="-1" fill="#FFB020">find, trust and book.</text>
   <g font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="600">
-    <rect x="96" y="452" width="230" height="52" rx="10" fill="#E0F5F2"/>
-    <text x="120" y="485" fill="#076C63">Website design</text>
-    <rect x="342" y="452" width="176" height="52" rx="10" fill="#E9E8FB"/>
-    <text x="366" y="485" fill="#372FA8">Local SEO</text>
-    <rect x="534" y="452" width="284" height="52" rx="10" fill="#FDF0DC"/>
-    <text x="558" y="485" fill="#964F03">Google Business Profile</text>
+    <rect x="96" y="452" width="230" height="52" rx="10" fill="#14243E"/>
+    <text x="120" y="485" fill="#B9C6D6">Website design</text>
+    <rect x="342" y="452" width="176" height="52" rx="10" fill="#14243E"/>
+    <text x="366" y="485" fill="#B9C6D6">Local SEO</text>
+    <rect x="534" y="452" width="284" height="52" rx="10" fill="#14243E"/>
+    <text x="558" y="485" fill="#B9C6D6">Google Business Profile</text>
   </g>
-  <text x="96" y="570" font-family="Segoe UI, Arial, sans-serif" font-size="19" fill="#606E7C">careinflow.com — websites, local SEO and Google Business Profile for clinics in North Gujarat</text>
+  <text x="96" y="570" font-family="Segoe UI, Arial, sans-serif" font-size="19" fill="#8797AA">careinflow.com — websites, local SEO and Google Business Profile for clinics in North Gujarat</text>
 </svg>`;
 await sharp(Buffer.from(ogSvg), { density: 150 }).png().toFile(pub('og-default.png'));
 console.log('wrote og-default.png');

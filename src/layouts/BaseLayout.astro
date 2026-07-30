@@ -32,7 +32,7 @@ const { title, description, path, schema, ogType, publishDate, updatedDate } = A
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#F7F6F3" />
+    <meta name="theme-color" content="#0A1628" />
     <link rel="preload" as="font" type="font/woff2" href={manropeWoff2} crossorigin="anonymous" />
     <link rel="preload" as="font" type="font/woff2" href={monoWoff2} crossorigin="anonymous" />
     <link rel="icon" href={href('/favicon.svg')} type="image/svg+xml" />
@@ -46,7 +46,7 @@ const { title, description, path, schema, ogType, publishDate, updatedDate } = A
   <body class="pb-[60px] sm:pb-0">
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-100 focus:rounded-[10px] focus:bg-ink focus:px-4 focus:py-3 focus:text-sm focus:font-semibold focus:text-surface"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-100 focus:rounded-[10px] focus:bg-vivid focus:px-4 focus:py-3 focus:text-sm focus:font-semibold focus:text-ink"
     >
       Skip to content
     </a>
@@ -56,11 +56,11 @@ const { title, description, path, schema, ogType, publishDate, updatedDate } = A
     </main>
     <Footer />
     <!-- Mobile-only sticky CTA bar -->
-    <div class="fixed inset-x-0 bottom-0 z-40 flex h-[60px] items-center justify-between gap-3 border-t border-line bg-surface px-4 sm:hidden">
-      <a href={href('/free-review')} class="min-w-0 truncate text-[13.5px] font-semibold text-ink">
+    <div class="fixed inset-x-0 bottom-0 z-40 flex h-[60px] items-center justify-between gap-3 border-t border-panel-line bg-panel px-4 sm:hidden">
+      <a href={href('/free-review')} class="min-w-0 truncate text-[13.5px] font-semibold text-surface">
         Free written review · 2 days
       </a>
-      <a href={whatsappFor('default')} rel="noopener" class="btn-primary shrink-0 px-4.5 py-2.5 text-[13.5px]">
+      <a href={whatsappFor('default')} rel="noopener" class="btn-accent shrink-0 px-4.5 py-2.5 text-[13.5px]">
         WhatsApp us
       </a>
     </div>

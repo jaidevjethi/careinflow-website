@@ -83,8 +83,8 @@ const steps = [
         </h2>
         <ol class="mt-8 grid max-w-[640px] gap-4">
           {steps.map((s, i) => (
-            <li class:list={['grid grid-cols-[40px_1fr] gap-4 rounded-2xl border border-line p-6', cycleAccent(i).tint]}>
-              <span class:list={['font-mono text-[13px]', cycleAccent(i).text]}>{s.step}</span>
+            <li class:list={['grid grid-cols-[74px_1fr] items-center gap-4 rounded-2xl border border-line p-6', cycleAccent(i).tint]}>
+              <span class:list={['numeral text-[clamp(34px,4vw,46px)]', cycleAccent(i).text]}>{s.step}</span>
               <p class="text-[15.5px] leading-[1.6] text-body">{s.text}</p>
             </li>
           ))}

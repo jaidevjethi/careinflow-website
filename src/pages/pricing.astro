@@ -486,8 +486,8 @@ const principles = [
     />
     <div class="mt-11 grid max-w-[920px] gap-4">
       {principles.map((p, i) => (
-        <article class="grid gap-4 rounded-2xl border border-line bg-surface p-7 sm:grid-cols-[48px_1fr]">
-          <p class="font-mono text-[13px] text-surgical">{String(i + 1).padStart(2, '0')}</p>
+        <article class="grid gap-4 rounded-2xl border border-line bg-surface p-7 sm:grid-cols-[86px_1fr]">
+          <p class:list={['numeral text-[clamp(36px,4vw,52px)]', cycleAccent(i).text]}>{String(i + 1).padStart(2, '0')}</p>
           <div>
             <h3 class="text-[19px] font-bold tracking-[-0.02em] text-ink">{p.title}</h3>
             <p class="mt-2 text-[15.5px] leading-[1.65] text-body">{p.text}</p>

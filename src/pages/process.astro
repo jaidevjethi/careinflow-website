@@ -92,10 +92,10 @@ const needFromYou = [
     <div class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20">
       <ol class="grid gap-5 lg:max-w-[920px]">
         {weeks.map((w, i) => (
-          <li class:list={['card-hover grid gap-5 rounded-3xl border border-line p-8 sm:grid-cols-[80px_1fr]', cycleAccent(i).tint]}>
+          <li class:list={['card-hover grid gap-5 rounded-3xl border border-line p-8 sm:grid-cols-[110px_1fr]', cycleAccent(i).tint]}>
             <div>
-              <p class:list={['font-mono text-[13px]', cycleAccent(i).text]}>{w.step}</p>
-              <p class="mt-1 font-mono text-[10px] uppercase tracking-[0.08em] text-faint">{w.week}</p>
+              <p class:list={['numeral text-[clamp(44px,5vw,64px)]', cycleAccent(i).text]}>{w.step}</p>
+              <p class="mt-2 font-mono text-[10px] uppercase tracking-[0.08em] text-faint">{w.week}</p>
             </div>
             <div>
               <h2 class="text-[24px] font-extrabold tracking-[-0.03em] text-ink">{w.title}</h2>
