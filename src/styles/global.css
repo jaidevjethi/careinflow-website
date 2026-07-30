@@ -7,11 +7,19 @@
 @import 'tailwindcss';
 
 /*
- * CareInflow design system — direction 2a "Instrument".
- * Source: docs/design/careinflow-design-system.dc.html
- * Rules: warm neutrals (never pure-white pages), surgical green accents,
- * pass green only on verified measurements, max one dark ink panel per page,
- * one shadow recipe, one easing, opacity/transform-only motion.
+ * CareInflow design system — "Clinical Cyan".
+ * Type, layout, spacing and motion still follow direction 2a "Instrument"
+ * (docs/design/careinflow-design-system.dc.html); its COLOUR section is
+ * superseded by the palette below.
+ *
+ * Colour rules:
+ *  - Cool base, navy-black ink, vivid clinical teal primary.
+ *  - Vivid values are FILLS ONLY. Text and icons on light use the -deep
+ *    variants, which are the ones that carry AA (every pair was measured).
+ *  - A vivid teal block takes INK text — white on vivid teal is only 2.6:1.
+ *  - Colour arrives as solid colour-blocked sections and saturated small
+ *    elements. No gradients, no glass, no glow: crisp edges are the point.
+ *  - One navy block and one tint band per page; one vivid block at most.
  */
 @font-face {
   font-family: 'Manrope Variable';
@@ -41,67 +49,72 @@
   --font-sans: 'Manrope Variable', system-ui, ui-sans-serif, sans-serif;
   --font-mono: 'JetBrains Mono Variable', ui-monospace, 'Cascadia Mono', monospace;
 
-  /* Light surfaces */
-  --color-canvas: #f7f6f3;
+  /* Light surfaces — cool, not warm */
+  --color-canvas: #f5f8fa;
   --color-surface: #ffffff;
-  --color-line: #e4e1da;
-  --color-line-strong: #d8d4cb;
-  --color-hairline: #ece9e2;
-  --color-hairline-soft: #f1efe9;
-  --color-line-hover: #c7d9d3;
+  --color-line: #dde5ea;
+  --color-line-strong: #c8d4db;
+  --color-hairline: #e9eff3;
+  --color-hairline-soft: #f1f5f8;
+  --color-line-hover: #8fd6cd;
 
-  /* Brand */
-  --color-surgical: #0b5d4e;
-  --color-pass: #0b7d57;
-  --color-ink: #101613;
+  /* Brand. `surgical` is the AA-safe deep teal used for text and labels. */
+  --color-surgical: #076c63;
+  --color-vivid: #00b3a4;
+  --color-pass: #007a59;
+  --color-ink: #0a1622;
 
-  /* Text */
-  --color-body: #4c5551;
-  --color-body-deep: #3a4441;
-  --color-muted: #5a625e;
-  --color-faint: #61645c;
+  /* Text — measured against canvas and surface */
+  --color-body: #47576b;
+  --color-body-deep: #33455a;
+  --color-muted: #5a6b7d;
+  --color-faint: #606e7c;
 
   /* Tints */
-  --color-surgical-tint: #e8f0ed;
-  --color-pass-tint: #eaf7f1;
+  --color-surgical-tint: #e0f5f2;
+  --color-pass-tint: #ddf3ea;
   --color-star: #b8862f;
 
   /*
-   * Accent family. Five muted hues so each service, article topic and card
-   * reads as its own thing instead of another beige rectangle. Saturated
-   * versions are for small elements only (labels, chips, rules); the tints
-   * carry large areas and are light enough to sit under `mix-blend-multiply`
-   * illustrations without shifting their ink.
+   * Accent family — one hue per service and article topic. Three values each:
+   * `-vivid` for fills and colour blocks, the bare name for text (AA on light
+   * and on its own tint), `-tint` for large light areas and the panels that
+   * `mix-blend-multiply` illustrations sit on.
    */
-  --color-a-green: #0b5d4e;
-  --color-a-green-tint: #e9f1ee;
-  --color-a-blue: #1d4e6b;
-  --color-a-blue-tint: #e8eff4;
-  --color-a-amber: #96601f;
-  --color-a-amber-tint: #f6efe3;
-  --color-a-teal: #0f6763;
-  --color-a-teal-tint: #e5f0ef;
-  --color-a-plum: #6a3a57;
-  --color-a-plum-tint: #f2eaef;
+  --color-a-green: #076c63;
+  --color-a-green-vivid: #00b3a4;
+  --color-a-green-tint: #e0f5f2;
+  --color-a-blue: #372fa8;
+  --color-a-blue-vivid: #4338ca;
+  --color-a-blue-tint: #e9e8fb;
+  --color-a-amber: #964f03;
+  --color-a-amber-vivid: #d97706;
+  --color-a-amber-tint: #fdf0dc;
+  --color-a-teal: #0b5a70;
+  --color-a-teal-vivid: #0e7490;
+  --color-a-teal-tint: #e0f2f7;
+  --color-a-plum: #6428c8;
+  --color-a-plum-vivid: #7c3aed;
+  --color-a-plum-tint: #f1e9fe;
 
-  /* Dark ink panel family (one panel per page, never a theme) */
-  --color-panel: #0e1714;
-  --color-panel-card: #142020;
-  --color-panel-line: #24322e;
-  --color-panel-line-alt: #26332f;
-  --color-panel-divider: #1d2926;
-  --color-panel-chip: #12352e;
-  --color-panel-text: #a8b4af;
-  --color-panel-text-dim: #93a09b;
-  --color-panel-text-faint: #7f8c87;
-  --color-panel-accent: #7fc9b4;
+  /* Navy panel family */
+  --color-panel: #0a1622;
+  --color-panel-card: #10202f;
+  --color-panel-line: #1e3245;
+  --color-panel-line-alt: #24405a;
+  --color-panel-divider: #17293a;
+  --color-panel-chip: #0d3b3a;
+  --color-panel-text: #a7b8c9;
+  --color-panel-text-dim: #8a9daf;
+  --color-panel-text-faint: #7c8fa2;
+  --color-panel-accent: #45e0ce;
 
   /* One easing for everything */
   --ease-instrument: cubic-bezier(0.22, 1, 0.36, 1);
 
   /* One shadow recipe */
-  --shadow-card: 0 1px 2px rgba(10, 12, 15, 0.04), 0 16px 36px rgba(10, 12, 15, 0.05);
-  --shadow-card-lg: 0 1px 2px rgba(10, 12, 15, 0.04), 0 24px 56px rgba(10, 12, 15, 0.06);
+  --shadow-card: 0 1px 2px rgba(10, 22, 34, 0.05), 0 16px 36px rgba(10, 22, 34, 0.06);
+  --shadow-card-lg: 0 1px 2px rgba(10, 22, 34, 0.05), 0 24px 56px rgba(10, 22, 34, 0.07);
 
   --animate-rise: ci-rise 240ms var(--ease-instrument) both;
   --animate-fade: ci-fade 240ms var(--ease-instrument) both;
@@ -204,16 +217,29 @@
     max-width: 200px;
     background: repeating-linear-gradient(
       to right,
-      #d5d9de 0 1px,
+      #c3d2dc 0 1px,
       transparent 1px 11px
     );
   }
   .tick-rule-dark {
     background: repeating-linear-gradient(
       to right,
-      #2c3540 0 1px,
+      #2b4257 0 1px,
       transparent 1px 11px
     );
+  }
+
+  /*
+   * Colour blocking. A full-bleed band of flat colour is how sections are
+   * separated now — no gradients, no glass. `band-vivid` carries ink text
+   * because white on vivid teal measures only 2.6:1.
+   */
+  .band-vivid {
+    background: var(--color-vivid);
+    color: var(--color-ink);
+  }
+  .band-vivid .band-rule {
+    background: color-mix(in srgb, var(--color-ink) 22%, transparent);
   }
 
   /* Uppercase mono section label (record vocabulary). */

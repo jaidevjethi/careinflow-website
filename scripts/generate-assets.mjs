@@ -47,26 +47,24 @@ const ico = Buffer.concat([
 await writeFile(pub('favicon.ico'), ico);
 console.log('wrote favicon.ico');
 
-// OG image 1200×630 — canvas, tick rule, wordmark, tagline, chips.
+// OG image 1200×630 — navy block on cool canvas, vivid teal rule, wordmark.
 const ogSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
-  <rect width="1200" height="630" fill="#F7F6F3"/>
-  <g>
-    ${Array.from({ length: 19 }, (_, i) => `<rect x="${96 + i * 11}" y="96" width="1.5" height="7" fill="#D5D9DE"/>`).join('')}
+  <rect width="1200" height="630" fill="#F5F8FA"/>
+  <rect x="0" y="0" width="14" height="630" fill="#00B3A4"/>
+  <text x="96" y="120" font-family="Segoe UI, Arial, sans-serif" font-size="21" letter-spacing="4" fill="#076C63">HEALTHCARE PRACTICES ONLY · MEHSANA, GUJARAT</text>
+  ${markAt(96, 168 + (72 - (72 * markViewH) / 1000) / 2, 72, '#0A1622')}
+  <text x="192" y="220" font-family="Segoe UI, Arial, sans-serif" font-size="58" font-weight="800" letter-spacing="-2" fill="#0A1622">CareInflow</text>
+  <text x="96" y="336" font-family="Segoe UI, Arial, sans-serif" font-size="46" font-weight="700" letter-spacing="-1" fill="#0A1622">Healthcare websites that patients</text>
+  <text x="96" y="394" font-family="Segoe UI, Arial, sans-serif" font-size="46" font-weight="700" letter-spacing="-1" fill="#0A1622">find, trust and book.</text>
+  <g font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="600">
+    <rect x="96" y="452" width="230" height="52" rx="10" fill="#E0F5F2"/>
+    <text x="120" y="485" fill="#076C63">Website design</text>
+    <rect x="342" y="452" width="176" height="52" rx="10" fill="#E9E8FB"/>
+    <text x="366" y="485" fill="#372FA8">Local SEO</text>
+    <rect x="534" y="452" width="284" height="52" rx="10" fill="#FDF0DC"/>
+    <text x="558" y="485" fill="#964F03">Google Business Profile</text>
   </g>
-  <text x="96" y="146" font-family="Segoe UI, Arial, sans-serif" font-size="21" letter-spacing="4" fill="#0B5D4E">HEALTHCARE PRACTICES ONLY · MEHSANA, GUJARAT</text>
-  ${markAt(96, 196 + (72 - (72 * markViewH) / 1000) / 2, 72, '#101613')}
-  <text x="192" y="248" font-family="Segoe UI, Arial, sans-serif" font-size="58" font-weight="800" letter-spacing="-2" fill="#101613">CareInflow</text>
-  <text x="96" y="360" font-family="Segoe UI, Arial, sans-serif" font-size="44" font-weight="700" letter-spacing="-1" fill="#101613">We design the three screens that decide</text>
-  <text x="96" y="416" font-family="Segoe UI, Arial, sans-serif" font-size="44" font-weight="700" letter-spacing="-1" fill="#101613">whether a patient chooses you.</text>
-  <g font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#3A4441">
-    <rect x="96" y="486" width="204" height="52" rx="26" fill="#FFFFFF" stroke="#E4E1DA"/>
-    <text x="120" y="519">Google listing</text>
-    <rect x="316" y="486" width="150" height="52" rx="26" fill="#FFFFFF" stroke="#E4E1DA"/>
-    <text x="340" y="519">Website</text>
-    <rect x="482" y="486" width="160" height="52" rx="26" fill="#FFFFFF" stroke="#E4E1DA"/>
-    <text x="506" y="519">AI answer</text>
-  </g>
-  <text x="96" y="586" font-family="Segoe UI, Arial, sans-serif" font-size="19" fill="#61645C">careinflow.com — websites, local SEO and Google Business Profile for healthcare practices</text>
+  <text x="96" y="570" font-family="Segoe UI, Arial, sans-serif" font-size="19" fill="#606E7C">careinflow.com — websites, local SEO and Google Business Profile for clinics in North Gujarat</text>
 </svg>`;
 await sharp(Buffer.from(ogSvg), { density: 150 }).png().toFile(pub('og-default.png'));
 console.log('wrote og-default.png');

@@ -92,8 +92,8 @@ const head = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 ${viewH}
 // public/ so the browser fetches and caches the mark once for the whole site.
 const variants = [
   ['src/assets/careinflow-mark.svg', `${head} fill="currentColor" aria-hidden="true">${body}</svg>`],
-  ['public/logo.svg', `${head} fill="#101613">${body}</svg>`],
-  ['public/logo-light.svg', `${head} fill="#F7F6F3">${body}</svg>`],
+  ['public/logo.svg', `${head} fill="#0A1622">${body}</svg>`],
+  ['public/logo-light.svg', `${head} fill="#F5F8FA">${body}</svg>`],
 ];
 for (const [file, svgOut] of variants) {
   await writeFile(root(file), svgOut);
@@ -109,8 +109,8 @@ const tx = (TILE - markW) / 2;
 const ty = (TILE - viewH * scale2) / 2;
 const favicon =
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${TILE} ${TILE}">` +
-  `<rect width="${TILE}" height="${TILE}" rx="14" fill="#101613"/>` +
-  `<g transform="translate(${tx.toFixed(2)} ${ty.toFixed(2)}) scale(${scale2.toFixed(5)})" fill="#F7F6F3">${body}</g>` +
+  `<rect width="${TILE}" height="${TILE}" rx="14" fill="#0A1622"/>` +
+  `<g transform="translate(${tx.toFixed(2)} ${ty.toFixed(2)}) scale(${scale2.toFixed(5)})" fill="#F5F8FA">${body}</g>` +
   `</svg>`;
 await writeFile(root('public/favicon.svg'), favicon);
 console.log(`wrote public/favicon.svg — ${favicon.length} bytes`);

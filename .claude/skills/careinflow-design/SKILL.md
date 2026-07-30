@@ -3,38 +3,44 @@ name: careinflow-design
 description: Design system rules for the CareInflow website — tokens, type, layout, motion, component patterns. Use whenever building or editing any page, component or style in this repo.
 ---
 
-# CareInflow design system — 2a "Instrument"
+# CareInflow design system — "Clinical Cyan"
 
 Source of truth: `docs/design/careinflow-design-system.dc.html` (direction 2a only; 2b/2c are historical). Tokens live in `src/styles/global.css` under `@theme` — always use the token, never a raw hex.
 
-## Palette
+## Palette — "Clinical Cyan"
+
+Cool base, navy-black ink, vivid clinical teal. Direction 2a's *colour* section is superseded; its type, layout, spacing and motion still stand.
 
 | Token | Value | Use |
 |---|---|---|
-| `canvas` | `#F7F6F3` | page background — never pure white |
-| `surface` | `#FFFFFF` | cards, alternating sections |
-| `line` / `line-strong` / `hairline` | `#E4E1DA` / `#D8D4CB` / `#ECE9E2` | borders, dividers |
-| `surgical` | `#0B5D4E` | labels, links, accents |
-| `pass` | `#0B7D57` | **verified measurements only** — never decoration |
-| `ink` | `#101613` | headings, primary buttons |
-| `body` / `muted` / `faint` | `#4C5551` / `#5A625E` / `#61645C` | text hierarchy |
-| `panel*` family | `#0E1714` … | the single dark panel |
+| `canvas` / `surface` | `#F5F8FA` / `#FFF` | cool page base — never warm beige |
+| `line` / `hairline` | `#DDE5EA` / `#E9EFF3` | borders, dividers |
+| `ink` | `#0A1622` | headings, primary buttons, text on vivid teal |
+| `surgical` | `#076C63` | the AA-safe teal for text, labels, links |
+| `vivid` | `#00B3A4` | fills and colour blocks — **never text on light** |
+| `pass` | `#007A59` | verified measurements only |
+| `body` / `muted` / `faint` | `#47576B` / `#5A6B7D` / `#606E7C` | text hierarchy |
+| `panel*` | `#0A1622` … `#45E0CE` | navy block family |
 
-**Max one dark ink panel per page. Never a dark theme.** The footer counts as its own panel and is exempt.
+**Contrast rules that were measured, not assumed.** White on vivid teal is 2.6:1 — a vivid block takes **ink** text. Vivid teal alone cannot carry a UI boundary against white (2.6:1), so focus rings use `surgical` (6.3:1). Every deep accent clears 4.5:1 on both canvas and its own tint.
 
 ## Accents
 
-Five muted hues extend the base palette so pages are not uniformly beige. Never hand-pick one — take it from `src/lib/accents.ts` (`serviceAccent`, `topicAccent`, `cycleAccent`), which returns literal class strings because Tailwind only emits utilities it can see as literals.
+Five hues, assigned in `src/lib/accents.ts` — never hand-picked. Each has three values: `-vivid` (fills, top rules, dots), the bare name (AA-safe text), `-tint` (large light areas).
 
 | Accent | Owns |
 |---|---|
-| green `#0B5D4E` | brand, healthcare websites, website articles |
-| amber `#96601F` | Google Business Profile |
-| blue `#1D4E6B` | local SEO |
-| teal `#0F6763` | website care, the free review |
-| plum `#6A3A57` | social media, patient-behaviour articles |
+| green/teal `#00B3A4` | brand, healthcare websites |
+| amber `#D97706` | Google Business Profile |
+| blue/indigo `#4338CA` | local SEO |
+| teal/cyan `#0E7490` | website care, free review |
+| plum/violet `#7C3AED` | social media, patient articles |
 
-Saturated values are for **small elements only** — chips, code labels, 1–1.5px top rules. Large areas take the `-tint`. Body text, headings and section labels stay ink/green: accents identify, they do not decorate.
+## Colour blocking
+
+Colour is structural, not decorative. Sections alternate `surface → canvas → accent tint band → navy block`, and small elements (chips, step numbers, card top rules, the live dot) carry real saturation.
+
+**No gradients, no glassmorphism, no glowing borders** — crisp edges are deliberate, so the site does not read like every AI-generated template. One navy block and one tint band per page; at most one vivid block.
 
 ## Type
 
@@ -62,13 +68,18 @@ One easing: `--ease-instrument`. Only `opacity` and `transform` animate — neve
 
 Reuse before building: `SectionHead` (tick-rule + mono label + heading + lede), `CtaPanel` (closing CTA, takes `prefill` and `nextStep`), `CtaStrip` (one-line mid-page CTA), `FaqSection`, `LiveBadge`, `Header`, `Footer`.
 
-Section labels use record vocabulary — CHART, TRIAGE, PROTOCOL, INDICATION, STATUS, FINDINGS — numbered in order (`01 · TRIAGE — …`). Never "Solutions" or "Why choose us".
+Section labels are **plain language** in the mono style: "What we do", "Where patients look", "Our work", "Questions". The medical-record vocabulary (CHART, TRIAGE, PROTOCOL) was retired — it read cold and worked against comprehension. Still never "Solutions" or "Why choose us".
 
 ## Imagery
 
 Never a card with a fictional clinic name — a visitor must never wonder whether CareInflow is itself a clinic. Use the illustration in `src/assets/`, real client screenshots in `src/assets/work/`, or nothing. All images go through `astro:assets` `<Image>` with `widths`, `sizes` and real alt text. Hero images: `loading="eager"` + `fetchpriority="high"`; everything else lazy.
 
-**Illustrations always use `IllustrationPanel`**, never a bordered card. The artwork ships on pure white and the panel applies the accent tint under `mix-blend-multiply`, so the background disappears into the tint instead of floating as a pale rectangle inside a frame. This only works if the artwork's background is genuinely uniform white — see the `careinflow-images` skill for the normalisation step. Photographs (portrait, studio) keep a plain border and do **not** get blended.
+All imagery goes through **`IllustrationPanel`**, which has two modes:
+
+- **Default** — photographic 3D product mockups (`src/assets/mockups/`). Rendered edge-to-edge inside a rounded, thin-bordered figure, constrained by `maxWidth`. These are the primary service and hero visuals: realistic device renders with grey placeholder UI and one teal accent, never gibberish text.
+- **`blend`** — flat vector art on pure white, blended onto an accent tint with `mix-blend-multiply` so no pale rectangle floats inside a frame. Requires the near-white normalisation in the `careinflow-images` skill.
+
+Portrait and studio photographs use a plain bordered `<Image>` directly and are never blended.
 
 ## Logo
 

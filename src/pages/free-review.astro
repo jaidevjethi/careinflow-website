@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import IllustrationPanel from '@/components/IllustrationPanel.astro';
 import { ACCENTS, cycleAccent } from '@/lib/accents';
-import reviewImage from '@/assets/services/free-review.png';
+import reviewImage from '@/assets/mockups/free-review.jpg';
 import SectionHead from '@/components/SectionHead.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import { BUSINESS, whatsappFor } from '@/config/site';
@@ -77,7 +77,7 @@ const outline = [
 <BaseLayout {title} {description} path="/free-review" {schema}>
   <section class="mx-auto max-w-[1440px] px-5 pb-16 pt-14 sm:px-10 sm:pb-20 sm:pt-20 xl:px-20">
     <div class="tick-rule mb-3.5" aria-hidden="true"></div>
-    <p class="label-mono mb-5 text-surgical">Study — the first step, free</p>
+    <p class="label-mono mb-5 text-surgical">Free review</p>
     <h1 class="max-w-[880px] text-[clamp(34px,5vw,62px)] font-extrabold leading-[1.04] tracking-[-0.045em] text-ink">
       A written review of what patients see. Free, in two working days.
     </h1>
@@ -97,10 +97,9 @@ const outline = [
 
     <IllustrationPanel
       src={reviewImage}
-      alt="A doctor's desk seen from above: a notebook, a pen, a stethoscope and a phone showing a clinic webpage."
-      tint={ACCENTS.teal.tint}
+      alt="A tablet on a desk beside a stethoscope and a notebook, showing a report layout with one teal highlighted row."
       eager
-      maxWidth={720}
+      maxWidth={760}
       class="mt-12"
     />
   </section>
@@ -108,7 +107,7 @@ const outline = [
   <section class="border-t border-hairline bg-surface" aria-labelledby="covers-title">
     <div class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20">
       <SectionHead
-        label="Chart — what the review covers"
+        label="What it covers"
         title="What does the free review check?"
       />
       <div class="mt-11 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -129,7 +128,7 @@ const outline = [
     <div class="grid items-start gap-12 lg:grid-cols-[1fr_460px] lg:gap-20">
       <div>
         <SectionHead
-          label="Findings — what you receive"
+          label="What you receive"
           title="What you get, and why it is free"
           lede="Written in plain language, specific to your practice, and useful whether or not you ever hire us. Most reviews run three to five pages."
         />
@@ -165,7 +164,7 @@ const outline = [
   <section class="border-t border-hairline bg-surface" aria-labelledby="after-review-title">
     <div class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20">
       <SectionHead
-        label="Protocol — what happens after"
+        label="What happens next"
         title="What happens after the review?"
         lede="You get one fixed number in writing against a defined scope. If you would rather fix things yourself, the review tells you where to start — and we part as professionals."
       />

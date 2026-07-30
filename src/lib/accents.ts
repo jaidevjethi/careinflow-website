@@ -7,53 +7,60 @@
 export type AccentName = 'green' | 'blue' | 'amber' | 'teal' | 'plum';
 
 export interface Accent {
-  /** Saturated hue — small elements only: labels, codes, rules. */
+  /** AA-safe hue for text, icons and labels on light backgrounds. */
   text: string;
+  /** Vivid fill — colour blocks, top rules, dots. Never text on light. */
+  vivid: string;
   /** Large light area — panels behind illustrations, chips. */
   tint: string;
   /** Chip: tint background with the saturated hue as text. */
   chip: string;
   /** Left rule / underline for section accents. */
   border: string;
-  /** Saturated fill for thin rules and card top bars. */
+  /** Vivid fill for thin rules and card top bars. */
   bar: string;
 }
 
 export const ACCENTS: Record<AccentName, Accent> = {
   green: {
     text: 'text-a-green',
+    vivid: 'bg-a-green-vivid',
     tint: 'bg-a-green-tint',
     chip: 'bg-a-green-tint text-a-green',
     border: 'border-a-green',
-    bar: 'bg-a-green',
+    bar: 'bg-a-green-vivid',
   },
   blue: {
     text: 'text-a-blue',
+    vivid: 'bg-a-blue-vivid',
     tint: 'bg-a-blue-tint',
     chip: 'bg-a-blue-tint text-a-blue',
     border: 'border-a-blue',
-    bar: 'bg-a-blue',
+    bar: 'bg-a-blue-vivid',
   },
   amber: {
     text: 'text-a-amber',
+    vivid: 'bg-a-amber-vivid',
     tint: 'bg-a-amber-tint',
     chip: 'bg-a-amber-tint text-a-amber',
     border: 'border-a-amber',
-    bar: 'bg-a-amber',
+    bar: 'bg-a-amber-vivid',
   },
   teal: {
     text: 'text-a-teal',
+    vivid: 'bg-a-teal-vivid',
     tint: 'bg-a-teal-tint',
     chip: 'bg-a-teal-tint text-a-teal',
     border: 'border-a-teal',
-    bar: 'bg-a-teal',
+    bar: 'bg-a-teal-vivid',
   },
   plum: {
     text: 'text-a-plum',
+    vivid: 'bg-a-plum-vivid',
     tint: 'bg-a-plum-tint',
     chip: 'bg-a-plum-tint text-a-plum',
     border: 'border-a-plum',
-    bar: 'bg-a-plum',
+    bar: 'bg-a-plum-vivid',
   },
 };
 

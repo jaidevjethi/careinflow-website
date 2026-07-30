@@ -3,19 +3,27 @@ import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 
 /**
- * Illustration on a tinted panel. The artwork ships on a white background;
- * `mix-blend-multiply` lets the panel's tint replace that white while the ink
- * line work stays dark, so there is no second frame and no pale rectangle
- * floating inside a border.
+ * Imagery container with two modes.
+ *
+ * `blend` (flat vector art): the artwork ships on pure white and
+ * `mix-blend-multiply` lets the panel tint replace that white while the ink
+ * stays dark — no second frame, no pale rectangle inside a border.
+ *
+ * Default (photographic 3D mockups): the render fills the container
+ * edge-to-edge with a thin border. Blending a photograph would muddy it, and
+ * these renders carry their own studio backdrop, so colour comes from the
+ * surrounding section instead.
  */
 interface Props {
   src: ImageMetadata;
   alt: string;
-  /** Tint utility from lib/accents, e.g. "bg-a-amber-tint". */
-  tint: string;
-  /** Hero illustrations only — everything else stays lazy. */
+  /** Tint utility from lib/accents, e.g. "bg-a-amber-tint". Blend mode only. */
+  tint?: string;
+  /** True for flat line art that should take the panel tint. */
+  blend?: boolean;
+  /** Hero images only — everything else stays lazy. */
   eager?: boolean;
-  /** Cap on the artwork width inside the panel. */
+  /** Cap on the rendered width. */
   maxWidth?: number;
   class?: string;
 }
@@ -24,27 +32,45 @@ const {
   src,
   alt,
   tint,
+  blend = false,
   eager = false,
   maxWidth = 620,
   class: className,
 } = Astro.props;
 ---
 
-<figure
-  class:list={[
-    'm-0 flex items-center justify-center overflow-hidden rounded-3xl px-5 py-8 sm:px-8 sm:py-10',
-    tint,
-    className,
-  ]}
->
-  <Image
-    {src}
-    {alt}
-    widths={[maxWidth, maxWidth * 1.5, maxWidth * 2]}
-    sizes={`(min-width: 1024px) ${maxWidth}px, 88vw`}
-    loading={eager ? 'eager' : 'lazy'}
-    fetchpriority={eager ? 'high' : undefined}
+{blend ? (
+  <figure
+    class:list={[
+      'm-0 flex items-center justify-center overflow-hidden rounded-3xl px-5 py-8 sm:px-8 sm:py-10',
+      tint,
+      className,
+    ]}
+  >
+    <Image
+      {src}
+      {alt}
+      widths={[maxWidth, maxWidth * 1.5, maxWidth * 2]}
+      sizes={`(min-width: 1024px) ${maxWidth}px, 88vw`}
+      loading={eager ? 'eager' : 'lazy'}
+      fetchpriority={eager ? 'high' : undefined}
+      style={`max-width:${maxWidth}px`}
+      class="h-auto w-full mix-blend-multiply"
+    />
+  </figure>
+) : (
+  <figure
+    class:list={['m-0 overflow-hidden rounded-3xl border border-line', className]}
     style={`max-width:${maxWidth}px`}
-    class="h-auto w-full mix-blend-multiply"
-  />
-</figure>
+  >
+    <Image
+      {src}
+      {alt}
+      widths={[maxWidth, maxWidth * 1.5, Math.min(maxWidth * 2, 1400)]}
+      sizes={`(min-width: 1024px) ${maxWidth}px, 92vw`}
+      loading={eager ? 'eager' : 'lazy'}
+      fetchpriority={eager ? 'high' : undefined}
+      class="block h-auto w-full"
+    />
+  </figure>
+)}
