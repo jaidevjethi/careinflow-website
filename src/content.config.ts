@@ -66,7 +66,7 @@ const specialties = defineCollection({
     summary: z.string(),
     order: z.number(),
     /** Accent key from lib/accents. */
-    accent: z.enum(['green', 'blue', 'amber', 'teal', 'plum']),
+    accent: z.enum(['web', 'seo', 'gbp', 'care', 'social']),
     /** The searches these patients actually type — patient words, not clinical. */
     patientSearches: z.array(z.string()),
     /** Treatments that earn their own page, and the worry each one answers. */
@@ -92,7 +92,7 @@ const areas = defineCollection({
     description: z.string(),
     summary: z.string(),
     order: z.number(),
-    accent: z.enum(['green', 'blue', 'amber', 'teal', 'plum']),
+    accent: z.enum(['web', 'seo', 'gbp', 'care', 'social']),
     /** True only for Mehsana — the one place the studio actually sits. */
     isHomeBase: z.boolean().default(false),
     /** Honest, checkable facts about the market. No invented statistics. */

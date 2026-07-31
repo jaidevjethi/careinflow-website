@@ -4,7 +4,7 @@
  * classes are written out in full because Tailwind only emits utilities it
  * can see as literal strings.
  */
-export type AccentName = 'green' | 'blue' | 'amber' | 'teal' | 'plum';
+export type AccentName = 'web' | 'seo' | 'gbp' | 'care' | 'social';
 
 export interface Accent {
   /** AA-safe hue for text, icons and labels on light backgrounds. */
@@ -22,73 +22,73 @@ export interface Accent {
 }
 
 export const ACCENTS: Record<AccentName, Accent> = {
-  green: {
-    text: 'text-a-green',
-    vivid: 'bg-a-green-vivid',
-    tint: 'bg-a-green-tint',
-    chip: 'bg-a-green-tint text-a-green',
-    border: 'border-a-green',
-    bar: 'bg-a-green-vivid',
+  web: {
+    text: 'text-a-web',
+    vivid: 'bg-a-web-vivid',
+    tint: 'bg-a-web-tint',
+    chip: 'bg-a-web-tint text-a-web',
+    border: 'border-a-web',
+    bar: 'bg-a-web-vivid',
   },
-  blue: {
-    text: 'text-a-blue',
-    vivid: 'bg-a-blue-vivid',
-    tint: 'bg-a-blue-tint',
-    chip: 'bg-a-blue-tint text-a-blue',
-    border: 'border-a-blue',
-    bar: 'bg-a-blue-vivid',
+  seo: {
+    text: 'text-a-seo',
+    vivid: 'bg-a-seo-vivid',
+    tint: 'bg-a-seo-tint',
+    chip: 'bg-a-seo-tint text-a-seo',
+    border: 'border-a-seo',
+    bar: 'bg-a-seo-vivid',
   },
-  amber: {
-    text: 'text-a-amber',
-    vivid: 'bg-a-amber-vivid',
-    tint: 'bg-a-amber-tint',
-    chip: 'bg-a-amber-tint text-a-amber',
-    border: 'border-a-amber',
-    bar: 'bg-a-amber-vivid',
+  gbp: {
+    text: 'text-a-gbp',
+    vivid: 'bg-a-gbp-vivid',
+    tint: 'bg-a-gbp-tint',
+    chip: 'bg-a-gbp-tint text-a-gbp',
+    border: 'border-a-gbp',
+    bar: 'bg-a-gbp-vivid',
   },
-  teal: {
-    text: 'text-a-teal',
-    vivid: 'bg-a-teal-vivid',
-    tint: 'bg-a-teal-tint',
-    chip: 'bg-a-teal-tint text-a-teal',
-    border: 'border-a-teal',
-    bar: 'bg-a-teal-vivid',
+  care: {
+    text: 'text-a-care',
+    vivid: 'bg-a-care-vivid',
+    tint: 'bg-a-care-tint',
+    chip: 'bg-a-care-tint text-a-care',
+    border: 'border-a-care',
+    bar: 'bg-a-care-vivid',
   },
-  plum: {
-    text: 'text-a-plum',
-    vivid: 'bg-a-plum-vivid',
-    tint: 'bg-a-plum-tint',
-    chip: 'bg-a-plum-tint text-a-plum',
-    border: 'border-a-plum',
-    bar: 'bg-a-plum-vivid',
+  social: {
+    text: 'text-a-social',
+    vivid: 'bg-a-social-vivid',
+    tint: 'bg-a-social-tint',
+    chip: 'bg-a-social-tint text-a-social',
+    border: 'border-a-social',
+    bar: 'bg-a-social-vivid',
   },
 };
 
-/** Service slug → accent. Websites keep the brand green. */
+/** Service slug → accent. Each service owns one hue, permanently. */
 const SERVICE_ACCENTS: Record<string, AccentName> = {
-  'healthcare-websites': 'green',
-  'google-business-profile': 'amber',
-  'local-seo': 'blue',
-  'website-care': 'teal',
-  'social-media': 'plum',
+  'healthcare-websites': 'web',
+  'google-business-profile': 'gbp',
+  'local-seo': 'seo',
+  'website-care': 'care',
+  'social-media': 'social',
 };
 
 export const serviceAccent = (slug: string): Accent =>
-  ACCENTS[SERVICE_ACCENTS[slug] ?? 'green'];
+  ACCENTS[SERVICE_ACCENTS[slug] ?? 'web'];
 
 /** Resource topic → accent, matched to the service each topic belongs to. */
 const TOPIC_ACCENTS: Record<string, AccentName> = {
-  websites: 'green',
-  'google-business-profile': 'amber',
-  'local-seo': 'blue',
-  performance: 'teal',
-  patients: 'plum',
+  websites: 'web',
+  'google-business-profile': 'gbp',
+  'local-seo': 'seo',
+  performance: 'care',
+  patients: 'social',
 };
 
 export const topicAccent = (topic: string): Accent =>
-  ACCENTS[TOPIC_ACCENTS[topic] ?? 'green'];
+  ACCENTS[TOPIC_ACCENTS[topic] ?? 'web'];
 
 /** Cycle for lists with no natural mapping (the protocol grid). */
-const CYCLE: AccentName[] = ['green', 'amber', 'blue', 'teal', 'plum'];
+const CYCLE: AccentName[] = ['web', 'gbp', 'seo', 'care', 'social'];
 
 export const cycleAccent = (index: number): Accent => ACCENTS[CYCLE[index % CYCLE.length]!];
