@@ -29,7 +29,7 @@ const faqs = await getFaqsFor('home');
 
 /**
  * Healthcare only on the homepage. The non-healthcare project is real work and
- * stays on /work, labelled — but the page two lines above says we build for
+ * stays on /work, labelled. But the page two lines above says we build for
  * healthcare "and nothing else", and a taxi service in the featured slot
  * undercuts that before a doctor reaches the second sentence.
  */
@@ -53,7 +53,7 @@ const priceHeadlines = [
     name: 'A practice website',
     value: rupees(BUILDS[0]!.from),
     unit: '',
-    note: `One-time, fixed in writing. Most of it is the writing and the enquiry path, not the building — an established clinic with a page per treatment starts at ${rupees(BUILDS[1]!.from)}.`,
+    note: `Fixed in writing before we start. Most of that figure is the writing and the enquiry path rather than the building. An established clinic with a page per treatment starts at ${rupees(BUILDS[1]!.from)}.`,
   },
   {
     name: 'Your Google listing',
@@ -65,7 +65,7 @@ const priceHeadlines = [
     name: 'Website + Google, together',
     value: rupees(PLANS[1]!.monthly),
     unit: '/ month',
-    note: 'Both places a patient looks, maintained as one job. No lock-in — stop by sending a message.',
+    note: 'Both places a patient looks, maintained as one job. Month to month. You stop it by sending a message.',
   },
 ];
 
@@ -84,15 +84,15 @@ const outcomes = [
   },
   {
     title: 'Your Google listing stops costing you visits',
-    text: 'Correct categories, real photos, right hours — including festival hours — and a reply under every review, month after month.',
+    text: 'Correct categories. Real photographs. Hours that are right, including the festival days everyone forgets. A reply under every review, month after month.',
   },
   {
     title: 'Your site loads before patients give up',
-    text: 'Built to open in under 1.2 seconds on a mid-range Android over mobile data, because that is the phone your patients hold.',
+    text: 'Built to open in under 1.2 seconds on a mid-range Android over mobile data. That is the phone your patients are holding.',
   },
   {
     title: 'Enquiries reach a person, not a form',
-    text: 'A WhatsApp button that opens a message the patient only has to send, routed where your front desk will actually see it.',
+    text: 'A WhatsApp button that opens a message the patient only has to send. It arrives where your front desk will see it.',
   },
 ];
 
@@ -100,13 +100,13 @@ const protocols = [
   {
     code: 'CI-01',
     title: 'Practice website',
-    text: 'Hand-built, fast on cheap phones, written for a slightly worried patient.',
+    text: 'Hand-built, quick on an inexpensive phone, written for a patient who is worried.',
     link: '/services/healthcare-websites',
   },
   {
     code: 'CI-02',
     title: 'Google Business Profile',
-    text: 'Rebuilt, verified and maintained — categories, services, hours, photos, Q&A.',
+    text: 'Claimed, rebuilt and then maintained: categories, services, hours, photos, questions.',
     link: '/services/google-business-profile',
   },
   {
@@ -130,7 +130,7 @@ const protocols = [
   {
     code: 'CI-06',
     title: 'Enquiry & booking flow',
-    text: 'Usually WhatsApp, done properly — routed where your desk will answer it.',
+    text: 'Usually WhatsApp, set up so the message lands where someone will answer it.',
     link: '/services/healthcare-websites',
   },
   {
@@ -148,7 +148,7 @@ const protocols = [
   {
     code: 'CI-09',
     title: 'Social media content',
-    text: 'Educational posts that support the website — never a replacement for it.',
+    text: 'Educational posts that support the website. Never a substitute for one.',
     link: '/services/social-media',
   },
 ];
@@ -156,23 +156,23 @@ const protocols = [
 const method = [
   {
     step: '01',
-    title: 'Study — week 1',
-    text: 'Your searches, listing, reviews and the three clinics above you, written up. Yours to keep, free.',
+    title: 'Week 1, study',
+    text: 'Your searches, your listing, your reviews, and the three clinics ranking above you. Written up, free, and yours to keep.',
   },
   {
     step: '02',
-    title: 'Structure & words — week 2',
-    text: 'Page order and final copy signed off before any visual work starts.',
+    title: 'Week 2, structure and words',
+    text: 'Page order and final copy signed off before any visual work begins.',
   },
   {
     step: '03',
-    title: 'Design & build — week 3',
-    text: 'One pass, on your real content, tested on mobile data first.',
+    title: 'Week 3, design and build',
+    text: 'One careful pass on your real content, tested on mobile data first.',
   },
   {
     step: '04',
-    title: 'Launch, then stay — week 4 →',
-    text: 'Measured against the targets, then monthly upkeep and a quarterly review.',
+    title: 'Week 4, launch and stay',
+    text: 'Measured against the published targets, then monthly upkeep and a written quarterly review.',
   },
 ];
 
@@ -191,12 +191,12 @@ const SPECIALTIES: Array<{ label: string; href?: string }> = [
 ];
 
 const whatsappHref = whatsappWithMessage(
-  "Hi CareInflow — I'd like a free written review of my practice's online presence. Clinic name: ",
+  "Hi CareInflow. I would like a free written review of my practice's online presence. Clinic name: ",
 );
 ---
 
 <BaseLayout {title} {description} path="/" {schema}>
-  <!-- HERO — the site's first midnight moment. Same rhythm as PageHero:
+  <!-- HERO : the site's first midnight moment. Same rhythm as PageHero:
        it is allowed to be the tallest page, not to exceed the viewport. -->
   <section class="panel-depth hero-pad">
     <div class="shell">
@@ -212,10 +212,9 @@ const whatsappHref = whatsappWithMessage(
             Healthcare websites that patients <span class="text-panel-accent">find, trust and book.</span>
           </h1>
           <p class="mt-5 max-w-[640px] text-[18px] leading-[1.58] text-panel-text">
-            We design and build your clinic's website, set up and maintain your
-            Google Business Profile, and do the local SEO that gets you found —
-            in Mehsana, Ahmedabad and across North Gujarat. Healthcare
-            practices only.
+            We build the website, run the Google listing, and do the local
+            search work that puts your practice in front of patients nearby.
+            Only healthcare, and only from one studio in Mehsana.
           </p>
           <div class="mt-7 flex flex-wrap items-center gap-4">
             <a href={whatsappHref} rel="noopener" class="btn-accent px-7 py-4 text-base">
@@ -255,7 +254,7 @@ const whatsappHref = whatsappWithMessage(
     </div>
   </section>
 
-  <!-- 01 · TRIAGE — THE THREE SURFACES -->
+  <!-- 01 · TRIAGE : THE THREE SURFACES -->
   <section class="border-t border-hairline bg-surface" aria-labelledby="triage-title">
     <div class="section shell">
       <div class="mb-14 flex flex-wrap items-end justify-between gap-6">
@@ -263,7 +262,7 @@ const whatsappHref = whatsappWithMessage(
           id="triage-title"
           label="Where patients look"
           title="Where patients look for a clinic like yours"
-          lede="Your Google listing, your website, and increasingly the answer an AI assistant gives. These are the places patients look — not the number of pages we build. We keep all three saying the same thing, because a patient checks all three."
+          lede="Your Google listing. Your website. Increasingly, whatever an AI assistant tells them when they ask. A patient checks all three before they call anyone, so all three have to agree."
         />
         <a href={href('/services')} class="prose-link whitespace-nowrap text-base">See all capabilities →</a>
       </div>
@@ -304,7 +303,7 @@ const whatsappHref = whatsappWithMessage(
           <h3 class="text-[26px] font-bold tracking-[-0.03em] text-ink">Your website</h3>
           <p class="mt-3 text-base leading-[1.6] text-body">
             Built by hand, not from a theme. A page for each treatment,
-            written in the words patients type — symptom and cost, not
+            written in the words patients type. Symptom and cost, not
             clinical terminology.
           </p>
           <div class="mt-6 rounded-[14px] border border-line bg-surface p-4">
@@ -322,7 +321,7 @@ const whatsappHref = whatsappWithMessage(
               <span>ref &lt;1.2s</span><span>ref &lt;0.10</span><span>ref &lt;200ms</span>
             </p>
             <p class="mt-3 border-t border-hairline-soft pt-2.5 font-mono text-[10px] uppercase tracking-[0.06em] text-faint">
-              Build reference — every site measured before launch
+              Build reference, measured on every site before launch
             </p>
           </div>
         </article>
@@ -334,9 +333,9 @@ const whatsappHref = whatsappWithMessage(
           </div>
           <h3 class="text-[26px] font-bold tracking-[-0.03em] text-surface">The AI answer</h3>
           <p class="mt-3 text-base leading-[1.6] text-panel-text">
-            Patients now ask an assistant before they open a browser. Answers
-            are assembled from structured, quotable facts — almost no clinic
-            in India has prepared for this yet.
+            Patients now ask an assistant before they open a browser. Those
+            answers get assembled from structured, quotable facts. Almost no
+            clinic in India has prepared for that yet.
           </p>
           <div class="mt-6 rounded-[14px] border border-panel-line bg-panel-card p-4">
             <p class="flex justify-between border-b border-panel-divider py-2 text-[13px]">
@@ -357,13 +356,13 @@ const whatsappHref = whatsappWithMessage(
     </div>
   </section>
 
-  <!-- 02 · PROTOCOLS — WHAT WE DO -->
+  <!-- 02 · PROTOCOLS : WHAT WE DO -->
   <section class="section shell" aria-labelledby="protocols-title">
     <SectionHead
       id="protocols-title"
       label="What we do"
       title="Everything we do for your clinic"
-      lede="Nine services, and each one removes a specific reason a patient hesitates. Most clinics need three of them to start. We tell you which three in writing, before you pay anything."
+      lede="Nine of them. Each one closes a specific gap where a patient hesitates or leaves. Most practices need three to begin with, and we tell you which three in writing before you pay anything."
     />
     <div class="reveal-group mt-13 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {protocols.map((p) => (
@@ -382,7 +381,7 @@ const whatsappHref = whatsappWithMessage(
     </div>
   </section>
 
-  <!-- 03 · INDICATION — WHY HEALTHCARE ONLY (the page's one dark panel) -->
+  <!-- 03 · INDICATION : WHY HEALTHCARE ONLY (the page's one dark panel) -->
   <section class="section shell" aria-labelledby="indication-title">
     <div class="panel-depth rounded-[28px] p-8 sm:p-12 lg:p-16">
       <div class="grid items-start gap-12 lg:grid-cols-[1fr_520px] lg:gap-16">
@@ -392,7 +391,7 @@ const whatsappHref = whatsappWithMessage(
             dark
             label="Why healthcare only"
             title="Why we work with healthcare practices only"
-            lede="A café wants you hungry. A clinic needs you calm. An agency doing both will always solve yours second. We work with dental, dermatology, physiotherapy, eye, orthopaedic, paediatric, cosmetic and mental health practices — and nothing else."
+            lede="A studio that builds for a restaurant one month and a clinic the next never learns either one properly. Patients arriving at your website are worried, comparing you to two other practices, and reading on a phone at an odd hour. We only take healthcare work, so that is the visitor we have learned to write for."
           />
           <div class="mt-8 flex flex-wrap gap-2.5">
             <span class="chip border border-panel-line-alt text-panel-text-dim">No ranking guarantees</span>
@@ -429,7 +428,7 @@ const whatsappHref = whatsappWithMessage(
     </div>
   </section>
 
-  <!-- WHAT CHANGES — the value case, stated as mechanisms -->
+  <!-- WHAT CHANGES : the value case, stated as mechanisms -->
   <section class="band-vivid" aria-labelledby="outcomes-title">
     <div class="section shell">
       <div class="max-w-[760px]">
@@ -439,9 +438,9 @@ const whatsappHref = whatsappWithMessage(
           What is different once the work is done
         </h2>
         <p class="mt-4.5 text-lg leading-[1.62] text-ink/90">
-          We will not promise you a number of patients — nobody honestly can.
-          Here is what we do control, and what actually changes for your
-          practice.
+          We will not promise you a number of patients. Nobody can. Here is
+          what we do control, and what changes for your practice once it is
+          done.
         </p>
       </div>
       <div class="reveal-group mt-13 grid gap-6 sm:grid-cols-2">
@@ -472,10 +471,10 @@ const whatsappHref = whatsappWithMessage(
           You talk to the person building your website.
         </h2>
         <p class="mt-3 max-w-[640px] text-[15.5px] leading-[1.65] text-body">
-          CareInflow is run by {BUSINESS.founder} — web development in Gujarat,
-          cybersecurity study in Canada, then more than a year at Microsoft
-          before coming home to start this. There is no account manager
-          between you and the work.
+          CareInflow is run by {BUSINESS.founder}. Web development in
+          Gujarat, cybersecurity study in Canada, then a year and a half at
+          Microsoft before coming home to start this. There is no account
+          manager between you and the work.
         </p>
         <a href={href('/about')} class="prose-link mt-4 inline-block text-[15px]">
           More about the studio →
@@ -517,13 +516,13 @@ const whatsappHref = whatsappWithMessage(
         ))}
       </div>
       <p class="mt-8 max-w-[680px] text-[15.5px] leading-[1.65] text-muted">
-        Prices exclude GST where it applies. Domain and hosting are paid by you,
-        directly, in your own name — we do not mark them up.
+        Prices exclude GST where it applies. Domain and hosting are paid by
+        you, directly, in your own name. We do not mark them up.
       </p>
     </div>
   </section>
 
-  <!-- 04 · FINDINGS — REAL BUILDS -->
+  <!-- 04 · FINDINGS : REAL BUILDS -->
   <section class="border-t border-hairline bg-surface" aria-labelledby="featured-title">
     <div class="section shell">
       <div class="mb-12 flex flex-wrap items-end justify-between gap-6">
@@ -531,7 +530,7 @@ const whatsappHref = whatsappWithMessage(
           id="featured-title"
           label="Our work"
           title="Websites we have actually built"
-          lede="Not mockups. Open them on your own phone and judge the loading speed yourself — we would rather show you working sites than describe them."
+          lede="Not mockups. Open one on your own phone and time it yourself. We would rather hand you a working site than describe one."
         />
         <a href={href('/work')} class="prose-link whitespace-nowrap text-base">See the work →</a>
       </div>
@@ -577,8 +576,8 @@ const whatsappHref = whatsappWithMessage(
       ))}
 
       <p class="mt-7 max-w-[720px] text-[15px] leading-[1.65] text-muted">
-        One healthcare project, shown in full rather than a portfolio padded out
-        with work we did not do. {otherWorkCount > 0 && (
+        One healthcare project, shown in full, rather than a portfolio padded
+        out with work we did not do. {otherWorkCount > 0 && (
           <>There {otherWorkCount === 1 ? 'is' : 'are'} also {otherWorkCount} non-healthcare
           {' '}{otherWorkCount === 1 ? 'project' : 'projects'} on the
           {' '}<a href={href('/work')} class="prose-link">work page</a>, labelled as such,
@@ -598,15 +597,15 @@ const whatsappHref = whatsappWithMessage(
           title="Built for the practice you actually run."
         />
         <p class="mt-5 max-w-[620px] text-lg leading-[1.62] text-body">
-          A single dentist and a twelve-doctor multi-specialty centre need very
-          different websites, and we build both. What stays the same is the
-          method: study first, words before visuals, and a fixed price agreed
+          A single dentist and a twelve-doctor multi-specialty centre need
+          very different websites. We build both. What does not change is the
+          method: study first, words before visuals, and one fixed price agreed
           in writing before anything begins.
         </p>
         <p class="mt-4 max-w-[620px] text-lg leading-[1.62] text-body">
-          We are based in Mehsana and work with clinics across Gujarat — and,
-          where the work suits it, well beyond. Everything except the
-          photography runs perfectly well at a distance.
+          We work from Mehsana, with practices across Gujarat and further out
+          where the work suits it. Everything except the photography runs the
+          same at a distance, and for photographs we come to you.
         </p>
         <p class="mt-7">
           <a href={href('/pricing')} class="prose-link text-base">See what it costs →</a>
@@ -633,9 +632,10 @@ const whatsappHref = whatsappWithMessage(
           ))}
         </ul>
         <p class="mt-6 border-t border-hairline pt-5 text-[14.5px] leading-[1.6] text-muted">
-          The linked three have a page on what changes for that specialty — see
-          <a href={href('/specialties')} class="prose-link">all specialties</a>.
-          If yours is not listed at all, it almost certainly still fits — ask.
+          The three linked above have a page on what changes for that
+          specialty. <a href={href('/specialties')} class="prose-link">See all
+          specialties</a>. If yours is not on this list at all, it almost
+          certainly still fits, so ask.
         </p>
       </div>
     </div>

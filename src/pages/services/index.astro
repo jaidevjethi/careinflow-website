@@ -18,9 +18,9 @@ import {
   serviceSchema,
 } from '@/lib/schema';
 
-const title = 'Services for clinics — websites, local SEO, Google | CareInflow';
+const title = 'Services for clinics: websites, local SEO, Google | CareInflow';
 const description =
-  'Healthcare website design, local SEO, Google Business Profile management, ongoing care and social media content — for clinics across North Gujarat.';
+  'Healthcare website design, local SEO, Google Business Profile management, ongoing care and social media content, for clinics across North Gujarat.';
 
 const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
 
@@ -53,7 +53,7 @@ const targets = [
 const glossary = [
   {
     term: 'Google Business Profile (GBP)',
-    def: "The free Google listing with your map pin, rating, photos and hours — for most clinics, the first thing a patient sees.",
+    def: 'The free Google listing carrying your map pin, rating, photos and hours. For most clinics it is the first thing a patient ever sees.',
   },
   {
     term: 'NAP',
@@ -91,7 +91,7 @@ const engagements = [
     name: 'Start with Google',
     price: `${rupees(ONE_TIME_ITEMS[0]!.price)} once, or ${rupees(STANDALONE_MONTHLY.gbp)} a month`,
     scope: 'Google Business Profile rebuilt and maintained, citations corrected, review flow set up.',
-    excludes: 'Excludes: website changes — though the audit will say honestly if your site is the real problem.',
+    excludes: 'Excludes website changes. The audit will still say plainly if your site is the real problem.',
     suits: 'Suits practices with a decent website that patients simply cannot find.',
   },
   {
@@ -108,11 +108,11 @@ const engagements = [
   <PageHero
     label="What we do"
     title="Four core services, plus the support work around them."
-    lede="We do a small number of things for healthcare practices and hold them to measurable standards. If a service is not on this page, we do not sell it — and we will say so."
+    lede="A small number of things, done for healthcare practices only, each held to a standard we publish. If a service is not on this page we do not sell it, and we will tell you so rather than take the work."
     stats={targets}
   />
 
-  <!-- SERVICE DETAILS — alternating rows -->
+  <!-- SERVICE DETAILS : alternating rows -->
   <section class="border-t border-hairline bg-surface" aria-label="The four core services">
     <div class="section shell flex flex-col gap-20">
       {services.map((service, i) => (
@@ -173,7 +173,7 @@ const engagements = [
     </div>
   </section>
 
-  <!-- ENGAGEMENTS — the page's one dark panel -->
+  <!-- ENGAGEMENTS : the page's one dark panel -->
   <section class="section shell" aria-labelledby="engagements-title">
     <div class="panel-depth rounded-[28px] p-8 sm:p-12 lg:p-16">
       <SectionHead
@@ -181,7 +181,7 @@ const engagements = [
         dark
         label="Where to start"
         title="Most clinics need three of our nine services to begin. These are the usual starting points."
-        lede="Every engagement is a fixed price agreed in writing after the free review — no hourly billing, no surprise invoices. Exclusions are stated with the same weight as inclusions."
+        lede="Every engagement is one fixed price, agreed in writing after the free review. No hourly billing and no invoice you did not expect. What a package excludes is written as plainly as what it includes."
       />
       <div class="mt-12 grid gap-5 lg:grid-cols-3">
         {engagements.map((e) => (
