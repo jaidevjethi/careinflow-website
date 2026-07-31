@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/PageHero.astro';
 import { href } from '@/lib/url';
 
 const title = 'Page not found | CareInflow';
@@ -14,22 +15,22 @@ const links = [
 ---
 
 <BaseLayout {title} {description} path="/404" noindex>
-  <section class="mx-auto max-w-[1440px] px-5 py-24 sm:px-10 sm:py-32 xl:px-20">
-    <p class="label-mono mb-5 text-surgical">Page not found</p>
-    <h1 class="max-w-[760px] text-[clamp(34px,5vw,62px)] font-extrabold leading-[1.04] tracking-[-0.045em] text-ink">
-      This page does not exist. No harm done.
-    </h1>
-    <p class="mt-6 max-w-[560px] text-lg leading-[1.62] text-body">
-      The link was wrong or the page has moved. Everything worth finding is
-      one click below.
-    </p>
-    <div class="mt-10 grid max-w-[720px] gap-4 sm:grid-cols-2">
-      {links.map((l) => (
-        <a href={href(l.href)} class="card-hover block rounded-[18px] border border-line bg-surface p-6 hover:no-underline">
-          <h2 class="text-lg font-bold tracking-[-0.02em] text-ink">{l.label} →</h2>
-          <p class="mt-1.5 text-[14.5px] text-muted">{l.note}</p>
-        </a>
-      ))}
+  <PageHero
+    label="Page not found"
+    title="This page does not exist. No harm done."
+    lede="The link was wrong or the page has moved. Everything worth finding is one click below."
+  />
+
+  <section class="border-t border-hairline bg-surface" aria-label="Where to go instead">
+    <div class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20">
+      <div class="grid max-w-[880px] gap-4 sm:grid-cols-2">
+        {links.map((l) => (
+          <a href={href(l.href)} class="card-hover block rounded-[18px] border border-line bg-canvas p-6 hover:no-underline">
+            <h2 class="text-lg font-bold tracking-[-0.02em] text-ink">{l.label} →</h2>
+            <p class="mt-1.5 text-[14.5px] text-muted">{l.note}</p>
+          </a>
+        ))}
+      </div>
     </div>
   </section>
 </BaseLayout>

@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/PageHero.astro';
 import IllustrationPanel from '@/components/IllustrationPanel.astro';
 import { serviceAccent } from '@/lib/accents';
 import FaqSection from '@/components/FaqSection.astro';
@@ -76,32 +77,27 @@ const schema = graph(
 
 <BaseLayout {title} {description} {path} {schema}>
   <article>
-    <!-- OPENER -->
-    <header class="mx-auto max-w-[1440px] px-5 pb-14 pt-14 sm:px-10 sm:pt-20 xl:px-20">
-      <nav aria-label="Breadcrumb" class="mb-8">
-        <a href={href('/services')} class="inline-flex min-h-[24px] items-center font-mono text-[11px] uppercase tracking-[0.1em] text-faint hover:text-surgical">
-          ← All services
-        </a>
-      </nav>
-      <p class="mb-4 flex flex-wrap items-center gap-2.5">
-        <span class:list={['chip', accent.chip]}>{service.data.code}</span>
-        {service.data.order > 4 && (
-          <span class="chip bg-hairline-soft text-muted">Support service</span>
-        )}
-      </p>
-      <h1 class="max-w-[820px] text-[clamp(34px,5vw,58px)] font-extrabold leading-[1.05] tracking-[-0.045em] text-ink">
-        {service.data.title}
-      </h1>
-      <p class="mt-6 max-w-[660px] text-lg leading-[1.62] text-body">{service.data.summary}</p>
-
+    <PageHero
+      breadcrumb={{ label: 'All services', href: href('/services') }}
+      label={`${service.data.code} · ${service.data.navLabel}`}
+      title={service.data.title}
+      lede={service.data.summary}
+    >
+      {service.data.order > 4 && (
+        <p class="mt-7">
+          <span class="chip border border-panel-line bg-panel-card text-panel-text">
+            Support service — added to a plan, never sold first
+          </span>
+        </p>
+      )}
       <IllustrationPanel
+        slot="aside"
         src={service.data.illustration}
         alt={service.data.illustrationAlt}
         eager
-        maxWidth={760}
-        class="mt-10"
+        maxWidth={400}
       />
-    </header>
+    </PageHero>
 
     <!-- BODY + DELIVERABLES -->
     <div class="border-t border-hairline bg-surface">

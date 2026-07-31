@@ -19,6 +19,7 @@ Astro 5 · TypeScript strict · Tailwind CSS v4 (`@tailwindcss/vite`, tokens in 
 ## Design system 2a "Instrument" (hard rules)
 
 - Palette "Midnight & Citrus" — canvas `#E9E4DA`, surface `#F7F4EE`, line `#D6CFC2`, surgical teal `#0A6B63` (also `pass`, for verified measurements ONLY), citrus `#FFB020` (fills only — ink text on it, never white), ink `#0A1628`; midnight panel family `#0A1628`/`#14243E`. **Midnight is reserved for the hero, the CTA panel, the footer and at most one section per page. Never a dark theme.**
+- **Every page opens with the midnight `PageHero`** — header + hero form one continuous dark block, stone body between, midnight CTA + footer at the bottom. Never a bare-stone opener.
 - Type: Manrope variable only (display 800, tracking −0.045em; body 18px/1.62); JetBrains Mono for labels/measurements/chips. Large tight numbers are the only ornament.
 - Layout: 1440 max, 80px margins, 140–160px section rhythm, radius 12/16/24, exactly one shadow recipe.
 - Motion: single easing `cubic-bezier(.22,1,.36,1)`; 240ms entrance fade+8px rise (once), 200ms hover lift; **only `opacity`/`transform` animate, pure CSS, no scroll-driven effects, `prefers-reduced-motion` disables all.** No animation libraries.

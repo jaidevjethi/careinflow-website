@@ -27,6 +27,8 @@ Warm stone base with real depth, midnight navy for the moments that matter, citr
 
 Midnight is a *moment*, not a theme. It owns the **header, the hero, the CTA panel, the footer and the mobile bar** — so the top and bottom of every page are one continuous dark block with the stone body between them. At most one additional midnight section per page. The body never goes dark.
 
+**Every page opens with `PageHero`.** This is not optional and not only the homepage. Interior pages once opened on bare stone directly under the midnight header, at opener heights from 434px to 895px — which is precisely why the site read as a different site on every page. `PageHero` takes `label`, `title`, `lede`, and optionally `stats` (oversized numerals), `chips`, `breadcrumb`, `compact`, and an `aside` slot for a figure or illustration. Prefer `stats` on any page with genuine measured facts: the numeral strip is what fills the width and carries the premium feel. The homepage keeps its own taller hero — it is the only page allowed to be an event — but shares the vocabulary.
+
 ## Accents
 
 Five hues in `src/lib/accents.ts` — never hand-picked. Each has `-vivid` (fills, top rules, numerals), the bare name (AA-safe text), `-tint` (large light areas).
@@ -69,7 +71,7 @@ One easing: `--ease-instrument`. Only `opacity` and `transform` animate — neve
 
 ## Components
 
-Reuse before building: `SectionHead` (tick-rule + mono label + heading + lede), `CtaPanel` (closing CTA, takes `prefill` and `nextStep`), `CtaStrip` (one-line mid-page CTA), `FaqSection`, `LiveBadge`, `Header`, `Footer`.
+Reuse before building: `PageHero` (the midnight opener — every page), `SectionHead` (tick-rule + mono label + heading + lede, for sections *within* a page), `CtaPanel` (closing CTA, takes `prefill` and `nextStep`), `CtaStrip` (one-line mid-page CTA), `FaqSection`, `Header`, `Footer`.
 
 Section labels are **plain language** in the mono style: "What we do", "Where patients look", "Our work", "Questions". The medical-record vocabulary (CHART, TRIAGE, PROTOCOL) was retired — it read cold and worked against comprehension. Still never "Solutions" or "Why choose us".
 
@@ -77,10 +79,9 @@ Section labels are **plain language** in the mono style: "What we do", "Where pa
 
 Never a card with a fictional clinic name — a visitor must never wonder whether CareInflow is itself a clinic. Use the illustration in `src/assets/`, real client screenshots in `src/assets/work/`, or nothing. All images go through `astro:assets` `<Image>` with `widths`, `sizes` and real alt text. Hero images: `loading="eager"` + `fetchpriority="high"`; everything else lazy.
 
-All imagery goes through **`IllustrationPanel`**, which has two modes:
+All imagery goes through **`IllustrationPanel`** — photographic 3D product mockups (`src/assets/mockups/`), rendered edge-to-edge inside a rounded, thin-bordered figure and constrained by `maxWidth`. These are the primary service and hero visuals: realistic device renders with grey placeholder UI and one teal accent, never gibberish text. Inside a `PageHero` it goes in the `aside` slot at `maxWidth={400}`.
 
-- **Default** — photographic 3D product mockups (`src/assets/mockups/`). Rendered edge-to-edge inside a rounded, thin-bordered figure, constrained by `maxWidth`. These are the primary service and hero visuals: realistic device renders with grey placeholder UI and one teal accent, never gibberish text.
-- **`blend`** — flat vector art on pure white, blended onto an accent tint with `mix-blend-multiply` so no pale rectangle floats inside a frame. Requires the near-white normalisation in the `careinflow-images` skill.
+(There was a second `blend` mode for flat vector art on white. Every illustration moved to the mockups, no caller ever used it, and the branch was removed.)
 
 Portrait and studio photographs use a plain bordered `<Image>` directly and are never blended.
 

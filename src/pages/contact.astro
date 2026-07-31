@@ -1,6 +1,7 @@
 ---
 import { getFaqsFor } from '@/lib/faqs';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/PageHero.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import { BUSINESS, WHATSAPP_URL, whatsappWithMessage } from '@/config/site';
 import { cycleAccent, ACCENTS } from '@/lib/accents';
@@ -51,30 +52,24 @@ const steps = [
 ---
 
 <BaseLayout {title} {description} path="/contact" {schema}>
-  <section class="mx-auto max-w-[1440px] px-5 pb-16 pt-14 sm:px-10 sm:pb-20 sm:pt-20 xl:px-20">
-    <div class="tick-rule mb-3.5" aria-hidden="true"></div>
-    <p class="label-mono mb-5 text-surgical">Contact</p>
-    <h1 class="max-w-[860px] text-[clamp(34px,5vw,62px)] font-extrabold leading-[1.04] tracking-[-0.045em] text-ink">
-      Send your clinic's name. We reply with what a patient sees.
-    </h1>
-    <p class="mt-6 max-w-[660px] text-lg leading-[1.62] text-body">
-      No form, no discovery call, no slide deck. One WhatsApp message starts
-      it, and if the honest answer is "change nothing", that is the answer
-      you will get.
-    </p>
-    <div class="mt-8 flex flex-wrap items-center gap-4">
-      <a href={whatsappHref} rel="noopener" class="btn-primary px-7 py-4 text-[17px]">
+  <PageHero
+    label="Contact"
+    title="Send your clinic's name. We reply with what a patient sees."
+    lede={'No form, no discovery call, no slide deck. One WhatsApp message starts it, and if the honest answer is "change nothing", that is the answer you will get.'}
+  >
+    <div class="mt-9 flex flex-wrap items-center gap-4">
+      <a href={whatsappHref} rel="noopener" class="btn-accent px-7 py-4 text-[17px]">
         WhatsApp {BUSINESS.phoneDisplay}
       </a>
-      <a href={`tel:${BUSINESS.phone}`} class="btn-secondary px-6 py-[15px] text-base">
+      <a href={`tel:${BUSINESS.phone}`} class="btn-on-dark px-6 py-[15px] text-base">
         Or call {BUSINESS.phoneDisplay}
       </a>
     </div>
-    <p class="mt-4 text-[14.5px] text-faint">
+    <p class="mt-5 text-[14.5px] leading-[1.6] text-panel-text-dim">
       Usually answered the same day. Calls are answered between
       {' '}{BUSINESS.hours.opens} and {BUSINESS.hours.closes}, Monday to Saturday.
     </p>
-  </section>
+  </PageHero>
 
   <section class="border-t border-hairline bg-surface" aria-label="What happens next">
     <div class="mx-auto grid max-w-[1440px] items-start gap-10 px-5 py-16 sm:px-10 sm:py-20 lg:grid-cols-[1fr_380px] lg:gap-20 xl:px-20">

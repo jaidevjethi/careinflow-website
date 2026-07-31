@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/PageHero.astro';
 import { BUSINESS, WHATSAPP_URL } from '@/config/site';
 import { href } from '@/lib/url';
 import {
@@ -26,13 +27,12 @@ const schema = graph(
 ---
 
 <BaseLayout {title} {description} path="/privacy" {schema}>
-  <section class="mx-auto max-w-[1440px] px-5 pb-16 pt-14 sm:px-10 sm:pt-20 xl:px-20">
-    <div class="tick-rule mb-3.5" aria-hidden="true"></div>
-    <p class="label-mono mb-5 text-surgical">Privacy</p>
-    <h1 class="max-w-[820px] text-[clamp(32px,4.6vw,54px)] font-extrabold leading-[1.05] tracking-[-0.045em] text-ink">
-      This site collects as little as we could manage.
-    </h1>
-  </section>
+  <PageHero
+    compact
+    label="Privacy"
+    title="This site collects as little as we could manage."
+    lede="Written in plain language rather than legal boilerplate, because a note nobody can read is not a disclosure. It is short because there is genuinely very little to disclose."
+  />
 
   <div class="border-t border-hairline bg-surface">
     <div class="mx-auto max-w-[1440px] px-5 py-14 sm:px-10 sm:py-20 xl:px-20">
@@ -48,7 +48,7 @@ const schema = graph(
         <h2>When you contact us</h2>
         <p>
           WhatsApp and the phone are the only two ways to reach us, and both
-          run through the number above. When you message or call, we receive
+          run through one number. When you message or call, we receive
           your number and what you send. We use it to reply and, if you engage
           us, to do the work. We do not sell it, share it, or add you to a
           mailing list — there is no mailing list.

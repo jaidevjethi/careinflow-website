@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/PageHero.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import { ACCENTS } from '@/lib/accents';
 import { BUSINESS } from '@/config/site';
@@ -39,23 +40,22 @@ const schema = graph(
 ---
 
 <BaseLayout {title} {description} path="/areas" {schema}>
-  <section class="mx-auto max-w-[1440px] px-5 pb-14 pt-14 sm:px-10 sm:pt-20 xl:px-20">
-    <div class="tick-rule mb-3.5" aria-hidden="true"></div>
-    <p class="label-mono mb-5 text-surgical">Where we work</p>
-    <h1 class="max-w-[860px] text-[clamp(34px,5vw,62px)] font-extrabold leading-[1.04] tracking-[-0.045em] text-ink">
-      One studio in Mehsana, and the towns it serves.
-    </h1>
-    <p class="mt-6 max-w-[680px] text-lg leading-[1.62] text-body">
-      Plenty of agencies list a dozen cities and staff exactly one of them. We
-      have one studio, on Radhanpur Road in Mehsana, and no branches anywhere.
-      These are places we work in — not places we sit.
-    </p>
-    <p class="mt-6 max-w-[680px] text-[16px] leading-[1.62] text-muted">
+  <PageHero
+    label="Where we work"
+    title="One studio in Mehsana, and the towns it serves."
+    lede="Plenty of agencies list a dozen cities and staff exactly one of them. We have one studio, on Radhanpur Road in Mehsana, and no branches anywhere. These are places we work in — not places we sit."
+    stats={[
+      { value: '1', caption: 'studio, in Mehsana' },
+      { value: '0', caption: 'branch offices anywhere' },
+      { value: String(BUSINESS.serviceAreas.length), caption: 'towns served, and beyond' },
+    ]}
+  >
+    <p class="mt-6 max-w-[660px] text-[16px] leading-[1.62] text-panel-text-dim">
       Everything except photography runs the same at a distance: the writing,
       the build, the Google listing, the monthly upkeep and the quarterly
       review. For photographs we come to you.
     </p>
-  </section>
+  </PageHero>
 
   <section class="border-t border-hairline bg-surface" aria-label="Areas with a full page">
     <div class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20">

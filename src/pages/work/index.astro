@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/PageHero.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import { href } from '@/lib/url';
 import {
@@ -36,18 +37,16 @@ const schema = graph(
 ---
 
 <BaseLayout {title} {description} path="/work" {schema}>
-  <section class="mx-auto max-w-[1440px] px-5 pb-14 pt-14 sm:px-10 sm:pt-20 xl:px-20">
-    <div class="tick-rule mb-3.5" aria-hidden="true"></div>
-    <p class="label-mono mb-5 text-surgical">Our work</p>
-    <h1 class="max-w-[820px] text-[clamp(34px,5vw,62px)] font-extrabold leading-[1.04] tracking-[-0.045em] text-ink">
-      A short portfolio, shown honestly.
-    </h1>
-    <p class="mt-6 max-w-[680px] text-lg leading-[1.62] text-body">
-      A short page, and everything on it is real — no padded portfolio, no
-      screenshots of work we did not do. As new practices launch, we publish
-      what happened for each one, including what did not work.
-    </p>
-  </section>
+  <PageHero
+    label="Our work"
+    title="A short portfolio, shown honestly."
+    lede="A short page, and everything on it is real — no padded portfolio, no screenshots of work we did not do. As new practices launch, we publish what happened for each one, including what did not work."
+    stats={[
+      { value: String(caseStudies.length), caption: 'projects, all of them real' },
+      { value: String(caseStudies.filter((c) => c.data.healthcare).length), caption: 'in healthcare' },
+      { value: '0', caption: 'mockups presented as clients' },
+    ]}
+  />
 
   <section class="border-t border-hairline bg-surface" aria-label="Case studies">
     <div class="mx-auto grid max-w-[1440px] gap-8 px-5 py-16 sm:px-10 sm:py-20 lg:grid-cols-2 xl:px-20">

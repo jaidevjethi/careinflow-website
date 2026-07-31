@@ -1,0 +1,124 @@
+---
+/**
+ * The opener every page uses.
+ *
+ * The design system says midnight owns "the header, the hero, the CTA panel,
+ * the footer" — so the top and bottom of every page are one continuous dark
+ * block with the stone body between them. Only the homepage was doing that.
+ * Every other page opened on bare stone directly under the midnight header,
+ * at opener heights ranging from 434px to 895px, which is why the site felt
+ * like a different site on every page.
+ *
+ * One component, one rhythm. The homepage keeps its own taller hero — it is
+ * the only page allowed to be an event — but it now shares this vocabulary:
+ * mono label, oversized display, lede, and an optional measured strip.
+ */
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'section'> {
+  /** Plain-language mono label, e.g. "What we do". */
+  label: string;
+  title: string;
+  lede?: string;
+  /**
+   * Measured facts along the bottom, as oversized numerals — the system's one
+   * deliberate ornament. Every measurement carries its reference range.
+   */
+  stats?: Array<{ value: string; caption: string }>;
+  /** Mono chips under the lede, for standards or categories. */
+  chips?: string[];
+  /** Back-link for detail pages, rendered above the label. */
+  breadcrumb?: { label: string; href: string };
+  /** Tighter top padding for pages that follow with a dense section. */
+  compact?: boolean;
+}
+
+const {
+  label,
+  title,
+  lede,
+  stats,
+  chips,
+  breadcrumb,
+  compact = false,
+  ...attrs
+} = Astro.props;
+const hasAside = Astro.slots.has('aside');
+---
+
+<section class="panel-depth" {...attrs}>
+  <div
+    class:list={[
+      'mx-auto max-w-[1440px] px-5 sm:px-10 xl:px-20',
+      compact ? 'pb-14 pt-14 sm:pb-16 sm:pt-20' : 'pb-16 pt-14 sm:pb-20 sm:pt-24',
+    ]}
+  >
+    <div
+      class:list={[
+        'grid gap-12',
+        hasAside && 'lg:grid-cols-[1fr_400px] lg:items-start lg:gap-16',
+      ]}
+    >
+      <div class="animate-rise">
+        {breadcrumb && (
+          <nav aria-label="Breadcrumb" class="mb-7">
+            <a
+              href={breadcrumb.href}
+              class="inline-flex min-h-[24px] items-center font-mono text-[11px] uppercase tracking-[0.1em] text-panel-text-faint hover:text-panel-accent"
+            >
+              ← {breadcrumb.label}
+            </a>
+          </nav>
+        )}
+        <div class="tick-rule tick-rule-dark mb-3.5" aria-hidden="true"></div>
+        <p class="label-mono mb-5 text-panel-accent">{label}</p>
+        <h1
+          class:list={[
+            'font-extrabold leading-[1.04] tracking-[-0.045em] text-surface',
+            hasAside
+              ? 'text-[clamp(34px,4.6vw,54px)]'
+              : 'max-w-[900px] text-[clamp(34px,5vw,62px)]',
+          ]}
+        >
+          {title}
+        </h1>
+        {lede && (
+          <p class="mt-6 max-w-[660px] text-lg leading-[1.62] text-panel-text">{lede}</p>
+        )}
+        {chips && chips.length > 0 && (
+          <ul class="mt-8 flex flex-wrap gap-2.5">
+            {chips.map((c) => (
+              <li class="chip border border-panel-line bg-panel-card text-panel-text">{c}</li>
+            ))}
+          </ul>
+        )}
+        <slot />
+      </div>
+
+      {hasAside && (
+        <div class="animate-fade lg:pt-2">
+          <slot name="aside" />
+        </div>
+      )}
+    </div>
+
+    {stats && stats.length > 0 && (
+      <dl
+        class:list={[
+          'mt-12 grid grid-cols-2 gap-x-8 gap-y-7 border-t border-panel-line pt-8',
+          stats.length >= 4 ? 'sm:grid-cols-4' : 'sm:grid-cols-3',
+        ]}
+      >
+        {stats.map((stat) => (
+          <div>
+            <dt class="sr-only">{stat.caption}</dt>
+            <dd class="numeral text-[clamp(26px,2.8vw,36px)] text-surface">{stat.value}</dd>
+            <dd class="mt-1.5 font-mono text-[10.5px] uppercase leading-[1.5] tracking-[0.08em] text-panel-text-dim">
+              {stat.caption}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    )}
+  </div>
+</section>

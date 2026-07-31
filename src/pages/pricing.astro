@@ -1,6 +1,7 @@
 ---
 import { getFaqsFor } from '@/lib/faqs';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/PageHero.astro';
 import SectionHead from '@/components/SectionHead.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
@@ -128,31 +129,12 @@ const principles = [
 ---
 
 <BaseLayout {title} {description} path="/pricing" {schema}>
-  <!-- OPENER -->
-  <section class="mx-auto max-w-[1440px] px-5 pb-14 pt-14 sm:px-10 sm:pt-20 xl:px-20">
-    <div class="tick-rule mb-3.5" aria-hidden="true"></div>
-    <p class="label-mono mb-5 text-surgical">Pricing</p>
-    <h1 class="max-w-[860px] text-[clamp(34px,5vw,62px)] font-extrabold leading-[1.04] tracking-[-0.045em] text-ink">
-      Our prices are on this page, because you should not have to ask.
-    </h1>
-    <p class="mt-6 max-w-[680px] text-lg leading-[1.62] text-body">
-      Most studios make you sit through a call before they say a number. Here
-      is what things cost, what moves the figure up, and what we never charge
-      for. Your exact price is fixed in writing after the free review.
-    </p>
-
-    <dl class="mt-11 grid max-w-[900px] gap-4 sm:grid-cols-3">
-      {headline.map((h) => (
-        <div class="rounded-2xl border border-line bg-surface px-6 py-5">
-          <dt class="label-mono text-faint" style="letter-spacing:0.12em">{h.label}</dt>
-          <dd class="mt-3 text-[clamp(28px,3.4vw,38px)] font-extrabold leading-none tracking-[-0.045em] text-ink">
-            {h.value}
-          </dd>
-          <dd class="mt-2 font-mono text-[11px] uppercase tracking-[0.08em] text-surgical">{h.suffix}</dd>
-        </div>
-      ))}
-    </dl>
-  </section>
+  <PageHero
+    label="Pricing"
+    title="Our prices are on this page, because you should not have to ask."
+    lede="Most studios make you sit through a call before they say a number. Here is what things cost, what moves the figure up, and what we never charge for. Your exact price is fixed in writing after the free review."
+    stats={headline.map((h) => ({ value: h.value, caption: `${h.label} · ${h.suffix}` }))}
+  />
 
   <!-- WEBSITE BUILDS -->
   <section class="border-t border-hairline bg-surface" aria-labelledby="builds-title">

@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/PageHero.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import { ACCENTS } from '@/lib/accents';
 import { href } from '@/lib/url';
@@ -56,19 +57,16 @@ const schema = graph(
 ---
 
 <BaseLayout {title} {description} path="/specialties" {schema}>
-  <section class="mx-auto max-w-[1440px] px-5 pb-14 pt-14 sm:px-10 sm:pt-20 xl:px-20">
-    <div class="tick-rule mb-3.5" aria-hidden="true"></div>
-    <p class="label-mono mb-5 text-surgical">Who we write for</p>
-    <h1 class="max-w-[860px] text-[clamp(34px,5vw,62px)] font-extrabold leading-[1.04] tracking-[-0.045em] text-ink">
-      The method is the same. What patients search is not.
-    </h1>
-    <p class="mt-6 max-w-[680px] text-lg leading-[1.62] text-body">
-      A dental patient in pain at midnight and someone pricing laser treatment
-      for the third week running are not the same visitor, and a website that
-      treats them the same loses both. These pages set out what actually changes
-      between specialties — and what does not.
-    </p>
-  </section>
+  <PageHero
+    label="Who we write for"
+    title="The method is the same. What patients search is not."
+    lede="A dental patient in pain at midnight and someone pricing laser treatment for the third week running are not the same visitor, and a website that treats them the same loses both. These pages set out what actually changes between specialties — and what does not."
+    stats={[
+      { value: String(specialties.length), caption: 'specialties written in full' },
+      { value: String(specialties.length + alsoWorkWith.length), caption: 'we build for' },
+      { value: '0', caption: 'work outside healthcare' },
+    ]}
+  />
 
   <section class="border-t border-hairline bg-surface" aria-label="Specialties with a full page">
     <div class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20">
