@@ -1,5 +1,5 @@
 /*
- * CareInflow design system — "Clinical Blue & Clay".
+ * CareInflow design system — "Clinical Blue & Teal".
  * Type, layout, spacing and motion follow direction 2a "Instrument"
  * (docs/design/careinflow-design-system.dc.html); its COLOUR section, and the
  * Midnight & Citrus palette that replaced it, are both superseded by this one.
@@ -8,15 +8,16 @@
  * It reads as a tech product, and amber carries a warning signal in a clinical
  * context. Healthcare branding research puts the trust foundation on blue and
  * white, and names muted navy with powder blue and ice grey as the palette
- * dentists, dermatologists and surgical practices respond to. The warm clay
- * accent keeps the site from going cold without shouting.
+ * dentists, dermatologists and surgical practices respond to. The teal accent
+ * is the second half of that research: blue reads as trust, green as wellbeing,
+ * and the two together give the calm tone clinics want.
  *
  * Colour rules:
  *  - Cool clinical neutrals as the base. Never pure white, never dark by
  *    default.
  *  - `surgical` #1B4D7E is the primary and is AA-safe as text: 8.05 on canvas.
- *  - Vivid values are FILLS ONLY. Clay fills take INK text (4.96), never white,
- *    which only reaches 3.14 and fails body copy.
+ *  - Vivid values are FILLS ONLY. Teal fills take INK text (6.01), never white,
+ *    which only reaches 2.59 and fails body copy.
  *  - Measurements stay green. A passing reading should read as passing.
  *  - Deep blue is reserved for moments: the header, the hero, the CTA panel,
  *    the footer, and at most one section per page.
@@ -85,11 +86,11 @@
   --color-line-strong: #bfcad6;
   --color-hairline: #e3e9ef;
   --color-hairline-soft: #eef2f6;
-  --color-line-hover: #c97b5a;
+  --color-line-hover: #17b0aa;
 
   /* Brand. `surgical` is the AA-safe primary used for text, labels and links. */
   --color-surgical: #1b4d7e;
-  --color-vivid: #c97b5a;
+  --color-vivid: #17b0aa;
   --color-support: #a8c5dd;
   /* Measurements stay green, because a passing reading should read as passing. */
   --color-pass: #0a6b63;
@@ -123,10 +124,10 @@
   --color-a-seo: #1b4d7e;
   --color-a-seo-vivid: #2b6fa8;
   --color-a-seo-tint: #e2ebf3;
-  /* gbp = clay — Google Business Profile, and the signature accent */
-  --color-a-gbp: #9d4c30;
-  --color-a-gbp-vivid: #c97b5a;
-  --color-a-gbp-tint: #f6e3db;
+  /* gbp = clinical teal — Google Business Profile, and the signature accent */
+  --color-a-gbp: #0c6e70;
+  --color-a-gbp-vivid: #17b0aa;
+  --color-a-gbp-tint: #d6efee;
   /* care = slate blue — website care */
   --color-a-care: #3d5a75;
   --color-a-care-vivid: #5a7f9e;
@@ -142,11 +143,11 @@
   --color-panel-line: #2a5580;
   --color-panel-line-alt: #35648f;
   --color-panel-divider: #1a3d61;
-  --color-panel-chip: #2d1f18;
+  --color-panel-chip: #0d2f33;
   --color-panel-text: #cfdeeb;
   --color-panel-text-dim: #adc2d6;
   --color-panel-text-faint: #9ab1c8;
-  --color-panel-accent: #dd8a5f;
+  --color-panel-accent: #2bbfb3;
 
   /*
    * Spacing scale — four values, and nothing outside this file may invent a
@@ -461,13 +462,17 @@
    * field dimension. At the lightest stop (#1A2F54) surface text is still
    * 12.1:1 and citrus 7.3:1.
    */
+  /*
+   * Depth, not a gradient. The previous stops ran from #23517F to #101F39 to
+   * the panel colour across a 125% radius, which read as a graphic effect
+   * rather than as a lit surface. One stop, a narrow range, top-left light.
+   */
   .panel-depth {
     background-color: var(--color-panel);
     background-image: radial-gradient(
-      125% 105% at 12% 0%,
-      #23517f 0%,
-      #101f39 42%,
-      var(--color-panel) 100%
+      140% 120% at 15% 0%,
+      #1a3f66 0%,
+      var(--color-panel) 62%
     );
   }
 
@@ -475,8 +480,8 @@
   .accent-bar {
     background-image: linear-gradient(
       90deg,
-      rgba(255, 255, 255, 0.42) 0%,
-      rgba(255, 255, 255, 0) 62%
+      rgba(255, 255, 255, 0.28) 0%,
+      rgba(255, 255, 255, 0) 70%
     );
   }
   .band-vivid {
@@ -544,7 +549,6 @@
     justify-content: center;
     gap: 10px;
     background-color: var(--color-vivid);
-    background-image: linear-gradient(180deg, #dd9070 0%, var(--color-vivid) 100%);
     color: var(--color-ink);
     font-weight: 700;
     border-radius: 12px;
