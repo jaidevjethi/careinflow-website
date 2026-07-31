@@ -118,14 +118,20 @@
    * They now sit in one blue-to-earth family rather than a rainbow. Nineteen
    * distinct backgrounds were measured across six pages before this change.
    */
-  /* web = clinical teal — healthcare websites */
-  --color-a-web: #12626b;
-  --color-a-web-vivid: #17838c;
-  --color-a-web-tint: #e0ecec;
-  /* seo = primary blue — local SEO */
-  --color-a-seo: #14425f;
-  --color-a-seo-vivid: #2a6d94;
-  --color-a-seo-tint: #e6ecf1;
+  /*
+   * web and gbp used to be the same deep teal (#12626b against #0b5f61), which
+   * made the website card and the Google card read as one block wherever they
+   * sat side by side. Websites are the flagship, so they take the primary navy
+   * and local SEO moves up to a lighter blue. Measured on canvas: 9.77, 6.75.
+   */
+  /* web = primary navy — healthcare websites */
+  --color-a-web: #14425f;
+  --color-a-web-vivid: #2f6390;
+  --color-a-web-tint: #e3e9f0;
+  /* seo = mid blue — local SEO */
+  --color-a-seo: #1c5a86;
+  --color-a-seo-vivid: #3e86bd;
+  --color-a-seo-tint: #e2ecf4;
   /* gbp = clinical teal — Google Business Profile, and the signature accent */
   --color-a-gbp: #0b5f61;
   --color-a-gbp-vivid: #12b3a6;
@@ -495,8 +501,16 @@
       rgba(255, 255, 255, 0) 70%
     );
   }
-  .band-vivid {
-    background: var(--color-vivid);
+  /*
+   * A chapter break with colour in it, kept quiet on purpose. This band used
+   * to be filled with the vivid teal at full bleed, which made a supporting
+   * list of benefits the loudest block on the page: louder than the hero, and
+   * louder than the CTA it was meant to lead into. The tint keeps the section
+   * feeling like its own chapter and gives the eye back to the two panels that
+   * are actually asking for something.
+   */
+  .band-tint {
+    background: var(--color-a-gbp-tint);
     color: var(--color-ink);
   }
   /* Oversized numeral — the personality device. Large, tight, and set in the
@@ -507,8 +521,8 @@
     line-height: 0.85;
     font-variant-numeric: tabular-nums;
   }
-  .band-vivid .band-rule {
-    background: color-mix(in srgb, var(--color-ink) 22%, transparent);
+  .band-tint .band-rule {
+    background: var(--color-a-gbp-vivid);
   }
 
   /* Uppercase mono section label (record vocabulary). */
@@ -623,6 +637,22 @@
   .card-hover:hover {
     transform: translateY(-2px);
     border-color: var(--color-line-hover);
+  }
+
+  /*
+   * Whole-card click target driven by one link inside it. Wrapping a card in
+   * an anchor makes its accessible name the entire card, which is unusable
+   * read aloud; this keeps the name to the link's own words while the target
+   * covers the card, so the reachable area matches what looks clickable.
+   */
+  .card-link {
+    position: relative;
+  }
+  .card-link :where(a)::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
   }
 
   /*

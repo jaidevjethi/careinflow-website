@@ -104,6 +104,51 @@ const outcomes = [
   },
 ];
 
+/**
+ * The three places a patient checks before ringing anyone. Every row here is
+ * something a doctor can judge for themselves; the block this replaced showed
+ * LCP, CLS and INP with their reference ranges, which is a measurement for the
+ * person building the site and means nothing to the person buying it.
+ */
+const patientSurfaces = [
+  {
+    title: 'Your Google listing',
+    accent: ACCENTS.gbp,
+    text: 'For most clinics this is the real homepage: three results, chosen on distance, hours, photos and the newest review. We rebuild the profile and then actually maintain it.',
+    rows: [
+      ['Categories and services', 'rebuilt'],
+      ['Hours, holidays, photos', 'monthly'],
+      ['Review replies drafted', 'weekly'],
+    ],
+    link: '/services/google-business-profile',
+    linkText: 'Google Business Profile',
+  },
+  {
+    title: 'Your website',
+    accent: ACCENTS.web,
+    text: 'Built by hand, not from a theme. A page for each treatment, written in the words patients type. Symptom and cost, not clinical terminology.',
+    rows: [
+      ['A page per treatment', 'written'],
+      ['Opens on mobile data', 'about a second'],
+      ['Enquiry from any page', 'two taps'],
+    ],
+    link: '/services/healthcare-websites',
+    linkText: 'Healthcare websites',
+  },
+  {
+    title: 'The AI answer',
+    accent: ACCENTS.seo,
+    text: 'Patients now ask an assistant before they open a browser. Those answers get assembled from structured, quotable facts. Almost no clinic in India has prepared for that yet.',
+    rows: [
+      ['Practice and doctor details', 'published'],
+      ['Treatments and what they cost', 'stated plainly'],
+      ['Questions patients actually ask', 'answered'],
+    ],
+    link: '/services/local-seo',
+    linkText: 'Local SEO groundwork',
+  },
+];
+
 const protocols = [
   {
     title: 'Practice website',
@@ -241,15 +286,21 @@ const whatsappHref = whatsappWithMessage(
                the screen. -->
           <Image
             src={heroImage}
-            alt="A pair of hands holding a phone in a dimly lit room at night, the screen glowing softly."
+            alt="A patient sitting at home in the evening, reading a dental clinic's website on their phone. The page shows the clinic's headline, an appointment button, and a call and WhatsApp bar along the bottom."
             widths={[560, 840, 1120]}
             sizes="(min-width: 1024px) 560px, 92vw"
             loading="eager"
             fetchpriority="high"
             class="h-[300px] w-full rounded-3xl border border-panel-line object-cover sm:h-[380px]"
           />
+          <!-- The screen is a real capture of a site we built, not a mockup,
+               which is the point of putting it here at all. The caption names
+               it and links to the case study so the claim can be checked. -->
           <figcaption class="mt-3 font-mono text-[11px] uppercase leading-[1.6] tracking-[0.06em] text-panel-text-faint">
-            The phone your patients are holding when they decide.
+            On screen: Pramukh Dental, Mehsana.{' '}
+            <a href={href('/work/pramukh-dental')} class="text-panel-accent underline underline-offset-4 hover:text-surface">
+              See what we built
+            </a>
           </figcaption>
         </figure>
       </div>
@@ -266,94 +317,40 @@ const whatsappHref = whatsappWithMessage(
           title="Where patients look for a clinic like yours"
           lede="Your Google listing. Your website. Increasingly, whatever an AI assistant tells them when they ask. A patient checks all three before they call anyone, so all three have to agree."
         />
-        <a href={href('/services')} class="prose-link whitespace-nowrap text-base">See all capabilities →</a>
+        <a href={href('/services')} class="prose-link whitespace-nowrap text-base">See all services →</a>
       </div>
 
+      <!-- Three places, one weight. The section's argument is that all three
+           have to agree, so no card is allowed to shout over the other two;
+           the dark panel that used to sit here pulled every eye to the one
+           surface a doctor is least likely to be shopping for. Each card is a
+           door to the service that fixes it. -->
       <div class="reveal-group grid gap-6 md:grid-cols-3">
-        <article class:list={['card-hover rounded-3xl border border-line p-8', ACCENTS.gbp.tint]}>
-          <div class="mb-5 flex items-center justify-between">
-            <span class="font-mono text-[11px] uppercase tracking-[0.1em] text-faint">Surface 01</span>
-            <span class:list={['chip bg-surface', ACCENTS.gbp.text]}>GBP</span>
-          </div>
-          <h3 class="text-[24px] font-bold tracking-[-0.03em] text-ink">Your Google listing</h3>
-          <p class="mt-3 text-base leading-[1.6] text-body">
-            For most clinics this is the real homepage: three results, chosen
-            on distance, hours, photos and the newest review. We rebuild the
-            profile and then actually maintain it.
-          </p>
-          <div class="mt-6 rounded-xl border border-line bg-surface p-4">
-            <p class="flex justify-between border-b border-hairline-soft py-2 text-[13px]">
-              <span class="text-muted">Categories &amp; services</span>
-              <span class="font-semibold text-pass">rebuilt</span>
-            </p>
-            <p class="flex justify-between border-b border-hairline-soft py-2 text-[13px]">
-              <span class="text-muted">Hours, holidays, photos</span>
-              <span class="font-semibold text-pass">monthly</span>
-            </p>
-            <p class="flex justify-between py-2 text-[13px]">
-              <span class="text-muted">Review replies drafted</span>
-              <span class="font-semibold text-pass">weekly</span>
-            </p>
-          </div>
-        </article>
-
-        <article class:list={['card-hover rounded-3xl border border-line p-8', ACCENTS.web.tint]}>
-          <div class="mb-5 flex items-center justify-between">
-            <span class="font-mono text-[11px] uppercase tracking-[0.1em] text-faint">Surface 02</span>
-            <span class:list={['chip bg-surface', ACCENTS.web.text]}>Web</span>
-          </div>
-          <h3 class="text-[24px] font-bold tracking-[-0.03em] text-ink">Your website</h3>
-          <p class="mt-3 text-base leading-[1.6] text-body">
-            Built by hand, not from a theme. A page for each treatment,
-            written in the words patients type. Symptom and cost, not
-            clinical terminology.
-          </p>
-          <div class="mt-6 rounded-xl border border-line bg-surface p-4">
-            <p class="flex items-baseline gap-3">
-              <span class="text-[32px] font-extrabold tracking-[-0.04em] text-ink">&lt;1.2s</span>
-              <span class="text-[12px] text-faint">largest content painted, 4G</span>
-            </p>
-            <div class="mt-3 h-1.5 rounded-full bg-[#E7E4DC]" aria-hidden="true">
-              <div class="h-1.5 w-[86%] rounded-full bg-pass"></div>
+        {patientSurfaces.map((s) => (
+          <article class="card-hover card-link flex flex-col overflow-hidden rounded-3xl border border-line bg-surface">
+            <span class:list={['accent-bar block h-1 w-full', s.accent.bar]} aria-hidden="true"></span>
+            <div class="flex flex-1 flex-col p-8">
+              <h3 class="text-[24px] font-bold tracking-[-0.03em] text-ink">{s.title}</h3>
+              <p class="mt-3 text-base leading-[1.6] text-body">{s.text}</p>
+              <dl class="mt-6 rounded-xl border border-line bg-canvas p-4">
+                {s.rows.map((row, i) => (
+                  <div
+                    class:list={[
+                      'flex items-baseline justify-between gap-4 py-2 text-[13px]',
+                      i < s.rows.length - 1 && 'border-b border-hairline-soft',
+                    ]}
+                  >
+                    <dt class="text-muted">{row[0]}</dt>
+                    <dd class:list={['shrink-0 font-semibold', s.accent.text]}>{row[1]}</dd>
+                  </div>
+                ))}
+              </dl>
+              <p class="mt-6">
+                <a href={href(s.link)} class="prose-link text-[15px] font-semibold">{s.linkText} →</a>
+              </p>
             </div>
-            <p class="mt-2 flex justify-between font-mono text-[11px] uppercase text-faint">
-              <span>LCP</span><span>CLS</span><span>INP</span>
-            </p>
-            <p class="mt-1 flex justify-between font-mono text-[11px] uppercase text-faint">
-              <span>ref &lt;1.2s</span><span>ref &lt;0.10</span><span>ref &lt;200ms</span>
-            </p>
-            <p class="mt-3 border-t border-hairline-soft pt-2.5 font-mono text-[11px] uppercase tracking-[0.06em] text-faint">
-              Build reference, measured on every site before launch
-            </p>
-          </div>
-        </article>
-
-        <article class="card-hover rounded-3xl border border-ink bg-panel p-8">
-          <div class="mb-5 flex items-center justify-between">
-            <span class="font-mono text-[11px] uppercase tracking-[0.1em] text-panel-text-faint">Surface 03</span>
-            <span class="chip bg-panel-chip text-panel-accent">AEO</span>
-          </div>
-          <h3 class="text-[24px] font-bold tracking-[-0.03em] text-surface">The AI answer</h3>
-          <p class="mt-3 text-base leading-[1.6] text-panel-text">
-            Patients now ask an assistant before they open a browser. Those
-            answers get assembled from structured, quotable facts. Almost no
-            clinic in India has prepared for that yet.
-          </p>
-          <div class="mt-6 rounded-xl border border-panel-line bg-panel-card p-4">
-            <p class="flex justify-between border-b border-panel-divider py-2 text-[13px]">
-              <span class="text-panel-text-dim">Practice &amp; doctor entities</span>
-              <span class="font-semibold text-panel-accent">defined</span>
-            </p>
-            <p class="flex justify-between border-b border-panel-divider py-2 text-[13px]">
-              <span class="text-panel-text-dim">Treatment facts &amp; pricing</span>
-              <span class="font-semibold text-panel-accent">published</span>
-            </p>
-            <p class="flex justify-between py-2 text-[13px]">
-              <span class="text-panel-text-dim">FAQ &amp; schema validation</span>
-              <span class="font-semibold text-panel-accent">passing</span>
-            </p>
-          </div>
-        </article>
+          </article>
+        ))}
       </div>
     </div>
   </section>
@@ -366,7 +363,10 @@ const whatsappHref = whatsappWithMessage(
       title="Everything we do for your clinic"
       lede="Nine of them. Each one closes a specific gap where a patient hesitates or leaves. Most practices need three to begin with, and we tell you which three in writing before you pay anything."
     />
-    <div class="reveal-group mt-13 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <!-- Nine cards, so three columns. Two or four leave a single card stranded
+         on the last row, which reads as a page that ran out rather than a set
+         that is complete. -->
+    <div class="reveal-group mt-13 grid gap-4 md:grid-cols-3">
       {protocols.map((p) => (
         <a
           href={href(p.link)}
@@ -430,7 +430,7 @@ const whatsappHref = whatsappWithMessage(
   </section>
 
   <!-- WHAT CHANGES : the value case, stated as mechanisms -->
-  <section class="band-vivid" aria-labelledby="outcomes-title">
+  <section class="band-tint" aria-labelledby="outcomes-title">
     <div class="section shell">
       <div class="max-w-[760px]">
         <div class="band-rule mb-3.5 h-[7px] max-w-[200px]" aria-hidden="true"></div>
@@ -446,7 +446,7 @@ const whatsappHref = whatsappWithMessage(
       </div>
       <div class="reveal-group mt-13 grid gap-6 sm:grid-cols-2">
         {outcomes.map((o) => (
-          <article class="rounded-2xl bg-surface p-7">
+          <article class="rounded-2xl border border-line bg-surface p-7">
             <h3 class="text-[19px] font-bold tracking-[-0.02em] text-ink">{o.title}</h3>
             <p class="mt-2.5 text-[15px] leading-[1.62] text-body">{o.text}</p>
           </article>

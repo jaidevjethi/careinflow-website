@@ -16,3 +16,7 @@ pnpm-debug.log*
 # OS
 .DS_Store
 Thumbs.db
+
+# scratch output from the image tooling. Sources that a committed asset is
+# built from live in scripts/assets/ instead, so they are versioned.
+generated_images/
