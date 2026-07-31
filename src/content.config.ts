@@ -11,7 +11,13 @@ const services = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/services' }),
   schema: ({ image }) => z.object({
     title: z.string(),
-    /** Explainer illustration — see the careinflow-images skill for the style lock. */
+    /**
+     * The <title> tag, when it should differ from the H1. Local intent needs a
+     * place name in the title; the H1 reads better without one wedged in.
+     * Falls back to `title` when absent.
+     */
+    seoTitle: z.string().optional(),
+    /** Explainer illustration. See the careinflow-images skill for the style lock. */
     illustration: image(),
     illustrationAlt: z.string(),
     /** Short label used in navigation and cards. */

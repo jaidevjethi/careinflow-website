@@ -37,7 +37,7 @@ const allServices = (await getCollection('services')).sort((a, b) => a.data.orde
 const related = allServices.filter((s) => service.data.related.includes(s.id));
 
 const path = `/services/${service.id}`;
-const title = `${service.data.title} | CareInflow`;
+const title = `${service.data.seoTitle ?? service.data.title} | CareInflow`;
 const description = service.data.description;
 
 const prefillByService: Record<string, PrefillKey> = {
