@@ -117,6 +117,32 @@
   --color-panel-text-faint: #8797aa;
   --color-panel-accent: #ffb020;
 
+  /*
+   * Spacing scale — four values, and nothing outside this file may invent a
+   * fifth. Before this existed, section padding was hand-written per page and
+   * seven different rhythms were live at once (36/64/75/80/96/110/120px), which
+   * is what made the site read as a different site on every page.
+   *
+   * Consumed by .section / .section-tight / PageHero. The mobile step happens
+   * in those rules, not here — a custom property cannot carry a media query.
+   */
+  --space-section: 112px;
+  --space-section-sm: 72px;
+  --space-section-tight: 72px;
+  --space-section-tight-sm: 48px;
+  /* Deliberately small: the headline should start just under the menu, not a
+     screen-and-a-bit below it. Was 96px, which cost 23% of the first screen. */
+  --space-hero-top: 40px;
+  --space-hero-top-sm: 28px;
+  --space-hero-bottom: 56px;
+  --space-hero-bottom-sm: 44px;
+
+  /* One container width and gutter set, owned by .shell. */
+  --shell-max: 1440px;
+  --shell-gutter: 20px;
+  --shell-gutter-sm: 40px;
+  --shell-gutter-xl: 80px;
+
   /* One easing for everything */
   --ease-instrument: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -182,9 +208,49 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
-    /* Guard against a single wide child ever sideways-scrolling the page.
-       clip (not hidden) keeps position: sticky working in the header. */
+    /*
+     * BACKSTOP ONLY — not the defence.
+     *
+     * This used to be the only thing stopping sideways scroll, which meant it
+     * silently *hid* overflow instead of preventing it: the homepage featured
+     * image rendered 340px wide inside a 320px viewport and was simply cut off,
+     * with no scrollbar to reveal it. The real defences are the two rules
+     * below. This stays as a last resort, and the layout sweep runs with it
+     * disabled so it can never mask a bleed again.
+     *
+     * clip (not hidden) keeps position: sticky working in the header.
+     */
     overflow-x: clip;
+  }
+
+  /*
+   * Nothing leaves the viewport, rule 1 of 2: media never exceeds its column.
+   */
+  img,
+  svg,
+  video,
+  canvas,
+  iframe {
+    max-width: 100%;
+  }
+
+  /*
+   * Nothing leaves the viewport, rule 2 of 2 — and this is the one that
+   * actually matters.
+   *
+   * A grid or flex child defaults to `min-width: auto`, meaning it refuses to
+   * shrink below its content's intrinsic width. A 640px source image therefore
+   * forces a 340px track inside a 320px viewport, and the row blows out. This
+   * is the single most common cause of horizontal overflow on the web and the
+   * exact cause of the one bleed measured on this site.
+   *
+   * CSS cannot select "is a grid child", so this covers the layout elements
+   * that are ever grid or flex items. Wrapped in :where() for zero specificity
+   * — any component that genuinely needs an intrinsic minimum can override it.
+   */
+  :where(main, header, footer)
+    :where(div, a, article, section, aside, figure, li, dl, ul, ol, p, nav) {
+    min-width: 0;
   }
 
   ::selection {
@@ -246,6 +312,83 @@
 }
 
 @layer components {
+  /* --------------------------------------------------------------------------
+     Layout primitives
+
+     Three classes own every container and every vertical rhythm on the site.
+     They replaced 46 hand-copied instances of the container string and roughly
+     twenty different section paddings. A page may not hand-write either again:
+     if a new rhythm is genuinely needed, it goes in the scale in @theme.
+
+         <section class="section">
+           <div class="shell">…</div>
+         </section>
+     -------------------------------------------------------------------------- */
+
+  /* The container: one max-width, one set of gutters. */
+  .shell {
+    margin-inline: auto;
+    width: 100%;
+    max-width: var(--shell-max);
+    padding-inline: var(--shell-gutter);
+  }
+  @media (min-width: 40rem) {
+    .shell {
+      padding-inline: var(--shell-gutter-sm);
+    }
+  }
+  @media (min-width: 80rem) {
+    .shell {
+      padding-inline: var(--shell-gutter-xl);
+    }
+  }
+
+  /* The standard rhythm between major sections. */
+  .section {
+    padding-block: var(--space-section-sm);
+  }
+  @media (min-width: 40rem) {
+    .section {
+      padding-block: var(--space-section);
+    }
+  }
+
+  /* Denser: card grids, FAQ lists, anything that already carries its own air. */
+  .section-tight {
+    padding-block: var(--space-section-tight-sm);
+  }
+  @media (min-width: 40rem) {
+    .section-tight {
+      padding-block: var(--space-section-tight);
+    }
+  }
+
+  /* Rhythm without the top edge, for a section that continues the one above. */
+  .section-flush-top {
+    padding-block-start: 0;
+  }
+
+  /*
+     The hero's own rhythm. Top padding is deliberately much smaller than a
+     section's: the headline should begin just under the menu. It used to be
+     96px, which — with the header, tick rule and label stack on top — pushed
+     the headline 154–207px down and cost roughly a quarter of the first screen.
+   */
+  .hero-pad {
+    padding-block-start: var(--space-hero-top-sm);
+    padding-block-end: var(--space-hero-bottom-sm);
+  }
+  @media (min-width: 40rem) {
+    .hero-pad {
+      padding-block-start: var(--space-hero-top);
+      padding-block-end: var(--space-hero-bottom);
+    }
+  }
+  /* Articles and the privacy note, where the body starts immediately below. */
+  .hero-pad-compact {
+    padding-block-end: 8px;
+  }
+
   /* Dashed chart-tick rule — the system's only texture. */
   .tick-rule {
     height: 7px;
@@ -328,7 +471,12 @@
     text-transform: uppercase;
     padding: 6px 11px;
     border-radius: 999px;
+    /* nowrap keeps a chip on one line, but it must never push past its column:
+       a long location chip was the last thing bleeding out at 320px. */
     white-space: nowrap;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   /* Buttons — black primary, outlined secondary, green text link. */

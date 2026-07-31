@@ -49,7 +49,7 @@ const schema = graph(
   />
 
   <section class="border-t border-hairline bg-surface" aria-label="Case studies">
-    <div class="mx-auto grid max-w-[1440px] gap-8 px-5 py-16 sm:px-10 sm:py-20 lg:grid-cols-2 xl:px-20">
+    <div class="section shell grid gap-8 lg:grid-cols-2">
       {caseStudies.map((cs) => (
         <a
           href={href(`/work/${cs.id}`)}
@@ -90,7 +90,7 @@ const schema = graph(
     </div>
   </section>
 
-  <section class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 xl:px-20">
+  <section class="section shell">
     <div class="max-w-[680px] rounded-3xl border border-line bg-surface p-8">
       <h2 class="label-mono mb-4 text-faint">How we work</h2>
       <p class="text-[15.5px] leading-[1.65] text-body">

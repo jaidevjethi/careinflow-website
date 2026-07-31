@@ -59,7 +59,7 @@ const dateFmt = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short
   />
 
   <section class="border-t border-hairline bg-surface" aria-label="Articles">
-    <div class="mx-auto grid max-w-[1440px] gap-5 px-5 py-16 sm:grid-cols-2 sm:px-10 sm:py-20 xl:grid-cols-3 xl:px-20">
+    <div class="section shell grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
       {resources.map((r) => (
         <a
           href={href(`/resources/${r.id}`)}

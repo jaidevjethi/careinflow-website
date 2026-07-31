@@ -46,13 +46,8 @@ const {
 const hasAside = Astro.slots.has('aside');
 ---
 
-<section class="panel-depth" {...attrs}>
-  <div
-    class:list={[
-      'mx-auto max-w-[1440px] px-5 sm:px-10 xl:px-20',
-      compact ? 'pb-14 pt-14 sm:pb-16 sm:pt-20' : 'pb-16 pt-14 sm:pb-20 sm:pt-24',
-    ]}
-  >
+<section class="panel-depth hero-pad" {...attrs}>
+  <div class:list={['shell', compact && 'hero-pad-compact']}>
     <div
       class:list={[
         'grid gap-12',
@@ -61,7 +56,7 @@ const hasAside = Astro.slots.has('aside');
     >
       <div class="animate-rise">
         {breadcrumb && (
-          <nav aria-label="Breadcrumb" class="mb-7">
+          <nav aria-label="Breadcrumb" class="mb-3">
             <a
               href={breadcrumb.href}
               class="inline-flex min-h-[24px] items-center font-mono text-[11px] uppercase tracking-[0.1em] text-panel-text-faint hover:text-panel-accent"
@@ -70,8 +65,8 @@ const hasAside = Astro.slots.has('aside');
             </a>
           </nav>
         )}
-        <div class="tick-rule tick-rule-dark mb-3.5" aria-hidden="true"></div>
-        <p class="label-mono mb-5 text-panel-accent">{label}</p>
+        <div class="tick-rule tick-rule-dark mb-3" aria-hidden="true"></div>
+        <p class="label-mono mb-4 text-panel-accent">{label}</p>
         <h1
           class:list={[
             'font-extrabold leading-[1.04] tracking-[-0.045em] text-surface',

@@ -196,9 +196,10 @@ const whatsappHref = whatsappWithMessage(
 ---
 
 <BaseLayout {title} {description} path="/" {schema}>
-  <!-- HERO — the site's first midnight moment -->
-  <section class="panel-depth">
-    <div class="mx-auto max-w-[1440px] px-5 pb-20 pt-16 sm:px-10 sm:pb-[110px] sm:pt-24 xl:px-20">
+  <!-- HERO — the site's first midnight moment. Same rhythm as PageHero:
+       it is allowed to be the tallest page, not to exceed the viewport. -->
+  <section class="panel-depth hero-pad">
+    <div class="shell">
       <div class="grid items-center gap-14 lg:grid-cols-[1fr_560px] lg:gap-16">
         <div class="animate-rise">
           <p class="inline-flex max-w-full items-center gap-2.5 rounded-full border border-panel-line bg-panel-card px-3.5 py-2">
@@ -207,16 +208,16 @@ const whatsappHref = whatsappWithMessage(
               Healthcare practices only · Mehsana, Gujarat
             </span>
           </p>
-          <h1 class="mt-8 text-[clamp(42px,6vw,82px)] font-extrabold leading-[0.98] tracking-[-0.055em] text-surface">
+          <h1 class="mt-6 text-[clamp(36px,4.4vw,60px)] font-extrabold leading-[1.02] tracking-[-0.05em] text-surface">
             Healthcare websites that patients <span class="text-panel-accent">find, trust and book.</span>
           </h1>
-          <p class="mt-7 max-w-[560px] text-[19px] leading-[1.6] text-panel-text">
+          <p class="mt-5 max-w-[640px] text-[18px] leading-[1.58] text-panel-text">
             We design and build your clinic's website, set up and maintain your
             Google Business Profile, and do the local SEO that gets you found —
             in Mehsana, Ahmedabad and across North Gujarat. Healthcare
             practices only.
           </p>
-          <div class="mt-9 flex flex-wrap items-center gap-4">
+          <div class="mt-7 flex flex-wrap items-center gap-4">
             <a href={whatsappHref} rel="noopener" class="btn-accent px-7 py-4 text-base">
               Message us on WhatsApp
             </a>
@@ -224,7 +225,7 @@ const whatsappHref = whatsappWithMessage(
               Get a free written review
             </a>
           </div>
-          <dl class="mt-10 grid max-w-[620px] grid-cols-2 gap-x-8 gap-y-7 border-t border-panel-line pt-7 sm:grid-cols-4">
+          <dl class="mt-7 grid max-w-[620px] grid-cols-2 gap-x-8 gap-y-5 border-t border-panel-line pt-5 sm:grid-cols-4">
             {heroStats.map((stat) => (
               <div>
                 <dt class="sr-only">{stat.caption}</dt>
@@ -256,7 +257,7 @@ const whatsappHref = whatsappWithMessage(
 
   <!-- 01 · TRIAGE — THE THREE SURFACES -->
   <section class="border-t border-hairline bg-surface" aria-labelledby="triage-title">
-    <div class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[120px] xl:px-20">
+    <div class="section shell">
       <div class="mb-14 flex flex-wrap items-end justify-between gap-6">
         <SectionHead
           id="triage-title"
@@ -357,7 +358,7 @@ const whatsappHref = whatsappWithMessage(
   </section>
 
   <!-- 02 · PROTOCOLS — WHAT WE DO -->
-  <section class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[120px] xl:px-20" aria-labelledby="protocols-title">
+  <section class="section shell" aria-labelledby="protocols-title">
     <SectionHead
       id="protocols-title"
       label="What we do"
@@ -382,7 +383,7 @@ const whatsappHref = whatsappWithMessage(
   </section>
 
   <!-- 03 · INDICATION — WHY HEALTHCARE ONLY (the page's one dark panel) -->
-  <section class="mx-auto max-w-[1440px] px-5 pb-20 sm:px-10 sm:pb-[120px] xl:px-20" aria-labelledby="indication-title">
+  <section class="section shell" aria-labelledby="indication-title">
     <div class="panel-depth rounded-[28px] p-8 sm:p-12 lg:p-16">
       <div class="grid items-start gap-12 lg:grid-cols-[1fr_520px] lg:gap-16">
         <div>
@@ -430,7 +431,7 @@ const whatsappHref = whatsappWithMessage(
 
   <!-- WHAT CHANGES — the value case, stated as mechanisms -->
   <section class="band-vivid" aria-labelledby="outcomes-title">
-    <div class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[110px] xl:px-20">
+    <div class="section shell">
       <div class="max-w-[760px]">
         <div class="band-rule mb-3.5 h-[7px] max-w-[200px]" aria-hidden="true"></div>
         <p class="label-mono mb-5 text-ink/90">What changes</p>
@@ -455,7 +456,7 @@ const whatsappHref = whatsappWithMessage(
   </section>
 
   <!-- FOUNDER -->
-  <section class="mx-auto max-w-[1440px] px-5 pb-20 sm:px-10 sm:pb-[120px] xl:px-20" aria-labelledby="founder-strip-title">
+  <section class="section shell" aria-labelledby="founder-strip-title">
     <div class="reveal flex flex-col gap-7 rounded-3xl border border-line bg-surface p-7 sm:flex-row sm:items-center sm:gap-9 sm:p-9">
       <Image
         src={founderImage}
@@ -485,7 +486,7 @@ const whatsappHref = whatsappWithMessage(
 
   <!-- WHAT IT COSTS -->
   <section class="border-t border-hairline bg-surface" aria-labelledby="cost-title">
-    <div class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[110px] xl:px-20">
+    <div class="section shell">
       <div class="mb-12 flex flex-wrap items-end justify-between gap-6">
         <SectionHead
           id="cost-title"
@@ -524,7 +525,7 @@ const whatsappHref = whatsappWithMessage(
 
   <!-- 04 · FINDINGS — REAL BUILDS -->
   <section class="border-t border-hairline bg-surface" aria-labelledby="featured-title">
-    <div class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[110px] xl:px-20">
+    <div class="section shell">
       <div class="mb-12 flex flex-wrap items-end justify-between gap-6">
         <SectionHead
           id="featured-title"
@@ -589,7 +590,7 @@ const whatsappHref = whatsappWithMessage(
 
   <!-- WHO WE WORK WITH -->
   <section class="border-t border-hairline bg-surface" aria-labelledby="who-title">
-    <div class="mx-auto grid max-w-[1440px] items-center gap-12 px-5 py-20 sm:px-10 sm:py-[110px] lg:grid-cols-[1fr_440px] lg:gap-16 xl:px-20">
+    <div class="section shell grid items-center gap-12 lg:grid-cols-[1fr_440px] lg:gap-16">
       <div>
         <SectionHead
           id="who-title"

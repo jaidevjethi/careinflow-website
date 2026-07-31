@@ -70,7 +70,7 @@ const schema = graph(
 
     <!-- WHAT PATIENTS SEARCH -->
     <section class="border-t border-hairline bg-surface" aria-labelledby="searches-title">
-      <div class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20">
+      <div class="section shell">
         <div class="tick-rule mb-3.5" aria-hidden="true"></div>
         <p class="label-mono mb-5 text-surgical">In the patient's words</p>
         <h2
@@ -92,7 +92,7 @@ const schema = graph(
     </section>
 
     <!-- BODY + THE PAGES THAT EARN -->
-    <div class="mx-auto grid max-w-[1440px] items-start gap-14 px-5 py-16 sm:px-10 sm:py-20 lg:grid-cols-[1fr_420px] lg:gap-20 xl:px-20">
+    <div class="section shell grid items-start gap-14 lg:grid-cols-[1fr_420px] lg:gap-20">
       <div class="prose-ci">
         <Content />
       </div>
@@ -141,7 +141,7 @@ const schema = graph(
 
     {others.length > 0 && (
       <section
-        class="mx-auto max-w-[1440px] px-5 pb-16 sm:px-10 sm:pb-20 xl:px-20"
+        class="section shell"
         aria-label="Other specialties"
       >
         <h2 class="label-mono mb-6 text-faint">We also work with</h2>

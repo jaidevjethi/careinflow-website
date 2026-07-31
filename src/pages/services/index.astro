@@ -114,7 +114,7 @@ const engagements = [
 
   <!-- SERVICE DETAILS — alternating rows -->
   <section class="border-t border-hairline bg-surface" aria-label="The four core services">
-    <div class="mx-auto flex max-w-[1440px] flex-col gap-20 px-5 py-20 sm:px-10 sm:py-[120px] xl:px-20">
+    <div class="section shell flex flex-col gap-20">
       {services.map((service, i) => (
         <article class="grid items-start gap-10 lg:grid-cols-2 lg:gap-20">
           <div class:list={[i % 2 === 1 && 'lg:order-2']}>
@@ -174,7 +174,7 @@ const engagements = [
   </section>
 
   <!-- ENGAGEMENTS — the page's one dark panel -->
-  <section class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[120px] xl:px-20" aria-labelledby="engagements-title">
+  <section class="section shell" aria-labelledby="engagements-title">
     <div class="panel-depth rounded-[28px] p-8 sm:p-12 lg:p-16">
       <SectionHead
         id="engagements-title"
@@ -204,7 +204,7 @@ const engagements = [
 
   <!-- AFTER LAUNCH -->
   <section class="border-t border-hairline bg-surface" aria-labelledby="after-launch-title">
-    <div class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[110px] xl:px-20">
+    <div class="section shell">
       <SectionHead
         id="after-launch-title"
         label="After launch"
@@ -239,7 +239,7 @@ const engagements = [
   </section>
 
   <!-- PLAIN WORDS -->
-  <section class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[110px] xl:px-20" aria-labelledby="glossary-title">
+  <section class="section shell" aria-labelledby="glossary-title">
     <SectionHead
       id="glossary-title"
       label="Jargon, translated"
@@ -257,7 +257,7 @@ const engagements = [
 
   <!-- COMPLEMENTARY -->
   <section class="border-t border-hairline bg-surface" aria-labelledby="complementary-title">
-    <div class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20">
+    <div class="section shell">
       <h2 id="complementary-title" class="text-xl font-bold tracking-[-0.02em] text-ink">
         Support services, when they help
       </h2>
