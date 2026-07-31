@@ -1,9 +1,11 @@
 /**
  * Capture the frame that goes on the phone in the homepage hero.
  *
- * Deliberately the live client site rather than a render: the homepage tells
- * visitors to open our work on their own phone, so the hero has to show the
- * thing they would actually see.
+ * The source is scripts/assets/hero-screen-source.html: an illustrative
+ * clinic page carrying no real practice's name, number or photograph. A
+ * client's live site was used here first, and it made stronger proof, but it
+ * put a real business's page into a staged photograph. The invented page
+ * shows the same shape without implying a scene that never happened.
  *
  * The window is 500x1045 because Chrome on Windows will not open a window
  * narrower than about 500px (see capture-work-shots.mjs) and because 500:1045
@@ -15,7 +17,7 @@
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { mkdir, rm } from 'node:fs/promises';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import sharp from 'sharp';
@@ -24,7 +26,7 @@ const run = promisify(execFile);
 const root = (p) => fileURLToPath(new URL(`../${p}`, import.meta.url));
 const CHROME = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 
-const URL_ = 'https://pramukhdentalclinic.com/';
+const URL_ = pathToFileURL(root('scripts/assets/hero-screen-source.html')).href;
 const W = 500;
 const H = 1045;
 

@@ -172,10 +172,10 @@
   --space-section-tight-sm: 48px;
   /* Deliberately small: the headline should start just under the menu, not a
      screen-and-a-bit below it. Was 96px, which cost 23% of the first screen. */
-  --space-hero-top: 40px;
-  --space-hero-top-sm: 28px;
-  --space-hero-bottom: 56px;
-  --space-hero-bottom-sm: 44px;
+  --space-hero-top: 32px;
+  --space-hero-top-sm: 24px;
+  --space-hero-bottom: 44px;
+  --space-hero-bottom-sm: 36px;
 
   /* One container width and gutter set, owned by .shell. */
   --shell-max: 1440px;

@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 """
-Put the real Pramukh Dental site on the phone in the hero.
+Put a clinic page on the phone in the hero.
 
-The hero's job is to prove the product in the first second. A blurred teal
-glow proves nothing; an actual clinic site being read by an actual patient
-proves the whole pitch, and it is a real screenshot rather than a render, so
-the page's own "open them on your own phone" line stays true.
+The hero's job is to show what we make in the first second. A blurred teal
+glow showed nothing. The screen now carries the illustrative clinic page in
+scripts/assets/hero-screen-source.html: no real practice's name, number or
+photograph, so a staged photograph never doubles as a record of something
+that happened. The caption on the page labels it, and links to real work.
 
 The screen is a quadrilateral in perspective, so the screenshot is warped onto
 the measured corners. The composite is masked to the pixels that are actually
 glowing screen, which means the fingers, the bezel and the highlight on the
 frame all survive untouched without any hand-drawn matte.
 
-Run from the repo root, after the client site changes or the plate is replaced:
+Run from the repo root, after editing the source page or replacing the plate:
     node scripts/capture-hero-screen.mjs   # writes the screen frame
     python scripts/composite-hero-screen.py
 

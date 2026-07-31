@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Illustrative clinic page for the homepage hero</title>
+<!--
+  The page that appears on the phone in the homepage hero.
+
+  Deliberately not a real practice. It carries no clinic's name, address,
+  phone number or photograph, so it cannot be mistaken for a record of a
+  business that exists, and the hero caption labels it illustrative. What it
+  does show is the shape of the thing we sell: a clear promise, one obvious
+  booking action, and a call and WhatsApp bar always in reach.
+
+  Rendered at 500x1045 by scripts/capture-hero-screen.mjs, which is the
+  aspect of the handset's screen in the hero photograph.
+-->
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: Manrope, system-ui, sans-serif;
+    background: #ffffff;
+    color: #16202b;
+    width: 500px;
+    height: 1045px;
+    overflow: hidden;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+  }
+  header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 22px 26px;
+    border-bottom: 1px solid #eef1f4;
+  }
+  .mark {
+    width: 34px; height: 34px; border-radius: 10px;
+    background: linear-gradient(140deg, #1f7a72, #14b8a6);
+    display: grid; place-items: center;
+  }
+  .mark span { display: block; width: 13px; height: 13px; border-radius: 4px; background: #fff; opacity: .92; }
+  .brand { font-weight: 800; font-size: 20px; letter-spacing: -.03em; }
+  .burger { margin-left: auto; display: grid; gap: 5px; }
+  .burger i { display: block; width: 22px; height: 2.5px; border-radius: 2px; background: #26313d; }
+
+  main { padding: 34px 26px 0; }
+  .pill {
+    display: inline-block; padding: 8px 15px; border-radius: 999px;
+    background: #e6f4f2; color: #14625c;
+    font-size: 14px; font-weight: 600; letter-spacing: -.01em;
+  }
+  h1 {
+    margin-top: 22px;
+    font-size: 40px; font-weight: 800; line-height: 1.1; letter-spacing: -.045em;
+  }
+  h1 em { font-style: normal; color: #14837a; }
+  .lede { margin-top: 18px; font-size: 17px; line-height: 1.6; color: #4a5661; }
+
+  .btn {
+    display: block; margin-top: 26px; padding: 18px;
+    border-radius: 999px; text-align: center;
+    font-size: 17px; font-weight: 700; letter-spacing: -.01em;
+  }
+  .btn.primary { background: linear-gradient(135deg, #12796f, #0f6f8f); color: #fff; }
+  .btn.ghost { margin-top: 14px; border: 1.5px solid #dfe4e9; color: #1b2732; }
+
+  /* Treatment chips rather than any kind of social proof. This page is
+     invented, so it must not carry a rating, a review or a patient count
+     that would read as a claim about a practice that does not exist. */
+  .strip {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    margin-top: 28px; padding-top: 24px; border-top: 1px solid #eef1f4;
+  }
+  .strip span {
+    padding: 10px 16px; border-radius: 999px;
+    border: 1px solid #e2e7eb; background: #f7f9fa;
+    font-size: 15px; font-weight: 600; color: #48545f;
+  }
+
+  .shot {
+    margin: 24px -26px 0; height: 300px;
+    background: linear-gradient(160deg, #dfeae9 0%, #c9dcdd 45%, #b6ccd6 100%);
+    position: relative; overflow: hidden;
+  }
+  .shot::before, .shot::after { content: ''; position: absolute; border-radius: 50%; }
+  .shot::before { width: 210px; height: 210px; background: rgba(255,255,255,.4); left: -50px; top: -70px; }
+  .shot::after { width: 150px; height: 150px; background: rgba(20,131,122,.16); right: -30px; bottom: -50px; }
+
+  .bar {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    padding: 16px 20px 22px;
+    background: #fff; border-top: 1px solid #eef1f4;
+  }
+  .bar a {
+    padding: 17px 0; border-radius: 999px; text-align: center;
+    font-size: 16px; font-weight: 700; color: #fff; letter-spacing: -.01em;
+  }
+  .bar .call { background: #12796f; }
+  .bar .wa { background: #22a04a; }
+</style>
+</head>
+<body>
+  <header>
+    <span class="mark"><span></span></span>
+    <span class="brand">Clinic</span>
+    <span class="burger" aria-hidden="true"><i></i><i></i><i></i></span>
+  </header>
+
+  <main>
+    <span class="pill">Open today · 10am to 7pm</span>
+    <h1>Careful treatment,<br><em>close to home.</em></h1>
+    <p class="lede">
+      Most people arrive worried and leave relieved. Same-day appointments,
+      clear prices, and a doctor who explains before starting.
+    </p>
+    <span class="btn primary">Book an appointment</span>
+    <span class="btn ghost">See our treatments</span>
+
+    <div class="strip">
+      <span>Root canal</span>
+      <span>Braces</span>
+      <span>Implants</span>
+      <span>Whitening</span>
+    </div>
+
+    <div class="shot" aria-hidden="true"></div>
+  </main>
+
+  <nav class="bar">
+    <a class="call">Call now</a>
+    <a class="wa">WhatsApp</a>
+  </nav>
+</body>
+</html>
