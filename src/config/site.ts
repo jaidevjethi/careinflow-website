@@ -1,7 +1,7 @@
 /**
  * Single source of truth for business facts, URLs, and navigation.
- * Canonical URLs always use CANONICAL_HOST — including on the GitHub Pages
- * mirror — so search engines treat careinflow.com as the one real site.
+ * Canonical URLs always use CANONICAL_HOST, including on the GitHub Pages
+ * mirror, so search engines treat careinflow.com as the one real site.
  */
 
 export const CANONICAL_HOST = 'https://careinflow.com';
@@ -14,8 +14,8 @@ export const BUSINESS = {
   founder: 'Jaidev Jethi',
   /**
    * No email. WhatsApp and the phone are the only two contact routes on the
-   * site — they are how clinic owners here actually reach a supplier, and a
-   * message on WhatsApp is answered faster than an inbox ever is.
+   * site. They are how clinic owners here reach a supplier, and a message on
+   * WhatsApp gets answered faster than an inbox ever does.
    */
   /** E.164, displayed as +91 97734 56668 */
   phone: '+919773456668',
@@ -31,7 +31,7 @@ export const BUSINESS = {
   geo: { latitude: 23.5985, longitude: 72.3693 },
   /**
    * Published hours. Stated because a LocalBusiness without them is a weaker
-   * local-search entity — and because a doctor deciding when to ring should
+   * local-search entity, and because a doctor deciding when to ring should
    * not have to guess.
    */
   hours: { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], opens: '10:00', closes: '19:00' },
@@ -53,7 +53,7 @@ export const WHATSAPP_URL = `https://wa.me/${BUSINESS.phone.replace('+', '')}`;
 
 /**
  * Profiles published in `sameAs`. Only list a profile that exists and has real
- * content on it — an empty page costs more trust than an absent one, and a
+ * content on it. An empty page costs more trust than an absent one, and a
  * studio that sells Google Business Profile management is judged on its own.
  *
  * Uncomment each line the day that profile is live:
@@ -66,26 +66,26 @@ export const whatsappWithMessage = (text: string): string =>
   `${WHATSAPP_URL}?text=${encodeURIComponent(text)}`;
 
 /**
- * Context-specific WhatsApp prefills — each page opens the conversation with
+ * Context-specific WhatsApp prefills. Each page opens the conversation with
  * the message that matches what the visitor was just reading.
  */
 export const PREFILLS = {
   default:
-    "Hi CareInflow — I'd like a free written review of my practice's online presence. Clinic name: ",
+    "Hi CareInflow. I would like a free written review of my practice's online presence. Clinic name: ",
   website:
-    "Hi CareInflow — I'd like the free review, with a focus on my clinic's website. Clinic name: ",
+    "Hi CareInflow. I would like the free review, with a focus on my clinic's website. Clinic name: ",
   gbp:
-    "Hi CareInflow — I'd like the free review, with a focus on my Google listing. Clinic name: ",
+    "Hi CareInflow. I would like the free review, with a focus on my Google listing. Clinic name: ",
   seo:
-    "Hi CareInflow — I'd like the free review, with a focus on how patients find my clinic in search. Clinic name: ",
+    "Hi CareInflow. I would like the free review, with a focus on how patients find my clinic in search. Clinic name: ",
   care:
-    "Hi CareInflow — my clinic already has a website and I'd like to talk about maintaining it. Clinic name: ",
+    "Hi CareInflow. My clinic already has a website and I would like to talk about maintaining it. Clinic name: ",
   pricing:
-    "Hi CareInflow — I'd like a quote in writing, starting with the free review. Clinic name: ",
+    "Hi CareInflow. I would like a quote in writing, starting with the free review. Clinic name: ",
   work:
-    "Hi CareInflow — I saw your work and I'd like a free written review for my own practice. Clinic name: ",
+    "Hi CareInflow. I saw your work and I would like a free written review for my own practice. Clinic name: ",
   social:
-    "Hi CareInflow — I'd like to talk about social media content for my practice. Clinic name: ",
+    "Hi CareInflow. I would like to talk about social media content for my practice. Clinic name: ",
 } as const;
 
 export type PrefillKey = keyof typeof PREFILLS;

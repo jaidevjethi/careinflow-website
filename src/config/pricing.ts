@@ -1,5 +1,5 @@
 /**
- * Published prices — the single source of truth.
+ * Published prices. The single source of truth.
  *
  * Every number a visitor can read on the site comes from this file, so the
  * pricing page, the service pages, the homepage strip, the FAQs and the
@@ -10,13 +10,13 @@
  * - Published figures are *starting points* for a described scope. The real
  *   number is fixed in writing after the free review.
  * - No discounts, no offers, no countdowns. Where a combined plan costs less
- *   than its parts, that is because the work genuinely overlaps — and the
- *   site says so in those words.
+ *   than its parts, that is because the work overlaps, and the site says so
+ *   in those words.
  */
 
 const inr = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 });
 
-/** ₹1,10,000 — Indian digit grouping, which is how clients here read money. */
+/** ₹1,10,000. Indian digit grouping, which is how clients here read money. */
 export const rupees = (amount: number): string => `₹${inr.format(amount)}`;
 
 export const CURRENCY = 'INR';
@@ -32,7 +32,7 @@ export const unitSuffix: Record<PriceUnit, string> = {
 };
 
 /* -------------------------------------------------------------------------
- * Website builds — one-time, fixed price
+ * Website builds. One-time, fixed price
  * ---------------------------------------------------------------------- */
 
 export interface Build {
@@ -48,7 +48,7 @@ export interface Build {
   includes: string[];
   /** Stated with the same weight as the inclusions. */
   excludes: string;
-  /** Our recommendation — not a claim about what other practices chose. */
+  /** Our recommendation. Not a claim about what other practices chose. */
   recommended?: boolean;
 }
 
@@ -67,7 +67,7 @@ export const BUILDS: Build[] = [
       'Designed to match how your practice already looks and sounds',
       'Home, about, three treatment pages, contact, one area page',
       'WhatsApp enquiry with the message part-written, tap-to-call and directions',
-      'Speed measured on a mid-range Android — REF <1.2s',
+      'Speed measured on a mid-range Android, against a REF <1.2s reference',
       'Schema, Search Console and analytics configured at launch',
     ],
     excludes:
@@ -84,7 +84,7 @@ export const BUILDS: Build[] = [
     includes: [
       'Everything in Single practice',
       'A page for every treatment, written to what patients search and worry about',
-      'A separate enquiry path per treatment — an implant is not the same decision as a cleaning',
+      'A separate enquiry path per treatment, because an implant is not the same decision as a cleaning',
       'Three area pages for the towns you actually serve',
       'Google Business Profile rebuilt, verified and matched to the site',
       'A review flow set up for genuinely happy patients',
@@ -118,8 +118,8 @@ export const BUILDS: Build[] = [
 
 /**
  * Why the build prices are what they are. The sites are hand-built and
- * static — there is no application to maintain — so the studio does not
- * charge like a software project. What is actually being sold, and what
+ * static, with no application to maintain, so the studio does not charge
+ * like a software project. What is actually being sold, and what
  * decides whether a clinic site earns anything, is the layer above the code.
  */
 export const WHERE_RETURN_COMES_FROM = {
@@ -133,7 +133,7 @@ export const WHERE_RETURN_COMES_FROM = {
     },
     {
       title: 'The words on the page',
-      text: 'Most clinic websites describe the clinic. Yours has to answer what the patient came with — what this costs, whether it hurts, how long it takes, when to come in urgently. Writing that honestly is the bulk of the work, and it is included.',
+      text: 'Most clinic websites describe the clinic. Yours has to answer what the patient arrived worrying about. What this costs. Whether it hurts. How long it takes. When to come in urgently. Writing that honestly is the bulk of the work, and it is included.',
     },
     {
       title: 'Brand alignment',
@@ -145,11 +145,11 @@ export const WHERE_RETURN_COMES_FROM = {
     },
   ],
   closing:
-    'The sites themselves are hand-built and static — nothing to break, nearly nothing to host. We do not price them like software, because they are not software. You are paying for the decisions, not the code.',
+    'The sites are hand-built and static. Nothing to break, and nearly nothing to host. We do not price them like software, because they are not software. You are paying for the decisions, not the code.',
 };
 
 /* -------------------------------------------------------------------------
- * Monthly plans — month to month
+ * Monthly plans. Month to month
  * ---------------------------------------------------------------------- */
 
 export interface Plan {
@@ -214,7 +214,7 @@ export const PLANS: Plan[] = [
     includes: [
       'Everything in Care',
       'Google Business Profile managed: categories, services, hours, photos',
-      'Every review answered — drafted for your approval, never posted blind',
+      'Every review answered, drafted for your approval and never posted blind',
       'Questions on your listing watched and answered',
       'Listing details kept matched to your website, month after month',
       'Page wording and enquiry messages adjusted when something is not landing',
@@ -233,7 +233,7 @@ export const PLANS: Plan[] = [
       'One new treatment or area page a month: researched, written, designed, published',
       'The path from landing to enquiry reviewed quarterly, and changed where patients drop off',
       'Technical SEO maintained as the site grows',
-      'Search Console watched — you see exactly the data we see',
+      'Search Console watched, and you see exactly the data we see',
       'Directory and citation details corrected as they drift',
       'AI answer readiness kept current as your treatments change',
     ],
@@ -243,7 +243,7 @@ export const PLANS: Plan[] = [
   },
 ];
 
-/** Sum of a plan's parts bought separately — used for the arithmetic note. */
+/** Sum of a plan's parts bought separately, for the arithmetic note. */
 export const partsTotal = (plan: Plan): number =>
   (plan.combines ?? []).reduce((sum, n) => sum + n, 0);
 
@@ -292,7 +292,7 @@ export const ONE_TIME_ITEMS: LineItem[] = [
     item: 'Website takeover audit',
     price: 6999,
     unit: 'once',
-    note: 'For a site someone else built, before we agree to maintain it. Written, with a plan — including the plain answer if the site is beyond saving.',
+    note: 'For a site someone else built, before we agree to maintain it. Written, with a plan, including the plain answer if the site is beyond saving.',
   },
   {
     item: 'Extra treatment or area page',
@@ -343,24 +343,24 @@ export const PRICE_MOVERS: Array<{ factor: string; effect: string }> = [
 
 export const NEVER_CHARGED: string[] = [
   'The written review of your online presence.',
-  'Questions on WhatsApp — before you are a client, and after.',
+  'Questions on WhatsApp, before you are a client and after.',
   'Small edits under a care plan: changed hours, a new doctor, a festival closure.',
-  'Your domain and hosting. You pay those directly and own them — a domain is around ₹1,000 a year, and hosting a site built the way we build them usually costs nothing at all.',
+  'Your domain and hosting. You pay for those directly and you own them. A domain runs about ₹1,000 a year, and hosting a site built the way we build them usually costs nothing at all.',
 ];
 
 export const PRICE_NOTES: string[] = [
   'Prices are in Indian rupees and exclude GST where it applies.',
   'Published figures are starting points for the scope described. Your number is fixed in writing after the free review, and it does not move unless the scope does.',
-  'Monthly plans run month to month, with no lock-in. Paid monthly or yearly the price is the same — we do not charge extra for the flexibility, or less for the commitment.',
+  'Monthly plans run month to month, with no lock-in. Paid monthly or yearly the price is the same. We do not charge extra for the flexibility, or less for the commitment.',
 ];
 
 /**
  * A promise about the future rather than a deadline. No count, no countdown,
- * and nothing taken off for deciding sooner — the value is that it holds.
+ * and nothing taken off for deciding sooner. The value is that it holds.
  */
 export const PRICE_PROMISE = {
   headline: 'The price we agree is the price that holds.',
-  body: 'Whatever we agree in writing stays fixed for as long as we work together, even after the studio\'s rates move. Monthly plans run month to month with no lock-in, and no deadline is ever attached to a quote — nothing is taken off the number for deciding this week instead of next.',
+  body: 'Whatever we agree in writing stays fixed for as long as we work together, even after the studio\'s rates move. Monthly plans run month to month with no lock-in. No deadline is ever attached to a quote, and nothing comes off the number for deciding this week instead of next.',
 };
 
 /** Range used for `priceRange` in structured data. */
