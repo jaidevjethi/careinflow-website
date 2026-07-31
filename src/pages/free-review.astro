@@ -84,7 +84,7 @@ const outline = [
       <a href={whatsappHref} rel="noopener" class="btn-accent px-7 py-4 text-[17px]">
         WhatsApp {BUSINESS.phoneDisplay}
       </a>
-      <p class="text-[14.5px] leading-normal text-panel-text-dim">
+      <p class="text-[14px] leading-normal text-panel-text-dim">
         Free · 2 working days<br />Usually answered the same day.
       </p>
     </div>
@@ -107,12 +107,12 @@ const outline = [
       />
       <div class="mt-11 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {covers.map((c, i) => (
-          <article class="card-hover rounded-[18px] border border-line bg-canvas p-6.5">
+          <article class="card-hover rounded-2xl border border-line bg-canvas p-6.5">
             <p class:list={['numeral mb-2 text-[clamp(38px,4vw,52px)]', cycleAccent(i).text]}>
               {String(i + 1).padStart(2, '0')}
             </p>
             <h3 class="text-lg font-bold tracking-[-0.02em] text-ink">{c.item}</h3>
-            <p class="mt-2 text-[14.5px] leading-[1.6] text-muted">{c.detail}</p>
+            <p class="mt-2 text-[14px] leading-[1.6] text-muted">{c.detail}</p>
           </article>
         ))}
       </div>
@@ -141,7 +141,7 @@ const outline = [
           {outline.map((o, i) => (
             <li
               class:list={[
-                'grid grid-cols-[32px_1fr] gap-3 py-3.5 text-[14.5px] leading-[1.55] text-body-deep',
+                'grid grid-cols-[32px_1fr] gap-3 py-3.5 text-[14px] leading-[1.55] text-body-deep',
                 i < outline.length - 1 && 'border-b border-hairline',
               ]}
             >
@@ -165,7 +165,7 @@ const outline = [
         title="What happens after the review?"
         lede="You get one fixed number in writing against a defined scope. If you would rather fix things yourself, the review tells you where to start — and we part as professionals."
       />
-      <p class="mt-6 max-w-[680px] text-[15.5px] leading-[1.65] text-muted">
+      <p class="mt-6 max-w-[680px] text-[15px] leading-[1.65] text-muted">
         You can see the scale before you message us: our
         <a href={href('/pricing')} class="prose-link">prices are published</a> —
         websites from {rupees(BUILDS[0]!.from)}, monthly care from

@@ -158,7 +158,7 @@ const principles = [
             <span class:list={['accent-bar block h-1 w-full', cycleAccent(i).bar]} aria-hidden="true"></span>
             <div class="flex h-full flex-col p-7 sm:p-8">
               <div class="flex flex-wrap items-center gap-2.5">
-                <h3 class="text-[21px] font-bold tracking-[-0.025em] text-ink">{build.name}</h3>
+                <h3 class="text-[20px] font-bold tracking-[-0.025em] text-ink">{build.name}</h3>
                 {build.recommended && (
                   <span class="chip bg-surgical-tint text-surgical">Our recommendation</span>
                 )}
@@ -171,7 +171,7 @@ const principles = [
                   {rupees(build.from)}
                 </span>
               </p>
-              <p class="mt-2 font-mono text-[10.5px] uppercase tracking-[0.08em] text-faint">
+              <p class="mt-2 font-mono text-[11px] uppercase tracking-[0.08em] text-faint">
                 Usually {rupees(build.from)} – {rupees(build.typicalTo)}
               </p>
               <p class="mt-3.5 flex flex-wrap gap-2">
@@ -179,7 +179,7 @@ const principles = [
                 <span class="chip border border-line bg-surface text-body-deep">{build.timeline}</span>
               </p>
 
-              <ul class="mt-6 grow border-t border-hairline pt-5 text-[14.5px] leading-[1.55] text-body">
+              <ul class="mt-6 grow border-t border-hairline pt-5 text-[14px] leading-[1.55] text-body">
                 {build.includes.map((line) => (
                   <li class="flex gap-3 py-1.5">
                     <span class="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-pass" aria-hidden="true"></span>
@@ -188,7 +188,7 @@ const principles = [
                 ))}
               </ul>
 
-              <p class="mt-5 border-t border-hairline pt-4 text-[13.5px] leading-[1.6] text-muted">
+              <p class="mt-5 border-t border-hairline pt-4 text-[13px] leading-[1.6] text-muted">
                 {build.excludes}
               </p>
             </div>
@@ -196,7 +196,7 @@ const principles = [
         ))}
       </div>
 
-      <p class="mt-8 max-w-[680px] text-[15.5px] leading-[1.65] text-muted">
+      <p class="mt-8 max-w-[680px] text-[15px] leading-[1.65] text-muted">
         Not sure which shape your practice is? That is exactly what the
         <a href={href('/free-review')} class="prose-link">free written review</a>
         answers — and it often answers "less than you expected".
@@ -218,12 +218,12 @@ const principles = [
           <span class:list={['accent-bar block h-1 w-full', cycleAccent(i).bar]} aria-hidden="true"></span>
           <div class="p-7">
             <h3 class="text-[19px] font-bold tracking-[-0.02em] text-ink">{p.title}</h3>
-            <p class="mt-2.5 text-[15.5px] leading-[1.62] text-body">{p.text}</p>
+            <p class="mt-2.5 text-[15px] leading-[1.62] text-body">{p.text}</p>
           </div>
         </article>
       ))}
     </div>
-    <p class="mt-8 max-w-[760px] rounded-2xl border border-line bg-surface px-6 py-5 text-[15.5px] leading-[1.65] text-body sm:px-7">
+    <p class="mt-8 max-w-[760px] rounded-2xl border border-line bg-surface px-6 py-5 text-[15px] leading-[1.65] text-body sm:px-7">
       {WHERE_RETURN_COMES_FROM.closing}
     </p>
   </section>
@@ -251,7 +251,7 @@ const principles = [
               <th scope="row" class="w-[38%] py-4 pr-6 text-[15px] font-semibold leading-[1.5] text-ink">
                 {m.factor}
               </th>
-              <td class="py-4 text-[15.5px] leading-[1.6] text-body">{m.effect}</td>
+              <td class="py-4 text-[15px] leading-[1.6] text-body">{m.effect}</td>
             </tr>
           ))}
         </tbody>
@@ -280,7 +280,7 @@ const principles = [
             <span class:list={['block h-1 w-full', cycleAccent(i + 3).bar]} aria-hidden="true"></span>
             <div class="flex h-full flex-col p-7 sm:p-8">
               <div class="flex flex-wrap items-center gap-2.5">
-                <h3 class="text-[21px] font-bold tracking-[-0.025em] text-ink">{plan.name}</h3>
+                <h3 class="text-[20px] font-bold tracking-[-0.025em] text-ink">{plan.name}</h3>
                 {plan.recommended && (
                   <span class="chip bg-surgical-tint text-surgical">Our recommendation</span>
                 )}
@@ -297,7 +297,7 @@ const principles = [
                 {plan.combines ? `${rupees(partsTotal(plan))} bought separately` : plan.priceNote}
               </p>
 
-              <ul class="mt-6 grow border-t border-hairline pt-5 text-[14.5px] leading-[1.55] text-body">
+              <ul class="mt-6 grow border-t border-hairline pt-5 text-[14px] leading-[1.55] text-body">
                 {plan.includes.map((line) => (
                   <li class="flex gap-3 py-1.5">
                     <span class="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-pass" aria-hidden="true"></span>
@@ -306,7 +306,7 @@ const principles = [
                 ))}
               </ul>
 
-              <p class="mt-5 border-t border-hairline pt-4 text-[13.5px] leading-[1.6] text-muted">
+              <p class="mt-5 border-t border-hairline pt-4 text-[13px] leading-[1.6] text-muted">
                 {plan.suits}
               </p>
             </div>
@@ -316,7 +316,7 @@ const principles = [
 
       <div class="mt-8 max-w-[820px] rounded-2xl border border-line bg-canvas px-6 py-5 sm:px-7">
         <p class="label-mono mb-3 text-faint" style="letter-spacing:0.12em">Why the combined price is lower</p>
-        <p class="text-[15.5px] leading-[1.65] text-body">
+        <p class="text-[15px] leading-[1.65] text-body">
           Because the work genuinely overlaps, not because it is an offer. Run
           together, these share one monthly pass over your presence, one set of
           measurements and one written report instead of three. We have passed
@@ -342,7 +342,7 @@ const principles = [
         <dl class="border-t border-line">
           {STANDALONE_ITEMS.map((item) => (
             <div class="flex flex-wrap items-baseline justify-between gap-x-6 border-b border-hairline py-4.5">
-              <dt class="text-[15.5px] font-semibold leading-[1.45] text-ink">{item.item}</dt>
+              <dt class="text-[15px] font-semibold leading-[1.45] text-ink">{item.item}</dt>
               <dd class="whitespace-nowrap font-mono text-[14px] font-semibold text-pass">
                 {rupees(item.price)}/mo
               </dd>
@@ -357,7 +357,7 @@ const principles = [
         <dl class="border-t border-line">
           {ONE_TIME_ITEMS.map((item) => (
             <div class="flex flex-wrap items-baseline justify-between gap-x-6 border-b border-hairline py-4.5">
-              <dt class="text-[15.5px] font-semibold leading-[1.45] text-ink">{item.item}</dt>
+              <dt class="text-[15px] font-semibold leading-[1.45] text-ink">{item.item}</dt>
               <dd class="whitespace-nowrap font-mono text-[14px] font-semibold text-pass">
                 {item.from ? 'from ' : ''}{rupees(item.price)}{item.unit === 'page' ? '/page' : ''}
               </dd>
@@ -370,7 +370,7 @@ const principles = [
 
     <div class="mt-12 max-w-[820px] rounded-3xl border border-line bg-surface p-7 sm:p-8">
       <h3 class="text-[19px] font-bold tracking-[-0.02em] text-ink">What we never charge for</h3>
-      <ul class="mt-4 text-[15.5px] leading-[1.6] text-body">
+      <ul class="mt-4 text-[15px] leading-[1.6] text-body">
         {NEVER_CHARGED.map((line) => (
           <li class="flex gap-3 border-b border-hairline py-3 last:border-0">
             <span class="mt-[10px] h-1.5 w-1.5 shrink-0 rounded-full bg-pass" aria-hidden="true"></span>
@@ -387,7 +387,7 @@ const principles = [
 
   <!-- THE PRICE PROMISE — the page's one dark panel -->
   <section class="section shell" aria-labelledby="promise-title">
-    <div class="panel-depth rounded-[28px] p-8 sm:p-12 lg:p-16">
+    <div class="panel-depth rounded-3xl p-8 sm:p-12 lg:p-16">
       <div class="grid items-start gap-12 lg:grid-cols-[1fr_360px] lg:gap-16">
         <div>
           <SectionHead
@@ -397,7 +397,7 @@ const principles = [
             title={PRICE_PROMISE.headline}
             lede={PRICE_PROMISE.body}
           />
-          <p class="mt-7 max-w-[620px] text-[15.5px] leading-[1.65] text-panel-text-dim">
+          <p class="mt-7 max-w-[620px] text-[15px] leading-[1.65] text-panel-text-dim">
             You will never be asked to decide on a call. The figure, the scope
             and the exclusions arrive in writing after the free review, and
             they stay there while you think about it.
@@ -412,7 +412,7 @@ const principles = [
           </p>
         </div>
 
-        <div class="rounded-[20px] border border-panel-line bg-panel-card p-7">
+        <div class="rounded-3xl border border-panel-line bg-panel-card p-7">
           <p class="label-mono text-panel-text-faint" style="letter-spacing:0.12em">What is fixed</p>
           <dl class="mt-5">
             {[
@@ -442,11 +442,11 @@ const principles = [
       />
       <div class="mt-11 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {paysFor.map((p, i) => (
-          <article class="card-hover overflow-hidden rounded-[18px] border border-line bg-canvas">
+          <article class="card-hover overflow-hidden rounded-2xl border border-line bg-canvas">
             <span class:list={['accent-bar block h-1 w-full', cycleAccent(i).bar]} aria-hidden="true"></span>
             <div class="p-6.5">
             <h3 class="text-lg font-bold tracking-[-0.02em] text-ink">{p.title}</h3>
-            <p class="mt-2 text-[14.5px] leading-[1.6] text-muted">{p.text}</p>
+            <p class="mt-2 text-[14px] leading-[1.6] text-muted">{p.text}</p>
             </div>
           </article>
         ))}
@@ -467,7 +467,7 @@ const principles = [
           <p class:list={['numeral text-[clamp(36px,4vw,52px)]', cycleAccent(i).text]}>{String(i + 1).padStart(2, '0')}</p>
           <div>
             <h3 class="text-[19px] font-bold tracking-[-0.02em] text-ink">{p.title}</h3>
-            <p class="mt-2 text-[15.5px] leading-[1.65] text-body">{p.text}</p>
+            <p class="mt-2 text-[15px] leading-[1.65] text-body">{p.text}</p>
           </div>
         </article>
       ))}
@@ -475,7 +475,7 @@ const principles = [
 
     <div class="mt-10 max-w-[920px] rounded-2xl border border-line bg-surface px-6 py-5 sm:px-7">
       <p class="label-mono mb-3 text-faint" style="letter-spacing:0.12em">The small print, in full</p>
-      <ul class="text-[14.5px] leading-[1.6] text-muted">
+      <ul class="text-[14px] leading-[1.6] text-muted">
         {PRICE_NOTES.map((note) => (
           <li class="border-b border-hairline py-2.5 last:border-0 last:pb-0">{note}</li>
         ))}

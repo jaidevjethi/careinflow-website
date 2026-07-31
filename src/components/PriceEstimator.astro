@@ -55,7 +55,7 @@ const planOptions = [
     >
       Build the shape of your practice and see where it lands
     </h2>
-    <p class="mt-4 max-w-[640px] text-[16.5px] leading-[1.62] text-body">
+    <p class="mt-4 max-w-[640px] text-[16px] leading-[1.62] text-body">
       This adds up the published prices on this page. It is an estimate against
       the scope you pick, not a quote. Your real figure gets fixed in writing
       after the free review, and it does not move unless the scope does.
@@ -84,10 +84,10 @@ const planOptions = [
                   class="mt-1 size-4 shrink-0 accent-[var(--color-surgical)]"
                 />
                 <span class="min-w-0">
-                  <span class="block text-[15.5px] font-bold tracking-[-0.01em] text-ink">
+                  <span class="block text-[15px] font-bold tracking-[-0.01em] text-ink">
                     {o.label}
                   </span>
-                  <span class="mt-0.5 block text-[13.5px] leading-[1.5] text-muted">{o.note}</span>
+                  <span class="mt-0.5 block text-[13px] leading-[1.5] text-muted">{o.note}</span>
                 </span>
                 <span class="ml-auto shrink-0 whitespace-nowrap font-mono text-[12px] text-surgical">
                   {o.price ? `from ${rupees(o.price)}` : 'no build'}
@@ -98,7 +98,7 @@ const planOptions = [
 
           <div class="mt-6 grid gap-4 border-t border-hairline pt-5 sm:grid-cols-2">
             <label class="block">
-              <span class="block text-[14.5px] font-semibold text-body-deep">
+              <span class="block text-[14px] font-semibold text-body-deep">
                 Extra treatment pages
               </span>
               <span class="mt-0.5 block text-[13px] leading-[1.5] text-muted">
@@ -123,7 +123,7 @@ const planOptions = [
               />
               <span class="min-w-0 text-[14px] leading-[1.5] text-body-deep">
                 Also in Gujarati
-                <span class="mt-0.5 block font-mono text-[11.5px] text-surgical">
+                <span class="mt-0.5 block font-mono text-[11px] text-surgical">
                   from {rupees(gujarati.price)}
                 </span>
               </span>
@@ -131,21 +131,21 @@ const planOptions = [
           </div>
 
           <div id="ci-existing" hidden class="mt-4 grid gap-2.5 border-t border-hairline pt-5">
-            <p class="text-[13.5px] leading-[1.55] text-muted">
+            <p class="text-[13px] leading-[1.55] text-muted">
               Two things worth doing on a site someone else built:
             </p>
             <label class="flex cursor-pointer items-start gap-3 rounded-xl border border-line bg-canvas p-3.5">
               <input type="checkbox" name="takeover" data-price={takeover.price} class="mt-0.5 size-4 shrink-0 accent-[var(--color-surgical)]" />
               <span class="min-w-0 text-[14px] leading-[1.5] text-body-deep">
                 Website takeover audit
-                <span class="mt-0.5 block font-mono text-[11.5px] text-surgical">{rupees(takeover.price)}</span>
+                <span class="mt-0.5 block font-mono text-[11px] text-surgical">{rupees(takeover.price)}</span>
               </span>
             </label>
             <label class="flex cursor-pointer items-start gap-3 rounded-xl border border-line bg-canvas p-3.5">
               <input type="checkbox" name="gbpRebuild" data-price={gbpRebuild.price} class="mt-0.5 size-4 shrink-0 accent-[var(--color-surgical)]" />
               <span class="min-w-0 text-[14px] leading-[1.5] text-body-deep">
                 Google Business Profile rebuild
-                <span class="mt-0.5 block font-mono text-[11.5px] text-surgical">{rupees(gbpRebuild.price)}</span>
+                <span class="mt-0.5 block font-mono text-[11px] text-surgical">{rupees(gbpRebuild.price)}</span>
               </span>
             </label>
           </div>
@@ -168,10 +168,10 @@ const planOptions = [
                   class="mt-1 size-4 shrink-0 accent-[var(--color-surgical)]"
                 />
                 <span class="min-w-0">
-                  <span class="block text-[15.5px] font-bold tracking-[-0.01em] text-ink">
+                  <span class="block text-[15px] font-bold tracking-[-0.01em] text-ink">
                     {o.label}
                   </span>
-                  <span class="mt-0.5 block text-[13.5px] leading-[1.5] text-muted">{o.note}</span>
+                  <span class="mt-0.5 block text-[13px] leading-[1.5] text-muted">{o.note}</span>
                 </span>
                 <span class="ml-auto shrink-0 whitespace-nowrap font-mono text-[12px] text-surgical">
                   {o.price ? `${rupees(o.price)}/mo` : 'nothing'}
@@ -183,10 +183,10 @@ const planOptions = [
             <input type="checkbox" name="social" data-price={rates.social} class="mt-0.5 size-4 shrink-0 accent-[var(--color-surgical)]" />
             <span class="min-w-0 text-[14px] leading-[1.5] text-body-deep">
               Add social media content
-              <span class="mt-0.5 block font-mono text-[11.5px] text-surgical">
+              <span class="mt-0.5 block font-mono text-[11px] text-surgical">
                 {rupees(STANDALONE_MONTHLY.social)}/mo
               </span>
-              <span class="mt-1 block text-[12.5px] leading-[1.45] text-muted">
+              <span class="mt-1 block text-[12px] leading-[1.45] text-muted">
                 A support service. If your site or listing needs work, that comes first.
               </span>
             </span>
@@ -222,7 +222,7 @@ const planOptions = [
 
         <p id="ci-breakdown" class="mt-5 border-t border-hairline pt-4 text-[13px] leading-[1.6] text-muted"></p>
 
-        <p class="mt-5 border-t border-line pt-4 text-[13.5px] leading-[1.6] text-muted">
+        <p class="mt-5 border-t border-line pt-4 text-[13px] leading-[1.6] text-muted">
           An estimate against the scope above. Your number is fixed in writing
           after the free review, and sometimes it comes out lower.
         </p>

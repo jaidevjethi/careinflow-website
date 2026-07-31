@@ -72,14 +72,14 @@ const schema = graph(
           <h2 class="text-[clamp(22px,2.4vw,28px)] font-extrabold leading-[1.15] tracking-[-0.03em] text-ink">
             {cs.data.title}
           </h2>
-          <p class="mt-2 text-[14.5px] font-semibold text-muted">{cs.data.client} · {cs.data.location}</p>
-          <p class="mt-4 text-[15.5px] leading-[1.65] text-body">{cs.data.summary}</p>
+          <p class="mt-2 text-[14px] font-semibold text-muted">{cs.data.client} · {cs.data.location}</p>
+          <p class="mt-4 text-[15px] leading-[1.65] text-body">{cs.data.summary}</p>
           <dl class="mt-auto grid grid-cols-2 gap-x-6 gap-y-4 border-t border-line pt-6 sm:grid-cols-4">
             {cs.data.highlights.map((h) => (
               <div>
-                <dt class="font-mono text-[9.5px] uppercase tracking-[0.08em] text-faint">{h.label}</dt>
+                <dt class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{h.label}</dt>
                 <dd class="mt-1 text-lg font-extrabold tracking-[-0.03em] text-ink">{h.value}</dd>
-                {h.ref && <dd class="mt-0.5 font-mono text-[9.5px] uppercase tracking-[0.06em] text-muted">{h.ref}</dd>}
+                {h.ref && <dd class="mt-0.5 font-mono text-[11px] uppercase tracking-[0.06em] text-muted">{h.ref}</dd>}
               </div>
             ))}
           </dl>
@@ -93,7 +93,7 @@ const schema = graph(
   <section class="section shell">
     <div class="max-w-[680px] rounded-3xl border border-line bg-surface p-8">
       <h2 class="label-mono mb-4 text-faint">How we work</h2>
-      <p class="text-[15.5px] leading-[1.65] text-body">
+      <p class="text-[15px] leading-[1.65] text-body">
         Every engagement runs the same way: a fixed price in writing, direct
         access to the person doing the work, and a published record
         afterwards. The <a href={href('/about')} class="prose-link">about page</a>
