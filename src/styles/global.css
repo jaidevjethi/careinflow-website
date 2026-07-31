@@ -339,6 +339,15 @@
     text-wrap: pretty;
   }
 
+  /*
+   * The header is sticky at 72px, so anything jumped to via a #hash would land
+   * underneath it. Applies to every id target, not just the estimator.
+   */
+  :target,
+  [id] {
+    scroll-margin-top: 96px;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
