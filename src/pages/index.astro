@@ -69,11 +69,19 @@ const priceHeadlines = [
   },
 ];
 
+/**
+ * What a clinic owner actually wants to know, in the third-most-valuable
+ * position on the site. This used to read "<1.2s load target on 4G", "95+
+ * Lighthouse score" and "AA accessibility standard": three measurements a
+ * doctor has no way to evaluate. The engineering standards still exist and are
+ * still published, on the services page where someone technical will look for
+ * them.
+ */
 const heroStats = [
-  { value: '<1.2s', caption: 'load target on 4G' },
-  { value: '95+', caption: 'Lighthouse score' },
-  { value: 'AA', caption: 'accessibility standard' },
-  { value: '4 wks', caption: 'typical build' },
+  { value: '4 weeks', caption: 'from first call to launch' },
+  { value: 'Free', caption: 'written review before you pay' },
+  { value: 'Fixed', caption: 'price agreed in writing' },
+  { value: 'Yours', caption: 'domain, hosting and accounts' },
 ];
 
 /** The value case, stated as mechanisms rather than promised results. */
@@ -98,55 +106,46 @@ const outcomes = [
 
 const protocols = [
   {
-    code: 'CI-01',
     title: 'Practice website',
     text: 'Hand-built, quick on an inexpensive phone, written for a patient who is worried.',
     link: '/services/healthcare-websites',
   },
   {
-    code: 'CI-02',
     title: 'Google Business Profile',
     text: 'Claimed, rebuilt and then maintained: categories, services, hours, photos, questions.',
     link: '/services/google-business-profile',
   },
   {
-    code: 'CI-03',
     title: 'Local SEO groundwork',
     text: 'A page per treatment and per area you serve. Consistent details everywhere.',
     link: '/services/local-seo',
   },
   {
-    code: 'CI-04',
     title: 'AI answer readiness',
     text: 'Schema, entities and plain-language facts so assistants can quote you.',
     link: '/services/local-seo',
   },
   {
-    code: 'CI-05',
     title: 'Speed & Core Web Vitals',
     text: 'Measured on a mid-range Android on mobile data, not on our laptops.',
     link: '/services/healthcare-websites',
   },
   {
-    code: 'CI-06',
     title: 'Enquiry & booking flow',
     text: 'Usually WhatsApp, set up so the message lands where someone will answer it.',
     link: '/services/healthcare-websites',
   },
   {
-    code: 'CI-07',
     title: 'Maintenance & hosting',
     text: 'Security, backups, edits, new treatment pages. We do not disappear.',
     link: '/services/website-care',
   },
   {
-    code: 'CI-08',
     title: 'Quarterly review',
     text: 'Written: what patients did, what changed nearby, what to do next.',
     link: '/services/website-care',
   },
   {
-    code: 'CI-09',
     title: 'Social media content',
     text: 'Educational posts that support the website. Never a substitute for one.',
     link: '/services/social-media',
@@ -228,7 +227,7 @@ const whatsappHref = whatsappWithMessage(
             {heroStats.map((stat) => (
               <div>
                 <dt class="sr-only">{stat.caption}</dt>
-                <dd class="numeral text-[clamp(28px,3vw,38px)] text-surface">{stat.value}</dd>
+                <dd class="numeral whitespace-nowrap text-[clamp(26px,2.6vw,34px)] text-surface">{stat.value}</dd>
                 <dd class="mt-1.5 font-mono text-[11px] uppercase tracking-[0.08em] text-panel-text-dim">
                   {stat.caption}
                 </dd>
@@ -375,7 +374,6 @@ const whatsappHref = whatsappWithMessage(
         >
           <span class:list={['accent-bar block h-1 w-full', serviceAccent(p.link.split('/').pop()!).bar]} aria-hidden="true"></span>
           <div class="p-6.5">
-          <p class:list={['mb-4 font-mono text-[11px] uppercase tracking-[0.06em]', serviceAccent(p.link.split('/').pop()!).text]}>{p.code}</p>
           <h3 class="text-lg font-bold tracking-[-0.02em] text-ink">{p.title}</h3>
           <p class="mt-2 text-[14px] leading-[1.55] text-muted">{p.text}</p>
           </div>

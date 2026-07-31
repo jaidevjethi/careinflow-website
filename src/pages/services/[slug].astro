@@ -79,7 +79,7 @@ const schema = graph(
   <article>
     <PageHero
       breadcrumb={{ label: 'All services', href: href('/services') }}
-      label={`${service.data.code} · ${service.data.navLabel}`}
+      label={service.data.navLabel}
       title={service.data.title}
       lede={service.data.summary}
     >
@@ -152,7 +152,6 @@ const schema = graph(
         <div class="grid gap-4 sm:grid-cols-2 lg:max-w-[880px]">
           {related.map((r) => (
             <a href={href(`/services/${r.id}`)} class="card-hover block rounded-2xl border border-line bg-surface p-6.5 hover:no-underline">
-              <p class="mb-3 font-mono text-[11px] uppercase tracking-[0.06em] text-surgical">{r.data.code}</p>
               <h3 class="text-lg font-bold tracking-[-0.02em] text-ink">{r.data.navLabel}</h3>
               <p class="mt-2 text-[14px] leading-[1.55] text-muted">{r.data.summary}</p>
             </a>
@@ -166,7 +165,7 @@ const schema = graph(
 
   <FaqSection
     {faqs}
-    label={`${service.data.code} · Questions`}
+    label="Questions"
     title="Asked about this service"
   />
 

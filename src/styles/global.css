@@ -13,11 +13,13 @@
  * and the two together give the calm tone clinics want.
  *
  * Colour rules:
- *  - Cool clinical neutrals as the base. Never pure white, never dark by
- *    default.
- *  - `surgical` #1B4D7E is the primary and is AA-safe as text: 8.05 on canvas.
- *  - Vivid values are FILLS ONLY. Teal fills take INK text (6.01), never white,
- *    which only reaches 2.59 and fails body copy.
+ *  - Warm paper neutrals as the base. Never pure white, never dark by
+ *    default. Cold neutrals under cool blues read corporate; warm neutrals
+ *    under the same blues read premium. That single swap does more for the
+ *    feel of the site than either brand colour does.
+ *  - `surgical` #14425F is the primary and is AA-safe as text: 9.77 on canvas.
+ *  - Vivid values are FILLS ONLY. Teal fills take INK text (6.07), never
+ *    white, which fails body copy on every teal light enough to be a fill.
  *  - Measurements stay green. A passing reading should read as passing.
  *  - Deep blue is reserved for moments: the header, the hero, the CTA panel,
  *    the footer, and at most one section per page.
@@ -80,30 +82,30 @@
   --font-mono: 'JetBrains Mono Variable', ui-monospace, 'Cascadia Mono', monospace;
 
   /* Light surfaces — cool clinical neutrals, never pure white */
-  --color-canvas: #f4f6f8;
-  --color-surface: #fafbfc;
-  --color-line: #d7dee6;
-  --color-line-strong: #bfcad6;
-  --color-hairline: #e3e9ef;
-  --color-hairline-soft: #eef2f6;
-  --color-line-hover: #17b0aa;
+  --color-canvas: #f7f5f1;
+  --color-surface: #fdfcfa;
+  --color-line: #ddd7cc;
+  --color-line-strong: #c9c1b2;
+  --color-hairline: #e8e3da;
+  --color-hairline-soft: #f2eee7;
+  --color-line-hover: #12b3a6;
 
   /* Brand. `surgical` is the AA-safe primary used for text, labels and links. */
-  --color-surgical: #1b4d7e;
-  --color-vivid: #17b0aa;
+  --color-surgical: #14425f;
+  --color-vivid: #12b3a6;
   --color-support: #a8c5dd;
   /* Measurements stay green, because a passing reading should read as passing. */
   --color-pass: #0a6b63;
-  --color-ink: #16222e;
+  --color-ink: #17242a;
 
   /* Text — blue-grey family, every value measured against canvas and surface */
-  --color-body: #3d4c5c;
-  --color-body-deep: #26323f;
-  --color-muted: #4e5d6e;
-  --color-faint: #5a6a7a;
+  --color-body: #414c53;
+  --color-body-deep: #28343a;
+  --color-muted: #525f66;
+  --color-faint: #5e6b72;
 
   /* Tints */
-  --color-surgical-tint: #e2ebf3;
+  --color-surgical-tint: #e6ecf1;
   --color-pass-tint: #dceeeb;
 
   /*
@@ -117,37 +119,37 @@
    * distinct backgrounds were measured across six pages before this change.
    */
   /* web = clinical teal — healthcare websites */
-  --color-a-web: #146b73;
-  --color-a-web-vivid: #1a8a94;
-  --color-a-web-tint: #d9ecee;
+  --color-a-web: #12626b;
+  --color-a-web-vivid: #17838c;
+  --color-a-web-tint: #e0ecec;
   /* seo = primary blue — local SEO */
-  --color-a-seo: #1b4d7e;
-  --color-a-seo-vivid: #2b6fa8;
-  --color-a-seo-tint: #e2ebf3;
+  --color-a-seo: #14425f;
+  --color-a-seo-vivid: #2a6d94;
+  --color-a-seo-tint: #e6ecf1;
   /* gbp = clinical teal — Google Business Profile, and the signature accent */
-  --color-a-gbp: #0c6e70;
-  --color-a-gbp-vivid: #17b0aa;
-  --color-a-gbp-tint: #d6efee;
+  --color-a-gbp: #0b5f61;
+  --color-a-gbp-vivid: #12b3a6;
+  --color-a-gbp-tint: #dfeeeb;
   /* care = slate blue — website care */
-  --color-a-care: #3d5a75;
-  --color-a-care-vivid: #5a7f9e;
-  --color-a-care-tint: #e4ebf1;
+  --color-a-care: #3a5668;
+  --color-a-care-vivid: #567b92;
+  --color-a-care-tint: #e7eaee;
   /* social = sage — social media */
-  --color-a-social: #3f6b52;
-  --color-a-social-vivid: #5a9070;
-  --color-a-social-tint: #e0ece5;
+  --color-a-social: #3c654c;
+  --color-a-social-vivid: #578a69;
+  --color-a-social-tint: #e4eae4;
 
   /* Deep blue panel family — hero, CTA, footer and one section per page */
-  --color-panel: #12304f;
-  --color-panel-card: #1b4066;
-  --color-panel-line: #2a5580;
-  --color-panel-line-alt: #35648f;
-  --color-panel-divider: #1a3d61;
-  --color-panel-chip: #0d2f33;
-  --color-panel-text: #cfdeeb;
-  --color-panel-text-dim: #adc2d6;
-  --color-panel-text-faint: #9ab1c8;
-  --color-panel-accent: #2bbfb3;
+  --color-panel: #0e3348;
+  --color-panel-card: #17435e;
+  --color-panel-line: #275877;
+  --color-panel-line-alt: #326a8c;
+  --color-panel-divider: #164058;
+  --color-panel-chip: #0d3033;
+  --color-panel-text: #cddfe8;
+  --color-panel-text-dim: #a9c2ce;
+  --color-panel-text-faint: #95b0be;
+  --color-panel-accent: #3fc4b4;
 
   /*
    * Spacing scale — four values, and nothing outside this file may invent a
@@ -179,8 +181,8 @@
   --ease-instrument: cubic-bezier(0.22, 1, 0.36, 1);
 
   /* One shadow recipe */
-  --shadow-card: 0 1px 2px rgba(18, 48, 79, 0.05), 0 16px 36px rgba(18, 48, 79, 0.06);
-  --shadow-card-lg: 0 1px 2px rgba(18, 48, 79, 0.05), 0 24px 56px rgba(18, 48, 79, 0.07);
+  --shadow-card: 0 1px 2px rgba(23, 36, 42, 0.05), 0 16px 36px rgba(23, 36, 42, 0.06);
+  --shadow-card-lg: 0 1px 2px rgba(23, 36, 42, 0.05), 0 24px 56px rgba(23, 36, 42, 0.07);
 
   --animate-rise: ci-rise 240ms var(--ease-instrument) both;
   --animate-fade: ci-fade 240ms var(--ease-instrument) both;
@@ -445,14 +447,14 @@
     max-width: 200px;
     background: repeating-linear-gradient(
       to right,
-      #c3cdd8 0 1px,
+      #cfc8bb 0 1px,
       transparent 1px 11px
     );
   }
   .tick-rule-dark {
     background: repeating-linear-gradient(
       to right,
-      #345f8c 0 1px,
+      #2f6382 0 1px,
       transparent 1px 11px
     );
   }
@@ -480,7 +482,7 @@
     background-color: var(--color-panel);
     background-image: radial-gradient(
       140% 120% at 15% 0%,
-      #1a3f66 0%,
+      #154463 0%,
       var(--color-panel) 62%
     );
   }
