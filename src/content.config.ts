@@ -59,7 +59,7 @@ const services = defineCollection({
  */
 const specialties = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/specialties' }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     navLabel: z.string(),
     description: z.string(),
@@ -67,7 +67,10 @@ const specialties = defineCollection({
     order: z.number(),
     /** Accent key from lib/accents. */
     accent: z.enum(['web', 'seo', 'gbp', 'care', 'social']),
-    /** The searches these patients actually type — patient words, not clinical. */
+    /** Editorial photograph for the hero aside. No legible text inside it. */
+    image: image(),
+    imageAlt: z.string(),
+    /** The searches these patients actually type. Patient words, not clinical. */
     patientSearches: z.array(z.string()),
     /** Treatments that earn their own page, and the worry each one answers. */
     treatmentPages: z.array(z.object({ treatment: z.string(), answers: z.string() })),
@@ -84,7 +87,7 @@ const specialties = defineCollection({
  */
 const areas = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/areas' }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     navLabel: z.string(),
     /** The town as it appears in BUSINESS.serviceAreas. */
@@ -95,6 +98,9 @@ const areas = defineCollection({
     accent: z.enum(['web', 'seo', 'gbp', 'care', 'social']),
     /** True only for Mehsana — the one place the studio actually sits. */
     isHomeBase: z.boolean().default(false),
+    /** Editorial photograph for the hero aside. No legible text inside it. */
+    image: image(),
+    imageAlt: z.string(),
     /** Honest, checkable facts about the market. No invented statistics. */
     marketNotes: z.array(z.object({ label: z.string(), note: z.string() })),
     faqs: z.array(z.object({ q: z.string(), a: z.string() })),

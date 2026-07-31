@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
 import PageHero from '@/components/PageHero.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
@@ -66,7 +67,18 @@ const schema = graph(
         { value: String(data.gbpCategories.length), caption: 'listing categories that fit' },
         { value: String(data.patientSearches.length), caption: 'searches written to' },
       ]}
-    />
+    >
+      <Image
+        slot="aside"
+        src={data.image}
+        alt={data.imageAlt}
+        widths={[400, 600, 800]}
+        sizes="(min-width: 1024px) 400px, 92vw"
+        loading="eager"
+        fetchpriority="high"
+        class="h-[260px] w-full rounded-3xl border border-panel-line object-cover"
+      />
+    </PageHero>
 
     <!-- WHAT PATIENTS SEARCH -->
     <section class="border-t border-hairline bg-surface" aria-labelledby="searches-title">
