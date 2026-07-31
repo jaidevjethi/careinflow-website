@@ -166,13 +166,28 @@ export interface Plan {
   priceNote?: string;
 }
 
-/** Standalone monthly prices, for practices we did not build a site for. */
+/**
+ * Standalone monthly prices, for practices we did not build a site for.
+ *
+ * Set against the Indian market rather than guessed. Website maintenance runs
+ * ₹2,000–5,000 a month; Google Business Profile management ₹5,000–25,000; real
+ * SEO retainers ₹20,000–40,000, where ₹5,000–15,000 buys keyword tracking and
+ * a month-end report and little else. These sit at the lower-middle of each
+ * band, which is where a new studio should be, and above the floor, which is
+ * where the work can pay for itself.
+ *
+ * Every plan below is scoped. An uncapped promise is what makes a retainer
+ * unprofitable, not the headline figure.
+ */
 export const STANDALONE_MONTHLY = {
-  care: 3499,
-  gbp: 5499,
-  seo: 12999,
-  social: 7999,
+  care: 4499,
+  gbp: 6999,
+  seo: 17999,
+  social: 8999,
 } as const;
+
+/** Content updates included in a care plan each month, before extra charge. */
+export const CARE_EDITS_PER_MONTH = 4;
 
 export const PLANS: Plan[] = [
   {
@@ -183,7 +198,8 @@ export const PLANS: Plan[] = [
     includes: [
       'Uptime and performance monitored weekly',
       'Security updates and off-site backups monthly',
-      'Content edits — hours, doctors, treatments — as often as you need',
+      `Up to ${CARE_EDITS_PER_MONTH} content updates a month: hours, doctors, treatments, festival closures`,
+      'Anything beyond that quoted before we start, never billed as a surprise',
       'Speed re-measured against its reference quarterly',
       'A written quarterly review, in plain language',
     ],
@@ -193,7 +209,7 @@ export const PLANS: Plan[] = [
   {
     id: 'care-google',
     name: 'Care + Google',
-    monthly: 7999,
+    monthly: 9999,
     summary: 'Both places a patient actually looks, handled together.',
     includes: [
       'Everything in Care',
@@ -210,11 +226,11 @@ export const PLANS: Plan[] = [
   {
     id: 'full-visibility',
     name: 'Full visibility',
-    monthly: 17999,
+    monthly: 26999,
     summary: 'The whole presence, growing every month.',
     includes: [
       'Everything in Care + Google',
-      'A new treatment or area page every month, researched and written',
+      'One new treatment or area page a month: researched, written, designed, published',
       'The path from landing to enquiry reviewed quarterly, and changed where patients drop off',
       'Technical SEO maintained as the site grows',
       'Search Console watched — you see exactly the data we see',

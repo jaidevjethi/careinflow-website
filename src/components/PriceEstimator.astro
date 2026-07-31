@@ -1,0 +1,313 @@
+---
+/**
+ * Price estimator.
+ *
+ * Three rules it has to keep:
+ *
+ * 1. Every rate comes from `src/config/pricing.ts`. They are serialised into
+ *    the script below via define:vars, so this component cannot invent a
+ *    figure and the price guard still covers the whole site.
+ * 2. It produces an estimate, never a quote. The studio's whole position is
+ *    that the real number is fixed in writing after the free review, so the
+ *    output says so and the action underneath it is the WhatsApp message.
+ * 3. Hand-written JavaScript, about 2KB, no framework. Without it the fieldsets
+ *    still render and the published price list is directly below, so nobody
+ *    loses access to a number.
+ */
+import { BUILDS, ONE_TIME_ITEMS, PLANS, STANDALONE_MONTHLY, rupees } from '@/config/pricing';
+import { WHATSAPP_URL } from '@/config/site';
+
+const extraPage = ONE_TIME_ITEMS.find((i) => i.item.startsWith('Extra treatment'))!;
+const gujarati = ONE_TIME_ITEMS.find((i) => i.item.startsWith('Gujarati version'))!;
+const gbpRebuild = ONE_TIME_ITEMS.find((i) => i.item.startsWith('Google Business Profile rebuild'))!;
+const takeover = ONE_TIME_ITEMS.find((i) => i.item.startsWith('Website takeover audit'))!;
+
+/** Everything the script needs, straight from the config. */
+const rates = {
+  builds: Object.fromEntries(BUILDS.map((b) => [b.id, b.from])),
+  plans: Object.fromEntries(PLANS.map((p) => [p.id, p.monthly])),
+  social: STANDALONE_MONTHLY.social,
+  extraPage: extraPage.price,
+  gujarati: gujarati.price,
+  gbpRebuild: gbpRebuild.price,
+  takeover: takeover.price,
+  whatsapp: WHATSAPP_URL,
+};
+
+const buildOptions = [
+  ...BUILDS.map((b) => ({ value: b.id, label: b.name, note: b.pages, price: b.from })),
+  { value: 'none', label: 'I already have a website', note: 'Keep it, and we work on what it does', price: 0 },
+];
+
+const planOptions = [
+  { value: 'none', label: 'Nothing monthly', note: 'Build only, and you manage it', price: 0 },
+  ...PLANS.map((p) => ({ value: p.id, label: p.name, note: p.summary, price: p.monthly })),
+];
+---
+
+<section class="section border-t border-hairline bg-canvas" aria-labelledby="estimator-title">
+  <div class="shell">
+    <div class="tick-rule mb-3.5" aria-hidden="true"></div>
+    <p class="label-mono mb-5 text-surgical">Work out a rough number</p>
+    <h2
+      id="estimator-title"
+      class="max-w-[760px] text-[clamp(26px,3.4vw,38px)] font-extrabold leading-[1.1] tracking-[-0.035em] text-ink"
+    >
+      Build the shape of your practice and see where it lands
+    </h2>
+    <p class="mt-4 max-w-[640px] text-[16.5px] leading-[1.62] text-body">
+      This adds up the published prices on this page. It is an estimate against
+      the scope you pick, not a quote. Your real figure gets fixed in writing
+      after the free review, and it does not move unless the scope does.
+    </p>
+
+    <form
+      id="ci-estimator"
+      class="mt-11 grid items-start gap-6 lg:grid-cols-[1fr_380px] lg:gap-10"
+      novalidate
+    >
+      <div class="grid gap-5">
+        <fieldset class="rounded-3xl border border-line bg-surface p-7">
+          <legend class="label-mono px-1 text-faint" style="letter-spacing:0.12em">
+            The website
+          </legend>
+          <div class="mt-4 grid gap-2.5">
+            {buildOptions.map((o, i) => (
+              <label class="card-hover flex cursor-pointer items-start gap-3.5 rounded-2xl border border-line bg-canvas p-4">
+                <input
+                  type="radio"
+                  name="build"
+                  value={o.value}
+                  data-price={o.price}
+                  data-label={o.label}
+                  checked={i === 0}
+                  class="mt-1 size-4 shrink-0 accent-[var(--color-surgical)]"
+                />
+                <span class="min-w-0">
+                  <span class="block text-[15.5px] font-bold tracking-[-0.01em] text-ink">
+                    {o.label}
+                  </span>
+                  <span class="mt-0.5 block text-[13.5px] leading-[1.5] text-muted">{o.note}</span>
+                </span>
+                <span class="ml-auto shrink-0 whitespace-nowrap font-mono text-[12px] text-surgical">
+                  {o.price ? `from ${rupees(o.price)}` : 'no build'}
+                </span>
+              </label>
+            ))}
+          </div>
+
+          <div class="mt-6 grid gap-4 border-t border-hairline pt-5 sm:grid-cols-2">
+            <label class="block">
+              <span class="block text-[14.5px] font-semibold text-body-deep">
+                Extra treatment pages
+              </span>
+              <span class="mt-0.5 block text-[13px] leading-[1.5] text-muted">
+                Beyond the pages included above, {rupees(extraPage.price)} each
+              </span>
+              <input
+                type="number"
+                name="extraPages"
+                min="0"
+                max="20"
+                value="0"
+                inputmode="numeric"
+                class="mt-2.5 w-full rounded-xl border border-line bg-canvas px-3.5 py-2.5 text-[15px] text-ink"
+              />
+            </label>
+            <label class="flex cursor-pointer items-start gap-3 self-end rounded-xl border border-line bg-canvas p-3.5">
+              <input
+                type="checkbox"
+                name="gujarati"
+                data-price={gujarati.price}
+                class="mt-0.5 size-4 shrink-0 accent-[var(--color-surgical)]"
+              />
+              <span class="min-w-0 text-[14px] leading-[1.5] text-body-deep">
+                Also in Gujarati
+                <span class="mt-0.5 block font-mono text-[11.5px] text-surgical">
+                  from {rupees(gujarati.price)}
+                </span>
+              </span>
+            </label>
+          </div>
+
+          <div id="ci-existing" hidden class="mt-4 grid gap-2.5 border-t border-hairline pt-5">
+            <p class="text-[13.5px] leading-[1.55] text-muted">
+              Two things worth doing on a site someone else built:
+            </p>
+            <label class="flex cursor-pointer items-start gap-3 rounded-xl border border-line bg-canvas p-3.5">
+              <input type="checkbox" name="takeover" data-price={takeover.price} class="mt-0.5 size-4 shrink-0 accent-[var(--color-surgical)]" />
+              <span class="min-w-0 text-[14px] leading-[1.5] text-body-deep">
+                Website takeover audit
+                <span class="mt-0.5 block font-mono text-[11.5px] text-surgical">{rupees(takeover.price)}</span>
+              </span>
+            </label>
+            <label class="flex cursor-pointer items-start gap-3 rounded-xl border border-line bg-canvas p-3.5">
+              <input type="checkbox" name="gbpRebuild" data-price={gbpRebuild.price} class="mt-0.5 size-4 shrink-0 accent-[var(--color-surgical)]" />
+              <span class="min-w-0 text-[14px] leading-[1.5] text-body-deep">
+                Google Business Profile rebuild
+                <span class="mt-0.5 block font-mono text-[11.5px] text-surgical">{rupees(gbpRebuild.price)}</span>
+              </span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset class="rounded-3xl border border-line bg-surface p-7">
+          <legend class="label-mono px-1 text-faint" style="letter-spacing:0.12em">
+            Every month after
+          </legend>
+          <div class="mt-4 grid gap-2.5">
+            {planOptions.map((o) => (
+              <label class="card-hover flex cursor-pointer items-start gap-3.5 rounded-2xl border border-line bg-canvas p-4">
+                <input
+                  type="radio"
+                  name="plan"
+                  value={o.value}
+                  data-price={o.price}
+                  data-label={o.label}
+                  checked={o.value === 'care-google'}
+                  class="mt-1 size-4 shrink-0 accent-[var(--color-surgical)]"
+                />
+                <span class="min-w-0">
+                  <span class="block text-[15.5px] font-bold tracking-[-0.01em] text-ink">
+                    {o.label}
+                  </span>
+                  <span class="mt-0.5 block text-[13.5px] leading-[1.5] text-muted">{o.note}</span>
+                </span>
+                <span class="ml-auto shrink-0 whitespace-nowrap font-mono text-[12px] text-surgical">
+                  {o.price ? `${rupees(o.price)}/mo` : 'nothing'}
+                </span>
+              </label>
+            ))}
+          </div>
+          <label class="mt-4 flex cursor-pointer items-start gap-3 rounded-xl border border-line bg-canvas p-3.5">
+            <input type="checkbox" name="social" data-price={rates.social} class="mt-0.5 size-4 shrink-0 accent-[var(--color-surgical)]" />
+            <span class="min-w-0 text-[14px] leading-[1.5] text-body-deep">
+              Add social media content
+              <span class="mt-0.5 block font-mono text-[11.5px] text-surgical">
+                {rupees(STANDALONE_MONTHLY.social)}/mo
+              </span>
+              <span class="mt-1 block text-[12.5px] leading-[1.45] text-muted">
+                A support service. If your site or listing needs work, that comes first.
+              </span>
+            </span>
+          </label>
+        </fieldset>
+      </div>
+
+      <output
+        for="ci-estimator"
+        id="ci-result"
+        aria-live="polite"
+        class="top-24 block rounded-3xl border border-line bg-surface p-7 shadow-card lg:sticky"
+      >
+        <p class="label-mono text-faint" style="letter-spacing:0.12em">Roughly</p>
+
+        <p class="mt-5">
+          <span id="ci-once" class="numeral block text-[clamp(30px,3.6vw,42px)] text-ink">
+            {rupees(BUILDS[0]!.from)}
+          </span>
+          <span class="mt-1 block font-mono text-[11px] uppercase tracking-[0.08em] text-surgical">
+            one time, to build it
+          </span>
+        </p>
+
+        <p class="mt-6 border-t border-line pt-5">
+          <span id="ci-monthly" class="numeral block text-[clamp(30px,3.6vw,42px)] text-ink">
+            {rupees(PLANS[1]!.monthly)}
+          </span>
+          <span class="mt-1 block font-mono text-[11px] uppercase tracking-[0.08em] text-surgical">
+            a month, to keep it working
+          </span>
+        </p>
+
+        <p id="ci-breakdown" class="mt-5 border-t border-hairline pt-4 text-[13px] leading-[1.6] text-muted"></p>
+
+        <p class="mt-5 border-t border-line pt-4 text-[13.5px] leading-[1.6] text-muted">
+          An estimate against the scope above. Your number is fixed in writing
+          after the free review, and sometimes it comes out lower.
+        </p>
+
+        <a id="ci-whatsapp" href={WHATSAPP_URL} rel="noopener" class="btn-primary mt-5 w-full justify-center px-6 py-3.5 text-[15px]">
+          Send this and get the real figure
+        </a>
+      </output>
+    </form>
+  </div>
+</section>
+
+<script is:inline define:vars={{ rates }}>
+  (() => {
+    const form = document.getElementById('ci-estimator');
+    if (!form) return;
+
+    const once = document.getElementById('ci-once');
+    const monthly = document.getElementById('ci-monthly');
+    const breakdown = document.getElementById('ci-breakdown');
+    const wa = document.getElementById('ci-whatsapp');
+    const existing = document.getElementById('ci-existing');
+
+    // Indian digit grouping, same as rupees() on the server.
+    const inr = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 });
+    const money = (n) => '₹' + inr.format(n);
+
+    const num = (name) => {
+      const el = form.elements[name];
+      return el ? Number(el.value) || 0 : 0;
+    };
+    const checked = (name) => {
+      const el = form.elements[name];
+      return el && el.checked ? Number(el.dataset.price) || 0 : 0;
+    };
+    const radio = (name) => {
+      const el = form.querySelector(`input[name="${name}"]:checked`);
+      return el
+        ? { value: el.value, price: Number(el.dataset.price) || 0, label: el.dataset.label || '' }
+        : { value: 'none', price: 0, label: '' };
+    };
+
+    function update() {
+      const build = radio('build');
+      const plan = radio('plan');
+      const hasBuild = build.value !== 'none';
+
+      // The takeover and rebuild options only make sense without a new build.
+      existing.hidden = hasBuild;
+      if (hasBuild) {
+        ['takeover', 'gbpRebuild'].forEach((n) => {
+          if (form.elements[n]) form.elements[n].checked = false;
+        });
+      }
+
+      const pages = Math.max(0, Math.min(20, num('extraPages')));
+      const pagesCost = pages * rates.extraPage;
+
+      const oneTime =
+        build.price + pagesCost + checked('gujarati') + checked('takeover') + checked('gbpRebuild');
+      const perMonth = plan.price + checked('social');
+
+      once.textContent = oneTime ? money(oneTime) : 'Nothing';
+      monthly.textContent = perMonth ? money(perMonth) : 'Nothing';
+
+      const parts = [];
+      if (hasBuild) parts.push(`${build.label} website`);
+      if (pages) parts.push(`${pages} extra page${pages > 1 ? 's' : ''}`);
+      if (checked('gujarati')) parts.push('Gujarati version');
+      if (checked('takeover')) parts.push('takeover audit');
+      if (checked('gbpRebuild')) parts.push('listing rebuild');
+      if (plan.price) parts.push(`${plan.label} every month`);
+      if (checked('social')) parts.push('social content');
+      breakdown.textContent = parts.length ? 'Includes: ' + parts.join(', ') + '.' : '';
+
+      const message =
+        "Hi CareInflow. I used the estimator on your pricing page. " +
+        (parts.length ? 'I picked: ' + parts.join(', ') + '. ' : '') +
+        `That came to ${money(oneTime)} one time and ${money(perMonth)} a month. ` +
+        "I'd like a free written review first. Clinic name: ";
+      wa.href = rates.whatsapp + '?text=' + encodeURIComponent(message);
+    }
+
+    form.addEventListener('input', update);
+    form.addEventListener('change', update);
+    update();
+  })();
+</script>

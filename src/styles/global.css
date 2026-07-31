@@ -253,6 +253,15 @@
     min-width: 0;
   }
 
+  /*
+   * fieldset carries a browser default of `min-inline-size: min-content`, which
+   * the rule above cannot reach because it is not a min-width. Without this the
+   * estimator's fieldsets refuse to shrink and push 8px past a 320px viewport.
+   */
+  fieldset {
+    min-inline-size: 0;
+  }
+
   ::selection {
     background: var(--color-surgical);
     color: #ffffff;

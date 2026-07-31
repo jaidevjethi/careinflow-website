@@ -2,6 +2,7 @@
 import { getFaqsFor } from '@/lib/faqs';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHero from '@/components/PageHero.astro';
+import PriceEstimator from '@/components/PriceEstimator.astro';
 import SectionHead from '@/components/SectionHead.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
@@ -379,6 +380,8 @@ const principles = [
       </ul>
     </div>
   </section>
+
+  <PriceEstimator />
 
   <CtaStrip text="Not sure which of these your practice actually needs? The free review will say so, honestly." />
 
