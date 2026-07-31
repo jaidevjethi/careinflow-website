@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getFaqsFor } from '@/lib/faqs';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import { BUSINESS, WHATSAPP_URL, whatsappWithMessage } from '@/config/site';
@@ -15,11 +15,9 @@ import {
 
 const title = 'Contact CareInflow — send your clinic\'s name on WhatsApp';
 const description =
-  'Contact CareInflow in Mehsana: one WhatsApp message gets you a free written review of your clinic\'s online presence within two working days. No form, no call, no deck.';
+  'Send your clinic\'s name on WhatsApp or call. A free written review of what patients see, in two working days. Based in Mehsana.';
 
-const faqEntries = (await getCollection('faqs', ({ data }) => data.pages.includes('contact')))
-  .map(({ data }) => data)
-  .sort((a, b) => a.order - b.order);
+const faqs = await getFaqsFor('contact');
 
 const schema = graph(
   organizationSchema(),
@@ -29,7 +27,7 @@ const schema = graph(
     { name: 'Home', path: '/' },
     { name: 'Contact', path: '/contact' },
   ]),
-  faqSchema(faqEntries.map((f) => ({ question: f.question, answer: f.answer }))),
+  faqSchema(faqs),
 );
 
 const whatsappHref = whatsappWithMessage(
@@ -68,11 +66,14 @@ const steps = [
       <a href={whatsappHref} rel="noopener" class="btn-primary px-7 py-4 text-[17px]">
         WhatsApp {BUSINESS.phoneDisplay}
       </a>
-      <a href={`mailto:${BUSINESS.email}`} class="btn-secondary px-6 py-[15px] text-base">
-        Or email us
+      <a href={`tel:${BUSINESS.phone}`} class="btn-secondary px-6 py-[15px] text-base">
+        Or call {BUSINESS.phoneDisplay}
       </a>
     </div>
-    <p class="mt-4 text-[14.5px] text-faint">Usually answered the same day.</p>
+    <p class="mt-4 text-[14.5px] text-faint">
+      Usually answered the same day. Calls are answered between
+      {' '}{BUSINESS.hours.opens} and {BUSINESS.hours.closes}, Monday to Saturday.
+    </p>
   </section>
 
   <section class="border-t border-hairline bg-surface" aria-label="What happens next">
@@ -96,8 +97,8 @@ const steps = [
         <address class="mt-5 max-w-[640px] text-[15.5px] not-italic leading-[1.7] text-body">
           {BUSINESS.name} · {BUSINESS.address.street},<br />
           {BUSINESS.address.locality}, {BUSINESS.address.region}, India<br />
-          <a href={WHATSAPP_URL} rel="noopener" class="prose-link">{BUSINESS.phoneDisplay}</a> ·
-          <a href={`mailto:${BUSINESS.email}`} class="prose-link">{BUSINESS.email}</a>
+          <a href={WHATSAPP_URL} rel="noopener" class="prose-link">WhatsApp {BUSINESS.phoneDisplay}</a> ·
+          <a href={`tel:${BUSINESS.phone}`} class="prose-link">Call the studio</a>
         </address>
         <p class="mt-5 max-w-[640px] text-[14.5px] leading-[1.65] text-muted">
           We are based in Mehsana and work with clinics across
@@ -123,7 +124,7 @@ const steps = [
   </section>
 
   <FaqSection
-    faqs={faqEntries.map((f) => ({ question: f.question, answer: f.answer }))}
+    {faqs}
     label="Before you message"
     title="Two things people check first"
   />

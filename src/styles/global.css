@@ -192,10 +192,37 @@
     color: #ffffff;
   }
 
+  /* --------------------------------------------------------------------------
+     Focus ring. The site prints "AA" as a headline number, so this has to earn it.
+
+     A single colour cannot: surgical green measured 2.85:1 on the midnight
+     panel — below the 3:1 in WCAG 2.2 SC 1.4.11 — and that panel is the sticky
+     header on every page. Citrus would pass there and vanish on the citrus band.
+
+     So the ring is two-tone. The dark outline sits 2–4px out; the light
+     box-shadow fills 0–6px and shows on either side of it. Whatever the ring
+     lands on, one of the two tones carries the contrast:
+
+       ink #0A1628 on citrus #FFB020 ......... 9.9:1
+       ink #0A1628 on canvas #E9E4DA ........ 14.3:1
+       surface #F7F4EE on panel #0A1628 ..... 16.5:1
+
+     `!important` on the shadow because buttons and cards declare their own in
+     @layer components — and an important declaration in an earlier layer wins,
+     which is exactly the override needed here. */
   :focus-visible {
-    outline: 2px solid var(--color-surgical);
+    outline: 2px solid var(--color-ink);
     outline-offset: 2px;
     border-radius: 4px;
+    box-shadow: 0 0 0 6px var(--color-surface) !important;
+  }
+
+  /* On midnight the two tones swap, so neither half vanishes into its ground. */
+  .bg-panel :focus-visible,
+  .panel-depth :focus-visible,
+  footer :focus-visible {
+    outline-color: var(--color-surface);
+    box-shadow: 0 0 0 6px var(--color-ink) !important;
   }
 
   h1,
@@ -443,8 +470,24 @@
   .prose-link {
     color: var(--color-surgical);
     font-weight: 600;
+    /* Vertical padding on an inline element grows the tap area without
+       touching the line box, so standalone arrow links ("See the full
+       method →") clear the 24px minimum in SC 2.5.8 with no visual change. */
+    padding-block: 0.34rem;
   }
   .prose-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* The on-dark counterpart to .prose-link: citrus on midnight, and the same
+     inline tap padding so standalone arrow links clear 24px. */
+  .link-accent {
+    color: var(--color-panel-accent);
+    font-weight: 600;
+    padding-block: 0.34rem;
+  }
+  .link-accent:hover {
     text-decoration: underline;
     text-underline-offset: 3px;
   }
@@ -494,6 +537,9 @@
   .prose-ci a {
     color: var(--color-surgical);
     font-weight: 600;
+    /* Same inline tap padding as .prose-link: grows the hit area to the 24px
+       minimum without touching the line box. */
+    padding-block: 0.34rem;
   }
   .prose-ci a:hover {
     text-decoration: underline;

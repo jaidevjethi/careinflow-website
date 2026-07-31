@@ -3,12 +3,20 @@ import { BUSINESS, FOOTER_GROUPS, WHATSAPP_URL } from '@/config/site';
 import { href } from '@/lib/url';
 
 const year = new Date().getFullYear();
+
+/** Towns with a page of their own. The rest stay as plain text — a link that
+    goes nowhere reads worse than no link. */
+const AREA_PAGES: Record<string, string> = {
+  Mehsana: '/areas/mehsana',
+  Ahmedabad: '/areas/ahmedabad',
+  Gandhinagar: '/areas/gandhinagar',
+};
 ---
 
 <footer class="panel-depth">
   <div class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20">
-    <div class="grid gap-12 lg:grid-cols-[1fr_auto] lg:gap-24">
-      <div class="max-w-md">
+    <div class="grid gap-12 lg:grid-cols-[minmax(0,320px)_1fr] lg:gap-20">
+      <div class="max-w-sm">
         <div class="mb-4 flex items-center gap-2.5">
           <img
             src={href('/logo-light.svg')}
@@ -28,20 +36,25 @@ const year = new Date().getFullYear();
         <address class="mt-5 text-sm not-italic leading-[1.7] text-panel-text-faint">
           {BUSINESS.address.street},<br />
           {BUSINESS.address.locality}, {BUSINESS.address.region}, India<br />
-          <a href={WHATSAPP_URL} rel="noopener" class="text-panel-text-dim hover:text-surface">{BUSINESS.phoneDisplay}</a>
+          <a href={WHATSAPP_URL} rel="noopener" class="inline-block py-1 text-panel-text-dim hover:text-surface">
+            WhatsApp {BUSINESS.phoneDisplay}
+          </a>
           ·
-          <a href={`mailto:${BUSINESS.email}`} class="text-panel-text-dim hover:text-surface">{BUSINESS.email}</a>
+          <a href={`tel:${BUSINESS.phone}`} class="inline-block py-1 text-panel-text-dim hover:text-surface">Call</a>
         </address>
       </div>
 
-      <nav aria-label="Footer" class="grid grid-cols-2 gap-10 sm:grid-cols-3 sm:gap-16">
+      <nav aria-label="Footer" class="grid grid-cols-2 gap-x-10 gap-y-10 sm:grid-cols-3 sm:gap-x-14 xl:grid-cols-5 xl:gap-x-12">
         {FOOTER_GROUPS.map((group) => (
           <div>
             <h2 class="label-mono mb-4 text-panel-text-faint">{group.title}</h2>
-            <ul class="flex flex-col gap-2.5">
+            <ul class="flex flex-col gap-1.5">
               {group.links.map((link) => (
                 <li>
-                  <a href={href(link.href)} class="text-sm text-panel-text-dim hover:text-surface">
+                  <a
+                    href={href(link.href)}
+                    class="inline-flex min-h-[24px] items-center text-sm text-panel-text-dim hover:text-surface"
+                  >
                     {link.label}
                   </a>
                 </li>
@@ -54,7 +67,18 @@ const year = new Date().getFullYear();
 
     <div class="mt-14 border-t border-panel-divider pt-7">
       <p class="font-mono text-[10.5px] uppercase tracking-[0.1em] leading-[1.8] text-panel-text-faint">
-        Based in Mehsana, Gujarat — working with healthcare practices across {BUSINESS.serviceAreas.join(' · ')} and beyond
+        Based in Mehsana, Gujarat — working with healthcare practices across{' '}
+        {BUSINESS.serviceAreas.map((city, i) => (
+          <>
+            {i > 0 && ' · '}
+            {AREA_PAGES[city] ? (
+              <a href={href(AREA_PAGES[city]!)} class="inline-block py-1.5 text-panel-text-dim hover:text-surface">{city}</a>
+            ) : (
+              city
+            )}
+          </>
+        ))}
+        {' '}and beyond
       </p>
       <p class="mt-3 text-[13px] text-panel-text-faint">
         © {year} {BUSINESS.name}. Built by hand in Mehsana — this site is our own best evidence.

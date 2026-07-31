@@ -3,6 +3,8 @@ import { getCollection, render } from 'astro:content';
 import { Image } from 'astro:assets';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
+import { getImage } from 'astro:assets';
+import { CANONICAL_HOST } from '@/config/site';
 import { href } from '@/lib/url';
 import {
   graph,
@@ -10,6 +12,7 @@ import {
   webSiteSchema,
   webPageSchema,
   breadcrumbSchema,
+  caseStudySchema,
 } from '@/lib/schema';
 
 export async function getStaticPaths() {
@@ -24,8 +27,20 @@ const { cs } = Astro.props;
 const { Content } = await render(cs);
 
 const path = `/work/${cs.id}`;
-const title = `${cs.data.title} — ${cs.data.client} | CareInflow`;
+const title = `${cs.data.client} — case study | CareInflow`;
 const description = cs.data.description;
+
+/**
+ * The real screenshot doubles as the share card and the Article image, so a
+ * case study previews as the site it is about rather than the default card.
+ */
+const share = await getImage({ src: cs.data.cover, width: 1200, format: 'jpg' });
+const shareImage = {
+  url: new URL(share.src, CANONICAL_HOST).href,
+  width: Number(share.attributes.width ?? 1200),
+  height: Number(share.attributes.height ?? 630),
+  alt: cs.data.coverAlt,
+};
 
 const schema = graph(
   organizationSchema(),
@@ -36,14 +51,30 @@ const schema = graph(
     { name: 'Work', path: '/work' },
     { name: cs.data.client, path },
   ]),
+  caseStudySchema({
+    path,
+    title: cs.data.title,
+    description,
+    client: cs.data.client,
+    year: cs.data.year,
+    image: shareImage,
+    ...(cs.data.url ? { liveUrl: cs.data.url } : {}),
+  }),
 );
 ---
 
-<BaseLayout {title} {description} {path} {schema}>
+<BaseLayout
+  {title}
+  {description}
+  {path}
+  {schema}
+  image={shareImage.url}
+  imageAlt={cs.data.coverAlt}
+>
   <article>
     <header class="mx-auto max-w-[1440px] px-5 pb-14 pt-14 sm:px-10 sm:pt-20 xl:px-20">
       <nav aria-label="Breadcrumb" class="mb-8">
-        <a href={href('/work')} class="font-mono text-[11px] uppercase tracking-[0.1em] text-faint hover:text-surgical">
+        <a href={href('/work')} class="inline-flex min-h-[24px] items-center font-mono text-[11px] uppercase tracking-[0.1em] text-faint hover:text-surgical">
           ← All work
         </a>
       </nav>

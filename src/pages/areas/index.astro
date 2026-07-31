@@ -1,0 +1,131 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import CtaPanel from '@/components/CtaPanel.astro';
+import { ACCENTS } from '@/lib/accents';
+import { BUSINESS } from '@/config/site';
+import { href } from '@/lib/url';
+import {
+  graph,
+  organizationSchema,
+  webSiteSchema,
+  webPageSchema,
+  breadcrumbSchema,
+  itemListSchema,
+} from '@/lib/schema';
+
+const title = 'Service areas across North Gujarat | CareInflow';
+const description =
+  'Where CareInflow works: Mehsana, where our studio is, plus Ahmedabad, Gandhinagar and North Gujarat. Places we serve, not places we staff.';
+
+const areas = (await getCollection('areas')).sort((a, b) => a.data.order - b.data.order);
+const written = new Set(areas.map((a) => a.data.city));
+const alsoServed = BUSINESS.serviceAreas.filter((city) => !written.has(city));
+
+const schema = graph(
+  organizationSchema(),
+  webSiteSchema(),
+  webPageSchema({ path: '/areas', title, description, type: 'CollectionPage' }),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Service areas', path: '/areas' },
+  ]),
+  itemListSchema({
+    path: '/areas',
+    name: 'Towns CareInflow serves',
+    items: areas.map((a) => ({ name: a.data.title, path: `/areas/${a.id}` })),
+  }),
+);
+---
+
+<BaseLayout {title} {description} path="/areas" {schema}>
+  <section class="mx-auto max-w-[1440px] px-5 pb-14 pt-14 sm:px-10 sm:pt-20 xl:px-20">
+    <div class="tick-rule mb-3.5" aria-hidden="true"></div>
+    <p class="label-mono mb-5 text-surgical">Where we work</p>
+    <h1 class="max-w-[860px] text-[clamp(34px,5vw,62px)] font-extrabold leading-[1.04] tracking-[-0.045em] text-ink">
+      One studio in Mehsana, and the towns it serves.
+    </h1>
+    <p class="mt-6 max-w-[680px] text-lg leading-[1.62] text-body">
+      Plenty of agencies list a dozen cities and staff exactly one of them. We
+      have one studio, on Radhanpur Road in Mehsana, and no branches anywhere.
+      These are places we work in — not places we sit.
+    </p>
+    <p class="mt-6 max-w-[680px] text-[16px] leading-[1.62] text-muted">
+      Everything except photography runs the same at a distance: the writing,
+      the build, the Google listing, the monthly upkeep and the quarterly
+      review. For photographs we come to you.
+    </p>
+  </section>
+
+  <section class="border-t border-hairline bg-surface" aria-label="Areas with a full page">
+    <div class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20">
+      <div class="grid gap-5 lg:grid-cols-3">
+        {areas.map((a) => (
+          <a
+            href={href(`/areas/${a.id}`)}
+            class:list={[
+              'card-hover flex flex-col rounded-3xl border border-line p-8 hover:no-underline',
+              ACCENTS[a.data.accent].tint,
+            ]}
+          >
+            <p class="mb-3">
+              <span class="chip bg-surface/70 text-muted">
+                {a.data.isHomeBase ? 'Our studio is here' : 'A place we serve'}
+              </span>
+            </p>
+            <h2 class="text-[26px] font-extrabold leading-[1.15] tracking-[-0.03em] text-ink">
+              {a.data.city}
+            </h2>
+            <p class="mt-3 flex-1 text-[15.5px] leading-[1.6] text-body">{a.data.summary}</p>
+            <span class:list={['prose-link mt-6 inline-block text-[15px]', ACCENTS[a.data.accent].text]}>
+              Working in {a.data.city} →
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section
+    class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20"
+    aria-labelledby="also-served-title"
+  >
+    <div class="grid items-start gap-12 lg:grid-cols-[1fr_440px] lg:gap-20">
+      <div>
+        <div class="tick-rule mb-3.5" aria-hidden="true"></div>
+        <p class="label-mono mb-5 text-surgical">Also served</p>
+        <h2
+          id="also-served-title"
+          class="max-w-[620px] text-[clamp(26px,3.4vw,38px)] font-extrabold leading-[1.1] tracking-[-0.035em] text-ink"
+        >
+          The towns without a page yet
+        </h2>
+        <p class="mt-5 max-w-[620px] text-[16.5px] leading-[1.62] text-body">
+          We work with practices in these towns already. They do not have a page
+          here because a page that says nothing specific about a town helps
+          nobody in it, and we would rather write them properly than quickly.
+        </p>
+        <p class="mt-5 max-w-[620px] text-[16.5px] leading-[1.62] text-body">
+          We also work well beyond this list where the work suits it. Being
+          outside North Gujarat is not a reason we would turn a practice away.
+        </p>
+      </div>
+      <div class="rounded-3xl border border-line bg-surface p-7">
+        <h3 class="label-mono mb-5 text-faint" style="letter-spacing:0.12em">
+          Practices we serve here
+        </h3>
+        <ul class="flex flex-wrap gap-2">
+          {alsoServed.map((city) => (
+            <li class="chip border border-line bg-canvas text-body-deep">{city}</li>
+          ))}
+        </ul>
+        <p class="mt-5 border-t border-line pt-4 text-[13.5px] leading-[1.6] text-muted">
+          Somewhere else in Gujarat? Send your clinic's name and we will tell you
+          honestly whether the distance changes anything. Usually it does not.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CtaPanel nextStep={{ label: 'See the method', href: '/process' }} />
+</BaseLayout>

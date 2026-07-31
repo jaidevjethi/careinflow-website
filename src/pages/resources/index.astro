@@ -10,11 +10,12 @@ import {
   webSiteSchema,
   webPageSchema,
   breadcrumbSchema,
+  itemListSchema,
 } from '@/lib/schema';
 
-const title = 'Resources — how patients find and judge clinics online | CareInflow';
+const title = 'Resources for clinic owners | CareInflow';
 const description =
-  'Plain-language guides for clinic owners: how patients choose clinics online, Google Business Profile, local SEO in North Gujarat, website speed, and what a clinic website actually needs.';
+  'Plain-language guides: how patients choose clinics online, Google Business Profile, local SEO in North Gujarat, and website speed.';
 
 const resources = (await getCollection('resources')).sort((a, b) => a.data.order - b.data.order);
 
@@ -34,6 +35,11 @@ const schema = graph(
     { name: 'Home', path: '/' },
     { name: 'Resources', path: '/resources' },
   ]),
+  itemListSchema({
+    path: '/resources',
+    name: 'Guides for clinic owners',
+    items: resources.map((r) => ({ name: r.data.title, path: `/resources/${r.id}` })),
+  }),
 );
 
 const dateFmt = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });

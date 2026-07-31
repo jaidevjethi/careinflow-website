@@ -3,24 +3,19 @@ import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 
 /**
- * Imagery container with two modes.
+ * Imagery container for the photographic 3D mockups.
  *
- * `blend` (flat vector art): the artwork ships on pure white and
- * `mix-blend-multiply` lets the panel tint replace that white while the ink
- * stays dark — no second frame, no pale rectangle inside a border.
+ * The render fills the container edge-to-edge inside a thin border. It carries
+ * its own studio backdrop, so colour comes from the surrounding section rather
+ * than from a tint behind the image.
  *
- * Default (photographic 3D mockups): the render fills the container
- * edge-to-edge with a thin border. Blending a photograph would muddy it, and
- * these renders carry their own studio backdrop, so colour comes from the
- * surrounding section instead.
+ * There used to be a second `blend` mode here for flat vector art on white,
+ * tinted with `mix-blend-multiply`. Every illustration moved to the mockups,
+ * no caller ever passed the prop, and the branch was unreachable.
  */
 interface Props {
   src: ImageMetadata;
   alt: string;
-  /** Tint utility from lib/accents, e.g. "bg-a-amber-tint". Blend mode only. */
-  tint?: string;
-  /** True for flat line art that should take the panel tint. */
-  blend?: boolean;
   /** Hero images only — everything else stays lazy. */
   eager?: boolean;
   /** Cap on the rendered width. */
@@ -28,49 +23,20 @@ interface Props {
   class?: string;
 }
 
-const {
-  src,
-  alt,
-  tint,
-  blend = false,
-  eager = false,
-  maxWidth = 620,
-  class: className,
-} = Astro.props;
+const { src, alt, eager = false, maxWidth = 620, class: className } = Astro.props;
 ---
 
-{blend ? (
-  <figure
-    class:list={[
-      'm-0 flex items-center justify-center overflow-hidden rounded-3xl px-5 py-8 sm:px-8 sm:py-10',
-      tint,
-      className,
-    ]}
-  >
-    <Image
-      {src}
-      {alt}
-      widths={[maxWidth, maxWidth * 1.5, maxWidth * 2]}
-      sizes={`(min-width: 1024px) ${maxWidth}px, 88vw`}
-      loading={eager ? 'eager' : 'lazy'}
-      fetchpriority={eager ? 'high' : undefined}
-      style={`max-width:${maxWidth}px`}
-      class="h-auto w-full mix-blend-multiply"
-    />
-  </figure>
-) : (
-  <figure
-    class:list={['m-0 overflow-hidden rounded-3xl border border-line', className]}
-    style={`max-width:${maxWidth}px`}
-  >
-    <Image
-      {src}
-      {alt}
-      widths={[maxWidth, maxWidth * 1.5, Math.min(maxWidth * 2, 1400)]}
-      sizes={`(min-width: 1024px) ${maxWidth}px, 92vw`}
-      loading={eager ? 'eager' : 'lazy'}
-      fetchpriority={eager ? 'high' : undefined}
-      class="block h-auto w-full"
-    />
-  </figure>
-)}
+<figure
+  class:list={['m-0 overflow-hidden rounded-3xl border border-line', className]}
+  style={`max-width:${maxWidth}px`}
+>
+  <Image
+    {src}
+    {alt}
+    widths={[maxWidth, maxWidth * 1.5, Math.min(maxWidth * 2, 1400)]}
+    sizes={`(min-width: 1024px) ${maxWidth}px, 92vw`}
+    loading={eager ? 'eager' : 'lazy'}
+    fetchpriority={eager ? 'high' : undefined}
+    class="block h-auto w-full"
+  />
+</figure>

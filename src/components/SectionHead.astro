@@ -1,21 +1,29 @@
 ---
 interface Props {
-  /** Record-vocabulary label, e.g. "01 · TRIAGE — THE THREE SURFACES". */
+  /** Plain-language mono label above the rule, e.g. "Where patients look". */
   label: string;
   title: string;
   lede?: string;
   dark?: boolean;
-  /** Heading level for the title (default h2). */
-  as?: 'h1' | 'h2' | 'h3';
+  /**
+   * Heading level. Defaults to h2 — every page's h1 is written inline in its
+   * own opener, so this has never needed to be anything else, but the prop
+   * keeps the component honest if a section ever nests deeper.
+   */
+  as?: 'h2' | 'h3';
+  /** Goes on the heading, for a section's aria-labelledby. */
   id?: string;
 }
 const { label, title, lede, dark = false, as: Tag = 'h2', id } = Astro.props;
 ---
 
-<div class="max-w-[700px]" {id}>
+<div class="max-w-[700px]">
   <div class:list={['tick-rule mb-3.5', dark && 'tick-rule-dark']} aria-hidden="true"></div>
   <p class:list={['label-mono mb-5', dark ? 'text-panel-accent' : 'text-surgical']}>{label}</p>
+  <!-- id sits on the heading, not the wrapper: a section pointing at it with
+       aria-labelledby should be named by the title, not by label + title + lede. -->
   <Tag
+    {id}
     class:list={[
       'text-[clamp(30px,4.5vw,46px)] font-extrabold leading-[1.06] tracking-[-0.04em]',
       dark ? 'text-surface' : 'text-ink',

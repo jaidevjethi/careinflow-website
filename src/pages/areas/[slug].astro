@@ -1,0 +1,163 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import FaqSection from '@/components/FaqSection.astro';
+import CtaPanel from '@/components/CtaPanel.astro';
+import CtaStrip from '@/components/CtaStrip.astro';
+import { ACCENTS } from '@/lib/accents';
+import { resolveFaqs } from '@/lib/faqs';
+import { BUSINESS } from '@/config/site';
+import { href } from '@/lib/url';
+import {
+  graph,
+  organizationSchema,
+  webSiteSchema,
+  webPageSchema,
+  breadcrumbSchema,
+  serviceSchema,
+  faqSchema,
+} from '@/lib/schema';
+
+export async function getStaticPaths() {
+  const areas = await getCollection('areas');
+  return areas.map((area) => ({ params: { slug: area.id }, props: { area } }));
+}
+
+const { area } = Astro.props;
+const { Content } = await render(area);
+const { data } = area;
+
+const path = `/areas/${area.id}`;
+const title = `${data.title} | CareInflow`;
+const description = data.description;
+const accent = ACCENTS[data.accent];
+const faqs = resolveFaqs(data.faqs);
+
+const others = (await getCollection('areas'))
+  .filter((a) => a.id !== area.id)
+  .sort((a, b) => a.data.order - b.data.order);
+
+/**
+ * `Service` with `areaServed`, never a second `LocalBusiness`. There is one
+ * studio, in Mehsana; these pages describe places served, not places staffed,
+ * and the schema has to say the same thing the copy does.
+ */
+const schema = graph(
+  organizationSchema(),
+  webSiteSchema(),
+  webPageSchema({ path, title, description }),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Service areas', path: '/areas' },
+    { name: data.navLabel, path },
+  ]),
+  {
+    ...serviceSchema({
+      id: `area-${area.id}`,
+      name: `Healthcare website design and local SEO in ${data.city}`,
+      description,
+      path,
+    }),
+    areaServed: { '@type': 'City', name: data.city },
+  },
+  faqSchema(faqs),
+);
+---
+
+<BaseLayout {title} {description} {path} {schema}>
+  <article>
+    <header class="mx-auto max-w-[1440px] px-5 pb-14 pt-14 sm:px-10 sm:pt-20 xl:px-20">
+      <nav aria-label="Breadcrumb" class="mb-8">
+        <a
+          href={href('/areas')}
+          class="inline-flex min-h-[24px] items-center font-mono text-[11px] uppercase tracking-[0.1em] text-faint hover:text-surgical"
+        >
+          ← All service areas
+        </a>
+      </nav>
+      <p class="mb-4 flex flex-wrap items-center gap-2.5">
+        <span class:list={['chip', accent.chip]}>{data.city}</span>
+        <span class="chip bg-hairline-soft text-muted">
+          {data.isHomeBase ? 'Our studio is here' : 'A place we serve'}
+        </span>
+      </p>
+      <h1 class="max-w-[860px] text-[clamp(34px,5vw,58px)] font-extrabold leading-[1.05] tracking-[-0.045em] text-ink">
+        {data.title}
+      </h1>
+      <p class="mt-6 max-w-[680px] text-lg leading-[1.62] text-body">{data.summary}</p>
+    </header>
+
+    <!-- WHAT THIS MARKET IS LIKE -->
+    <section class="border-t border-hairline bg-surface" aria-labelledby="market-title">
+      <div class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20">
+        <div class="tick-rule mb-3.5" aria-hidden="true"></div>
+        <p class="label-mono mb-5 text-surgical">The market here</p>
+        <h2
+          id="market-title"
+          class="max-w-[700px] text-[clamp(26px,3.4vw,38px)] font-extrabold leading-[1.1] tracking-[-0.035em] text-ink"
+        >
+          What is actually different about {data.city}
+        </h2>
+        <div class="mt-10 grid gap-4 sm:grid-cols-2">
+          {data.marketNotes.map((m) => (
+            <div class="rounded-2xl border border-line bg-canvas p-6">
+              <h3 class="label-mono mb-2.5 text-surgical">{m.label}</h3>
+              <p class="text-[15px] leading-[1.6] text-body">{m.note}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <div class="mx-auto grid max-w-[1440px] items-start gap-14 px-5 py-16 sm:px-10 sm:py-20 lg:grid-cols-[1fr_400px] lg:gap-20 xl:px-20">
+      <div class="prose-ci">
+        <Content />
+      </div>
+
+      <aside class="top-24 rounded-3xl border border-line bg-surface p-7 lg:sticky">
+        <h2 class="label-mono mb-4 text-faint" style="letter-spacing:0.12em">Where we are</h2>
+        <address class="text-[14.5px] not-italic leading-[1.7] text-body">
+          {BUSINESS.name}<br />
+          {BUSINESS.address.street},<br />
+          {BUSINESS.address.locality}, {BUSINESS.address.region} {BUSINESS.address.postalCode}
+        </address>
+        <p class="mt-4 text-[13.5px] leading-[1.6] text-muted">
+          One studio, and this is it. We serve
+          {' '}{BUSINESS.serviceAreas.slice(0, -1).join(', ')} and
+          {' '}{BUSINESS.serviceAreas.at(-1)} — and further where the work suits
+          it. Those are places we serve, not places we sit.
+        </p>
+        <p class="mt-5 border-t border-line pt-4 text-[13.5px] leading-[1.6] text-muted">
+          Prices do not change by town — see the
+          <a href={href('/pricing')} class="prose-link">full price list</a>.
+        </p>
+      </aside>
+    </div>
+
+    {others.length > 0 && (
+      <section
+        class="mx-auto max-w-[1440px] px-5 pb-16 sm:px-10 sm:pb-20 xl:px-20"
+        aria-label="Other service areas"
+      >
+        <h2 class="label-mono mb-6 text-faint">Also serving</h2>
+        <div class="grid gap-4 sm:grid-cols-2 lg:max-w-[880px]">
+          {others.map((a) => (
+            <a
+              href={href(`/areas/${a.id}`)}
+              class="card-hover block rounded-[18px] border border-line bg-surface p-6.5 hover:no-underline"
+            >
+              <h3 class="text-lg font-bold tracking-[-0.02em] text-ink">{a.data.city}</h3>
+              <p class="mt-2 text-[14.5px] leading-[1.55] text-muted">{a.data.summary}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+  </article>
+
+  <CtaStrip />
+
+  <FaqSection {faqs} label={`${data.city} · Questions`} title={`Asked about working in ${data.city}`} />
+
+  <CtaPanel nextStep={{ label: 'See what it costs', href: '/pricing' }} />
+</BaseLayout>

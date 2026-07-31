@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getFaqsFor } from '@/lib/faqs';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import SectionHead from '@/components/SectionHead.astro';
 import FaqSection from '@/components/FaqSection.astro';
@@ -7,7 +7,6 @@ import CtaPanel from '@/components/CtaPanel.astro';
 import CtaStrip from '@/components/CtaStrip.astro';
 import { href } from '@/lib/url';
 import { cycleAccent } from '@/lib/accents';
-import { BUSINESS } from '@/config/site';
 import {
   BUILDS,
   PLANS,
@@ -32,14 +31,12 @@ import {
   faqSchema,
 } from '@/lib/schema';
 
-const title = 'Pricing for clinic websites, local SEO and Google listings | CareInflow';
+const title = 'Pricing for clinic websites and local SEO | CareInflow';
 /** Built from the config so the meta description can never drift from the page. */
 const description =
-  `What CareInflow charges: clinic websites from ${rupees(BUILDS[0]!.from)}, monthly care from ${rupees(PLANS[0]!.monthly)}, Google Business Profile management from ${rupees(STANDALONE_MONTHLY.gbp)}. Published prices, fixed in writing after a free review — no hourly billing, no discounts.`;
+  `Clinic websites from ${rupees(BUILDS[0]!.from)}, monthly care from ${rupees(PLANS[0]!.monthly)}, Google listing management from ${rupees(STANDALONE_MONTHLY.gbp)}. Published prices, fixed in writing after a free review.`;
 
-const faqEntries = (await getCollection('faqs', ({ data }) => data.pages.includes('pricing')))
-  .map(({ data }) => data)
-  .sort((a, b) => a.order - b.order);
+const faqs = await getFaqsFor('pricing');
 
 const schema = graph(
   organizationSchema(),
@@ -73,7 +70,7 @@ const schema = graph(
       })),
     ],
   }),
-  faqSchema(faqEntries.map((f) => ({ question: f.question, answer: f.answer }))),
+  faqSchema(faqs),
 );
 
 /** The three figures a visitor is really scanning for. */
@@ -424,7 +421,7 @@ const principles = [
             <a href={href('/free-review')} class="btn-accent px-6 py-3.5 text-[15px]">
               Start with the free review
             </a>
-            <a href={href('/services')} class="self-center text-base font-semibold text-panel-accent hover:underline">
+            <a href={href('/services')} class="link-accent self-center text-base">
               See what each engagement includes →
             </a>
           </p>
@@ -502,7 +499,7 @@ const principles = [
   </section>
 
   <FaqSection
-    faqs={faqEntries.map((f) => ({ question: f.question, answer: f.answer }))}
+    {faqs}
     label="Questions about pricing"
     title="Questions about cost"
   />

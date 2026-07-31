@@ -25,7 +25,7 @@
   {
     "id": "what-does-it-cost",
     "question": "What does a clinic website cost?",
-    "answer": "Our prices are published, so you do not have to ask. A single-practice website starts at ₹28,999, an established clinic with a page per treatment starts at ₹58,999, and a multi-specialty or diagnostic centre starts at ₹1,09,999. Monthly care starts at ₹3,499, and Google Business Profile management at ₹5,499. Those are starting points for a described scope — your exact number is fixed in writing after the free review, and sometimes the honest answer is 'less than you expected'.",
+    "answer": "Our prices are published, so you do not have to ask. A single-practice website starts at {{build}}, an established clinic with a page per treatment starts at {{buildEstablished}}, and a multi-specialty or diagnostic centre starts at {{buildMulti}}. Monthly care starts at {{care}}, and Google Business Profile management at {{gbp}}. Those are starting points for a described scope — your exact number is fixed in writing after the free review, and sometimes the honest answer is 'less than you expected'.",
     "pages": [
       "faq",
       "pricing",
@@ -142,8 +142,7 @@
     "question": "Do you handle social media for clinics?",
     "answer": "Yes, as a support service rather than a main one. We write educational posts — treatment explainers, clinic updates, honest answers to the questions patients ask in the chair — within the limits patient privacy sets. We do not run paid ads or chase follower counts. And if your website or Google listing still needs work, we will tell you to fix those first, because that is where patients actually decide.",
     "pages": [
-      "faq",
-      "social-media"
+      "faq"
     ],
     "order": 14
   },
@@ -170,7 +169,7 @@
   {
     "id": "packages-or-separate",
     "question": "Why does a combined monthly plan cost less than buying the parts?",
-    "answer": "Because the work genuinely overlaps, not because it is a discount — we do not run offers. Website care is ₹4,500 a month and Google Business Profile management is ₹6,500; together they are ₹9,500, because they share one monthly pass over your presence, one set of measurements and one written report instead of three. The same arithmetic makes Full visibility ₹22,000 rather than ₹27,000.",
+    "answer": "Because the work genuinely overlaps, not because it is a discount — we do not run offers. Website care is {{care}} a month and Google Business Profile management is {{gbp}}; together they are {{careGoogle}}, because they share one monthly pass over your presence, one set of measurements and one written report instead of three. The same arithmetic makes Full visibility {{fullVisibility}} rather than {{fullVisibilityParts}}.",
     "pages": [
       "faq",
       "pricing"
@@ -180,7 +179,7 @@
   {
     "id": "only-google-listing",
     "question": "What if I only want my Google listing fixed?",
-    "answer": "Then that is all we will sell you. A one-time Google Business Profile rebuild is ₹15,000 — claimed or verified, categories and services rebuilt, hours, photos, questions seeded and a review flow set up, with no monthly commitment attached. If you want it kept that way afterwards, management is ₹6,500 a month, and if you do not, nothing changes and you owe nothing further.",
+    "answer": "Then that is all we will sell you. A one-time Google Business Profile rebuild is {{gbpRebuild}} — claimed or verified, categories and services rebuilt, hours, photos, questions seeded and a review flow set up, with no monthly commitment attached. If you want it kept that way afterwards, management is {{gbp}} a month, and if you do not, nothing changes and you owe nothing further.",
     "pages": [
       "faq",
       "pricing"

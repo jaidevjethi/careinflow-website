@@ -10,16 +10,48 @@ interface Props {
   ogType?: 'website' | 'article';
   publishDate?: Date;
   updatedDate?: Date;
+  /**
+   * Absolute URL of a page-specific share image. Case studies and articles
+   * pass their own cover; everything else falls back to the default card.
+   */
+  image?: string;
+  imageAlt?: string;
+  /** Keep the page out of the index (the 404, which is otherwise a soft 404). */
+  noindex?: boolean;
 }
 
-const { title, description, path, ogType = 'website', publishDate, updatedDate } = Astro.props;
+const {
+  title,
+  description,
+  path,
+  ogType = 'website',
+  publishDate,
+  updatedDate,
+  image,
+  imageAlt,
+  noindex = false,
+} = Astro.props;
 const canonical = canonicalUrl(path);
-const ogImage = `${CANONICAL_HOST}/og-default.png`;
+const ogImage = image ?? `${CANONICAL_HOST}/og-default.png`;
+const ogImageAlt =
+  imageAlt ?? 'CareInflow — healthcare-focused web design and digital growth studio';
 ---
 
 <title>{title}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical} />
+
+{/*
+  max-image-preview:large is what lets Google use the full-width thumbnail, and
+  max-snippet:-1 lets answer engines quote a whole answer rather than a clipped
+  one — both matter more here than they would on a site with less to quote.
+*/}
+<meta
+  name="robots"
+  content={noindex
+    ? 'noindex, follow'
+    : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'}
+/>
 
 <meta property="og:type" content={ogType} />
 <meta property="og:site_name" content={BUSINESS.name} />
@@ -27,9 +59,7 @@ const ogImage = `${CANONICAL_HOST}/og-default.png`;
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />
 <meta property="og:image" content={ogImage} />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content="CareInflow — healthcare-focused web design and digital growth studio" />
+<meta property="og:image:alt" content={ogImageAlt} />
 <meta property="og:locale" content="en_IN" />
 {ogType === 'article' && publishDate && (
   <meta property="article:published_time" content={publishDate.toISOString()} />
@@ -42,3 +72,4 @@ const ogImage = `${CANONICAL_HOST}/og-default.png`;
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={ogImage} />
+<meta name="twitter:image:alt" content={ogImageAlt} />

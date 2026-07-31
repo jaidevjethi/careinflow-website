@@ -1,0 +1,177 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import FaqSection from '@/components/FaqSection.astro';
+import CtaPanel from '@/components/CtaPanel.astro';
+import CtaStrip from '@/components/CtaStrip.astro';
+import { ACCENTS } from '@/lib/accents';
+import { resolveFaqs } from '@/lib/faqs';
+import { href } from '@/lib/url';
+import {
+  graph,
+  organizationSchema,
+  webSiteSchema,
+  webPageSchema,
+  breadcrumbSchema,
+  serviceSchema,
+  faqSchema,
+} from '@/lib/schema';
+
+export async function getStaticPaths() {
+  const specialties = await getCollection('specialties');
+  return specialties.map((specialty) => ({
+    params: { slug: specialty.id },
+    props: { specialty },
+  }));
+}
+
+const { specialty } = Astro.props;
+const { Content } = await render(specialty);
+const { data } = specialty;
+
+const path = `/specialties/${specialty.id}`;
+const title = `${data.title} | CareInflow`;
+const description = data.description;
+const accent = ACCENTS[data.accent];
+const faqs = resolveFaqs(data.faqs);
+
+const others = (await getCollection('specialties'))
+  .filter((s) => s.id !== specialty.id)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const schema = graph(
+  organizationSchema(),
+  webSiteSchema(),
+  webPageSchema({ path, title, description }),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Specialties', path: '/specialties' },
+    { name: data.navLabel, path },
+  ]),
+  serviceSchema({ id: specialty.id, name: data.title, description, path }),
+  faqSchema(faqs),
+);
+---
+
+<BaseLayout {title} {description} {path} {schema}>
+  <article>
+    <header class="mx-auto max-w-[1440px] px-5 pb-14 pt-14 sm:px-10 sm:pt-20 xl:px-20">
+      <nav aria-label="Breadcrumb" class="mb-8">
+        <a
+          href={href('/specialties')}
+          class="inline-flex min-h-[24px] items-center font-mono text-[11px] uppercase tracking-[0.1em] text-faint hover:text-surgical"
+        >
+          ← All specialties
+        </a>
+      </nav>
+      <p class="mb-4">
+        <span class:list={['chip', accent.chip]}>Specialty</span>
+      </p>
+      <h1 class="max-w-[860px] text-[clamp(34px,5vw,58px)] font-extrabold leading-[1.05] tracking-[-0.045em] text-ink">
+        {data.title}
+      </h1>
+      <p class="mt-6 max-w-[680px] text-lg leading-[1.62] text-body">{data.summary}</p>
+    </header>
+
+    <!-- WHAT PATIENTS SEARCH -->
+    <section class="border-t border-hairline bg-surface" aria-labelledby="searches-title">
+      <div class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20">
+        <div class="tick-rule mb-3.5" aria-hidden="true"></div>
+        <p class="label-mono mb-5 text-surgical">In the patient's words</p>
+        <h2
+          id="searches-title"
+          class="max-w-[700px] text-[clamp(26px,3.4vw,38px)] font-extrabold leading-[1.1] tracking-[-0.035em] text-ink"
+        >
+          What these patients actually type
+        </h2>
+        <p class="mt-4 max-w-[640px] text-[16.5px] leading-[1.62] text-body">
+          Not the clinical name for it. These are the searches your pages have to
+          be written to answer, in the words the patient used.
+        </p>
+        <ul class="mt-9 flex flex-wrap gap-2.5">
+          {data.patientSearches.map((search) => (
+            <li class:list={['chip border', accent.chip]}>{search}</li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- BODY + THE PAGES THAT EARN -->
+    <div class="mx-auto grid max-w-[1440px] items-start gap-14 px-5 py-16 sm:px-10 sm:py-20 lg:grid-cols-[1fr_420px] lg:gap-20 xl:px-20">
+      <div class="prose-ci">
+        <Content />
+      </div>
+
+      <aside class="top-24 rounded-3xl border border-line bg-surface p-7 lg:sticky">
+        <h2 class="label-mono mb-4 text-faint" style="letter-spacing:0.12em">
+          Pages that earn their place
+        </h2>
+        <dl>
+          {data.treatmentPages.map((t, i) => (
+            <div
+              class:list={[
+                'py-3.5',
+                i < data.treatmentPages.length - 1 && 'border-b border-hairline',
+              ]}
+            >
+              <dt class="text-[15px] font-bold tracking-[-0.01em] text-ink">{t.treatment}</dt>
+              <dd class="mt-1 text-[13.5px] leading-[1.55] text-muted">{t.answers}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <div class="mt-6 border-t border-line pt-5">
+          <h2 class="label-mono mb-3 text-faint" style="letter-spacing:0.12em">
+            Listing categories that fit
+          </h2>
+          <ul class="flex flex-wrap gap-2">
+            {data.gbpCategories.map((c) => (
+              <li class="chip bg-hairline-soft text-muted">{c}</li>
+            ))}
+          </ul>
+          <p class="mt-4 text-[13.5px] leading-[1.6] text-muted">
+            Categories decide which searches your
+            <a href={href('/services/google-business-profile')} class="prose-link"
+              >Google listing</a
+            > can appear in at all. Most clinics have one, and the wrong one.
+          </p>
+        </div>
+
+        <p class="mt-5 border-t border-line pt-4 text-[13.5px] leading-[1.6] text-muted">
+          Prices are the same whatever the specialty — see the
+          <a href={href('/pricing')} class="prose-link">full price list</a>.
+        </p>
+      </aside>
+    </div>
+
+    {others.length > 0 && (
+      <section
+        class="mx-auto max-w-[1440px] px-5 pb-16 sm:px-10 sm:pb-20 xl:px-20"
+        aria-label="Other specialties"
+      >
+        <h2 class="label-mono mb-6 text-faint">We also work with</h2>
+        <div class="grid gap-4 sm:grid-cols-2 lg:max-w-[880px]">
+          {others.map((s) => (
+            <a
+              href={href(`/specialties/${s.id}`)}
+              class="card-hover block rounded-[18px] border border-line bg-surface p-6.5 hover:no-underline"
+            >
+              <h3 class="text-lg font-bold tracking-[-0.02em] text-ink">{s.data.navLabel}</h3>
+              <p class="mt-2 text-[14.5px] leading-[1.55] text-muted">{s.data.summary}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+  </article>
+
+  <CtaStrip />
+
+  <FaqSection
+    {faqs}
+    label={`${data.navLabel} · Questions`}
+    title="Asked by practices like yours"
+  />
+
+  <CtaPanel nextStep={{ label: 'See the work first', href: '/work' }} />
+</BaseLayout>

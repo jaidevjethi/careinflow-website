@@ -1,11 +1,12 @@
 ---
-import { getCollection } from 'astro:content';
+import { getFaqsFor } from '@/lib/faqs';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import SectionHead from '@/components/SectionHead.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import { href } from '@/lib/url';
 import { cycleAccent } from '@/lib/accents';
+import { PLANS, STANDALONE_MONTHLY, rupees } from '@/config/pricing';
 import {
   graph,
   organizationSchema,
@@ -17,11 +18,9 @@ import {
 
 const title = 'The method — how a four-week build runs | CareInflow';
 const description =
-  'What happens if you hire CareInflow: a free written study, structure and words signed off first, one design pass on real content, then launch, measurement and ongoing care.';
+  'What happens if you hire CareInflow: a free written study, words signed off before any design, one build pass, then launch and ongoing care.';
 
-const faqEntries = (await getCollection('faqs', ({ data }) => data.pages.includes('process')))
-  .map(({ data }) => data)
-  .sort((a, b) => a.order - b.order);
+const faqs = await getFaqsFor('process');
 
 const schema = graph(
   organizationSchema(),
@@ -31,7 +30,7 @@ const schema = graph(
     { name: 'Home', path: '/' },
     { name: 'Method', path: '/process' },
   ]),
-  faqSchema(faqEntries.map((f) => ({ question: f.question, answer: f.answer }))),
+  faqSchema(faqs),
 );
 
 const weeks = [
@@ -141,12 +140,14 @@ const needFromYou = [
   <section class="border-t border-hairline bg-surface" aria-labelledby="after-title">
     <div class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20">
       <SectionHead
+        id="after-title"
         label="After week four"
         title="What happens after week four?"
         lede="Launch begins the maintenance schedule: weekly monitoring, monthly upkeep, and a quarterly written review of what patients did and what to do next. The full schedule is on the ongoing care page."
       />
       <p class="mt-6 max-w-[680px] text-[15.5px] leading-[1.65] text-muted">
-        Care is ₹4,500 a month, or ₹9,500 with your Google Business Profile
+        Care is {rupees(STANDALONE_MONTHLY.care)} a month, or
+        {' '}{rupees(PLANS[1]!.monthly)} with your Google Business Profile
         managed alongside it. Month to month, no lock-in, and the website stays
         yours either way — see the <a href={href('/pricing')} class="prose-link">full price list</a>.
       </p>
@@ -159,7 +160,7 @@ const needFromYou = [
   </section>
 
   <FaqSection
-    faqs={faqEntries.map((f) => ({ question: f.question, answer: f.answer }))}
+    {faqs}
     label="Questions about the method"
     title="Questions about how we work"
   />

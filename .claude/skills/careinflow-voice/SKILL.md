@@ -16,7 +16,7 @@ You are writing for busy healthcare professionals in Gujarat, India — doctors 
 
 ## Hard rules
 
-1. **Never fabricate.** No invented testimonials, reviews, star ratings, client counts or statistics. CareInflow is a new studio choosing five founding practices — say so plainly when relevant. Sample interface mockups must carry an `ILLUSTRATIVE` label.
+1. **Never fabricate.** No invented testimonials, reviews, star ratings, client counts or statistics. CareInflow is a new studio and says so plainly. **No scarcity of any kind** — no founding-practice count, no countdown, no deadline attached to a quote. The value is that a published price holds, not that it expires. Sample interface mockups must carry an `ILLUSTRATIVE` label.
    **Prices are real, and they live in `src/config/pricing.ts`.** Quote them from there — never write a figure from memory into copy, a FAQ answer or schema. Always frame a published number as a starting point for a stated scope, with the exact figure fixed in writing after the free review.
 2. **No urgency or discount language.** Banned: "Buy now", "Limited time", "Only today", "Last chance", "cheap", "affordable", "% off". Premium positioning: value, not price.
 3. **No buzzwords.** Banned: "cutting-edge", "digital ecosystem", "synergy", "next-level", "revolutionize", "unleash", "supercharge", "game-changing", "solutions" as a noun for services.

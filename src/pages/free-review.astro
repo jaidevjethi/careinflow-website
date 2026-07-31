@@ -1,13 +1,14 @@
 ---
-import { getCollection } from 'astro:content';
+import { getFaqsFor } from '@/lib/faqs';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import IllustrationPanel from '@/components/IllustrationPanel.astro';
-import { ACCENTS, cycleAccent } from '@/lib/accents';
+import { cycleAccent } from '@/lib/accents';
 import reviewImage from '@/assets/mockups/free-review.jpg';
 import SectionHead from '@/components/SectionHead.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import { BUSINESS, whatsappFor } from '@/config/site';
 import { href } from '@/lib/url';
+import { BUILDS, STANDALONE_MONTHLY, rupees } from '@/config/pricing';
 import {
   graph,
   organizationSchema,
@@ -17,13 +18,11 @@ import {
   faqSchema,
 } from '@/lib/schema';
 
-const title = 'Free written review of your clinic\'s online presence | CareInflow';
+const title = 'Free written review for your clinic | CareInflow';
 const description =
-  'Send your clinic\'s name on WhatsApp and get a free written review within two working days: your Google listing, website speed, treatment coverage, reviews, AI answers, and the three clinics above you.';
+  'Send your clinic\'s name on WhatsApp. In two working days: your Google listing, load time, treatment coverage, reviews, and the clinics above you.';
 
-const faqEntries = (await getCollection('faqs', ({ data }) => data.pages.includes('free-review')))
-  .map(({ data }) => data)
-  .sort((a, b) => a.order - b.order);
+const faqs = await getFaqsFor('free-review');
 
 const schema = graph(
   organizationSchema(),
@@ -33,7 +32,7 @@ const schema = graph(
     { name: 'Home', path: '/' },
     { name: 'Free review', path: '/free-review' },
   ]),
-  faqSchema(faqEntries.map((f) => ({ question: f.question, answer: f.answer }))),
+  faqSchema(faqs),
 );
 
 const whatsappHref = whatsappFor('default');
@@ -107,6 +106,7 @@ const outline = [
   <section class="border-t border-hairline bg-surface" aria-labelledby="covers-title">
     <div class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20">
       <SectionHead
+        id="covers-title"
         label="What it covers"
         title="What does the free review check?"
       />
@@ -128,6 +128,7 @@ const outline = [
     <div class="grid items-start gap-12 lg:grid-cols-[1fr_460px] lg:gap-20">
       <div>
         <SectionHead
+          id="outline-title"
           label="What you receive"
           title="What you get, and why it is free"
           lede="Written in plain language, specific to your practice, and useful whether or not you ever hire us. Most reviews run three to five pages."
@@ -164,6 +165,7 @@ const outline = [
   <section class="border-t border-hairline bg-surface" aria-labelledby="after-review-title">
     <div class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20">
       <SectionHead
+        id="after-review-title"
         label="What happens next"
         title="What happens after the review?"
         lede="You get one fixed number in writing against a defined scope. If you would rather fix things yourself, the review tells you where to start — and we part as professionals."
@@ -171,7 +173,8 @@ const outline = [
       <p class="mt-6 max-w-[680px] text-[15.5px] leading-[1.65] text-muted">
         You can see the scale before you message us: our
         <a href={href('/pricing')} class="prose-link">prices are published</a> —
-        websites from ₹40,000, monthly care from ₹4,500. The review tells you
+        websites from {rupees(BUILDS[0]!.from)}, monthly care from
+        {' '}{rupees(STANDALONE_MONTHLY.care)}. The review tells you
         which of those your practice actually needs, and occasionally the answer
         is none of them.
       </p>
@@ -187,7 +190,7 @@ const outline = [
   </section>
 
   <FaqSection
-    faqs={faqEntries.map((f) => ({ question: f.question, answer: f.answer }))}
+    {faqs}
     label="Questions about the review"
     title="Questions about the free review"
   />

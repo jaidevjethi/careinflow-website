@@ -10,6 +10,7 @@ import {
   webSiteSchema,
   webPageSchema,
   breadcrumbSchema,
+  itemListSchema,
 } from '@/lib/schema';
 
 const title = 'Work — real projects, shown honestly | CareInflow';
@@ -26,6 +27,11 @@ const schema = graph(
     { name: 'Home', path: '/' },
     { name: 'Work', path: '/work' },
   ]),
+  itemListSchema({
+    path: '/work',
+    name: 'CareInflow case studies',
+    items: caseStudies.map((cs) => ({ name: cs.data.title, path: `/work/${cs.id}` })),
+  }),
 );
 ---
 

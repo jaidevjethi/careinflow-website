@@ -1,0 +1,145 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import CtaPanel from '@/components/CtaPanel.astro';
+import { ACCENTS } from '@/lib/accents';
+import { href } from '@/lib/url';
+import {
+  graph,
+  organizationSchema,
+  webSiteSchema,
+  webPageSchema,
+  breadcrumbSchema,
+  itemListSchema,
+} from '@/lib/schema';
+
+const title = 'Specialties — dental, physiotherapy, dermatology | CareInflow';
+const description =
+  'What changes between a dental, physiotherapy and dermatology website: the searches patients type, and the pages that earn their place.';
+
+const specialties = (await getCollection('specialties')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+/**
+ * The specialties we have written a full page for. The rest of the list on the
+ * homepage is real work we take on — it simply has no page yet, and saying so
+ * is better than implying every chip is a page.
+ */
+const alsoWorkWith = [
+  'Ophthalmology',
+  'Orthopaedics',
+  'Paediatrics',
+  'Gynaecology',
+  'Cosmetic',
+  'Mental health',
+  'ENT',
+  'Cardiology',
+  'Diagnostic centres',
+  'Multi-specialty',
+];
+
+const schema = graph(
+  organizationSchema(),
+  webSiteSchema(),
+  webPageSchema({ path: '/specialties', title, description, type: 'CollectionPage' }),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Specialties', path: '/specialties' },
+  ]),
+  itemListSchema({
+    path: '/specialties',
+    name: 'Healthcare specialties CareInflow writes for',
+    items: specialties.map((s) => ({ name: s.data.title, path: `/specialties/${s.id}` })),
+  }),
+);
+---
+
+<BaseLayout {title} {description} path="/specialties" {schema}>
+  <section class="mx-auto max-w-[1440px] px-5 pb-14 pt-14 sm:px-10 sm:pt-20 xl:px-20">
+    <div class="tick-rule mb-3.5" aria-hidden="true"></div>
+    <p class="label-mono mb-5 text-surgical">Who we write for</p>
+    <h1 class="max-w-[860px] text-[clamp(34px,5vw,62px)] font-extrabold leading-[1.04] tracking-[-0.045em] text-ink">
+      The method is the same. What patients search is not.
+    </h1>
+    <p class="mt-6 max-w-[680px] text-lg leading-[1.62] text-body">
+      A dental patient in pain at midnight and someone pricing laser treatment
+      for the third week running are not the same visitor, and a website that
+      treats them the same loses both. These pages set out what actually changes
+      between specialties — and what does not.
+    </p>
+  </section>
+
+  <section class="border-t border-hairline bg-surface" aria-label="Specialties with a full page">
+    <div class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20">
+      <div class="grid gap-5 lg:grid-cols-3">
+        {specialties.map((s) => (
+          <a
+            href={href(`/specialties/${s.id}`)}
+            class:list={[
+              'card-hover flex flex-col rounded-3xl border border-line p-8 hover:no-underline',
+              ACCENTS[s.data.accent].tint,
+            ]}
+          >
+            <h2 class="text-[24px] font-extrabold leading-[1.15] tracking-[-0.03em] text-ink">
+              {s.data.navLabel}
+            </h2>
+            <p class="mt-3 flex-1 text-[15.5px] leading-[1.6] text-body">{s.data.summary}</p>
+            <p class="mt-6 border-t border-line pt-4">
+              <span class="label-mono text-faint">Patients search</span>
+              <span class="mt-2 block text-[14px] leading-[1.5] text-muted">
+                {s.data.patientSearches.slice(0, 3).join(' · ')}
+              </span>
+            </p>
+            <span class:list={['prose-link mt-5 inline-block text-[15px]', ACCENTS[s.data.accent].text]}>
+              Read the {s.data.navLabel.toLowerCase()} page →
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section
+    class="mx-auto max-w-[1440px] px-5 py-16 sm:px-10 sm:py-20 xl:px-20"
+    aria-labelledby="also-title"
+  >
+    <div class="grid items-start gap-12 lg:grid-cols-[1fr_460px] lg:gap-20">
+      <div>
+        <div class="tick-rule mb-3.5" aria-hidden="true"></div>
+        <p class="label-mono mb-5 text-surgical">The rest of the list</p>
+        <h2
+          id="also-title"
+          class="max-w-[620px] text-[clamp(26px,3.4vw,38px)] font-extrabold leading-[1.1] tracking-[-0.035em] text-ink"
+        >
+          We work with more specialties than we have written pages for
+        </h2>
+        <p class="mt-5 max-w-[620px] text-[16.5px] leading-[1.62] text-body">
+          These are practices we build for and know the search behaviour of.
+          They do not have a page here yet, which is a statement about our
+          writing schedule and not about the work. If yours is on this list, the
+          free review will still be specific to your specialty.
+        </p>
+        <p class="mt-6">
+          <a href={href('/free-review')} class="btn-primary px-6 py-3.5 text-[15px]">
+            Get a free written review
+          </a>
+        </p>
+      </div>
+      <div class="rounded-3xl border border-line bg-surface p-7">
+        <h3 class="label-mono mb-5 text-faint" style="letter-spacing:0.12em">Also built for</h3>
+        <ul class="flex flex-wrap gap-2">
+          {alsoWorkWith.map((s) => (
+            <li class="chip border border-line bg-canvas text-body-deep">{s}</li>
+          ))}
+        </ul>
+        <p class="mt-5 border-t border-line pt-4 text-[13.5px] leading-[1.6] text-muted">
+          If your specialty is not listed at all, it almost certainly still fits
+          — ask. What we do not take on is work outside healthcare.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CtaPanel nextStep={{ label: 'See what it costs', href: '/pricing' }} />
+</BaseLayout>

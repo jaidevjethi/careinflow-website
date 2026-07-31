@@ -1,5 +1,6 @@
 import { defineCollection, z } from 'astro:content';
 import { glob, file } from 'astro/loaders';
+import { PRICE_REFS } from './lib/prices';
 
 /**
  * Services — the four core offerings. Long-form content lives in the MDX
@@ -27,20 +28,70 @@ const services = defineCollection({
       z.object({ item: z.string(), status: z.string() }),
     ),
     /**
-     * Published starting price, mirroring `src/config/pricing.ts`. Drives the
-     * price line on service cards and the `Offer` in the Service schema. The
-     * real figure is still fixed in writing after the free review.
+     * Published starting price — a *key* into `src/config/pricing.ts`, never a
+     * figure. Drives the price line on service cards and the `Offer` in the
+     * Service schema, so neither can disagree with /pricing. The real number is
+     * still fixed in writing after the free review.
      */
     pricing: z
       .object({
-        from: z.number(),
-        unit: z.enum(['project', 'month']),
-        /** One line on what that figure buys, in the service's own terms. */
+        ref: z.enum(PRICE_REFS),
+        /** What that figure buys, in the service's own terms. Use {{tokens}}. */
         note: z.string(),
       })
       .optional(),
     faqs: z.array(z.object({ q: z.string(), a: z.string() })),
     related: z.array(z.string()).default([]),
+  }),
+});
+
+/**
+ * Specialties — what a dental, physiotherapy or dermatology practice needs
+ * that the others do not. One page per specialty, written from what those
+ * patients actually search and worry about. If two of these could be swapped
+ * without anyone noticing, they should not both exist.
+ */
+const specialties = defineCollection({
+  loader: glob({ pattern: '**/*.mdx', base: './src/content/specialties' }),
+  schema: z.object({
+    title: z.string(),
+    navLabel: z.string(),
+    description: z.string(),
+    summary: z.string(),
+    order: z.number(),
+    /** Accent key from lib/accents. */
+    accent: z.enum(['green', 'blue', 'amber', 'teal', 'plum']),
+    /** The searches these patients actually type — patient words, not clinical. */
+    patientSearches: z.array(z.string()),
+    /** Treatments that earn their own page, and the worry each one answers. */
+    treatmentPages: z.array(z.object({ treatment: z.string(), answers: z.string() })),
+    /** Google Business Profile categories that fit this specialty. */
+    gbpCategories: z.array(z.string()),
+    faqs: z.array(z.object({ q: z.string(), a: z.string() })),
+  }),
+});
+
+/**
+ * Service areas — places served, never places staffed. One studio, in Mehsana.
+ * Each page describes what that market is actually like; if it reads like the
+ * last one with the town name swapped, it is not worth publishing.
+ */
+const areas = defineCollection({
+  loader: glob({ pattern: '**/*.mdx', base: './src/content/areas' }),
+  schema: z.object({
+    title: z.string(),
+    navLabel: z.string(),
+    /** The town as it appears in BUSINESS.serviceAreas. */
+    city: z.string(),
+    description: z.string(),
+    summary: z.string(),
+    order: z.number(),
+    accent: z.enum(['green', 'blue', 'amber', 'teal', 'plum']),
+    /** True only for Mehsana — the one place the studio actually sits. */
+    isHomeBase: z.boolean().default(false),
+    /** Honest, checkable facts about the market. No invented statistics. */
+    marketNotes: z.array(z.object({ label: z.string(), note: z.string() })),
+    faqs: z.array(z.object({ q: z.string(), a: z.string() })),
   }),
 });
 
@@ -120,4 +171,12 @@ const testimonials = defineCollection({
   }),
 });
 
-export const collections = { services, caseStudies, resources, faqs, testimonials };
+export const collections = {
+  services,
+  specialties,
+  areas,
+  caseStudies,
+  resources,
+  faqs,
+  testimonials,
+};

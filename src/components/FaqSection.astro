@@ -4,14 +4,18 @@ interface Props {
   label?: string;
   title?: string;
   lede?: string;
+  /** Set false on /faq itself, which already is the full list. */
+  showAllLink?: boolean;
 }
 import SectionHead from '@/components/SectionHead.astro';
+import { href } from '@/lib/url';
 
 const {
   faqs,
   label = 'Questions',
   title = 'Asked before, answered plainly.',
   lede,
+  showAllLink = true,
 } = Astro.props;
 ---
 
@@ -37,4 +41,10 @@ const {
       </details>
     ))}
   </div>
+  {showAllLink && (
+    <p class="mt-7 text-[15px] leading-[1.6] text-muted lg:max-w-[880px]">
+      These are the ones asked most on this page.
+      <a href={href('/faq')} class="prose-link">Every question we hear, answered →</a>
+    </p>
+  )}
 </section>

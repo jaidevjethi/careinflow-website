@@ -1,4 +1,4 @@
-import { BUSINESS, CANONICAL_HOST, WHATSAPP_URL } from '@/config/site';
+import { BUSINESS, CANONICAL_HOST, PROFILES } from '@/config/site';
 import { CURRENCY, PRICE_RANGE, type PriceUnit } from '@/config/pricing';
 import { canonicalUrl } from '@/lib/url';
 
@@ -19,8 +19,10 @@ export function organizationSchema() {
     description:
       'Healthcare-focused web design and digital growth studio. Websites, local SEO, and Google Business Profile management for doctors and clinics.',
     url: `${CANONICAL_HOST}/`,
-    email: BUSINESS.email,
+    // No email: WhatsApp and the phone are the only two routes the site offers.
     telephone: BUSINESS.phone,
+    logo: `${CANONICAL_HOST}/logo.svg`,
+    image: `${CANONICAL_HOST}/og-default.png`,
     address: {
       '@type': 'PostalAddress',
       streetAddress: BUSINESS.address.street,
@@ -29,9 +31,21 @@ export function organizationSchema() {
       postalCode: BUSINESS.address.postalCode,
       addressCountry: BUSINESS.address.country,
     },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: BUSINESS.geo.latitude,
+      longitude: BUSINESS.geo.longitude,
+    },
+    openingHoursSpecification: {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: BUSINESS.hours.days,
+      opens: BUSINESS.hours.opens,
+      closes: BUSINESS.hours.closes,
+    },
+    // One studio, in Mehsana. `areaServed` lists places served, never staffed.
     areaServed: BUSINESS.serviceAreas.map((name) => ({ '@type': 'City', name })),
     founder: { '@id': FOUNDER_ID },
-    sameAs: [WHATSAPP_URL, 'https://github.com/jaidevjethi'],
+    sameAs: PROFILES,
     knowsAbout: [
       'Healthcare website design',
       'Local SEO for clinics',
@@ -65,7 +79,7 @@ export function webSiteSchema() {
     url: `${CANONICAL_HOST}/`,
     name: BUSINESS.name,
     publisher: { '@id': ORG_ID },
-    inLanguage: 'en',
+    inLanguage: 'en-IN',
   };
 }
 
@@ -78,7 +92,7 @@ export function webPageSchema(opts: { path: string; title: string; description: 
     description: opts.description,
     isPartOf: { '@id': SITE_ID },
     about: { '@id': ORG_ID },
-    inLanguage: 'en',
+    inLanguage: 'en-IN',
   };
 }
 
@@ -104,16 +118,21 @@ export interface PriceOffer {
   unit: PriceUnit;
 }
 
+/**
+ * `month` and `page` are both *rates*, so they need a unit — published as a
+ * flat figure, a ₹3,499-per-page rate reads as the whole price of the work.
+ */
+const UNIT_TEXT: Partial<Record<PriceUnit, string>> = { month: 'MONTH', page: 'PAGE' };
+
 function priceSpecification({ from, unit }: PriceOffer) {
-  const recurring = unit === 'month';
+  const unitText = UNIT_TEXT[unit];
   return {
-    '@type': recurring ? 'UnitPriceSpecification' : 'PriceSpecification',
+    '@type': unitText ? 'UnitPriceSpecification' : 'PriceSpecification',
     priceCurrency: CURRENCY,
     minPrice: from,
     valueAddedTaxIncluded: false,
-    ...(recurring
-      ? { unitText: 'MONTH', billingDuration: 1, billingIncrement: 1 }
-      : {}),
+    ...(unitText ? { unitText } : {}),
+    ...(unit === 'month' ? { billingDuration: 1, billingIncrement: 1 } : {}),
   };
 }
 
@@ -130,7 +149,13 @@ function offer(opts: PriceOffer & { name?: string; description?: string; url?: s
   };
 }
 
+/**
+ * `id` is the service slug. It gives every Service node a stable `@id`, so the
+ * five listed on /services and the one on each detail page resolve to the same
+ * entity instead of six unrelated ones.
+ */
 export function serviceSchema(opts: {
+  id: string;
   name: string;
   description: string;
   path: string;
@@ -138,6 +163,7 @@ export function serviceSchema(opts: {
 }) {
   return {
     '@type': 'Service',
+    '@id': `${CANONICAL_HOST}/#service-${opts.id}`,
     name: opts.name,
     description: opts.description,
     url: canonicalUrl(opts.path),
@@ -194,12 +220,85 @@ export function faqSchema(faqs: Array<{ question: string; answer: string }>) {
   };
 }
 
+/** An ImageObject with real dimensions — what Article rich results ask for. */
+export interface SchemaImage {
+  url: string;
+  width: number;
+  height: number;
+  alt?: string;
+}
+
+const imageObject = (img: SchemaImage) => ({
+  '@type': 'ImageObject',
+  url: img.url,
+  width: img.width,
+  height: img.height,
+  ...(img.alt ? { caption: img.alt } : {}),
+});
+
+/**
+ * Case studies. Previously these carried only WebPage + BreadcrumbList, which
+ * made the site's strongest proof pages its least described ones. `Article`
+ * with an `image` is what earns them a result with a picture attached.
+ */
+export function caseStudySchema(opts: {
+  path: string;
+  title: string;
+  description: string;
+  client: string;
+  year: number;
+  image: SchemaImage;
+  liveUrl?: string;
+}) {
+  return {
+    '@type': 'Article',
+    '@id': `${canonicalUrl(opts.path)}#article`,
+    headline: opts.title,
+    description: opts.description,
+    url: canonicalUrl(opts.path),
+    image: imageObject(opts.image),
+    datePublished: `${opts.year}-01-01`,
+    author: { '@id': ORG_ID },
+    publisher: { '@id': ORG_ID },
+    mainEntityOfPage: canonicalUrl(opts.path),
+    inLanguage: 'en-IN',
+    about: {
+      '@type': 'CreativeWork',
+      name: opts.title,
+      creator: { '@id': ORG_ID },
+      ...(opts.liveUrl ? { url: opts.liveUrl } : {}),
+    },
+    mentions: { '@type': 'Organization', name: opts.client },
+  };
+}
+
+/** An ordered list of pages — what a collection page is actually listing. */
+export function itemListSchema(opts: {
+  path: string;
+  name: string;
+  items: Array<{ name: string; path: string }>;
+}) {
+  return {
+    '@type': 'ItemList',
+    '@id': `${canonicalUrl(opts.path)}#list`,
+    name: opts.name,
+    numberOfItems: opts.items.length,
+    itemListElement: opts.items.map((item, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: item.name,
+      url: canonicalUrl(item.path),
+    })),
+  };
+}
+
 export function articleSchema(opts: {
   path: string;
   title: string;
   description: string;
   publishDate: Date;
   updatedDate?: Date;
+  image?: SchemaImage;
 }) {
   return {
     '@type': 'BlogPosting',
@@ -208,10 +307,11 @@ export function articleSchema(opts: {
     url: canonicalUrl(opts.path),
     datePublished: opts.publishDate.toISOString().slice(0, 10),
     dateModified: (opts.updatedDate ?? opts.publishDate).toISOString().slice(0, 10),
+    ...(opts.image ? { image: imageObject(opts.image) } : {}),
     author: { '@id': FOUNDER_ID },
     publisher: { '@id': ORG_ID },
     mainEntityOfPage: canonicalUrl(opts.path),
-    inLanguage: 'en',
+    inLanguage: 'en-IN',
   };
 }
 

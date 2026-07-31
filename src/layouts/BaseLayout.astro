@@ -21,13 +21,28 @@ interface Props {
   ogType?: 'website' | 'article';
   publishDate?: Date;
   updatedDate?: Date;
+  /** Absolute URL of a page-specific share image (case studies, articles). */
+  image?: string;
+  imageAlt?: string;
+  noindex?: boolean;
 }
 
-const { title, description, path, schema, ogType, publishDate, updatedDate } = Astro.props;
+const {
+  title,
+  description,
+  path,
+  schema,
+  ogType,
+  publishDate,
+  updatedDate,
+  image,
+  imageAlt,
+  noindex,
+} = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en-IN">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -40,7 +55,13 @@ const { title, description, path, schema, ogType, publishDate, updatedDate } = A
     <link rel="apple-touch-icon" href={href('/apple-touch-icon.png')} />
     <link rel="manifest" href={href('/site.webmanifest')} />
     <link rel="sitemap" href={href('/sitemap-index.xml')} />
-    <SEO {title} {description} {path} {ogType} {publishDate} {updatedDate} />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="CareInflow — guides for clinic owners"
+      href={href('/rss.xml')}
+    />
+    <SEO {title} {description} {path} {ogType} {publishDate} {updatedDate} {image} {imageAlt} {noindex} />
     {schema && <JsonLd data={schema} />}
   </head>
   <body class="pb-[60px] sm:pb-0">
@@ -55,14 +76,21 @@ const { title, description, path, schema, ogType, publishDate, updatedDate } = A
       <slot />
     </main>
     <Footer />
-    <!-- Mobile-only sticky CTA bar -->
-    <div class="fixed inset-x-0 bottom-0 z-40 flex h-[60px] items-center justify-between gap-3 border-t border-panel-line bg-panel px-4 sm:hidden">
-      <a href={href('/free-review')} class="min-w-0 truncate text-[13.5px] font-semibold text-surface">
+    <!-- Mobile-only sticky CTA bar. A labelled landmark, not a bare div, so it
+         is reachable and named rather than floating outside the page structure. -->
+    <nav
+      aria-label="Quick contact"
+      class="fixed inset-x-0 bottom-0 z-40 flex h-[60px] items-center justify-between gap-3 border-t border-panel-line bg-panel px-4 sm:hidden"
+    >
+      <a
+        href={href('/free-review')}
+        class="flex min-h-[24px] min-w-0 items-center truncate text-[13.5px] font-semibold text-surface"
+      >
         Free written review · 2 days
       </a>
       <a href={whatsappFor('default')} rel="noopener" class="btn-accent shrink-0 px-4.5 py-2.5 text-[13.5px]">
         WhatsApp us
       </a>
-    </div>
+    </nav>
   </body>
 </html>

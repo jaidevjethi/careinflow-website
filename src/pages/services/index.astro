@@ -6,7 +6,8 @@ import { serviceAccent } from '@/lib/accents';
 import SectionHead from '@/components/SectionHead.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import { href } from '@/lib/url';
-import { BUILDS, PLANS, STANDALONE_MONTHLY, rupees } from '@/config/pricing';
+import { BUILDS, ONE_TIME_ITEMS, PLANS, STANDALONE_MONTHLY, rupees } from '@/config/pricing';
+import { SERVICE_PRICES } from '@/lib/prices';
 import {
   graph,
   organizationSchema,
@@ -16,9 +17,9 @@ import {
   serviceSchema,
 } from '@/lib/schema';
 
-const title = 'Services for clinics — website design, local SEO, Google Business Profile | CareInflow';
+const title = 'Services for clinics — websites, local SEO, Google | CareInflow';
 const description =
-  'What CareInflow does for clinics in Mehsana, Ahmedabad and North Gujarat: healthcare website design, local SEO, Google Business Profile management, ongoing website care and social media content.';
+  'Healthcare website design, local SEO, Google Business Profile management, ongoing care and social media content — for clinics across North Gujarat.';
 
 const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
 
@@ -32,10 +33,11 @@ const schema = graph(
   ]),
   ...services.map((s) =>
     serviceSchema({
+      id: s.id,
       name: s.data.navLabel,
       description: s.data.description,
       path: `/services/${s.id}`,
-      ...(s.data.pricing ? { offer: { from: s.data.pricing.from, unit: s.data.pricing.unit } } : {}),
+      ...(s.data.pricing ? { offer: SERVICE_PRICES[s.data.pricing.ref] } : {}),
     }),
   ),
 );
@@ -81,7 +83,7 @@ const engagements = [
   },
   {
     name: 'Start with Google',
-    price: `${rupees(15000)} once, or ${rupees(STANDALONE_MONTHLY.gbp)} a month`,
+    price: `${rupees(ONE_TIME_ITEMS[0]!.price)} once, or ${rupees(STANDALONE_MONTHLY.gbp)} a month`,
     scope: 'Google Business Profile rebuilt and maintained, citations corrected, review flow set up.',
     excludes: 'Excludes: website changes — though the audit will say honestly if your site is the real problem.',
     suits: 'Suits practices with a decent website that patients simply cannot find.',
@@ -139,10 +141,10 @@ const engagements = [
             {service.data.pricing && (
               <p class="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
                 <span class="text-[26px] font-extrabold leading-none tracking-[-0.04em] text-ink">
-                  From {rupees(service.data.pricing.from)}
+                  From {rupees(SERVICE_PRICES[service.data.pricing.ref].from)}
                 </span>
                 <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">
-                  {service.data.pricing.unit === 'month' ? 'a month' : 'one-time'}
+                  {SERVICE_PRICES[service.data.pricing.ref].unit === 'month' ? 'a month' : 'one-time'}
                 </span>
               </p>
             )}
@@ -181,6 +183,7 @@ const engagements = [
   <section class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[120px] xl:px-20" aria-labelledby="engagements-title">
     <div class="panel-depth rounded-[28px] p-8 sm:p-12 lg:p-16">
       <SectionHead
+        id="engagements-title"
         dark
         label="Where to start"
         title="Most clinics need three of our nine services to begin. These are the usual starting points."
@@ -200,7 +203,7 @@ const engagements = [
         ))}
       </div>
       <p class="mt-8 font-mono text-[11px] uppercase tracking-[0.08em] text-panel-text-faint">
-        Published starting prices · fixed in writing after the review · see the full <a href={href('/pricing')} class="text-panel-accent">price list</a>
+        Published starting prices · fixed in writing after the review · see the full <a href={href('/pricing')} class="link-accent">price list</a>
       </p>
     </div>
   </section>
@@ -209,6 +212,7 @@ const engagements = [
   <section class="border-t border-hairline bg-surface" aria-labelledby="after-launch-title">
     <div class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[110px] xl:px-20">
       <SectionHead
+        id="after-launch-title"
         label="After launch"
         title="The objection no one answers: what happens after launch. Here is our answer, as a table."
       />
@@ -243,6 +247,7 @@ const engagements = [
   <!-- PLAIN WORDS -->
   <section class="mx-auto max-w-[1440px] px-5 py-20 sm:px-10 sm:py-[110px] xl:px-20" aria-labelledby="glossary-title">
     <SectionHead
+      id="glossary-title"
       label="Jargon, translated"
       title="Five terms you will hear from any agency, in one honest line each."
     />

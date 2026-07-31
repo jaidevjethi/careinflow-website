@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getFaqsFor } from '@/lib/faqs';
 import { Image } from 'astro:assets';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import studioImage from '@/assets/about-studio.jpg';
@@ -19,13 +19,11 @@ import {
   faqSchema,
 } from '@/lib/schema';
 
-const title = 'About CareInflow — a healthcare-only web studio in Mehsana | CareInflow';
+const title = 'About — a healthcare-only web studio in Mehsana | CareInflow';
 const description =
-  'Who is behind CareInflow: founder Jaidev Jethi — IT and web development in Gujarat, cybersecurity in Canada, a year-plus at Microsoft — and why the studio works with healthcare practices only.';
+  'Who is behind CareInflow: founder Jaidev Jethi, and why a studio in Mehsana works with healthcare practices and nothing else.';
 
-const faqEntries = (await getCollection('faqs', ({ data }) => data.pages.includes('about')))
-  .map(({ data }) => data)
-  .sort((a, b) => a.order - b.order);
+const faqs = await getFaqsFor('about');
 
 const schema = graph(
   organizationSchema(),
@@ -36,7 +34,7 @@ const schema = graph(
     { name: 'Home', path: '/' },
     { name: 'About', path: '/about' },
   ]),
-  faqSchema(faqEntries.map((f) => ({ question: f.question, answer: f.answer }))),
+  faqSchema(faqs),
 );
 
 const standards = [
@@ -137,9 +135,10 @@ const notList = [
             harder to quietly drop: speed measured against a stated reference,
             accessibility on every build, every account registered in your
             name, and honest answers even when they cost us the project. The
-            <a href="/process">method page</a> shows how a build runs week by
-            week. The <a href="/work">work page</a> shows what we have shipped
-            so far — short, because we are new, and honest for the same reason.
+            <a href={href('/process')}>method page</a> shows how a build runs week
+            by week. The <a href={href('/work')}>work page</a> shows what we have
+            shipped so far — short, because we are new, and honest for the same
+            reason.
           </p>
         </div>
       </div>
@@ -184,7 +183,7 @@ const notList = [
   </section>
 
   <FaqSection
-    faqs={faqEntries.map((f) => ({ question: f.question, answer: f.answer }))}
+    {faqs}
     label="Questions about the studio"
     title="Questions about the studio"
   />

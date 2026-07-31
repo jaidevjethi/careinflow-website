@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { BUSINESS } from '@/config/site';
+import { BUSINESS, WHATSAPP_URL } from '@/config/site';
+import { href } from '@/lib/url';
 import {
   graph,
   organizationSchema,
@@ -11,7 +12,7 @@ import {
 
 const title = 'Privacy — what this site does and does not collect | CareInflow';
 const description =
-  'CareInflow\'s privacy note in plain language: this website sets no tracking cookies and runs no third-party trackers. What we keep when you contact us, and how to have it removed.';
+  'Plain language: this website sets no tracking cookies and runs no third-party trackers. What we keep when you contact us, and how to remove it.';
 
 const schema = graph(
   organizationSchema(),
@@ -46,10 +47,11 @@ const schema = graph(
         </p>
         <h2>When you contact us</h2>
         <p>
-          If you message us on WhatsApp or email, we receive what you send —
-          your number or address and the message itself. We use it to reply
-          and, if you engage us, to do the work. We do not sell it, share it,
-          or add you to a mailing list you did not ask for.
+          WhatsApp and the phone are the only two ways to reach us, and both
+          run through the number above. When you message or call, we receive
+          your number and what you send. We use it to reply and, if you engage
+          us, to do the work. We do not sell it, share it, or add you to a
+          mailing list — there is no mailing list.
         </p>
         <p>
           If you would like your contact history deleted, message us and we
@@ -65,9 +67,13 @@ const schema = graph(
         </p>
         <h2>Questions</h2>
         <p>
-          Ask us directly: {BUSINESS.phoneDisplay} or {BUSINESS.email}. This
-          note was last updated in July 2026 and changes only when our
-          practices change.
+          Ask us directly on {BUSINESS.phoneDisplay}, by
+          {' '}<a href={WHATSAPP_URL} rel="noopener" class="prose-link">WhatsApp</a> or
+          {' '}<a href={`tel:${BUSINESS.phone}`} class="prose-link">phone</a>. This note
+          was last updated in July 2026 and changes only when our practices do.
+          If anything here is unclear, our
+          {' '}<a href={href('/contact')} class="prose-link">contact page</a> says what
+          happens after you get in touch.
         </p>
       </div>
     </div>

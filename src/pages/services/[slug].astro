@@ -8,6 +8,8 @@ import CtaPanel from '@/components/CtaPanel.astro';
 import CtaStrip from '@/components/CtaStrip.astro';
 import type { PrefillKey } from '@/config/site';
 import { rupees } from '@/config/pricing';
+import { SERVICE_PRICES, resolvePrices } from '@/lib/prices';
+import { resolveFaqs } from '@/lib/faqs';
 import { href } from '@/lib/url';
 import {
   graph,
@@ -47,6 +49,11 @@ const prefillByService: Record<string, PrefillKey> = {
 const prefill = prefillByService[service.id] ?? 'default';
 const accent = serviceAccent(service.id);
 
+/** Resolved from `pricing.ts` via the frontmatter key — never from the MDX. */
+const price = service.data.pricing ? SERVICE_PRICES[service.data.pricing.ref] : undefined;
+const priceNote = service.data.pricing ? resolvePrices(service.data.pricing.note) : undefined;
+const faqs = resolveFaqs(service.data.faqs);
+
 const schema = graph(
   organizationSchema(),
   webSiteSchema(),
@@ -57,17 +64,14 @@ const schema = graph(
     { name: service.data.navLabel, path },
   ]),
   serviceSchema({
+    id: service.id,
     name: service.data.navLabel,
     description,
     path,
-    ...(service.data.pricing
-      ? { offer: { from: service.data.pricing.from, unit: service.data.pricing.unit } }
-      : {}),
+    ...(price ? { offer: price } : {}),
   }),
-  faqSchema(service.data.faqs.map((f) => ({ question: f.q, answer: f.a }))),
+  faqSchema(faqs),
 );
-
-const pricing = service.data.pricing;
 ---
 
 <BaseLayout {title} {description} {path} {schema}>
@@ -75,7 +79,7 @@ const pricing = service.data.pricing;
     <!-- OPENER -->
     <header class="mx-auto max-w-[1440px] px-5 pb-14 pt-14 sm:px-10 sm:pt-20 xl:px-20">
       <nav aria-label="Breadcrumb" class="mb-8">
-        <a href={href('/services')} class="font-mono text-[11px] uppercase tracking-[0.1em] text-faint hover:text-surgical">
+        <a href={href('/services')} class="inline-flex min-h-[24px] items-center font-mono text-[11px] uppercase tracking-[0.1em] text-faint hover:text-surgical">
           ← All services
         </a>
       </nav>
@@ -121,18 +125,18 @@ const pricing = service.data.pricing;
               </div>
             ))}
           </dl>
-          {pricing && (
+          {price && (
             <div class="mt-6 border-t border-line pt-5">
               <p class="label-mono mb-3 text-faint" style="letter-spacing:0.12em">Starts at</p>
               <p class="flex items-baseline gap-2">
                 <span class="text-[32px] font-extrabold leading-none tracking-[-0.045em] text-ink">
-                  {rupees(pricing.from)}
+                  {rupees(price.from)}
                 </span>
                 <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">
-                  {pricing.unit === 'month' ? '/ month' : 'one-time'}
+                  {price.unit === 'month' ? '/ month' : 'one-time'}
                 </span>
               </p>
-              <p class="mt-3 text-[13.5px] leading-[1.6] text-muted">{pricing.note}</p>
+              <p class="mt-3 text-[13.5px] leading-[1.6] text-muted">{priceNote}</p>
               <a href={href('/pricing')} class="prose-link mt-3 inline-block text-[14px]">
                 See the full price list →
               </a>
@@ -165,7 +169,7 @@ const pricing = service.data.pricing;
   <CtaStrip />
 
   <FaqSection
-    faqs={service.data.faqs.map((f) => ({ question: f.q, answer: f.a }))}
+    {faqs}
     label={`${service.data.code} · Questions`}
     title="Asked about this service"
   />

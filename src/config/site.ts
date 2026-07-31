@@ -12,7 +12,11 @@ export const BUSINESS = {
   tagline:
     'Healthcare-focused web design and digital growth studio in Mehsana, Gujarat',
   founder: 'Jaidev Jethi',
-  email: 'jaydevjethi123@gmail.com',
+  /**
+   * No email. WhatsApp and the phone are the only two contact routes on the
+   * site — they are how clinic owners here actually reach a supplier, and a
+   * message on WhatsApp is answered faster than an inbox ever is.
+   */
   /** E.164, displayed as +91 97734 56668 */
   phone: '+919773456668',
   phoneDisplay: '+91 97734 56668',
@@ -23,6 +27,14 @@ export const BUSINESS = {
     postalCode: '384002',
     country: 'IN',
   },
+  /** Studio coordinates, for LocalBusiness geo and the map link. */
+  geo: { latitude: 23.5985, longitude: 72.3693 },
+  /**
+   * Published hours. Stated because a LocalBusiness without them is a weaker
+   * local-search entity — and because a doctor deciding when to ring should
+   * not have to guess.
+   */
+  hours: { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], opens: '10:00', closes: '19:00' },
   /** Areas served, Mehsana first (home base). */
   serviceAreas: [
     'Mehsana',
@@ -38,6 +50,17 @@ export const BUSINESS = {
 } as const;
 
 export const WHATSAPP_URL = `https://wa.me/${BUSINESS.phone.replace('+', '')}`;
+
+/**
+ * Profiles published in `sameAs`. Only list a profile that exists and has real
+ * content on it — an empty page costs more trust than an absent one, and a
+ * studio that sells Google Business Profile management is judged on its own.
+ *
+ * Uncomment each line the day that profile is live:
+ *   'https://www.google.com/maps/place/?q=place_id:…'  ← the GBP listing
+ *   'https://www.instagram.com/careinflow/'            ← once the handle moves
+ */
+export const PROFILES: string[] = [WHATSAPP_URL];
 
 export const whatsappWithMessage = (text: string): string =>
   `${WHATSAPP_URL}?text=${encodeURIComponent(text)}`;
@@ -88,6 +111,24 @@ export const FOOTER_GROUPS = [
       { label: 'Google Business Profile', href: '/services/google-business-profile' },
       { label: 'Ongoing website care', href: '/services/website-care' },
       { label: 'Social media', href: '/services/social-media' },
+    ],
+  },
+  {
+    title: 'Specialties',
+    links: [
+      { label: 'Dental clinics', href: '/specialties/dental-clinics' },
+      { label: 'Physiotherapy', href: '/specialties/physiotherapy-clinics' },
+      { label: 'Dermatology', href: '/specialties/dermatology-clinics' },
+      { label: 'All specialties', href: '/specialties' },
+    ],
+  },
+  {
+    title: 'Where we work',
+    links: [
+      { label: 'Mehsana', href: '/areas/mehsana' },
+      { label: 'Ahmedabad', href: '/areas/ahmedabad' },
+      { label: 'Gandhinagar', href: '/areas/gandhinagar' },
+      { label: 'All service areas', href: '/areas' },
     ],
   },
   {

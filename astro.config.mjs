@@ -11,6 +11,9 @@ import tailwindcss from '@tailwindcss/vite';
 const SITE = process.env.SITE ?? 'https://careinflow.com';
 const BASE_PATH = process.env.BASE_PATH ?? '/';
 
+/** Build date, so every sitemap entry carries a lastmod rather than none. */
+const BUILD_DATE = new Date().toISOString();
+
 /**
  * Rewrite root-relative links inside rendered Markdown/MDX so they respect
  * BASE_PATH on the GitHub Pages mirror. Component links use lib/url's href();
@@ -36,9 +39,19 @@ function rehypeBasePath() {
 export default defineConfig({
   site: SITE,
   base: BASE_PATH,
-  trailingSlash: 'ignore',
+  // 'always' matches canonicalUrl(), which appends a slash. Under 'ignore' every
+  // internal click on Cloudflare took a 308 to the slashed form before landing
+  // on the URL the page declares canonical.
+  trailingSlash: 'always',
   output: 'static',
-  integrations: [mdx(), sitemap()],
+  integrations: [
+    mdx(),
+    sitemap({
+      // The 404 self-canonicalises and is noindex; it does not belong in here.
+      filter: (page) => !page.includes('/404'),
+      serialize: (item) => ({ ...item, lastmod: item.lastmod ?? BUILD_DATE }),
+    }),
+  ],
   markdown: {
     rehypePlugins: [rehypeBasePath],
   },

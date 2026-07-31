@@ -29,7 +29,14 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # Type and content-schema errors used to ship, because nothing ran
+      # `astro check` in CI. This also runs the price guard, which fails the
+      # build on any published figure that does not come from pricing.ts.
+      - run: npm run check
       - run: npm run build
+      # Re-run after the build so the guard can also scan the built HTML for
+      # unresolved {{price}} tokens.
+      - run: npm run check:prices
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

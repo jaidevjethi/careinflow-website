@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getFaqsFor } from '@/lib/faqs';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import {
@@ -13,21 +13,19 @@ import {
 
 const title = 'Questions, answered plainly — FAQ | CareInflow';
 const description =
-  'Straight answers about working with CareInflow: cost, timelines, ranking promises we will not make, what happens after launch, and who owns your website (you do).';
+  'Straight answers on cost, timelines, ranking promises we will not make, what happens after launch, and who owns your website (you do).';
 
-const faqEntries = (await getCollection('faqs', ({ data }) => data.pages.includes('faq')))
-  .map(({ data }) => data)
-  .sort((a, b) => a.order - b.order);
+const faqs = await getFaqsFor('faq');
 
 const schema = graph(
   organizationSchema(),
   webSiteSchema(),
-  webPageSchema({ path: '/faq', title, description, type: 'FAQPage' }),
+  webPageSchema({ path: '/faq', title, description }),
   breadcrumbSchema([
     { name: 'Home', path: '/' },
     { name: 'Questions', path: '/faq' },
   ]),
-  faqSchema(faqEntries.map((f) => ({ question: f.question, answer: f.answer }))),
+  faqSchema(faqs),
 );
 ---
 
@@ -48,7 +46,7 @@ const schema = graph(
   <div class="mt-6 border-t border-hairline bg-surface">
     <div class="mx-auto max-w-[1440px] px-5 py-14 sm:px-10 sm:py-16 xl:px-20">
       <div class="grid gap-3.5 lg:max-w-[880px]">
-        {faqEntries.map((faq) => (
+        {faqs.map((faq) => (
           <details class="group rounded-2xl border border-line bg-canvas open:shadow-card">
             <summary class="flex cursor-pointer list-none items-center justify-between gap-6 px-6 py-5 text-[17px] font-bold tracking-[-0.01em] text-ink [&::-webkit-details-marker]:hidden">
               {faq.question}

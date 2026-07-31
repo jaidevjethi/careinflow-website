@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import CtaStrip from '@/components/CtaStrip.astro';
+import { CANONICAL_HOST } from '@/config/site';
 import { href } from '@/lib/url';
 import {
   graph,
@@ -45,6 +46,10 @@ const schema = graph(
     description,
     publishDate: resource.data.publishDate,
     updatedDate: resource.data.updatedDate,
+    // Google treats Article.image as required for a rich result. These guides
+    // have no bespoke artwork yet, so the studio card stands in — real file,
+    // real dimensions, rather than a URL that does not resolve.
+    image: { url: `${CANONICAL_HOST}/og-default.png`, width: 2500, height: 1313 },
   }),
 );
 
@@ -63,7 +68,7 @@ const dateFmt = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long'
   <article>
     <header class="mx-auto max-w-[1440px] px-5 pb-12 pt-14 sm:px-10 sm:pt-20 xl:px-20">
       <nav aria-label="Breadcrumb" class="mb-8">
-        <a href={href('/resources')} class="font-mono text-[11px] uppercase tracking-[0.1em] text-faint hover:text-surgical">
+        <a href={href('/resources')} class="inline-flex min-h-[24px] items-center font-mono text-[11px] uppercase tracking-[0.1em] text-faint hover:text-surgical">
           ← All resources
         </a>
       </nav>
