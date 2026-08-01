@@ -2,6 +2,8 @@
 import { getFaqsFor } from '@/lib/faqs';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHero from '@/components/PageHero.astro';
+import IllustrationPanel from '@/components/IllustrationPanel.astro';
+import faqImage from '@/assets/mockups/free-review.jpg';
 import CtaPanel from '@/components/CtaPanel.astro';
 import {
   graph,
@@ -40,7 +42,15 @@ const schema = graph(
       { value: '0', caption: 'answers that dodge the question' },
       { value: '2 days', caption: 'to a written reply on anything else' },
     ]}
-  />
+  >
+    <IllustrationPanel
+      slot="aside"
+      src={faqImage}
+      alt="A tablet on a desk showing a document laid out as a list of questions and answers."
+      eager
+      maxWidth={400}
+    />
+  </PageHero>
 
   <div class="band-mist mt-6">
     <div class="section shell">

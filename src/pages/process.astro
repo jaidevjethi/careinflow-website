@@ -2,6 +2,8 @@
 import { getFaqsFor } from '@/lib/faqs';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHero from '@/components/PageHero.astro';
+import IllustrationPanel from '@/components/IllustrationPanel.astro';
+import methodImage from '@/assets/mockups/website-care.jpg';
 import SectionHead from '@/components/SectionHead.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
@@ -80,7 +82,15 @@ const needFromYou = [
     title="Four weeks, in a fixed order, with the words before the visuals."
     lede="Most website projects go wrong in a familiar way: design first, content forever late, launch quietly missed. Our method exists to make that impossible, each week has one job and one output you can hold."
     stats={weeks.map((w) => ({ value: w.step, caption: `${w.week}, ${w.title}` }))}
-  />
+  >
+    <IllustrationPanel
+      slot="aside"
+      src={methodImage}
+      alt="A laptop and a phone on a desk, both showing the same clinic website part-way through being built."
+      eager
+      maxWidth={400}
+    />
+  </PageHero>
 
   <section class="border-t border-hairline bg-surface" aria-label="The four weeks">
     <div class="section shell">

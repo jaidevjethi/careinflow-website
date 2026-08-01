@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHero from '@/components/PageHero.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
@@ -78,6 +79,18 @@ const dateFmt = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long'
       <p class="mt-7 font-mono text-[11px] uppercase tracking-[0.1em] text-panel-text-faint">
         {dateFmt.format(resource.data.publishDate)} · {resource.data.minutesRead} min read · CareInflow
       </p>
+      {resource.data.image && (
+        <Image
+          slot="aside"
+          src={resource.data.image}
+          alt={resource.data.imageAlt ?? ''}
+          widths={[400, 600, 800]}
+          sizes="(min-width: 1024px) 400px, 92vw"
+          loading="eager"
+          fetchpriority="high"
+          class="h-[240px] w-full rounded-3xl border border-panel-line object-cover"
+        />
+      )}
     </PageHero>
 
     {/* These are the longest reads on the site and they used to be one

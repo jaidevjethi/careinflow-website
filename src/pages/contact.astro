@@ -1,7 +1,9 @@
 ---
 import { getFaqsFor } from '@/lib/faqs';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
 import PageHero from '@/components/PageHero.astro';
+import studioImage from '@/assets/editorial/founder-working.webp';
 import FaqSection from '@/components/FaqSection.astro';
 import { BUSINESS, WHATSAPP_URL, whatsappWithMessage } from '@/config/site';
 import { cycleAccent, ACCENTS } from '@/lib/accents';
@@ -69,6 +71,17 @@ const steps = [
       Usually answered the same day. Calls are answered between
       {' '}{BUSINESS.hours.opens} and {BUSINESS.hours.closes}, Monday to Saturday.
     </p>
+
+    <Image
+      slot="aside"
+      src={studioImage}
+      alt="The CareInflow studio desk in Mehsana, a laptop open beside a printed page."
+      widths={[400, 600, 800]}
+      sizes="(min-width: 1024px) 400px, 92vw"
+      loading="eager"
+      fetchpriority="high"
+      class="h-[260px] w-full rounded-3xl border border-panel-line object-cover"
+    />
   </PageHero>
 
   <section class="band-powder" aria-label="What happens next">

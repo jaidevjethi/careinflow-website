@@ -162,7 +162,7 @@ const caseStudies = defineCollection({
 /** Resources — educational articles (teach, don't promote). */
 const resources = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/resources' }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     description: z.string(),
     publishDate: z.coerce.date(),
@@ -170,6 +170,13 @@ const resources = defineCollection({
     topic: z.enum(['websites', 'local-seo', 'google-business-profile', 'performance', 'patients']),
     minutesRead: z.number(),
     order: z.number(),
+    /**
+     * Lead image. A photograph where a person or a moment is the subject, a
+     * device render where the subject is the thing we build. These are the
+     * longest reads on the site and they used to open on nothing at all.
+     */
+    image: image().optional(),
+    imageAlt: z.string().optional(),
   }),
 });
 
