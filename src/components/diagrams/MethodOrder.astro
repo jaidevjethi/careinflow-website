@@ -1,0 +1,61 @@
+---
+/**
+ * Why the weeks run in this order.
+ *
+ * The four-week list on the page already says what happens; repeating it as a
+ * flow would be decoration. What the list cannot show is the page's actual
+ * argument — that design coming first is the thing that makes projects late —
+ * so this contrasts the two orderings and marks the sign-off that separates
+ * them. The failure row is deliberately drawn flat and grey: it is not a
+ * competitor being sneered at, it is the order most projects fall into.
+ */
+const usual = [
+  { step: 'Design first', note: 'Approved on placeholder text' },
+  { step: 'Content, later', note: 'Waiting on the clinic for weeks' },
+  { step: 'Launch, slipped', note: 'Words rushed to fit the design' },
+];
+
+const ours = [
+  { step: 'Study', note: 'What patients here actually search' },
+  { step: 'Words', note: 'Signed off before any visuals', gate: true },
+  { step: 'Design', note: 'One pass, on your real content' },
+  { step: 'Launch', note: 'Measured against the targets' },
+];
+---
+
+<div class="grid gap-5">
+  <div>
+    <p class="label-mono mb-3 text-faint">How it usually goes</p>
+    <ol class="flex list-none flex-col gap-2 p-0 sm:flex-row sm:items-stretch sm:gap-2.5">
+      {usual.map((u) => (
+        <li class="flex-1 rounded-xl border border-dashed border-line-strong bg-hairline-soft px-4 py-3">
+          <p class="text-[14.5px] font-semibold text-muted">{u.step}</p>
+          <p class="mt-1 text-[12.5px] leading-[1.45] text-faint">{u.note}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+
+  <div>
+    <p class="label-mono mb-3 text-surgical">How we run it</p>
+    <ol class="flex list-none flex-col gap-2 p-0 sm:flex-row sm:items-stretch sm:gap-2.5">
+      {ours.map((o) => (
+        <li
+          class:list={[
+            'flex-1 rounded-xl border px-4 py-3',
+            o.gate ? 'border-surgical bg-surgical-tint' : 'border-line bg-canvas',
+          ]}
+        >
+          <p class="text-[14.5px] font-semibold text-ink">{o.step}</p>
+          <p class:list={['mt-1 text-[12.5px] leading-[1.45]', o.gate ? 'text-surgical' : 'text-muted']}>
+            {o.note}
+          </p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</div>
+<p class="mt-5 text-[13.5px] leading-[1.55] text-muted">
+  The sign-off in week two is the whole difference. Once the words are agreed,
+  design decorates something real instead of hiding that it is missing.
+</p>

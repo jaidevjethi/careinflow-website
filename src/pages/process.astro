@@ -7,6 +7,8 @@ import methodImage from '@/assets/mockups/website-care.jpg';
 import SectionHead from '@/components/SectionHead.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
+import DiagramFigure from '@/components/diagrams/DiagramFigure.astro';
+import MethodOrder from '@/components/diagrams/MethodOrder.astro';
 import { href } from '@/lib/url';
 import { cycleAccent } from '@/lib/accents';
 import { PLANS, STANDALONE_MONTHLY, rupees } from '@/config/pricing';
@@ -111,6 +113,14 @@ const needFromYou = [
           </li>
         ))}
       </ol>
+
+      <DiagramFigure
+        label="Why this order"
+        title="Design first is the thing that makes website projects late."
+        class="reveal mt-12 lg:max-w-[920px]"
+      >
+        <MethodOrder />
+      </DiagramFigure>
     </div>
   </section>
 

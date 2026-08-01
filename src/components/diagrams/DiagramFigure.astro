@@ -1,0 +1,32 @@
+---
+/**
+ * Shared frame for the explanatory diagrams.
+ *
+ * These are built as HTML rather than as images on purpose. A diagram whose
+ * labels are real text reflows on a 320px phone, stays legible at any width,
+ * inherits the palette tokens, and is readable by a screen reader and a
+ * translator. The same diagram drawn as an SVG or a PNG would scale its
+ * labels down with the artwork until they were unreadable on the phone most
+ * patients actually hold, and would need a second file per breakpoint.
+ *
+ * Each one restates something the surrounding prose already says. If a
+ * diagram is not doing that, it is decoration and does not belong here.
+ */
+interface Props {
+  /** Mono label above the rule. */
+  label: string;
+  /** What the diagram shows, in one line. */
+  title: string;
+  class?: string;
+}
+const { label, title, class: className } = Astro.props;
+---
+
+<figure class:list={['m-0 rounded-3xl border border-line bg-surface p-6 sm:p-8', className]}>
+  <figcaption class="mb-7">
+    <div class="tick-rule mb-3" aria-hidden="true"></div>
+    <p class="label-mono text-surgical">{label}</p>
+    <p class="mt-2.5 text-[17px] font-bold leading-[1.35] tracking-[-0.02em] text-ink">{title}</p>
+  </figcaption>
+  <slot />
+</figure>

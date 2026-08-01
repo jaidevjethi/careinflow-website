@@ -1,0 +1,77 @@
+---
+import DiagramFigure from './DiagramFigure.astro';
+import FlowSteps from './FlowSteps.astro';
+import ThreeFactors from './ThreeFactors.astro';
+import ListingScan from './ListingScan.astro';
+import CareCadence from './CareCadence.astro';
+import SupportStack from './SupportStack.astro';
+
+/**
+ * One explanatory diagram per service, chosen by slug. Each restates something
+ * the page's own prose already argues, so the diagram is a second reading of
+ * the page rather than decoration bolted onto it. A service with nothing worth
+ * diagramming renders nothing at all.
+ */
+interface Props {
+  slug: string;
+  class?: string;
+}
+const { slug, class: className } = Astro.props;
+
+const FRAMES: Record<string, { label: string; title: string }> = {
+  'healthcare-websites': {
+    label: 'How it works',
+    title: 'The path a worried patient takes, and the three jobs the site has along it.',
+  },
+  'local-seo': {
+    label: 'How it works',
+    title: 'What Google weighs when it decides which clinics appear.',
+  },
+  'google-business-profile': {
+    label: 'How it works',
+    title: 'The fixed order a patient reads your listing in, in about ten seconds.',
+  },
+  'website-care': {
+    label: 'How it works',
+    title: 'What happens after launch, on a schedule you can hold us to.',
+  },
+  'social-media': {
+    label: 'Where it fits',
+    title: 'Why social media supports the website and listing rather than replacing them.',
+  },
+};
+
+const frame = FRAMES[slug];
+
+const websiteSteps = [
+  {
+    title: 'A search, at night',
+    text: '"Dentist near me", on a mid-range Android, from someone a little worried.',
+  },
+  {
+    title: 'Your treatment page',
+    text: 'Not a services list. The page about the one thing they searched for.',
+    out: 'Look professional',
+  },
+  {
+    title: 'The question answered',
+    text: 'What it involves, what affects the cost, what recovery feels like.',
+    out: 'Answer the real question',
+  },
+  {
+    title: 'One tap to you',
+    text: 'A WhatsApp message already half-written, or tap to call.',
+    out: 'Make the next step obvious',
+  },
+];
+---
+
+{frame && (
+  <DiagramFigure label={frame.label} title={frame.title} class={className}>
+    {slug === 'healthcare-websites' && <FlowSteps steps={websiteSteps} accent="web" emphasiseLast />}
+    {slug === 'local-seo' && <ThreeFactors />}
+    {slug === 'google-business-profile' && <ListingScan />}
+    {slug === 'website-care' && <CareCadence />}
+    {slug === 'social-media' && <SupportStack />}
+  </DiagramFigure>
+)}

@@ -1,0 +1,62 @@
+---
+import { ACCENTS } from '@/lib/accents';
+
+/**
+ * What Google weighs in local search, restating the three factors the page
+ * explains. Distance is drawn as the fixed one on purpose: it is the factor a
+ * clinic cannot change, which is exactly why the other two are worth paying
+ * for.
+ */
+const a = ACCENTS.seo;
+
+const factors = [
+  {
+    name: 'Relevance',
+    text: 'Does your site clearly show you offer what was searched?',
+    state: 'We work on this',
+    fixed: false,
+  },
+  {
+    name: 'Distance',
+    text: 'How close you are to the person searching.',
+    state: 'Cannot be changed',
+    fixed: true,
+  },
+  {
+    name: 'Prominence',
+    text: 'Reviews, a complete listing, consistent details everywhere.',
+    state: 'We work on this',
+    fixed: false,
+  },
+];
+---
+
+<ul class="grid list-none gap-3 p-0 sm:grid-cols-3">
+  {factors.map((f) => (
+    <li
+      class:list={[
+        'rounded-2xl border p-5',
+        f.fixed ? 'border-dashed border-line-strong bg-hairline-soft' : 'border-line bg-canvas',
+      ]}
+    >
+      <span
+        class:list={['block h-1 w-9 rounded-full', f.fixed ? 'bg-line-strong' : a.bar]}
+        aria-hidden="true"
+      ></span>
+      <p class="mt-3.5 text-[16px] font-bold tracking-[-0.02em] text-ink">{f.name}</p>
+      <p class="mt-1.5 text-[13.5px] leading-[1.5] text-muted">{f.text}</p>
+      <p
+        class:list={[
+          'mt-4 font-mono text-[10.5px] uppercase tracking-[0.06em]',
+          f.fixed ? 'text-faint' : 'text-pass',
+        ]}
+      >
+        {f.state}
+      </p>
+    </li>
+  ))}
+</ul>
+<p class="mt-4 text-[13.5px] leading-[1.55] text-muted">
+  Two of the three are groundwork. That is the whole of what local SEO buys —
+  and why nobody can honestly promise you a position.
+</p>

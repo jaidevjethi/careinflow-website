@@ -1,0 +1,49 @@
+---
+import { ACCENTS } from '@/lib/accents';
+
+/**
+ * The maintenance schedule as a cadence rather than a promise. It restates the
+ * weekly / monthly / quarterly rhythm the page sets out, which is the answer to
+ * the objection almost no competitor answers in writing.
+ */
+const a = ACCENTS.care;
+
+const cadence = [
+  {
+    when: 'Every week',
+    items: ['Uptime and performance monitored', 'New review activity checked'],
+  },
+  {
+    when: 'Every month',
+    items: ['Security updates', 'Off-site backups', 'The content edits you asked for'],
+  },
+  {
+    when: 'Every quarter',
+    items: ['Speed re-measured on a real phone', 'A written review of what patients did'],
+  },
+];
+---
+
+<ol class="grid list-none gap-0 p-0">
+  {cadence.map((c, i) => (
+    <li class="grid grid-cols-[auto_1fr] gap-x-4 sm:gap-x-5">
+      <!-- The spine: a dot per interval, joined by a rule that stops at the end. -->
+      <div class="flex flex-col items-center">
+        <span class:list={['mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full', a.bar]} aria-hidden="true"></span>
+        {i < cadence.length - 1 && <span class="w-px flex-1 bg-line" aria-hidden="true"></span>}
+      </div>
+      <div class:list={[i < cadence.length - 1 && 'pb-6']}>
+        <p class:list={['label-mono', a.text]}>{c.when}</p>
+        <ul class="mt-2 grid list-none gap-1 p-0">
+          {c.items.map((item) => (
+            <li class="text-[14.5px] leading-[1.5] text-body">{item}</li>
+          ))}
+        </ul>
+      </div>
+    </li>
+  ))}
+</ol>
+<p class="mt-5 border-t border-hairline pt-4 text-[13.5px] leading-[1.55] text-muted">
+  Most clinic websites are abandoned the day they go live. This is the schedule
+  that stops that, written down rather than promised.
+</p>

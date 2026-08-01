@@ -1,0 +1,59 @@
+---
+import { ACCENTS } from '@/lib/accents';
+
+/**
+ * The order a patient reads a Google listing in, which the page states as
+ * rating, then photos, then "open now", then distance.
+ *
+ * The panel is a generic listing, never a mocked-up clinic: the placeholder
+ * name is "Your Practice" so a visitor can never mistake CareInflow for a
+ * clinic, and every value is a grey bar rather than an invented rating.
+ */
+const a = ACCENTS.gbp;
+
+const order = [
+  { n: '01', label: 'Rating', note: 'Decides the first cut' },
+  { n: '02', label: 'Photos', note: 'Is this place real, and cared for' },
+  { n: '03', label: '"Open now"', note: 'Can I go today' },
+  { n: '04', label: 'Distance', note: 'How far is it' },
+];
+---
+
+<div class="grid items-start gap-6 sm:grid-cols-[minmax(0,220px)_1fr] sm:gap-8">
+  <!-- A generic listing panel. No invented clinic, no invented rating. -->
+  <div class="rounded-2xl border border-line bg-canvas p-4" aria-hidden="true">
+    <p class="text-[13px] font-bold tracking-[-0.01em] text-ink">Your Practice</p>
+    <!-- The rating row stays deliberately abstract. Five filled accent dots
+         would read as five stars, and inventing a rating for a practice that
+         does not exist is exactly what the imagery rules forbid. -->
+    <p class="mt-2 flex items-center gap-1.5">
+      <span class="h-2 w-16 rounded-full bg-line"></span>
+      <span class="h-2 w-6 rounded-full bg-line"></span>
+    </p>
+    <div class="mt-3 grid grid-cols-3 gap-1.5">
+      {[0, 1, 2].map(() => (
+        <span class="block h-11 rounded-md bg-line"></span>
+      ))}
+    </div>
+    <p class="mt-3 flex items-center gap-2">
+      <span class:list={['h-2 w-14 rounded-full', a.bar]}></span>
+      <span class="h-2 w-10 rounded-full bg-line"></span>
+    </p>
+    <p class="mt-2 h-2 w-20 rounded-full bg-line"></p>
+    <p class="mt-4 font-mono text-[9.5px] uppercase tracking-[0.08em] text-faint">Illustrative</p>
+  </div>
+
+  <ol class="grid list-none gap-2.5 p-0">
+    {order.map((o) => (
+      <li class="flex items-baseline gap-3.5 border-b border-hairline pb-2.5 last:border-0 last:pb-0">
+        <span class:list={['label-mono shrink-0', a.text]}>{o.n}</span>
+        <span class="text-[15px] font-semibold text-ink">{o.label}</span>
+        <span class="ml-auto text-right text-[13px] leading-[1.45] text-muted">{o.note}</span>
+      </li>
+    ))}
+  </ol>
+</div>
+<p class="mt-5 text-[13.5px] leading-[1.55] text-muted">
+  Wrong hours after a holiday, or photos from four years ago, lose the patient
+  before your website is ever opened.
+</p>

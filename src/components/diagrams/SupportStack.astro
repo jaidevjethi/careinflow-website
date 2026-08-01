@@ -1,0 +1,47 @@
+---
+import { ACCENTS } from '@/lib/accents';
+
+/**
+ * Where social media actually sits. The page is unusually blunt that this is a
+ * support service and will not be sold to a practice whose website or listing
+ * still needs work, so the diagram has to show it carrying less weight rather
+ * than sitting alongside the other two as an equal.
+ */
+const a = ACCENTS.social;
+---
+
+<div class="grid gap-3">
+  <!-- Where the patient decides. -->
+  <div class="grid gap-3 sm:grid-cols-2">
+    {[
+      { name: 'Your website', text: 'Where the patient reads and decides.' },
+      { name: 'Your Google listing', text: 'Where most patients see you first.' },
+    ].map((f) => (
+      <div class="rounded-2xl border border-line bg-canvas p-5">
+        <p class="label-mono text-surgical">Decides</p>
+        <p class="mt-2.5 text-[16px] font-bold tracking-[-0.02em] text-ink">{f.name}</p>
+        <p class="mt-1.5 text-[13.5px] leading-[1.5] text-muted">{f.text}</p>
+      </div>
+    ))}
+  </div>
+
+  <p class="flex items-center gap-3 py-1" aria-hidden="true">
+    <span class="h-px flex-1 bg-line"></span>
+    <span class="font-mono text-[10.5px] uppercase tracking-[0.08em] text-faint">then, and only then</span>
+    <span class="h-px flex-1 bg-line"></span>
+  </p>
+
+  <!-- The support layer, deliberately narrower than the two above it. -->
+  <div class:list={['rounded-2xl border border-transparent p-5', a.tint]}>
+    <p class:list={['label-mono', a.text]}>Confirms</p>
+    <p class="mt-2.5 text-[16px] font-bold tracking-[-0.02em] text-ink">Social media</p>
+    <p class="mt-1.5 max-w-[46ch] text-[13.5px] leading-[1.5] text-body-deep">
+      A patient who already found you checks whether the practice looks active
+      and current. That checking step is what social is genuinely good at.
+    </p>
+  </div>
+</div>
+<p class="mt-5 text-[13.5px] leading-[1.55] text-muted">
+  If your website or listing is not right yet, we will tell you to fix those
+  first, and we will not sell you this.
+</p>

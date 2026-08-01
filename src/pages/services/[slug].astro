@@ -11,6 +11,7 @@ import type { PrefillKey } from '@/config/site';
 import { rupees } from '@/config/pricing';
 import { SERVICE_PRICES, resolvePrices } from '@/lib/prices';
 import { resolveFaqs } from '@/lib/faqs';
+import ServiceDiagram from '@/components/diagrams/ServiceDiagram.astro';
 import { href } from '@/lib/url';
 import {
   graph,
@@ -85,7 +86,11 @@ const schema = graph(
     >
       {service.data.order > 4 && (
         <p class="mt-7">
-          <span class="chip border border-panel-line bg-panel-card text-panel-text">
+          <!-- whitespace-normal because this chip carries a sentence, not a
+               measurement. `.chip` is nowrap by default, which is right for a
+               pill like "WCAG AA" but pushed this one 8px past the viewport
+               on a 390px phone. -->
+          <span class="chip border border-panel-line bg-panel-card text-panel-text whitespace-normal">
             Support service, added to a plan, never sold first
           </span>
         </p>
@@ -102,8 +107,11 @@ const schema = graph(
     <!-- BODY + DELIVERABLES -->
     <div class="band-mist">
       <div class="section shell grid items-start gap-14 lg:grid-cols-[1fr_400px] lg:gap-20">
-        <div class="prose-ci">
-          <Content />
+        <div>
+          <div class="prose-ci">
+            <Content />
+          </div>
+          <ServiceDiagram slug={service.id} class="reveal mt-12" />
         </div>
 
         <aside class="top-24 rounded-3xl border border-line bg-canvas p-7 lg:sticky">

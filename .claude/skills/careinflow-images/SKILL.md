@@ -21,7 +21,9 @@ Headless Chrome on Windows enforces a minimum window width, so `--window-size=39
 
 Load the `gemini-3-pro-image` skill; the key is `GEMINI_API_KEY` in the gitignored `.env`. Append this style lock to every prompt:
 
-> Minimal flat vector editorial illustration on a warm off-white paper background #F7F6F3. Restrained palette: deep ink #101613 line work, warm off-white surfaces, one surgical green #0B5D4E accent, soft neutral grey fills. Clean geometric shapes, thin confident strokes, generous whitespace. Absolutely no readable words, no letters, no numbers, no logos, no brand names — text is suggested only as abstract soft grey placeholder bars. No gradients, no drop shadows, no 3D.
+> Minimal flat vector editorial illustration on a pure white background #FFFFFF. Cool clinical palette only: deep navy #0E2439 line work, cool ice #EDF3F9 and powder blue #DFE9F5 surfaces, one clinical teal #0FBFAE accent, muted blue-grey fills. Clean geometric shapes, thin confident strokes, generous whitespace. Absolutely no readable words, no letters, no numbers, no logos, no brand names — text is suggested only as abstract soft blue-grey placeholder bars. No gradients, no drop shadows, no 3D. No beige, cream, sand, tan or warm grey anywhere — every neutral must be cool.
+
+The warm half of that lock is not a preference, it is the one thing most likely to come back wrong. The palette moved to "Clinical Blue & Teal" and every neutral now measures b\* ≤ 0 in Lab; positive b\* is the yellow axis, which is beige, and it is banned. A generator asked for "off-white paper" will hand back cream every time, so name the hex and name the exclusions.
 
 For photography (about page, studio warmth) use: natural window light, muted warm neutrals, no people, no readable text, 50mm, shallow depth of field.
 
@@ -42,7 +44,7 @@ Illustrations → PNG (flat colour compresses well). Photographs → JPEG q88.
 
 ### Normalising illustration backgrounds (required)
 
-Illustrations render through `IllustrationPanel`, which blends them onto an accent tint with `mix-blend-multiply`. That only looks right if the background is **uniformly pure white** — the generator emits its own off-white (typically `#F5F5F0`) which, next to added white padding, multiplies to two visibly different tones and reveals a rectangle.
+`IllustrationPanel` no longer has a `blend` mode — every illustration moved to the mockups and the branch was removed as unreachable — so nothing is multiplied onto a tint any more. Normalising still matters: a render sitting on the page's own ground needs a **uniformly pure white** background, because the generator emits its own off-white (typically `#F5F5F0`) which reads as a faint warm rectangle against a cool `canvas` or `powder` section.
 
 So after trimming and padding onto white, collapse every near-white pixel to `#FFFFFF`:
 
