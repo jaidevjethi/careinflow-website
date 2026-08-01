@@ -29,16 +29,21 @@ regardless of how good its type was.
 |---|---|---|---|
 | `surface` | `#FDFCFA` | .974 | cards, and the lightest sections |
 | `canvas` | `#F4EFE5` | .890 | default body |
-| `stone` | `#EBE4D6` | .780 | warm quiet band |
-| `mist` | `#DCE7E8` | .789 | cool quiet band, stone's value at the opposite temperature |
+| `powder` | `#D3E0EE` | .733 | powder-blue quiet band |
+| `mist` | `#DCE7E8` | .789 | pale-teal quiet band, a hue turn away from powder |
 | `sage` | `#9DBDB5` | .469 | mid-tone block |
 | `slate` | `#A3B8C9` | .463 | mid-tone block, the alternate |
 | `panel` | `#0E3348` | .029 | midnight, reserved |
 
-Adjacent steps: surface→canvas 1.12, canvas→stone 1.10, mist→sage 1.60. A
-`surface` card lifts 1.118 on canvas and 1.234 on stone.
+Adjacent steps: surface→canvas 1.12, canvas→powder 1.17, mist→sage 1.60. A
+`surface` card lifts 1.118 on canvas and 1.307 on powder.
 
-Apply with `.band-stone` / `.band-mist` / `.band-sage` / `.band-slate`. They set
+`powder` replaced a warm stone `#EBE4D6`. A beige band inside a navy-and-teal
+system reads as an unrelated colour rather than a quieter one; powder blue is
+named in the research this palette came from and sits 7.2 deltaE from mist, so
+the two never blur. Warmth lives in `canvas` and `sand`, not in a ground.
+
+Apply with `.band-powder` / `.band-mist` / `.band-sage` / `.band-slate`. They set
 background and text colour only, so they wrap a `.section.shell` div to stay
 full-bleed. Putting a band class directly on a `.shell` element constrains the
 colour to the content width, which is wrong.
@@ -46,24 +51,24 @@ colour to the content width, which is wrong.
 **Every page must change ground as you scroll.** The canonical sequence:
 
 ```
-midnight hero → surface → canvas → stone → mid-tone band → canvas → midnight CTA → footer
+midnight hero → surface → canvas → powder → mid-tone band → canvas → midnight CTA → footer
 ```
 
 At most one mid-tone band per page. Alternate sage and slate between
 neighbouring page types so the site does not go monotone when browsed in order.
-Short pages take a subset but must include at least one `stone` or `mist`.
+Short pages take a subset but must include at least one `powder` or `mist`.
 
 ### Text on the bands, measured
 
 On `sage` and `slate` **only `ink` (7.85) and `surgical` (5.26) clear AA.**
 `body` reads 4.35, `muted` 3.26 and `faint` 2.72 — all failures. Ink for copy,
 surgical for small labels, nothing else. This is the same rule as "vivid fills
-take ink text", for the same reason. On `stone` and `mist` every text token
+take ink text", for the same reason. On `powder` and `mist` every text token
 passes, which is why the quiet bands carry ordinary sections and the mid-tones
 carry only sections you have checked.
 
-`faint` is `#54616A`. It was `#5E6B72` and fell to 4.34 on stone once the
-grounds gained depth.
+`faint` is `#54616A`. It was `#5E6B72` and fell to 4.34 once the grounds
+gained depth.
 
 ## Brand and accents
 

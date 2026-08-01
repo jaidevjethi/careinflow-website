@@ -6,7 +6,7 @@ Healthcare-focused web design & digital growth studio site. This site is itself 
 - [docs/context/business-context.md](docs/context/business-context.md) — what CareInflow is, services, audience, positioning, voice
 - [docs/context/website-strategy.md](docs/context/website-strategy.md) — page-by-page persuasion strategy, CTAs, founder framing
 - [docs/context/technical-seo-spec.md](docs/context/technical-seo-spec.md) — SEO/performance/a11y quality bar
-- [docs/design/careinflow-design-system.dc.html](docs/design/careinflow-design-system.dc.html) — original design source (2a "Instrument"). Its type, layout and motion still stand; its **colour section is superseded** by the "Midnight & Citrus" palette in `src/styles/global.css`.
+- [docs/design/careinflow-design-system.dc.html](docs/design/careinflow-design-system.dc.html) — original design source (2a "Instrument"). Its type, layout and motion still stand; its **colour section is historical**, as is the "Midnight & Citrus" palette that briefly replaced it. The live palette is "Clinical Blue & Teal" in `src/styles/global.css`, documented in the `careinflow-design` skill.
 
 ## Stack
 
@@ -20,7 +20,7 @@ Astro 5 · TypeScript strict · Tailwind CSS v4 (`@tailwindcss/vite`, tokens in 
 
 Full rules in the `careinflow-design` skill. The short version:
 
-- Palette "Clinical Blue & Teal". **The ground ladder is six values, not two** — `surface #FDFCFA` → `canvas #F4EFE5` → `stone #EBE4D6` → `mist #DCE7E8` → mid-tones `sage #9DBDB5` / `slate #A3B8C9` → midnight `#0E3348`. Every page changes ground as you scroll; at most one mid-tone band per page. On sage and slate **only `ink` and `surgical` clear AA** — never `body`, `muted` or `faint`.
+- Palette "Clinical Blue & Teal". **The ground ladder is six values, not two** — `surface #FDFCFA` → `canvas #F4EFE5` → `powder #D3E0EE` → `mist #DCE7E8` → mid-tones `sage #9DBDB5` / `slate #A3B8C9` → midnight `#0E3348`. Every page changes ground as you scroll; at most one mid-tone band per page. On sage and slate **only `ink` and `surgical` clear AA** — never `body`, `muted` or `faint`.
 - Brand: `surgical #14425F` primary, `vivid #12B3A6` (fills only, ink text on it, never white), `pass #0A6B63` for verified measurements ONLY, `ink #17242A`, `sand #B8894A` as the single warm mark on small elements only. Five accents named for the service (`web`/`seo`/`gbp`/`care`/`social`), never for the hue.
 - **Midnight is reserved for the header, hero, CTA panel, footer and at most one section per page. Never a dark theme.** A dark card inside a light section counts: it takes the eye first, so spend that weight on what you want clicked.
 - **Every page opens with the midnight `PageHero`** — header + hero form one continuous dark block, the body between, midnight CTA + footer at the bottom. No hero exceeds ~72% of the viewport. Hero `stats` carry facts a buyer can weigh (`4 weeks`, `Free`, `Fixed`), never build measurements (`<1.2s`, `95+`, `AA`).

@@ -78,17 +78,24 @@
    *
    *   surface  .974   cards and the lightest sections
    *   canvas   .890   default body            (1.12 from surface)
-   *   stone    .780   warm deep band          (1.10 from canvas)
-   *   mist     .789   cool band, stone's value at the opposite temperature
+   *   powder   .733   powder blue band        (1.17 from canvas)
+   *   mist     .789   pale teal band, a hue turn away from powder
    *   sage     .469   mid-tone block          (1.60 from mist)
    *   slate    .463   mid-tone block, the alternate
    *   panel    .029   midnight, still reserved
    *
-   * A surface card lifts 1.118 on canvas and 1.234 on stone.
+   * A surface card lifts 1.118 on canvas and 1.307 on powder.
+   *
+   * `powder` was a warm stone #EBE4D6, and it was the one thing on the site
+   * that did not belong: a beige band inside a navy-and-teal system reads as
+   * an unrelated colour rather than a quieter one. Powder blue is named in the
+   * research this palette came from, sits 7.2 deltaE from mist so the two
+   * never blur, and keeps the whole ladder in the family. Warmth still exists
+   * on the site; it lives in `canvas` and in `sand`, which is where it belongs.
    */
   --color-surface: #fdfcfa;
   --color-canvas: #f4efe5;
-  --color-stone: #ebe4d6;
+  --color-powder: #d3e0ee;
   --color-mist: #dce7e8;
   --color-sage: #9dbdb5;
   --color-slate: #a3b8c9;
@@ -108,9 +115,9 @@
 
   /*
    * Text — blue-grey family, every value measured on all four light grounds.
-   * `faint` was #5e6b72, which fell to 4.34 on stone and 4.35 on mist once the
-   * ground gained depth. At #54616a it reads 5.04 and 5.05 there and 6.22 on
-   * surface, so it clears AA everywhere the ladder puts it.
+   * `faint` was #5e6b72, which fell to 4.34 once the grounds gained depth. At
+   * #54616a it clears AA everywhere the ladder puts it: 6.22 on surface, 5.56
+   * on canvas, 5.05 on mist, 4.75 on powder.
    */
   --color-body: #414c53;
   --color-body-deep: #28343a;
@@ -536,10 +543,10 @@
    * there used to be nothing, which is what made every page read flat. These
    * fill that gap.
    *
-   * `stone` and `mist` are quiet: same value, opposite temperature, so putting
-   * one after the other turns the page's colour without changing its weight.
-   * `sage` and `slate` are the mid-tones and carry real presence; use at most
-   * one per page, and alternate which one between neighbouring page types.
+   * `powder` and `mist` are the quiet pair: powder blue and pale teal, a hue
+   * apart, so putting one after the other turns the page's colour without
+   * shouting. `sage` and `slate` are the mid-tones and carry real presence;
+   * use at most one per page, and alternate which one between page types.
    *
    * TEXT RULE, measured: on sage and slate only `ink` (7.85) and `surgical`
    * (5.26) clear AA. `body` reads 4.35, `muted` 3.26 and `faint` 2.72, all
@@ -550,8 +557,8 @@
    * benefits louder than both the hero and the CTA it led into. Mid-tone, not
    * vivid, is the setting that gives the page depth without taking the eye.
    */
-  .band-stone {
-    background: var(--color-stone);
+  .band-powder {
+    background: var(--color-powder);
     color: var(--color-ink);
   }
   .band-mist {
@@ -580,7 +587,7 @@
    * element" the palette calls for: enough to break an all-cool page, far too
    * small to read as a second brand colour.
    */
-  .band-stone .band-rule,
+  .band-powder .band-rule,
   .band-mist .band-rule {
     background: var(--color-sand);
   }
