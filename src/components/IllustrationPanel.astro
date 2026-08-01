@@ -26,8 +26,20 @@ interface Props {
 const { src, alt, eager = false, maxWidth = 620, class: className } = Astro.props;
 ---
 
+<!--
+  `w-full` is what stops this shifting layout, and it has to stay. The figure
+  used to take its width from its content, so a caller that made it a centred
+  or end-aligned grid item turned it into a shrink-to-fit box that resolved to
+  nothing until the lazy image arrived: it measured 0 tall, then snapped open
+  and shoved the rest of the section down (0.219 CLS on /pricing). A definite
+  width lets the browser reserve height from the img's own width/height
+  attributes immediately, so alignment now belongs on the margins rather than
+  on justify-self. Do not add an aspect-ratio here to "help" — it rounds
+  against the image's natural height and overflow-hidden then clips a hairline
+  off every illustration.
+-->
 <figure
-  class:list={['m-0 overflow-hidden rounded-3xl border border-line', className]}
+  class:list={['m-0 w-full overflow-hidden rounded-3xl border border-line', className]}
   style={`max-width:${maxWidth}px`}
 >
   <Image
