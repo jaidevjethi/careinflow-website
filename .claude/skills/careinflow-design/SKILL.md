@@ -25,25 +25,26 @@ site once owned only near-white and midnight with nothing between them, and
 invisible and a card barely lifted off the page behind it. Every page read flat
 regardless of how good its type was.
 
-| Token | Value | L | Role |
+| Token | Value | L* | Role |
 |---|---|---|---|
-| `surface` | `#FDFCFA` | .974 | cards, and the lightest sections |
-| `canvas` | `#F4EFE5` | .890 | default body |
-| `powder` | `#D3E0EE` | .733 | powder-blue quiet band |
-| `mist` | `#DCE7E8` | .789 | pale-teal quiet band, a hue turn away from powder |
-| `sage` | `#9DBDB5` | .469 | mid-tone block |
-| `slate` | `#A3B8C9` | .463 | mid-tone block, the alternate |
-| `panel` | `#0E3348` | .029 | midnight, reserved |
+| `surface` | `#FFFFFF` | 100 | cards, and the lightest sections |
+| `canvas` | `#EDF3F9` | 96.4 | default body, cool ice |
+| `powder` | `#DFE9F5` | 91.9 | quiet band, blue |
+| `mist` | `#D7EBE9` | 91.6 | quiet band, teal, a hue turn from powder |
+| `deep` | `#9FC4D6` | 77.1 | mid-tone block, blue |
+| `moss` | `#9BC7BE` | 77.0 | mid-tone block, teal |
+| `panel` | `#0B2440` | 13.8 | midnight, reserved |
 
-Adjacent steps: surface→canvas 1.12, canvas→powder 1.17, mist→sage 1.60. A
-`surface` card lifts 1.118 on canvas and 1.307 on powder.
+Adjacent steps: surface→canvas 1.12, canvas→powder 1.12, powder→deep 1.51,
+mist→moss 1.50. A `surface` card lifts 1.118 on canvas and 1.227 on powder.
 
-`powder` replaced a warm stone `#EBE4D6`. A beige band inside a navy-and-teal
-system reads as an unrelated colour rather than a quieter one; powder blue is
-named in the research this palette came from and sits 7.2 deltaE from mist, so
-the two never blur. Warmth lives in `canvas` and `sand`, not in a ground.
+**Nothing here is warm, and that is a hard rule.** The set before this one was
+warm paper: `canvas` measured b* +5.4 in Lab, `line` +6.1, `hairline` +5.0, and
+positive b* is the yellow axis, which is what beige is. Because `canvas` is the
+default body ground, cream appeared on every page whether a section asked for it
+or not. Every neutral now measures b* ≤ 0. If you add one, measure it.
 
-Apply with `.band-powder` / `.band-mist` / `.band-sage` / `.band-slate`. They set
+Apply with `.band-powder` / `.band-mist` / `.band-deep` / `.band-moss`. They set
 background and text colour only, so they wrap a `.section.shell` div to stay
 full-bleed. Putting a band class directly on a `.shell` element constrains the
 colour to the content width, which is wrong.
@@ -54,32 +55,35 @@ colour to the content width, which is wrong.
 midnight hero → surface → canvas → powder → mid-tone band → canvas → midnight CTA → footer
 ```
 
-At most one mid-tone band per page. Alternate sage and slate between
+At most one mid-tone band per page. Alternate deep and moss between
 neighbouring page types so the site does not go monotone when browsed in order.
 Short pages take a subset but must include at least one `powder` or `mist`.
 
 ### Text on the bands, measured
 
-On `sage` and `slate` **only `ink` (7.85) and `surgical` (5.26) clear AA.**
-`body` reads 4.35, `muted` 3.26 and `faint` 2.72 — all failures. Ink for copy,
-surgical for small labels, nothing else. This is the same rule as "vivid fills
-take ink text", for the same reason. On `powder` and `mist` every text token
-passes, which is why the quiet bands carry ordinary sections and the mid-tones
-carry only sections you have checked.
+On `deep`, `ink`, `body-deep`, `body` and `surgical` clear AA. On `moss`, only
+`ink`, `body-deep` and `surgical` do. **`muted` and `faint` fail on both.** Ink
+for copy, surgical for small labels, nothing lighter. Same rule as "vivid fills
+take ink text", for the same reason. `SectionHead` takes an `onBand` prop that
+lifts its lede to ink; set it whenever the component sits on a mid-tone.
 
-`faint` is `#54616A`. It was `#5E6B72` and fell to 4.34 once the grounds
-gained depth.
+On `powder` and `mist` every text token passes, which is why the quiet bands can
+carry ordinary sections and the mid-tones carry only sections you have checked.
+
+**Ink is a deep navy, never black.** `#0E2439` sits at the same hue as the
+grounds. The previous ink was a blue-green near-black on blue grounds: two
+families pretending to be one, which is precisely why it looked wrong on a band
+rather than merely dark.
 
 ## Brand and accents
 
 | Token | Value | Use |
 |---|---|---|
-| `surgical` | `#14425F` | primary; AA-safe as text at 9.28 on canvas |
-| `vivid` | `#12B3A6` | teal fill only; takes **ink** text, never white |
-| `pass` | `#0A6B63` | verified measurements only |
-| `ink` | `#17242A` | headings and body on light, and on every vivid fill |
-| `sand` | `#B8894A` | the one warm mark; small elements only, ink on it |
-| `sand-deep` | `#A8763C` | large text only (3.53 on canvas); **never** body copy |
+| `surgical` | `#0F4C75` | primary; AA-safe as text at 8.30 on canvas |
+| `vivid` | `#0FBFAE` | teal fill only; takes **ink** text (6.83), never white |
+| `pass` | `#0A6E62` | verified measurements only |
+| `ink` | `#0E2439` | deep navy. Headings and body on light, and on every vivid fill |
+| `body` / `muted` / `faint` | `#33506E` / `#4A6685` / `#4E6883` | the same navy taken down in steps |
 
 Five accents in `src/lib/accents.ts`, **named for the service, not the hue** —
 the previous set was named green/amber/blue/teal/plum and stopped being true
@@ -88,24 +92,25 @@ the day the palette moved. Each has the bare name (AA-safe text), `-vivid`
 
 | Accent | Owns | Text | Tint |
 |---|---|---|---|
-| `web` | healthcare websites | `#14425F` navy | `#DBE4EE` |
-| `seo` | local SEO | `#1C5A86` blue | `#E4EEF7` |
-| `gbp` | Google Business Profile | `#0B5F61` teal | `#CFE8E2` |
-| `care` | website care | `#3A5668` slate | `#E8E4DD` warm |
-| `social` | social media | `#3C654C` sage | `#D8E6D9` |
+| `web` | healthcare websites | `#0F4C75` navy | `#CEDCEF` |
+| `seo` | local SEO | `#16639A` blue | `#DDEFFD` |
+| `gbp` | Google Business Profile | `#0A6F68` teal | `#CFEBE6` |
+| `care` | website care | `#414B87` periwinkle | `#E2E3F7` |
+| `social` | social media | `#2F6B57` green | `#D6EADF` |
 
-The tints were once five values within 1.6 deltaE, below the 2.3 threshold at
-which a human can see any difference — two cards side by side looked identical.
-They now spread across two lightness steps and four hues: closest pair 3.5,
-mean 9.1. Keep it that way; if you add an accent, measure deltaE against all
-the others, not just contrast.
+Five hues on a cool arc: navy, blue, teal, periwinkle, green. The closest tint
+pair is 4.0 deltaE, where 2.3 is the point a human can see any difference at
+all. Keep it that way; if you add an accent, measure deltaE against all the
+others, not just contrast.
 
-`web` and `gbp` were also once the same deep teal, which made the website card
-and the Google card read as one block wherever they sat together.
+Two things this set fixed. `web` and `gbp` were once the same deep teal, so the
+website card and the Google card read as one block wherever they sat together.
+And `care` was a warm sand-grey, the only accent that could not sit beside the
+others without looking like a stain; periwinkle gives it a hue of its own.
 
-**Sand exists because an all-cool palette reads unconsidered.** It appears on
-the `band-rule` of the quiet bands and nowhere large. It is not a second brand
-colour and must never become one.
+**Interest comes from hue and depth, not from warmth.** A warm accent was tried
+and removed. Five cool hues across a six-step ground ladder do the work it was
+being asked to do.
 
 ## Where midnight goes
 

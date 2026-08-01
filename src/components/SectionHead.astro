@@ -6,10 +6,10 @@ interface Props {
   lede?: string;
   dark?: boolean;
   /**
-   * Set on the mid-tone bands (`band-sage`, `band-slate`). There, `body` reads
-   * 4.35 against the ground and fails AA, while `ink` reads 7.85 — so the lede
-   * has to come up to ink rather than sit in the usual text grey. Not needed on
-   * `stone` or `mist`, where every text token still passes.
+   * Set on the mid-tone bands (`band-deep`, `band-moss`), where `muted` and
+   * `faint` fail AA against the ground and the lede has to come up to ink
+   * rather than sit in the usual text grey. Not needed on `powder` or `mist`,
+   * where every text token still passes.
    */
   onBand?: boolean;
   /**
