@@ -40,19 +40,19 @@ const reviewCovers = [
         <a href={whatsappHref} rel="noopener" class="btn-accent px-7 py-4 text-[17px]">
           WhatsApp {BUSINESS.phoneDisplay}
         </a>
-        <p class="text-[14px] leading-normal text-panel-text-dim">
+        <p class="text-[15px] leading-normal text-panel-text-dim">
           Usually answered<br />the same day.
         </p>
       </div>
       {nextStep && (
-        <p class="mt-6 text-[14px] text-panel-text-dim">
+        <p class="mt-6 text-[15px] text-panel-text-dim">
           Still reading first? <a href={href(nextStep.href)} class="link-accent">{nextStep.label} →</a>
         </p>
       )}
     </div>
     <div class="rounded-3xl border border-panel-line bg-panel-card p-7">
       <h3 class="label-mono mb-4 text-panel-text-faint" style="letter-spacing:0.12em">The review covers</h3>
-      <ul class="text-[14px] leading-[2.05] text-panel-text">
+      <ul class="text-[15px] leading-[2.05] text-panel-text">
         {reviewCovers.map((item) => (
           <li>{item}</li>
         ))}

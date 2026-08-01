@@ -102,7 +102,7 @@ const schema = graph(
           {data.marketNotes.map((m) => (
             <div class="rounded-2xl border border-line bg-canvas p-6">
               <h3 class="label-mono mb-2.5 text-surgical">{m.label}</h3>
-              <p class="text-[15px] leading-[1.6] text-body">{m.note}</p>
+              <p class="text-[16px] leading-[1.6] text-body">{m.note}</p>
             </div>
           ))}
         </div>
@@ -116,18 +116,18 @@ const schema = graph(
 
       <aside class="top-24 rounded-3xl border border-line bg-surface p-7 lg:sticky">
         <h2 class="label-mono mb-4 text-faint" style="letter-spacing:0.12em">Where we are</h2>
-        <address class="text-[14px] not-italic leading-[1.7] text-body">
+        <address class="text-[15px] not-italic leading-[1.7] text-body">
           {BUSINESS.name}<br />
           {BUSINESS.address.street},<br />
           {BUSINESS.address.locality}, {BUSINESS.address.region} {BUSINESS.address.postalCode}
         </address>
-        <p class="mt-4 text-[13px] leading-[1.6] text-muted">
+        <p class="mt-4 text-[14px] leading-[1.6] text-muted">
           One studio, and this is it. We serve
           {' '}{BUSINESS.serviceAreas.slice(0, -1).join(', ')} and
           {' '}{BUSINESS.serviceAreas.at(-1)} — and further where the work suits
           it. Those are places we serve, not places we sit.
         </p>
-        <p class="mt-5 border-t border-line pt-4 text-[13px] leading-[1.6] text-muted">
+        <p class="mt-5 border-t border-line pt-4 text-[14px] leading-[1.6] text-muted">
           Prices do not change by town — see the
           <a href={href('/pricing')} class="prose-link">full price list</a>.
         </p>
@@ -147,7 +147,7 @@ const schema = graph(
               class="card-hover block rounded-2xl border border-line bg-surface p-6.5 hover:no-underline"
             >
               <h3 class="text-lg font-bold tracking-[-0.02em] text-ink">{a.data.city}</h3>
-              <p class="mt-2 text-[14px] leading-[1.55] text-muted">{a.data.summary}</p>
+              <p class="mt-2 text-[15px] leading-[1.55] text-muted">{a.data.summary}</p>
             </a>
           ))}
         </div>

@@ -94,14 +94,14 @@ const schema = graph(
             <h2 class="text-[24px] font-extrabold leading-[1.15] tracking-[-0.03em] text-ink">
               {s.data.navLabel}
             </h2>
-            <p class="mt-3 flex-1 text-[15px] leading-[1.6] text-body">{s.data.summary}</p>
+            <p class="mt-3 flex-1 text-[16px] leading-[1.6] text-body">{s.data.summary}</p>
             <p class="mt-6 border-t border-line pt-4">
               <span class="label-mono text-faint">Patients search</span>
-              <span class="mt-2 block text-[14px] leading-[1.5] text-muted">
+              <span class="mt-2 block text-[15px] leading-[1.5] text-muted">
                 {s.data.patientSearches.slice(0, 3).join(' · ')}
               </span>
             </p>
-            <span class:list={['prose-link mt-5 inline-block text-[15px]', ACCENTS[s.data.accent].text]}>
+            <span class:list={['prose-link mt-5 inline-block text-[16px]', ACCENTS[s.data.accent].text]}>
               Read the {s.data.navLabel.toLowerCase()} page →
             </span>
             </div>
@@ -132,7 +132,7 @@ const schema = graph(
           free review will still be specific to your specialty.
         </p>
         <p class="mt-6">
-          <a href={href('/free-review')} class="btn-primary px-6 py-3.5 text-[15px]">
+          <a href={href('/free-review')} class="btn-primary px-6 py-3.5 text-[16px]">
             Get a free written review
           </a>
         </p>
@@ -144,7 +144,7 @@ const schema = graph(
             <li class="chip border border-line bg-canvas text-body-deep">{s}</li>
           ))}
         </ul>
-        <p class="mt-5 border-t border-line pt-4 text-[13px] leading-[1.6] text-muted">
+        <p class="mt-5 border-t border-line pt-4 text-[14px] leading-[1.6] text-muted">
           If your specialty is not listed at all, it almost certainly still fits
           — ask. What we do not take on is work outside healthcare.
         </p>

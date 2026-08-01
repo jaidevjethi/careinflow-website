@@ -26,7 +26,7 @@ const isActive = (itemHref: string) => currentPath === itemHref || currentPath.s
           href={href(item.href)}
           aria-current={isActive(item.href) ? 'page' : undefined}
           class:list={[
-            'rounded-[10px] px-3.5 py-2 text-[14px] font-semibold transition-colors duration-200 hover:bg-panel-card hover:text-surface hover:no-underline',
+            'rounded-[10px] px-3.5 py-2 text-[15px] font-semibold transition-colors duration-200 hover:bg-panel-card hover:text-surface hover:no-underline',
             isActive(item.href) ? 'text-panel-accent' : 'text-panel-text',
           ]}
         >
@@ -66,7 +66,7 @@ const isActive = (itemHref: string) => currentPath === itemHref || currentPath.s
         </li>
       ))}
       <li class="mt-3">
-        <a href={href('/free-review')} class="btn-accent w-full px-5 py-3.5 text-[15px]">
+        <a href={href('/free-review')} class="btn-accent w-full px-5 py-3.5 text-[16px]">
           Free website review
         </a>
       </li>

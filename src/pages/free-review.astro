@@ -84,7 +84,7 @@ const outline = [
       <a href={whatsappHref} rel="noopener" class="btn-accent px-7 py-4 text-[17px]">
         WhatsApp {BUSINESS.phoneDisplay}
       </a>
-      <p class="text-[14px] leading-normal text-panel-text-dim">
+      <p class="text-[15px] leading-normal text-panel-text-dim">
         Free · 2 working days<br />Usually answered the same day.
       </p>
     </div>
@@ -112,7 +112,7 @@ const outline = [
               {String(i + 1).padStart(2, '0')}
             </p>
             <h3 class="text-lg font-bold tracking-[-0.02em] text-ink">{c.item}</h3>
-            <p class="mt-2 text-[14px] leading-[1.6] text-muted">{c.detail}</p>
+            <p class="mt-2 text-[15px] leading-[1.6] text-muted">{c.detail}</p>
           </article>
         ))}
       </div>
@@ -141,7 +141,7 @@ const outline = [
           {outline.map((o, i) => (
             <li
               class:list={[
-                'grid grid-cols-[32px_1fr] gap-3 py-3.5 text-[14px] leading-[1.55] text-body-deep',
+                'grid grid-cols-[32px_1fr] gap-3 py-3.5 text-[15px] leading-[1.55] text-body-deep',
                 i < outline.length - 1 && 'border-b border-hairline',
               ]}
             >
@@ -165,7 +165,7 @@ const outline = [
         title="What happens after the review?"
         lede="You get one fixed number in writing against a defined scope. If you would rather fix things yourself, the review tells you where to start — and we part as professionals."
       />
-      <p class="mt-6 max-w-[680px] text-[15px] leading-[1.65] text-muted">
+      <p class="mt-6 max-w-[680px] text-[16px] leading-[1.65] text-muted">
         You can see the scale before you message us: our
         <a href={href('/pricing')} class="prose-link">prices are published</a> —
         websites from {rupees(BUILDS[0]!.from)}, monthly care from
@@ -174,10 +174,10 @@ const outline = [
         is none of them.
       </p>
       <p class="mt-7 flex flex-wrap gap-4">
-        <a href={whatsappHref} rel="noopener" class="btn-primary px-6 py-3.5 text-[15px]">
+        <a href={whatsappHref} rel="noopener" class="btn-primary px-6 py-3.5 text-[16px]">
           Send your clinic's name
         </a>
-        <a href={href('/process')} class="btn-secondary px-6 py-3.5 text-[15px]">
+        <a href={href('/process')} class="btn-secondary px-6 py-3.5 text-[16px]">
           See the full method
         </a>
       </p>

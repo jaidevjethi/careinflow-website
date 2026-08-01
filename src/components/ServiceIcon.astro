@@ -1,0 +1,63 @@
+---
+/**
+ * Line icons for the service grid.
+ *
+ * Nine cards that were nine identical white rectangles with a hairline of
+ * colour on top: nothing to catch the eye, nothing to tell one from another
+ * without reading all nine headings. An icon gives each card an anchor a
+ * visitor can scan and come back to.
+ *
+ * Drawn inline rather than pulled from a set, because the whole site ships
+ * almost no JavaScript and an icon font or sprite would be the single largest
+ * thing on the page. Same 24px grid, same 1.6 stroke, `currentColor` so each
+ * one takes its card's accent.
+ */
+/**
+ * Written inline rather than as an exported union: esbuild's transform of
+ * .astro frontmatter rejects a multi-line `export type` with leading pipes,
+ * and it fails at build rather than at `astro check`.
+ */
+interface Props {
+  name: 'website' | 'listing' | 'search' | 'answer' | 'speed' | 'enquiry' | 'maintenance' | 'review' | 'social';
+  class?: string;
+}
+
+const { name, class: className } = Astro.props;
+
+/** 24x24 viewBox, stroked, no fills, so they hold up at any size. */
+const PATHS: Record<Props['name'], string> = {
+  // browser window with a content block
+  website: 'M3 5.5h18v13H3zM3 9.5h18M6 7h.01M8.5 7h.01M6.5 13h7M6.5 16h4',
+  // map pin
+  listing: 'M12 21s7-5.8 7-11a7 7 0 1 0-14 0c0 5.2 7 11 7 11zM12 10.5h.01',
+  // magnifier over a document
+  search: 'M4 3.5h10l4 4v5M4 3.5v17h7M7 8h6M7 11.5h4M16.5 16a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM19 20.5 21.5 23',
+  // speech bubble with a spark
+  answer: 'M4 5.5h16v10H9l-5 4zM12 8l.9 2.1 2.1.9-2.1.9L12 14l-.9-2.1-2.1-.9 2.1-.9z',
+  // stopwatch
+  speed: 'M12 8v4.5l2.5 2M12 4.5a8 8 0 1 0 0 16 8 8 0 0 0 0-16zM9.5 2.5h5M18.5 5.5l1.5-1.5',
+  // chat with a tick
+  enquiry: 'M4 5.5h16v11H9l-5 4V5.5zM8.5 11l2.2 2.2 4.8-4.8',
+  // shield with a wrench slot
+  maintenance: 'M12 3l7 2.5v6c0 4.4-3 8-7 9.5-4-1.5-7-5.1-7-9.5v-6zM9.5 11.5l1.8 1.8 3.4-3.4',
+  // bar chart on a page
+  review: 'M5 3.5h14v17H5zM8.5 16.5v-3M12 16.5v-6M15.5 16.5v-4.5',
+  // share nodes
+  social: 'M17.5 3.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM6.5 9a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM17.5 15a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM8.8 10.4l6-2.6M8.8 13.6l6 2.6',
+};
+---
+
+<svg
+  class:list={className}
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.6"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+>
+  {PATHS[name].split('M').filter(Boolean).map((d) => <path d={`M${d}`} />)}
+</svg>

@@ -796,10 +796,15 @@
     text-underline-offset: 3px;
   }
 
-  /* Long-form content rendered from MDX (services, resources, case studies). */
+  /*
+   * Long-form content rendered from MDX (services, resources, case studies).
+   * 18px is the design system's stated body size and it was shipping at 17.
+   * The audience is doctors, many of them past forty, reading on a phone
+   * between patients; there is no upside in the smaller setting.
+   */
   .prose-ci {
     max-width: 680px;
-    font-size: 17px;
+    font-size: 18px;
     line-height: 1.7;
     color: var(--color-body);
   }

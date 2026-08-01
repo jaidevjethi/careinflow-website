@@ -112,7 +112,7 @@ const schema = graph(
             {service.data.deliverables.map((d, j) => (
               <div
                 class:list={[
-                  'flex items-baseline justify-between gap-6 py-2.5 text-[14px]',
+                  'flex items-baseline justify-between gap-6 py-2.5 text-[15px]',
                   j < service.data.deliverables.length - 1 && 'border-b border-hairline',
                 ]}
               >
@@ -132,13 +132,13 @@ const schema = graph(
                   {price.unit === 'month' ? '/ month' : 'one-time'}
                 </span>
               </p>
-              <p class="mt-3 text-[13px] leading-[1.6] text-muted">{priceNote}</p>
-              <a href={href('/pricing')} class="prose-link mt-3 inline-block text-[14px]">
+              <p class="mt-3 text-[14px] leading-[1.6] text-muted">{priceNote}</p>
+              <a href={href('/pricing')} class="prose-link mt-3 inline-block text-[15px]">
                 See the full price list →
               </a>
             </div>
           )}
-          <p class="mt-5 border-t border-line pt-4 text-[13px] leading-[1.6] text-muted">
+          <p class="mt-5 border-t border-line pt-4 text-[14px] leading-[1.6] text-muted">
             Your exact figure is fixed in writing after the
             <a href={href('/free-review')} class="prose-link">free review</a>.
           </p>
@@ -153,7 +153,7 @@ const schema = graph(
           {related.map((r) => (
             <a href={href(`/services/${r.id}`)} class="card-hover block rounded-2xl border border-line bg-surface p-6.5 hover:no-underline">
               <h3 class="text-lg font-bold tracking-[-0.02em] text-ink">{r.data.navLabel}</h3>
-              <p class="mt-2 text-[14px] leading-[1.55] text-muted">{r.data.summary}</p>
+              <p class="mt-2 text-[15px] leading-[1.55] text-muted">{r.data.summary}</p>
             </a>
           ))}
         </div>

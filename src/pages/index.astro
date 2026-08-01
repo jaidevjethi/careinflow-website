@@ -4,6 +4,7 @@ import { getFaqsFor } from '@/lib/faqs';
 import { Image } from 'astro:assets';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import SectionHead from '@/components/SectionHead.astro';
+import ServiceIcon from '@/components/ServiceIcon.astro';
 import heroImage from '@/assets/editorial/hero-clinic-owner.webp';
 import founderImage from '@/assets/jaidev-jethi.jpg';
 import FaqSection from '@/components/FaqSection.astro';
@@ -152,46 +153,55 @@ const patientSurfaces = [
 const protocols = [
   {
     title: 'Practice website',
+    icon: 'website' as const,
     text: 'Hand-built, quick on an inexpensive phone, written for a patient who is worried.',
     link: '/services/healthcare-websites',
   },
   {
     title: 'Google Business Profile',
+    icon: 'listing' as const,
     text: 'Claimed, rebuilt and then maintained: categories, services, hours, photos, questions.',
     link: '/services/google-business-profile',
   },
   {
     title: 'Local SEO groundwork',
+    icon: 'search' as const,
     text: 'A page per treatment and per area you serve. Consistent details everywhere.',
     link: '/services/local-seo',
   },
   {
     title: 'AI answer readiness',
+    icon: 'answer' as const,
     text: 'Facts, schema and plain answers a search engine can quote when it writes the summary above the results.',
     link: '/services/local-seo',
   },
   {
     title: 'Speed & Core Web Vitals',
+    icon: 'speed' as const,
     text: 'Measured on a mid-range Android on mobile data, not on our laptops.',
     link: '/services/healthcare-websites',
   },
   {
     title: 'Enquiry & booking flow',
+    icon: 'enquiry' as const,
     text: 'Usually WhatsApp, set up so the message lands where someone will answer it.',
     link: '/services/healthcare-websites',
   },
   {
     title: 'Maintenance & hosting',
+    icon: 'maintenance' as const,
     text: 'Security, backups, edits, new treatment pages. We do not disappear.',
     link: '/services/website-care',
   },
   {
     title: 'Quarterly review',
+    icon: 'review' as const,
     text: 'Written: what patients did, what changed nearby, what to do next.',
     link: '/services/website-care',
   },
   {
     title: 'Social media content',
+    icon: 'social' as const,
     text: 'Educational posts that support the website. Never a substitute for one.',
     link: '/services/social-media',
   },
@@ -344,7 +354,7 @@ const whatsappHref = whatsappWithMessage(
                 {s.rows.map((row, i) => (
                   <div
                     class:list={[
-                      'flex items-baseline justify-between gap-4 py-2 text-[13px]',
+                      'flex items-baseline justify-between gap-4 py-2 text-[14px]',
                       i < s.rows.length - 1 && 'border-b border-hairline-soft',
                     ]}
                   >
@@ -354,7 +364,7 @@ const whatsappHref = whatsappWithMessage(
                 ))}
               </dl>
               <p class="mt-6">
-                <a href={href(s.link)} class="prose-link text-[15px] font-semibold">{s.linkText} →</a>
+                <a href={href(s.link)} class="prose-link text-[16px] font-semibold">{s.linkText} →</a>
               </p>
             </div>
           </article>
@@ -375,18 +385,27 @@ const whatsappHref = whatsappWithMessage(
          on the last row, which reads as a page that ran out rather than a set
          that is complete. -->
     <div class="reveal-group mt-13 grid gap-4 md:grid-cols-3">
-      {protocols.map((p) => (
+      {protocols.map((p) => {
+        const a = serviceAccent(p.link.split('/').pop()!);
+        return (
         <a
           href={href(p.link)}
           class="card-hover block overflow-hidden rounded-2xl border border-line bg-surface hover:no-underline"
         >
-          <span class:list={['accent-bar block h-1 w-full', serviceAccent(p.link.split('/').pop()!).bar]} aria-hidden="true"></span>
+          <span class:list={['accent-bar block h-1 w-full', a.bar]} aria-hidden="true"></span>
+          {/* The icon is the anchor. Nine cards with a heading and two lines
+              each are impossible to scan; a shape per service lets the eye
+              find its way back to one without re-reading all nine. */}
           <div class="p-6.5">
-          <h3 class="text-lg font-bold tracking-[-0.02em] text-ink">{p.title}</h3>
-          <p class="mt-2 text-[14px] leading-[1.55] text-muted">{p.text}</p>
+            <span class:list={['mb-4 inline-flex size-11 items-center justify-center rounded-xl', a.tint, a.text]}>
+              <ServiceIcon name={p.icon} />
+            </span>
+            <h3 class="text-lg font-bold tracking-[-0.02em] text-ink">{p.title}</h3>
+            <p class="mt-2 text-[16px] leading-[1.6] text-body">{p.text}</p>
           </div>
         </a>
-      ))}
+        );
+      })}
     </div>
   </section>
 
@@ -424,12 +443,12 @@ const whatsappHref = whatsappWithMessage(
                 <span class="numeral text-[34px] text-panel-accent">{m.step}</span>
                 <div>
                   <h4 class="text-[17px] font-bold text-surface">{m.title}</h4>
-                  <p class="mt-1 text-[14px] leading-[1.55] text-panel-text-dim">{m.text}</p>
+                  <p class="mt-1 text-[15px] leading-[1.55] text-panel-text-dim">{m.text}</p>
                 </div>
               </li>
             ))}
           </ol>
-          <a href={href('/process')} class="link-accent mt-6 inline-block text-[15px]">
+          <a href={href('/process')} class="link-accent mt-6 inline-block text-[16px]">
             See the full method →
           </a>
         </div>
@@ -456,7 +475,7 @@ const whatsappHref = whatsappWithMessage(
         {outcomes.map((o) => (
           <article class="rounded-2xl border border-line bg-surface p-7">
             <h3 class="text-[19px] font-bold tracking-[-0.02em] text-ink">{o.title}</h3>
-            <p class="mt-2.5 text-[15px] leading-[1.62] text-body">{o.text}</p>
+            <p class="mt-2.5 text-[16px] leading-[1.62] text-body">{o.text}</p>
           </article>
         ))}
       </div>
@@ -479,13 +498,13 @@ const whatsappHref = whatsappWithMessage(
         <h2 id="founder-strip-title" class="mt-2.5 text-[clamp(22px,2.6vw,30px)] font-extrabold leading-[1.12] tracking-[-0.03em] text-ink">
           You talk to the person building your website.
         </h2>
-        <p class="mt-3 max-w-[640px] text-[15px] leading-[1.65] text-body">
+        <p class="mt-3 max-w-[640px] text-[16px] leading-[1.65] text-body">
           CareInflow is run by {BUSINESS.founder}. Web development in
           Gujarat, cybersecurity study in Canada, then a year and a half at
           Microsoft before coming home to start this. There is no account
           manager between you and the work.
         </p>
-        <a href={href('/about')} class="prose-link mt-4 inline-block text-[15px]">
+        <a href={href('/about')} class="prose-link mt-4 inline-block text-[16px]">
           More about the studio →
         </a>
       </div>
@@ -519,12 +538,12 @@ const whatsappHref = whatsappWithMessage(
                   <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{p.unit}</span>
                 )}
               </p>
-              <p class="mt-3.5 text-[14px] leading-[1.6] text-muted">{p.note}</p>
+              <p class="mt-3.5 text-[15px] leading-[1.6] text-muted">{p.note}</p>
             </div>
           </article>
         ))}
       </div>
-      <p class="mt-8 max-w-[680px] text-[15px] leading-[1.65] text-muted">
+      <p class="mt-8 max-w-[680px] text-[16px] leading-[1.65] text-muted">
         Prices exclude GST where it applies. Domain and hosting are paid by
         you, directly, in your own name. We do not mark them up.
       </p>
@@ -565,12 +584,12 @@ const whatsappHref = whatsappWithMessage(
             <h3 class="text-[clamp(22px,2.4vw,28px)] font-extrabold leading-[1.15] tracking-[-0.03em] text-ink">
               {cs.data.client}
             </h3>
-            <p class="mt-3 text-[15px] leading-[1.62] text-muted">{cs.data.summary}</p>
+            <p class="mt-3 text-[16px] leading-[1.62] text-muted">{cs.data.summary}</p>
             <dl class="mt-7 border-t border-hairline pt-5">
               {cs.data.highlights.slice(0, 3).map((h, i) => (
                 <div
                   class:list={[
-                    'flex items-baseline justify-between gap-6 py-2.5 text-[14px]',
+                    'flex items-baseline justify-between gap-6 py-2.5 text-[15px]',
                     i < 2 && 'border-b border-hairline',
                   ]}
                 >
@@ -579,12 +598,12 @@ const whatsappHref = whatsappWithMessage(
                 </div>
               ))}
             </dl>
-            <span class="prose-link mt-6 inline-block text-[15px]">Read the case study →</span>
+            <span class="prose-link mt-6 inline-block text-[16px]">Read the case study →</span>
           </div>
         </a>
       ))}
 
-      <p class="mt-7 max-w-[720px] text-[15px] leading-[1.65] text-muted">
+      <p class="mt-7 max-w-[720px] text-[16px] leading-[1.65] text-muted">
         One healthcare project, shown in full, rather than a portfolio padded
         out with work we did not do. {otherWorkCount > 0 && (
           <>There {otherWorkCount === 1 ? 'is' : 'are'} also {otherWorkCount} non-healthcare
@@ -640,7 +659,7 @@ const whatsappHref = whatsappWithMessage(
             </li>
           ))}
         </ul>
-        <p class="mt-6 border-t border-hairline pt-5 text-[14px] leading-[1.6] text-muted">
+        <p class="mt-6 border-t border-hairline pt-5 text-[15px] leading-[1.6] text-muted">
           The three linked above have a page on what changes for that
           specialty. <a href={href('/specialties')} class="prose-link">See all
           specialties</a>. If yours is not on this list at all, it almost
