@@ -136,6 +136,26 @@ const caseStudies = defineCollection({
         ref: z.string().optional(),
       }),
     ),
+    /** What the practice was up against before the build. */
+    problem: z.object({ heading: z.string(), body: z.string() }).optional(),
+    /**
+     * Screenshots of the live site with the reasoning attached. A case study
+     * that only says "we built a website" and shows one homepage proves
+     * nothing; each shot here has to carry the decision it illustrates, which
+     * is the part a clinic owner is actually buying.
+     */
+    gallery: z
+      .array(
+        z.object({
+          src: image(),
+          alt: z.string(),
+          title: z.string(),
+          caption: z.string(),
+          /** Phone captures render narrow; everything else fills the column. */
+          phone: z.boolean().optional(),
+        }),
+      )
+      .optional(),
   }),
 });
 

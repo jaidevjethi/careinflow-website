@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import { Image } from 'astro:assets';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHero from '@/components/PageHero.astro';
+import SectionHead from '@/components/SectionHead.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import { getImage } from 'astro:assets';
 import { CANONICAL_HOST } from '@/config/site';
@@ -114,6 +115,23 @@ const schema = graph(
       </figure>
     </PageHero>
 
+    {cs.data.problem && (
+      <section class="band-powder" aria-labelledby="problem-title">
+        <div class="section shell grid gap-10 lg:grid-cols-[280px_1fr] lg:gap-20">
+          <p class="label-mono text-surgical" style="letter-spacing:0.12em">Before the build</p>
+          <div class="max-w-[720px]">
+            <h2
+              id="problem-title"
+              class="text-[clamp(26px,3.4vw,38px)] font-extrabold leading-[1.12] tracking-[-0.035em] text-ink"
+            >
+              {cs.data.problem.heading}
+            </h2>
+            <p class="mt-5 text-[18px] leading-[1.7] text-ink/90">{cs.data.problem.body}</p>
+          </div>
+        </div>
+      </section>
+    )}
+
     <div class="band-mist">
       <div class="section shell grid items-start gap-14 lg:grid-cols-[1fr_360px] lg:gap-20">
         <div class="prose-ci">
@@ -133,6 +151,52 @@ const schema = graph(
         </aside>
       </div>
     </div>
+
+    {/* Screenshots with the reasoning attached. A gallery of pretty pages
+        proves nothing on its own; what a clinic owner is buying is the
+        thinking, so every shot carries the decision it illustrates. */}
+    {cs.data.gallery && cs.data.gallery.length > 0 && (
+      <section class="section shell" aria-labelledby="gallery-title">
+        <SectionHead
+          id="gallery-title"
+          label="Inside the build"
+          title="Three decisions, and what they look like"
+          lede="Every screenshot below is the live site. The note beside each one is why it was built that way rather than the obvious way."
+        />
+        <div class="reveal-group mt-13 grid gap-14">
+          {cs.data.gallery.map((shot, i) => (
+            <figure
+              class:list={[
+                'm-0 grid items-center gap-8 lg:gap-14',
+                shot.phone ? 'lg:grid-cols-[260px_1fr]' : 'lg:grid-cols-[1.35fr_1fr]',
+                i % 2 === 1 && 'lg:[&>figcaption]:order-first',
+              ]}
+            >
+              <Image
+                src={shot.src}
+                alt={shot.alt}
+                widths={shot.phone ? [260, 520] : [640, 960, 1280]}
+                sizes={shot.phone ? '260px' : '(min-width: 1024px) 760px, 92vw'}
+                loading="lazy"
+                class:list={[
+                  'w-full rounded-2xl border border-line bg-surface',
+                  /* A full phone capture is twice as tall as it is wide, which
+                     leaves the row half empty beside a three-line caption.
+                     Cropping to the top keeps the part that carries the point. */
+                  shot.phone && 'max-h-[420px] object-cover object-top',
+                ]}
+              />
+              <figcaption>
+                <h3 class="text-[22px] font-extrabold leading-[1.2] tracking-[-0.03em] text-ink">
+                  {shot.title}
+                </h3>
+                <p class="mt-3 text-[16px] leading-[1.7] text-body">{shot.caption}</p>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+    )}
   </article>
 
   <CtaPanel prefill="work" nextStep={{ label: 'See what it costs', href: '/pricing' }} />

@@ -10,6 +10,9 @@ year: 2026
 description: 'Case study: a search-focused Next.js website for Divyam Tours in Varanasi — a page per service, LocalBusiness structured data, and a persistent enquiry flow.'
 summary: 'Not a clinic. Included honestly, to show the same method applied to a different local business: a page per service, and an enquiry button that follows you down every one of them.'
 order: 2
+problem:
+  heading: 'A local operator competing with national booking sites'
+  body: 'Divyam Tours runs taxis and tour packages in Varanasi, against aggregators with budgets it will never match. It could not win on spend. What it could win on was being the specific answer to a specific search, in a way a national platform never bothers to be, and being reachable in one tap when somebody landed on it.'
 highlights:
   - { label: 'Pages', value: 'One per service', ref: 'taxi, airport, sightseeing' }
   - { label: 'Found by', value: 'Service searches', ref: 'not the business name' }
@@ -17,38 +20,47 @@ highlights:
   - { label: 'Languages', value: 'EN + HI', ref: 'both spoken by the customers' }
 ---
 
-## Why this project is here
+## Why this project is on a healthcare site
 
-Divyam Tours is not a healthcare practice, and we will not pretend
-otherwise. It is included because it shows the same method we bring to
-clinics, applied end to end on a different local business — and because the
-patterns transfer directly.
+Divyam Tours is not a clinic, and we are not going to pretend the work is
+something it is not. It is here because it is a complete, live example of
+the same method, and because a practice owner deciding whether to trust us
+deserves to see everything we have shipped rather than a curated half.
 
-## What we built
+The patterns transfer almost exactly. Where this site has a page for
+"airport transfer", a clinic has a page for "root canal treatment". The
+discipline is identical. What changes is the care taken with the reader,
+because a worried patient reads very differently from somebody booking a
+car.
 
-A search-focused website for a Varanasi tours and taxi operator, where
-nearly every customer arrives from Google.
+## What we built, and why
 
-The structure is the point:
+**A page for every service.** Taxi hire, airport transfer, local
+sightseeing and multi-day tours each have their own page, targeting what
+people genuinely type, instead of one thin page trying to rank for
+everything at once. It is the same reasoning behind a page per treatment on
+a [clinic website](/services/healthcare-websites): one page cannot answer
+four different questions, and search engines will not pretend it can.
 
-**A page per service.** Taxi services, airport transfer, local
-sightseeing — each has its own dedicated page targeting what people
-actually search for, instead of one thin page trying to rank for
-everything. This is exactly the treatment-page discipline we apply to
-[clinic websites](/services/healthcare-websites).
+**Structured data from the first commit.** LocalBusiness JSON-LD ships in
+the base layout, so every page states plainly what the business is, where it
+works and how to reach it. On a clinic this is the same groundwork that
+decides whether a search engine can describe you correctly, including in the
+summary it now writes above the results.
 
-**Structured data from day one.** LocalBusiness JSON-LD ships in the
-site's base layout, so every page tells search engines precisely what the
-business is, where it operates, and how to contact it.
+**An enquiry that never disappears.** A call-to-action follows the visitor
+down every page. Somebody ready to book should never have to scroll back up
+to find out how. On a clinic site that button is WhatsApp, and it matters
+more, because the person tapping it is often in pain.
 
-**An enquiry flow that never disappears.** A persistent call-to-action
-follows the visitor on every page — because a customer ready to book
-should never have to hunt for the button.
+**Two languages, because the customers have two.** English and Hindi, for a
+customer base that includes both pilgrims and foreign visitors. The same
+argument as Gujarati on the [dental clinic](/work/pramukh-dental): a
+language toggle that only translates the menu promises something it does not
+deliver.
 
-## The transferable lesson
+## Honest scope
 
-Local businesses win search the same way: real pages for real searches,
-consistent structured details, and an effortless next step. For a clinic,
-swap "airport transfer" for "root canal treatment" and the discipline is
-identical — only the care taken with the reader changes, because a patient
-reads differently than a tourist.
+We built and shipped the website. We do not manage this business's Google
+listing, we do not run its ads, and we are not going to attribute its
+bookings to ourselves.

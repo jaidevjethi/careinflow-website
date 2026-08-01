@@ -18,42 +18,81 @@ highlights:
   - { label: 'Languages', value: 'EN + GU', ref: 'the whole site, not just the menu' }
   - { label: 'Opens in', value: 'about a second', ref: 'on mobile data' }
   - { label: 'Enquiry', value: 'Two taps', ref: 'call or WhatsApp, from any page' }
+problem:
+  heading: 'A good clinic that nobody could find online'
+  body: 'Dr. Chinmay Patel is an MDS root canal specialist with more than ten years and five thousand procedures behind him. Patients who walked through the door understood that within a minute. Patients searching "root canal cost in Mehsana" at eleven at night never got that far, because there was nothing to find and nothing to read. The reputation was real and entirely offline.'
+gallery:
+  - src: '../../assets/work/pramukh-treatment.webp'
+    alt: 'The root canal treatment page, headed Painless Root Canals, with a plain-language explanation and a Who is this for box describing symptoms.'
+    title: 'A page for the search, not for the brochure'
+    caption: 'Patients do not search "endodontics". They search the thing that hurts. Every treatment page opens with the symptom in the patient''s own words, answers how long it takes and what it costs, and only then names the procedure. The "Who is this for" box is written from what people actually say at reception: pain that wakes you at 2am, jaw ache when you bite down.'
+  - src: '../../assets/work/pramukh-patient-info.webp'
+    alt: 'The patient information page, headed Your first visit explained, with a four-step walkthrough, a What to bring list and an If you feel anxious note.'
+    title: 'The page that answers the fear'
+    caption: 'Most dental hesitation is not about price, it is about not knowing what is going to happen. So the first-visit page walks through all four steps, says what to bring, and addresses anxiety directly rather than pretending it does not exist. This page exists because the clinic told us what patients ask in the chair, and we wrote it down.'
+  - src: '../../assets/work/pramukh-treatment-mobile.webp'
+    alt: 'The same treatment page on a phone, with the call and WhatsApp bar fixed along the bottom of the screen.'
+    title: 'Built for the phone it will be read on'
+    caption: 'Almost every visitor arrives on a mid-range Android over mobile data, often at an odd hour. The call and WhatsApp bar stays fixed at the bottom of every page, so an enquiry is never more than one tap away no matter how far down someone has read.'
+    phone: true
 ---
 
-## The practice
+## What the clinic needed
 
-Pramukh Multispeciality Dental Clinic serves patients at Radhanpur Circle
-in Mehsana. Like most good clinics, its reputation was built in person —
-the website needed to carry that same impression to patients who check
-online first.
+Pramukh Multispeciality Dental Clinic serves patients at Radhanpur Circle in
+Mehsana. Like most good clinics, its reputation was built in person, one
+treatment at a time. The job was to make the website carry the same
+impression to somebody who has not met the doctor yet, and who is deciding
+between three clinics on a phone.
 
-## What we built
+That framing decided everything else. This is not a brochure for people who
+already chose the practice. It is written for the patient who has not.
 
-A complete marketing website with a page for every one of the clinic's 11
-treatments, plus the pages patients actually look for: about, gallery,
-patient information, areas served, and contact.
+## The four decisions that shaped the build
 
-Two decisions shaped the build:
+**A page for every treatment, not a services list.** All eleven treatments
+the clinic offers have their own page: root canal, re-root canal, emergency
+care, esthetic dentistry, post and core, surgical endodontics and the rest.
+One combined "Services" page cannot rank for eleven different searches and
+cannot answer eleven different worries. Splitting them is most of why the
+site gets found at all.
 
-**Bilingual by design.** Many of the clinic's patients are more comfortable
-in Gujarati. The entire site — every heading, every treatment explanation —
-works in both English and Gujarati with a single toggle, driven by one
-translation dictionary so the two languages never drift apart.
+**Bilingual, all the way down.** Many of the clinic's patients are more
+comfortable reading Gujarati. Every heading and every treatment explanation
+works in both languages behind a single toggle, driven by one translation
+dictionary so the two versions cannot drift apart as pages are added. A
+language switch that only translates the menu is worse than none, because it
+promises something it does not deliver.
 
 **Fully static.** The site ships plain HTML and CSS with no framework
-JavaScript at all. There is simply nothing to slow it down on a mid-range
-phone, and nothing to break. Images are optimized WebP, capped at 1600px.
+JavaScript. There is nothing to slow it down on an inexpensive phone and
+nothing to break at two in the morning. Images are WebP, capped at 1600px.
+This is also the cheapest possible thing to host, which matters over years.
+
+**Symptom language, everywhere.** Clinical accuracy in the content, patient
+vocabulary in the headings. The page is titled "Painless Root Canals" and
+the first line says it takes forty-five minutes. The word "endodontic"
+appears where it belongs, further down, once the reader already knows they
+are in the right place.
 
 ## The details that matter
 
-- Scroll animations respect `prefers-reduced-motion` — patients who disable
-  animations get an instant, still page.
-- A gallery lightbox handles before/after treatment photos properly.
-- A sitemap, robots file, and per-page metadata were part of launch, not an
-  afterthought.
+- Scroll animations respect `prefers-reduced-motion`, so patients who turn
+  animations off get an instant, still page.
+- The smile gallery handles before and after photographs properly, at full
+  size, without a third-party lightbox script.
+- A sitemap, a robots file and per-page metadata were part of launch rather
+  than something added afterwards.
+- Three articles answer the questions that come up before booking: the signs
+  you need a root canal, root canal against extraction, and what it costs.
 
 ## Honest scope
 
-This project covers the website surface. It is live at
-[pramukhdentalclinic.com](https://pramukhdentalclinic.com) — open it on
-your own phone and judge the loading speed yourself.
+This project covers the website. It does not include the Google Business
+Profile, ongoing SEO or monthly care, and we are not going to claim credit
+for patient numbers we cannot measure from here.
+
+What you can check yourself: it is live at
+[pramukhdentalclinic.com](https://pramukhdentalclinic.com). Open it on your
+own phone, on mobile data rather than wifi, and time how long it takes
+before you can read something.
