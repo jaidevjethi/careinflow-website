@@ -17,7 +17,7 @@ import {
   faqSchema,
 } from '@/lib/schema';
 
-const title = 'The method — how a four-week build runs | CareInflow';
+const title = 'The method, how a four-week build runs | CareInflow';
 const description =
   'What happens if you hire CareInflow: a free written study, words signed off before any design, one build pass, then launch and ongoing care.';
 
@@ -39,28 +39,28 @@ const weeks = [
     step: '01',
     week: 'Week 1',
     title: 'Study',
-    text: 'Before any design, we study: what patients in your area search, what your Google listing shows, what your reviews say, and what the three clinics above you are doing differently. It arrives as a written review — yours to keep, free, whether or not you hire us.',
+    text: 'Before any design, we study: what patients in your area search, what your Google listing shows, what your reviews say, and what the three clinics above you are doing differently. It arrives as a written review, yours to keep, free, whether or not you hire us.',
     output: 'A written review of your current online presence',
   },
   {
     step: '02',
     week: 'Week 2',
     title: 'Structure & words',
-    text: 'The page order and the actual copy come before any visuals. You sign off the words patients will read — every treatment page, every heading — so design decorates substance instead of hiding its absence.',
+    text: 'The page order and the actual copy come before any visuals. You sign off the words patients will read, every treatment page, every heading, so design decorates substance instead of hiding its absence.',
     output: 'Sitemap and final copy, signed off',
   },
   {
     step: '03',
     week: 'Week 3',
     title: 'Design & build',
-    text: 'One careful pass, on your real content, never on placeholder text. Built by hand, tested on a mid-range Android over mobile data first — because that is the phone your patients actually hold.',
+    text: 'One careful pass, on your real content, never on placeholder text. Built by hand, tested on a mid-range Android over mobile data first, because that is the phone your patients actually hold.',
     output: 'The working website, tested on real devices',
   },
   {
     step: '04',
     week: 'Week 4 →',
     title: 'Launch, then stay',
-    text: 'Launch is measured against the published targets: load time reference, accessibility, valid schema. Then the ongoing schedule begins — weekly monitoring, monthly maintenance, and a written quarterly review.',
+    text: 'Launch is measured against the published targets: load time reference, accessibility, valid schema. Then the ongoing schedule begins, weekly monitoring, monthly maintenance, and a written quarterly review.',
     output: 'Launch measurements + the care schedule',
   },
 ];
@@ -78,8 +78,8 @@ const needFromYou = [
   <PageHero
     label="How the work runs"
     title="Four weeks, in a fixed order, with the words before the visuals."
-    lede="Most website projects go wrong in a familiar way: design first, content forever late, launch quietly missed. Our method exists to make that impossible — each week has one job and one output you can hold."
-    stats={weeks.map((w) => ({ value: w.step, caption: `${w.week} — ${w.title}` }))}
+    lede="Most website projects go wrong in a familiar way: design first, content forever late, launch quietly missed. Our method exists to make that impossible, each week has one job and one output you can hold."
+    stats={weeks.map((w) => ({ value: w.step, caption: `${w.week}, ${w.title}` }))}
   />
 
   <section class="border-t border-hairline bg-surface" aria-label="The four weeks">
@@ -95,7 +95,7 @@ const needFromYou = [
               <h2 class="text-[24px] font-extrabold tracking-[-0.03em] text-ink">{w.title}</h2>
               <p class="mt-3 max-w-[640px] text-[16px] leading-[1.65] text-body">{w.text}</p>
               <p class="mt-4 font-mono text-[11px] uppercase tracking-[0.08em] text-pass">
-                Output — {w.output}
+                Output, {w.output}
               </p>
             </div>
           </li>
@@ -110,7 +110,7 @@ const needFromYou = [
         <SectionHead
           label="What we need from you"
           title="How much of your time does it take?"
-          lede="Everything else is our job. The build does not stall waiting for you to write pages — writing them is part of what you are paying for."
+          lede="Everything else is our job. The build does not stall waiting for you to write pages, writing them is part of what you are paying for."
         />
       </div>
       <div class="rounded-3xl border border-line bg-surface p-7">
@@ -144,7 +144,7 @@ const needFromYou = [
         Care is {rupees(STANDALONE_MONTHLY.care)} a month, or
         {' '}{rupees(PLANS[1]!.monthly)} with your Google Business Profile
         managed alongside it. Month to month, no lock-in, and the website stays
-        yours either way — see the <a href={href('/pricing')} class="prose-link">full price list</a>.
+        yours either way, see the <a href={href('/pricing')} class="prose-link">full price list</a>.
       </p>
       <p class="mt-7">
         <a href={href('/services/website-care')} class="btn-secondary px-6 py-3.5 text-[16px]">

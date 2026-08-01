@@ -29,7 +29,7 @@ const { cs } = Astro.props;
 const { Content } = await render(cs);
 
 const path = `/work/${cs.id}`;
-const title = `${cs.data.client} — case study | CareInflow`;
+const title = `${cs.data.client}, case study | CareInflow`;
 const description = cs.data.description;
 
 /**
@@ -79,7 +79,7 @@ const schema = graph(
       label={`${cs.data.sector} · ${cs.data.year}`}
       title={cs.data.title}
       lede={cs.data.summary}
-      stats={cs.data.highlights.slice(0, 4).map((h) => ({ value: h.value, caption: h.ref ? `${h.label} — ${h.ref}` : h.label }))}
+      stats={cs.data.highlights.slice(0, 4).map((h) => ({ value: h.value, caption: h.ref ? `${h.label}, ${h.ref}` : h.label }))}
     >
       <p class="mt-6 text-base font-semibold text-panel-text">
         {cs.data.client} · {cs.data.location}
@@ -87,7 +87,7 @@ const schema = graph(
       {!cs.data.healthcare && (
         <p class="mt-4">
           <span class="chip border border-panel-line bg-panel-card text-panel-text">
-            Not a clinic — included honestly, to show the same method elsewhere
+            Not a clinic, included honestly, to show the same method elsewhere
           </span>
         </p>
       )}
@@ -110,7 +110,7 @@ const schema = graph(
           class="w-full rounded-3xl border border-panel-line bg-panel-card"
         />
         <figcaption class="mt-3 font-mono text-[11px] uppercase leading-[1.6] tracking-[0.06em] text-panel-text-faint">
-          The live site — not a mockup.
+          The live site: not a mockup.
         </figcaption>
       </figure>
     </PageHero>
@@ -138,7 +138,7 @@ const schema = graph(
           <Content />
         </div>
         <aside class="top-24 rounded-3xl border border-line bg-canvas p-7 lg:sticky">
-          <h2 class="label-mono mb-5 text-faint" style="letter-spacing:0.12em">Chart — key figures</h2>
+          <h2 class="label-mono mb-5 text-faint" style="letter-spacing:0.12em">Chart, key figures</h2>
           <dl class="grid gap-5">
             {cs.data.highlights.map((h) => (
               <div class="border-b border-hairline pb-4 last:border-b-0 last:pb-0">

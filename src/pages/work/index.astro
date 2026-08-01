@@ -14,9 +14,9 @@ import {
   itemListSchema,
 } from '@/lib/schema';
 
-const title = 'Work — real projects, shown honestly | CareInflow';
+const title = 'Work, real projects, shown honestly | CareInflow';
 const description =
-  'Selected work by CareInflow: a bilingual dental clinic website in Mehsana and a search-focused services site. Real projects only — no padded portfolio.';
+  'Selected work by CareInflow: a bilingual dental clinic website in Mehsana and a search-focused services site. Real projects only: no padded portfolio.';
 
 const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.order - b.data.order);
 
@@ -40,7 +40,7 @@ const schema = graph(
   <PageHero
     label="Our work"
     title="A short portfolio, shown honestly."
-    lede="A short page, and everything on it is real — no padded portfolio, no screenshots of work we did not do. As new practices launch, we publish what happened for each one, including what did not work."
+    lede="A short page, and everything on it is real, no padded portfolio, no screenshots of work we did not do. As new practices launch, we publish what happened for each one, including what did not work."
     stats={[
       { value: String(caseStudies.length), caption: 'projects, all of them real' },
       { value: String(caseStudies.filter((c) => c.data.healthcare).length), caption: 'in healthcare' },

@@ -14,7 +14,7 @@ import {
   faqSchema,
 } from '@/lib/schema';
 
-const title = 'Contact CareInflow — send your clinic\'s name on WhatsApp';
+const title = 'Contact CareInflow, send your clinic\'s name on WhatsApp';
 const description =
   'Send your clinic\'s name on WhatsApp or call. A free written review of what patients see, in two working days. Based in Mehsana.';
 
@@ -32,7 +32,7 @@ const schema = graph(
 );
 
 const whatsappHref = whatsappWithMessage(
-  "Hi CareInflow — I'd like a free written review of my practice's online presence. Clinic name: ",
+  "Hi CareInflow, I'd like a free written review of my practice's online presence. Clinic name: ",
 );
 
 const reviewCovers = [
@@ -45,9 +45,9 @@ const reviewCovers = [
 ];
 
 const steps = [
-  { step: '01', text: 'Send your clinic\'s name — the pre-written message needs only that.' },
+  { step: '01', text: 'Send your clinic\'s name, the pre-written message needs only that.' },
   { step: '02', text: 'Within two working days you get the written review, free.' },
-  { step: '03', text: 'If work is worth doing, the review becomes the plan we quote against — fixed, in writing.' },
+  { step: '03', text: 'If work is worth doing, the review becomes the plan we quote against, fixed, in writing.' },
 ];
 ---
 
@@ -98,7 +98,7 @@ const steps = [
         <p class="mt-5 max-w-[640px] text-[15px] leading-[1.65] text-muted">
           We are based in Mehsana and work with clinics across
           {BUSINESS.serviceAreas.slice(0, -1).join(', ')} and
-          {BUSINESS.serviceAreas.at(-1)} — and further afield where the work
+          {BUSINESS.serviceAreas.at(-1)}, and further afield where the work
           suits it. Close enough to visit and photograph your practice
           properly; everything else works just as well at a distance.
         </p>

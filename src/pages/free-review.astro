@@ -41,7 +41,7 @@ const whatsappHref = whatsappFor('default');
 const covers = [
   {
     item: 'Listing accuracy',
-    detail: 'Your Google Business Profile checked line by line — categories, services, hours, photos — against what a patient actually needs.',
+    detail: 'Your Google Business Profile checked line by line, categories, services, hours, photos, against what a patient actually needs.',
   },
   {
     item: 'Mobile load time',
@@ -49,7 +49,7 @@ const covers = [
   },
   {
     item: 'Treatment page coverage',
-    detail: 'Which of the searches patients type can your site answer today — and which send them to a competitor.',
+    detail: 'Which of the searches patients type can your site answer today, and which send them to a competitor.',
   },
   {
     item: 'Review handling',
@@ -66,11 +66,11 @@ const covers = [
 ];
 
 const outline = [
-  { n: '01', line: 'Where patients find you today — the searches and surfaces that matter in your area' },
+  { n: '01', line: 'Where patients find you today, the searches and surfaces that matter in your area' },
   { n: '02', line: 'What they currently see: screenshots of your listing, your site, and the answer Google writes above both' },
   { n: '03', line: 'The gaps costing you patients, ranked by impact' },
-  { n: '04', line: 'What to fix first — useful with or without us' },
-  { n: '05', line: 'What it would cost, fixed, in writing — only if work is worth doing' },
+  { n: '04', line: 'What to fix first, useful with or without us' },
+  { n: '05', line: 'What it would cost, fixed, in writing, only if work is worth doing' },
 ];
 ---
 
@@ -78,7 +78,7 @@ const outline = [
   <PageHero
     label="Free review"
     title="A written review of what patients see. Free, in two working days."
-    lede={'One WhatsApp message with your clinic\'s name is all it takes. No form, no discovery call, no obligation — and if the honest answer is "change nothing", that is what the review will say.'}
+    lede={'One WhatsApp message with your clinic\'s name is all it takes. No form, no discovery call, no obligation, and if the honest answer is "change nothing", that is what the review will say.'}
   >
     <div class="mt-9 flex flex-wrap items-center gap-4">
       <a href={whatsappHref} rel="noopener" class="btn-accent px-7 py-4 text-[17px]">
@@ -129,7 +129,7 @@ const outline = [
           lede="Written in plain language, specific to your practice, and useful whether or not you ever hire us. Most reviews run three to five pages."
         />
         <p class="mt-6 max-w-[620px] text-lg leading-[1.62] text-body">
-          Why free? Because it is how we prove we see what others miss —
+          Why free? Because it is how we prove we see what others miss,
           before you pay anything, and before anyone asks you to sit through a
           call. Some reviews end with "your presence is healthy". Those
           practices remember us anyway.
@@ -163,11 +163,11 @@ const outline = [
         id="after-review-title"
         label="What happens next"
         title="What happens after the review?"
-        lede="You get one fixed number in writing against a defined scope. If you would rather fix things yourself, the review tells you where to start — and we part as professionals."
+        lede="You get one fixed number in writing against a defined scope. If you would rather fix things yourself, the review tells you where to start, and we part as professionals."
       />
       <p class="mt-6 max-w-[680px] text-[16px] leading-[1.65] text-muted">
         You can see the scale before you message us: our
-        <a href={href('/pricing')} class="prose-link">prices are published</a> —
+        <a href={href('/pricing')} class="prose-link">prices are published</a>:
         websites from {rupees(BUILDS[0]!.from)}, monthly care from
         {' '}{rupees(STANDALONE_MONTHLY.care)}. The review tells you
         which of those your practice actually needs, and occasionally the answer

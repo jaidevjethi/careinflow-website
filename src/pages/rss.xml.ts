@@ -18,7 +18,7 @@ export const GET: APIRoute = async () => {
   );
 
   return rss({
-    title: `${BUSINESS.name} — guides for clinic owners`,
+    title: `${BUSINESS.name}, guides for clinic owners`,
     description:
       'Plain-language guides on how patients find and judge clinics online: Google Business Profile, local SEO, website speed, and what a clinic website actually needs.',
     // Canonical host, not the build target — the mirror should not advertise itself.
