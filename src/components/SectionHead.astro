@@ -6,6 +6,13 @@ interface Props {
   lede?: string;
   dark?: boolean;
   /**
+   * Set on the mid-tone bands (`band-sage`, `band-slate`). There, `body` reads
+   * 4.35 against the ground and fails AA, while `ink` reads 7.85 — so the lede
+   * has to come up to ink rather than sit in the usual text grey. Not needed on
+   * `stone` or `mist`, where every text token still passes.
+   */
+  onBand?: boolean;
+  /**
    * Heading level. Defaults to h2 — every page's h1 is written inline in its
    * own opener, so this has never needed to be anything else, but the prop
    * keeps the component honest if a section ever nests deeper.
@@ -14,7 +21,7 @@ interface Props {
   /** Goes on the heading, for a section's aria-labelledby. */
   id?: string;
 }
-const { label, title, lede, dark = false, as: Tag = 'h2', id } = Astro.props;
+const { label, title, lede, dark = false, onBand = false, as: Tag = 'h2', id } = Astro.props;
 ---
 
 <div class="max-w-[700px]">
@@ -32,7 +39,12 @@ const { label, title, lede, dark = false, as: Tag = 'h2', id } = Astro.props;
     {title}
   </Tag>
   {lede && (
-    <p class:list={['mt-4.5 text-lg leading-[1.62]', dark ? 'text-panel-text' : 'text-body']}>
+    <p
+      class:list={[
+        'mt-4.5 text-lg leading-[1.62]',
+        dark ? 'text-panel-text' : onBand ? 'text-ink/90' : 'text-body',
+      ]}
+    >
       {lede}
     </p>
   )}

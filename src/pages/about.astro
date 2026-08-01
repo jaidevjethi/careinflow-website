@@ -38,11 +38,16 @@ const schema = graph(
   faqSchema(faqs),
 );
 
+/**
+ * Four numbers a practice owner can actually check against us later. These
+ * were load references and an accessibility grade, which are things we owe
+ * the build, not promises the person reading has any way to judge.
+ */
 const standards = [
-  { value: '<1.2s', caption: 'load reference we build and measure against' },
-  { value: 'AA', caption: 'accessibility on every build' },
-  { value: '100%', caption: 'client-owned accounts from day one' },
-  { value: '0', caption: 'templates resold as bespoke' },
+  { value: 'Only', caption: 'healthcare, nothing else' },
+  { value: 'Yours', caption: 'accounts, from day one' },
+  { value: 'Fixed', caption: 'price, agreed in writing' },
+  { value: 'Never', caption: 'a template sold as bespoke' },
 ];
 
 const notList = [
@@ -76,7 +81,7 @@ const notList = [
     </figure>
   </PageHero>
 
-  <section class="border-t border-hairline bg-surface" aria-labelledby="founder-title">
+  <section class="band-mist" aria-labelledby="founder-title">
     <div class="section shell grid items-start gap-14 lg:grid-cols-[1fr_400px] lg:gap-20">
       <div>
         <div class="mb-10 grid gap-7 sm:grid-cols-[260px_1fr] sm:items-center">

@@ -26,6 +26,12 @@
  *  - Accent tokens are named for the service they belong to, not the hue. The
  *    previous set was named after colours and stopped being true the day the
  *    palette moved.
+ *  - Colour arrives as solid colour-blocked sections and saturated small
+ *    elements. No gradients, no glass, no glow: crisp edges are the point.
+ *  - The grounds form a measured ladder, not two values. A page that only
+ *    owns near-white and midnight reads flat however good its type is.
+ *  - `sand` is the single warm note, on small elements only. An all-cool
+ *    palette is part of what made the pages feel unconsidered.
  */
 /*
  * Latin subsets only. The package's index.css also ships cyrillic, greek and
@@ -35,24 +41,6 @@
  */
 @import 'tailwindcss';
 
-/*
- * CareInflow design system — "Midnight & Citrus".
- * Type, layout, spacing and motion still follow direction 2a "Instrument"
- * (docs/design/careinflow-design-system.dc.html); its COLOUR section is
- * superseded by the palette below.
- *
- * Colour rules:
- *  - Warm stone base with real depth (never white or pastel), midnight-navy
- *    ink, and citrus amber as the signature accent.
- *  - Vivid values are FILLS ONLY. Text and icons on light use the -deep
- *    variants, which are the ones that carry AA (every pair was measured).
- *  - Vivid fills take INK text: white on vivid teal is only 3.8:1 and white
- *    on citrus is worse. Ink on citrus is 9.9:1.
- *  - Colour arrives as solid colour-blocked sections and saturated small
- *    elements. No gradients, no glass, no glow: crisp edges are the point.
- *  - Midnight is reserved for moments: the hero, the CTA panel, the footer,
- *    and at most one section per page. Everything else sits on stone.
- */
 @font-face {
   font-family: 'Manrope Variable';
   font-style: normal;
@@ -81,9 +69,29 @@
   --font-sans: 'Manrope Variable', system-ui, ui-sans-serif, sans-serif;
   --font-mono: 'JetBrains Mono Variable', ui-monospace, 'Cascadia Mono', monospace;
 
-  /* Light surfaces — cool clinical neutrals, never pure white */
-  --color-canvas: #f7f5f1;
+  /*
+   * The ground ladder. A page used to have two values, near-white and
+   * midnight, with nothing between them, and `canvas` sat 1.062 from
+   * `surface` — close enough that alternating sections were invisible and a
+   * card barely lifted off the page behind it. Six steps now, each measured
+   * against the one above it, so scrolling moves through actual colour.
+   *
+   *   surface  .974   cards and the lightest sections
+   *   canvas   .890   default body            (1.12 from surface)
+   *   stone    .780   warm deep band          (1.10 from canvas)
+   *   mist     .789   cool band, stone's value at the opposite temperature
+   *   sage     .469   mid-tone block          (1.60 from mist)
+   *   slate    .463   mid-tone block, the alternate
+   *   panel    .029   midnight, still reserved
+   *
+   * A surface card lifts 1.118 on canvas and 1.234 on stone.
+   */
   --color-surface: #fdfcfa;
+  --color-canvas: #f4efe5;
+  --color-stone: #ebe4d6;
+  --color-mist: #dce7e8;
+  --color-sage: #9dbdb5;
+  --color-slate: #a3b8c9;
   --color-line: #ddd7cc;
   --color-line-strong: #c9c1b2;
   --color-hairline: #e8e3da;
@@ -98,11 +106,26 @@
   --color-pass: #0a6b63;
   --color-ink: #17242a;
 
-  /* Text — blue-grey family, every value measured against canvas and surface */
+  /*
+   * Text — blue-grey family, every value measured on all four light grounds.
+   * `faint` was #5e6b72, which fell to 4.34 on stone and 4.35 on mist once the
+   * ground gained depth. At #54616a it reads 5.04 and 5.05 there and 6.22 on
+   * surface, so it clears AA everywhere the ladder puts it.
+   */
   --color-body: #414c53;
   --color-body-deep: #28343a;
   --color-muted: #525f66;
-  --color-faint: #5e6b72;
+  --color-faint: #54616a;
+
+  /*
+   * Sand — the one warm note in an otherwise entirely cool palette, and the
+   * reason the site stopped reading flat when every hue was a blue. Small
+   * elements only. As a fill it takes ink text (5.08). `sand-deep` reads 3.53
+   * on canvas, which clears the 3:1 bar for large text and fails the 4.5 bar
+   * for body, so it is for numerals and nothing else. Never body copy.
+   */
+  --color-sand: #b8894a;
+  --color-sand-deep: #a8763c;
 
   /* Tints */
   --color-surgical-tint: #e6ecf1;
@@ -124,26 +147,33 @@
    * sat side by side. Websites are the flagship, so they take the primary navy
    * and local SEO moves up to a lighter blue. Measured on canvas: 9.77, 6.75.
    */
+  /*
+   * The tints were all one colour: five values between L .809 and .828, the
+   * closest pair 1.6 deltaE apart when 2.3 is the threshold at which a human
+   * can see a difference at all. Two cards side by side looked identical. They
+   * now spread across two lightness steps and four hues: closest pair 3.5,
+   * mean 9.1. `care` carries the warm one, which ties it to stone and sand.
+   */
   /* web = primary navy — healthcare websites */
   --color-a-web: #14425f;
   --color-a-web-vivid: #2f6390;
-  --color-a-web-tint: #e3e9f0;
+  --color-a-web-tint: #dbe4ee;
   /* seo = mid blue — local SEO */
   --color-a-seo: #1c5a86;
   --color-a-seo-vivid: #3e86bd;
-  --color-a-seo-tint: #e2ecf4;
+  --color-a-seo-tint: #e4eef7;
   /* gbp = clinical teal — Google Business Profile, and the signature accent */
   --color-a-gbp: #0b5f61;
   --color-a-gbp-vivid: #12b3a6;
-  --color-a-gbp-tint: #dfeeeb;
-  /* care = slate blue — website care */
+  --color-a-gbp-tint: #cfe8e2;
+  /* care = warm sand-grey — website care */
   --color-a-care: #3a5668;
   --color-a-care-vivid: #567b92;
-  --color-a-care-tint: #e7eaee;
+  --color-a-care-tint: #e8e4dd;
   /* social = sage — social media */
   --color-a-social: #3c654c;
   --color-a-social-vivid: #578a69;
-  --color-a-social-tint: #e4eae4;
+  --color-a-social-tint: #d8e6d9;
 
   /* Deep blue panel family — hero, CTA, footer and one section per page */
   --color-panel: #0e3348;
@@ -502,15 +532,38 @@
     );
   }
   /*
-   * A chapter break with colour in it, kept quiet on purpose. This band used
-   * to be filled with the vivid teal at full bleed, which made a supporting
-   * list of benefits the loudest block on the page: louder than the hero, and
-   * louder than the CTA it was meant to lead into. The tint keeps the section
-   * feeling like its own chapter and gives the eye back to the two panels that
-   * are actually asking for something.
+   * Chapter bands, the middle of the ladder. Between near-white and midnight
+   * there used to be nothing, which is what made every page read flat. These
+   * fill that gap.
+   *
+   * `stone` and `mist` are quiet: same value, opposite temperature, so putting
+   * one after the other turns the page's colour without changing its weight.
+   * `sage` and `slate` are the mid-tones and carry real presence; use at most
+   * one per page, and alternate which one between neighbouring page types.
+   *
+   * TEXT RULE, measured: on sage and slate only `ink` (7.85) and `surgical`
+   * (5.26) clear AA. `body` reads 4.35, `muted` 3.26 and `faint` 2.72, all
+   * failures. Ink for copy, surgical for small labels, nothing else. This is
+   * the same rule as "vivid fills take ink text", for the same reason.
+   *
+   * A full-bleed vivid teal used to sit here, which made a supporting list of
+   * benefits louder than both the hero and the CTA it led into. Mid-tone, not
+   * vivid, is the setting that gives the page depth without taking the eye.
    */
-  .band-tint {
-    background: var(--color-a-gbp-tint);
+  .band-stone {
+    background: var(--color-stone);
+    color: var(--color-ink);
+  }
+  .band-mist {
+    background: var(--color-mist);
+    color: var(--color-ink);
+  }
+  .band-sage {
+    background: var(--color-sage);
+    color: var(--color-ink);
+  }
+  .band-slate {
+    background: var(--color-slate);
     color: var(--color-ink);
   }
   /* Oversized numeral — the personality device. Large, tight, and set in the
@@ -521,8 +574,19 @@
     line-height: 0.85;
     font-variant-numeric: tabular-nums;
   }
-  .band-tint .band-rule {
-    background: var(--color-a-gbp-vivid);
+  /*
+   * The quiet bands take the sand rule. It is the only warm mark on the site
+   * and it recurs once per band, which is exactly the "saturated small
+   * element" the palette calls for: enough to break an all-cool page, far too
+   * small to read as a second brand colour.
+   */
+  .band-stone .band-rule,
+  .band-mist .band-rule {
+    background: var(--color-sand);
+  }
+  .band-sage .band-rule,
+  .band-slate .band-rule {
+    background: var(--color-surgical);
   }
 
   /* Uppercase mono section label (record vocabulary). */

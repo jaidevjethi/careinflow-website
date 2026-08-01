@@ -18,12 +18,16 @@ Astro 5 · TypeScript strict · Tailwind CSS v4 (`@tailwindcss/vite`, tokens in 
 
 ## Design system 2a "Instrument" (hard rules)
 
-- Palette "Midnight & Citrus" — canvas `#E9E4DA`, surface `#F7F4EE`, line `#D6CFC2`, surgical teal `#0A6B63` (also `pass`, for verified measurements ONLY), citrus `#FFB020` (fills only — ink text on it, never white), ink `#0A1628`; midnight panel family `#0A1628`/`#14243E`. **Midnight is reserved for the hero, the CTA panel, the footer and at most one section per page. Never a dark theme.**
-- **Every page opens with the midnight `PageHero`** — header + hero form one continuous dark block, stone body between, midnight CTA + footer at the bottom. Never a bare-stone opener.
-- Type: Manrope variable only (display 800, tracking −0.045em; body 18px/1.62); JetBrains Mono for labels/measurements/chips. Large tight numbers are the only ornament.
-- Layout: 1440 max, 80px margins, 140–160px section rhythm, radius 12/16/24, exactly one shadow recipe.
-- Motion: single easing `cubic-bezier(.22,1,.36,1)`; 240ms entrance fade+8px rise (once), 200ms hover lift; **only `opacity`/`transform` animate, pure CSS, no scroll-driven effects, `prefers-reduced-motion` disables all.** No animation libraries.
-- Medical layer: tick-rule + mono label above sections; record vocabulary (CHART, TRIAGE, PROTOCOL, INDICATION, STATUS) — never "solutions"/"why choose us"; every measurement carries its reference range (`REF <1.2S`).
+Full rules in the `careinflow-design` skill. The short version:
+
+- Palette "Clinical Blue & Teal". **The ground ladder is six values, not two** — `surface #FDFCFA` → `canvas #F4EFE5` → `stone #EBE4D6` → `mist #DCE7E8` → mid-tones `sage #9DBDB5` / `slate #A3B8C9` → midnight `#0E3348`. Every page changes ground as you scroll; at most one mid-tone band per page. On sage and slate **only `ink` and `surgical` clear AA** — never `body`, `muted` or `faint`.
+- Brand: `surgical #14425F` primary, `vivid #12B3A6` (fills only, ink text on it, never white), `pass #0A6B63` for verified measurements ONLY, `ink #17242A`, `sand #B8894A` as the single warm mark on small elements only. Five accents named for the service (`web`/`seo`/`gbp`/`care`/`social`), never for the hue.
+- **Midnight is reserved for the header, hero, CTA panel, footer and at most one section per page. Never a dark theme.** A dark card inside a light section counts: it takes the eye first, so spend that weight on what you want clicked.
+- **Every page opens with the midnight `PageHero`** — header + hero form one continuous dark block, the body between, midnight CTA + footer at the bottom. No hero exceeds ~72% of the viewport. Hero `stats` carry facts a buyer can weigh (`4 weeks`, `Free`, `Fixed`), never build measurements (`<1.2s`, `95+`, `AA`).
+- Type: Manrope variable only (display 800, tracking −0.045em; body 18px/1.62); JetBrains Mono for labels/chips. Large tight numbers in their accent colour are the only ornament.
+- Layout: 1440 max, 80px margins, 112/72px section rhythm, radius 12/16/24, exactly one shadow recipe. Nothing crosses the viewport at 320px or 1440px. Grids divide evenly.
+- Motion: single easing `cubic-bezier(.22,1,.36,1)`; 240ms entrance fade+8px rise (once), 200ms hover lift; **only `opacity`/`transform` animate, pure CSS, `prefers-reduced-motion` disables all.** No animation libraries. No gradients, no glass, no glow.
+- Section labels are plain language above a tick-rule: "What we do", "Where patients look", "Questions". The record vocabulary (CHART, TRIAGE, PROTOCOL) and the `REF <1.2S` ranges were retired for reading cold. Never "solutions"/"why choose us".
 
 ## Voice & integrity (non-negotiable)
 
@@ -41,6 +45,7 @@ Astro 5 · TypeScript strict · Tailwind CSS v4 (`@tailwindcss/vite`, tokens in 
 | `careinflow-design` | tokens, type, layout, motion, components |
 | `careinflow-funnel` | CTA placement, WhatsApp prefills, new pages |
 | `careinflow-images` | generating, capturing and optimizing imagery |
+| `careinflow-review` | judging any change: who to judge as, how to rate honestly, and the loop to run before calling it done |
 
 ## SEO conventions
 

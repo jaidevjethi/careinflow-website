@@ -43,11 +43,16 @@ const schema = graph(
   ),
 );
 
+/**
+ * What the buyer gets, not what the build scores. A Lighthouse number and a
+ * schema validity flag belong in the work, and in the written review; they
+ * are not four things a doctor can weigh in the first ten seconds of a page.
+ */
 const targets = [
-  { value: '<1.2s', caption: 'load reference, measured on 4G' },
-  { value: '95+', caption: 'Lighthouse score' },
-  { value: 'AA', caption: 'accessibility on every build' },
-  { value: 'Valid', caption: 'schema on every page' },
+  { value: 'Nine', caption: 'services, priced on the page' },
+  { value: 'Three', caption: 'is what most clinics start with' },
+  { value: 'Fixed', caption: 'price, agreed before we start' },
+  { value: 'Free', caption: 'written review before you pay' },
 ];
 
 const glossary = [
@@ -65,11 +70,11 @@ const glossary = [
   },
   {
     term: 'Schema markup',
-    def: 'Machine-readable labels on your pages that tell search engines and AI assistants exactly what your practice is and offers.',
+    def: 'Machine-readable labels on your pages that tell a search engine exactly what your practice is, where it is, and what it treats.',
   },
   {
     term: 'AEO (AI answer readiness)',
-    def: 'Publishing your practice facts so AI assistants can quote you when patients ask them for clinic recommendations.',
+    def: 'Google now writes a summary above the search results for many treatment questions, built from pages it can quote. This is publishing your practice facts in a form it can use.',
   },
 ];
 
@@ -202,7 +207,7 @@ const engagements = [
   </section>
 
   <!-- AFTER LAUNCH -->
-  <section class="border-t border-hairline bg-surface" aria-labelledby="after-launch-title">
+  <section class="band-stone" aria-labelledby="after-launch-title">
     <div class="section shell">
       <SectionHead
         id="after-launch-title"
@@ -255,7 +260,7 @@ const engagements = [
   </section>
 
   <!-- COMPLEMENTARY -->
-  <section class="border-t border-hairline bg-surface" aria-labelledby="complementary-title">
+  <section class="band-mist" aria-labelledby="complementary-title">
     <div class="section shell">
       <h2 id="complementary-title" class="text-xl font-bold tracking-[-0.02em] text-ink">
         Support services, when they help

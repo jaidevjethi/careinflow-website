@@ -7,6 +7,8 @@ import SectionHead from '@/components/SectionHead.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import CtaStrip from '@/components/CtaStrip.astro';
+import IllustrationPanel from '@/components/IllustrationPanel.astro';
+import pricingMockup from '@/assets/mockups/hero.jpg';
 import { href } from '@/lib/url';
 import { cycleAccent } from '@/lib/accents';
 import {
@@ -213,13 +215,24 @@ const principles = [
   </section>
 
   <!-- WHERE THE RETURN COMES FROM -->
+  <!-- The longest page on the site ran eight sections without a single image.
+       The render carries its own backdrop, so it sits on the section colour
+       rather than needing a tint behind it. -->
   <section class="section shell" aria-labelledby="return-title">
-    <SectionHead
-      id="return-title"
-      label="Where the return comes from"
-      title={WHERE_RETURN_COMES_FROM.headline}
-      lede={WHERE_RETURN_COMES_FROM.lede}
-    />
+    <div class="grid items-center gap-12 lg:grid-cols-[1fr_460px] lg:gap-16">
+      <SectionHead
+        id="return-title"
+        label="Where the return comes from"
+        title={WHERE_RETURN_COMES_FROM.headline}
+        lede={WHERE_RETURN_COMES_FROM.lede}
+      />
+      <IllustrationPanel
+        src={pricingMockup}
+        alt="A clinic website shown on a laptop and a phone, with the treatment pages and the enquiry button visible."
+        maxWidth={460}
+        class="justify-self-center lg:justify-self-end"
+      />
+    </div>
     <div class="reveal-group mt-11 grid gap-4 sm:grid-cols-2">
       {WHERE_RETURN_COMES_FROM.points.map((p, i) => (
         <article class="card-hover overflow-hidden rounded-3xl border border-line bg-surface">
@@ -268,7 +281,7 @@ const principles = [
   </section>
 
   <!-- MONTHLY PLANS -->
-  <section class="border-t border-hairline bg-surface" aria-labelledby="plans-title">
+  <section class="band-stone" aria-labelledby="plans-title">
     <div class="section shell">
       <SectionHead
         id="plans-title"
@@ -439,9 +452,13 @@ const principles = [
   </section>
 
   <!-- WHAT YOU PAY FOR -->
-  <section class="border-t border-hairline bg-surface" aria-labelledby="paysfor-title">
+  <!-- The one mid-tone on the longest page. Safe here because the only text
+       sitting directly on the band is the label and the title; every word of
+       body copy is inside a canvas card. -->
+  <section class="band-slate" aria-labelledby="paysfor-title">
     <div class="section shell">
       <SectionHead
+        onBand
         id="paysfor-title"
         label="What you pay for"
         title="What does the price include?"

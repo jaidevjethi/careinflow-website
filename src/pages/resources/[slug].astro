@@ -5,6 +5,7 @@ import PageHero from '@/components/PageHero.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import CtaStrip from '@/components/CtaStrip.astro';
 import { CANONICAL_HOST } from '@/config/site';
+import { topicAccent } from '@/lib/accents';
 import { href } from '@/lib/url';
 import {
   graph,
@@ -79,10 +80,20 @@ const dateFmt = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long'
       </p>
     </PageHero>
 
-    <div class="border-t border-hairline bg-surface">
+    {/* These are the longest reads on the site and they used to be one
+        unbroken white field from the hero to the footer. Setting the prose on
+        a sheet over a tinted band gives the page edges and depth without
+        touching the measure, which is what actually makes long copy readable.
+        The topic accent runs along the top of the sheet. */}
+    <div class="band-mist">
       <div class="section shell">
-        <div class="prose-ci">
-          <Content />
+        <div class="mx-auto max-w-[820px] overflow-hidden rounded-3xl border border-line bg-surface">
+          <span
+            class:list={['accent-bar block h-1.5 w-full', topicAccent(resource.data.topic).bar]}
+            aria-hidden="true"></span>
+          <div class="prose-ci px-6 py-10 sm:px-12 sm:py-14">
+            <Content />
+          </div>
         </div>
       </div>
     </div>

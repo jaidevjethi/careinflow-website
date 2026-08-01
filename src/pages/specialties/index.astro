@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHero from '@/components/PageHero.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
@@ -68,17 +69,28 @@ const schema = graph(
     ]}
   />
 
-  <section class="border-t border-hairline bg-surface" aria-label="Specialties with a full page">
+  <section class="band-mist" aria-label="Specialties with a full page">
     <div class="section shell">
       <div class="grid gap-5 lg:grid-cols-3">
         {specialties.map((s) => (
           <a
             href={href(`/specialties/${s.id}`)}
             class:list={[
-              'card-hover flex flex-col rounded-3xl border border-line p-8 hover:no-underline',
+              'card-hover flex flex-col overflow-hidden rounded-3xl border border-line hover:no-underline',
               ACCENTS[s.data.accent].tint,
             ]}
           >
+            {s.data.image && (
+              <Image
+                src={s.data.image}
+                alt={s.data.imageAlt ?? ''}
+                widths={[400, 800]}
+                sizes="(min-width: 1024px) 400px, 92vw"
+                loading="lazy"
+                class="h-[190px] w-full border-b border-line object-cover"
+              />
+            )}
+            <div class="flex flex-1 flex-col p-8">
             <h2 class="text-[24px] font-extrabold leading-[1.15] tracking-[-0.03em] text-ink">
               {s.data.navLabel}
             </h2>
@@ -92,6 +104,7 @@ const schema = graph(
             <span class:list={['prose-link mt-5 inline-block text-[15px]', ACCENTS[s.data.accent].text]}>
               Read the {s.data.navLabel.toLowerCase()} page →
             </span>
+            </div>
           </a>
         ))}
       </div>

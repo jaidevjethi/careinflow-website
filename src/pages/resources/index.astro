@@ -58,19 +58,22 @@ const dateFmt = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short
     ]}
   />
 
-  <section class="border-t border-hairline bg-surface" aria-label="Articles">
+  <section class="band-mist" aria-label="Articles">
     <div class="section shell grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
       {resources.map((r) => (
         <a
           href={href(`/resources/${r.id}`)}
           class="card-hover flex flex-col overflow-hidden rounded-3xl border border-line bg-canvas hover:no-underline"
         >
-          <span class:list={['accent-bar block h-1.5 w-full', topicAccent(r.data.topic).bar]} aria-hidden="true"></span>
+          {/* A tinted cover instead of a hairline rule. These are the only
+              cards on the site with no photograph, so the topic colour has to
+              do the work an image would otherwise do. */}
+          <div class:list={['flex items-center justify-between gap-3 px-7 py-5', topicAccent(r.data.topic).tint]}>
+            <span class:list={['label-mono', topicAccent(r.data.topic).text]}>{topicLabels[r.data.topic]}</span>
+            <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">{r.data.minutesRead} min</span>
+          </div>
+          <span class:list={['accent-bar block h-1 w-full', topicAccent(r.data.topic).bar]} aria-hidden="true"></span>
           <div class="flex flex-1 flex-col p-7">
-          <p class="mb-4 flex items-center gap-2">
-            <span class:list={['chip', topicAccent(r.data.topic).chip]}>{topicLabels[r.data.topic]}</span>
-            <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{r.data.minutesRead} min</span>
-          </p>
           <h2 class="text-[20px] font-extrabold leading-[1.2] tracking-[-0.025em] text-ink">{r.data.title}</h2>
           <p class="mt-3 text-[14px] leading-[1.6] text-body">{r.data.description}</p>
           <p class="mt-auto pt-5 font-mono text-[11px] uppercase tracking-[0.08em] text-faint">
