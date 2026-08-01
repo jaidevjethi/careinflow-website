@@ -47,7 +47,11 @@ const {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#0A1628" />
+    <!-- Matches --color-panel. This is the browser chrome around the page on a
+         phone, so it has to be the same navy the header is, or the app frame
+         and the site are two different colours. It was still #0A1628, from two
+         palettes ago, which nothing else on the site had used in months. -->
+    <meta name="theme-color" content="#0B2440" />
     <link rel="preload" as="font" type="font/woff2" href={manropeWoff2} crossorigin="anonymous" />
     <link rel="preload" as="font" type="font/woff2" href={monoWoff2} crossorigin="anonymous" />
     <link rel="icon" href={href('/favicon.svg')} type="image/svg+xml" />
