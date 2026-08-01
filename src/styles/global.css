@@ -240,6 +240,15 @@
       opacity: 1;
     }
   }
+  /* The tick rule plotting itself. Transform only — never a width animation. */
+  @keyframes ci-plot {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
   @keyframes ci-live {
     0%,
     100% {
@@ -731,11 +740,53 @@
         animation-timeline: view();
         animation-range: entry 0% entry 40%;
       }
-      /* Staggered variant for grids — each child trails the last slightly. */
+
+      /*
+       * Staggered variant for grids. The children share ONE timeline named on
+       * the container rather than each owning a view() timeline of its own.
+       * With per-element timelines, cards sitting in the same row resolve in
+       * perfect unison, which reads mechanical. Offsetting each child against
+       * the shared timeline makes a grid settle in reading order at any column
+       * count, so it stays correct at every breakpoint.
+       */
+      .reveal-group {
+        view-timeline-name: --ci-group;
+      }
       .reveal-group > * {
         animation: ci-rise linear both;
+        animation-timeline: --ci-group;
+        animation-range: entry 0% entry 40%;
+      }
+      .reveal-group > *:nth-child(2) { animation-range: entry 6% entry 46%; }
+      .reveal-group > *:nth-child(3) { animation-range: entry 12% entry 52%; }
+      .reveal-group > *:nth-child(4) { animation-range: entry 18% entry 58%; }
+      .reveal-group > *:nth-child(5) { animation-range: entry 24% entry 64%; }
+      .reveal-group > *:nth-child(6) { animation-range: entry 30% entry 70%; }
+      /* Cap the cascade so long lists never feel like they are queueing. */
+      .reveal-group > *:nth-child(n + 7) { animation-range: entry 36% entry 76%; }
+
+      /*
+       * The instrument signature: the tick rule draws itself left to right as
+       * its section arrives, like a chart being plotted. It animates the
+       * system's own motif rather than adding a new one, and scaleX is
+       * compositor-only, so it costs nothing to run.
+       */
+      .tick-rule {
+        transform-origin: left center;
+        animation: ci-plot linear both;
         animation-timeline: view();
         animation-range: entry 0% entry 45%;
+      }
+
+      /*
+       * Measurements settle a beat after the label that names them, the way a
+       * readout stabilises. Scroll-driven only, so it is never applied above
+       * the fold and can never delay a largest-contentful-paint element.
+       */
+      .settle {
+        animation: ci-rise linear both;
+        animation-timeline: view();
+        animation-range: entry 10% entry 55%;
       }
     }
   }

@@ -60,7 +60,7 @@ const dateFmt = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short
   />
 
   <section class="band-mist" aria-label="Articles">
-    <div class="section shell grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+    <div class="section shell reveal-group grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
       {resources.map((r) => (
         <a
           href={href(`/resources/${r.id}`)}

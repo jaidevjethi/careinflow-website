@@ -157,7 +157,7 @@ const principles = [
         lede="Most of what you are paying for here is the writing and the enquiry path, not the building, so these are lower than agency quotes for the same work. Fixed in writing before anything begins, with exclusions listed as plainly as inclusions."
       />
 
-      <div class="mt-12 grid items-start gap-5 xl:grid-cols-3">
+      <div class="reveal-group mt-12 grid items-start gap-5 xl:grid-cols-3">
         {BUILDS.map((build, i) => (
           <article
             class:list={[
@@ -177,7 +177,7 @@ const principles = [
 
               <p class="mt-6 flex items-baseline gap-2.5">
                 <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">from</span>
-                <span class="numeral text-[clamp(32px,3.8vw,44px)] text-ink">
+                <span class="settle numeral text-[clamp(32px,3.8vw,44px)] text-ink">
                   {rupees(build.from)}
                 </span>
               </p>
@@ -290,7 +290,7 @@ const principles = [
         lede="Month to month, no lock-in, cancel by sending a message. Whatever you choose, the website and every account stay in your name."
       />
 
-      <div class="mt-12 grid items-start gap-5 xl:grid-cols-3">
+      <div class="reveal-group mt-12 grid items-start gap-5 xl:grid-cols-3">
         {PLANS.map((plan, i) => (
           <article
             class:list={[
@@ -309,7 +309,7 @@ const principles = [
               <p class="mt-2.5 text-[16px] leading-[1.6] text-muted">{plan.summary}</p>
 
               <p class="mt-6 flex items-baseline gap-2">
-                <span class="text-[clamp(30px,3.6vw,40px)] font-extrabold leading-none tracking-[-0.045em] text-ink">
+                <span class="settle text-[clamp(30px,3.6vw,40px)] font-extrabold leading-none tracking-[-0.045em] text-ink">
                   {rupees(plan.monthly)}
                 </span>
                 <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">/ month</span>
