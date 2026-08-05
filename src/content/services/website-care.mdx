@@ -32,6 +32,10 @@ faqs:
 related: ['healthcare-websites', 'google-business-profile']
 ---
 
+import Figure from '@/components/Figure.astro';
+import monitoring from '@/assets/mockups/care-monitoring.webp';
+import studio from '@/assets/editorial/care-studio.webp';
+
 ## What happens to your website after launch?
 
 Most clinic websites are abandoned the day they go live, by the agency
@@ -55,6 +59,13 @@ have asked for, and refreshed photos and hours.
 reference, plus a written review of what patients did, what changed near
 you, and what we recommend next.
 
+<Figure
+  src={monitoring}
+  alt="A laptop and tablet on a desk showing a website monitoring dashboard: uptime, page speed readings, backup status and certificate status."
+  caption="Monitoring runs whether or not you look at it"
+  maxWidth={680}
+/>
+
 ## Small changes, done quickly
 
 A new doctor joins. Diwali hours change. You start offering a treatment
@@ -63,6 +74,13 @@ that deserves its own page.
 These small updates are where most websites rot, because asking the
 original developer feels like starting a project. With care in place, you
 send a WhatsApp message and it gets done.
+
+<Figure
+  src={studio}
+  alt="A developer at a desk in the studio, reviewing a clinic site's performance readings on one screen while its code is open on another."
+  caption="The upkeep, from the studio in Mehsana"
+  maxWidth={680}
+/>
 
 ## Who owns the website?
 

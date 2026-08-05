@@ -1,0 +1,317 @@
+/**
+ * Turn a drop of generated imagery into committed site assets.
+ * Run: node scripts/optimize-editorial.mjs
+ *
+ * Sources live in the gitignored `generated_images/` scratch folder at the repo
+ * root. They are deliberately not committed: the drop is ~17MB of JPEG against
+ * ~2MB of output, and Cloudflare re-clones this repo on every push. The config
+ * below is the record of how each asset was made — crop, ratio and grade are
+ * all declared, so re-running against the same sources reproduces the outputs
+ * exactly.
+ *
+ * ---------------------------------------------------------------------------
+ * WHY THE RATIOS ARE FIXED
+ *
+ * Committed assets used to run at 1.792, 1.600, 1.491, 1.440, 1.000, 0.806,
+ * 0.747 and 0.556 — every call site then hand-wrote its own height to cope.
+ * Everything here lands on one of three shapes:
+ *
+ *   wide     3:2   standalone figures: MDX bodies, hero slides, photo strips
+ *   band    16:9   card image bands, where the box is wider than it is tall
+ *   tall     4:5   portrait phone mockups and hero asides
+ *
+ * Anything tighter than that is CSS `object-cover` on a fixed-height box, so
+ * one file serves several shapes and nothing is re-exported per layout.
+ *
+ * ---------------------------------------------------------------------------
+ * WHY THE GRADE IS MEASURED, NOT DIALLED
+ *
+ * Most of these photographs arrive warm — wood desks, amber cove lighting,
+ * terracotta. The palette is one cool family, but a photograph is not a palette
+ * token: the site's existing photographs measure b* +2.4 (hero-clinic-owner),
+ * +2.95 (specialty-dental) and +6.38 (area-mehsana), because rooms contain wood
+ * and people contain skin. Driving a photograph to b* 0 makes it look embalmed.
+ *
+ * So `grade` takes a *target* b*, and the script solves for the blue gain that
+ * reaches it, then logs the before and after. The target for photography is the
+ * existing register, not zero. Mockups on navy grounds already measure negative
+ * and are left alone.
+ */
+import sharp from 'sharp';
+import { mkdir, readdir, stat } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+
+const root = (p) => fileURLToPath(new URL(`../${p}`, import.meta.url));
+const SRC_DIR = fileURLToPath(new URL('../../../../generated_images/', import.meta.url));
+
+const RATIOS = { wide: 3 / 2, band: 16 / 9, tall: 4 / 5 };
+
+/** Nothing on the site renders wider than 1120 CSS px, so 1200 covers 2x on every real slot. */
+const DEFAULT_WIDTH = 1200;
+
+/**
+ * The drop. `n` is the number the image was generated under, kept so a file on
+ * disk can always be traced back to the brief it came from.
+ *
+ * `crop` is relative (0–1) against the source, applied before the ratio cover
+ * crop. `patch` regions are relative too, and exist for the one thing generated
+ * imagery reliably gets wrong: a piece of invented text that would be legible
+ * at render size. A patch either blurs its region (right for photographic
+ * detail, e.g. a name badge) or fills it with a flat colour (right for flat UI,
+ * where a blur leaves an obvious soft rectangle and a fill is invisible).
+ */
+const DROP = [
+  // ── Homepage hero, slides 2 and 3 ────────────────────────────────────────
+  {
+    n: '01', src: '01-hero-collaboration.jpg',
+    out: 'editorial/hero-founder-consult.webp',
+    ratio: 'wide', grade: 3.0,
+  },
+  {
+    n: '02', src: '02-hero-doctor-phone.jpg',
+    out: 'editorial/hero-doctor-mobile.webp',
+    // Drop the blurred left third; the doctor and the phone are the subject.
+    crop: { left: 0.16, top: 0, width: 0.84, height: 1 },
+    ratio: 'wide', grade: 3.0,
+  },
+
+  // ── Homepage triage cards ────────────────────────────────────────────────
+  // Portrait phones stay portrait; the card band crops them with object-top.
+  {
+    n: '03', src: '03-triage-gbp-listing.jpg',
+    out: 'mockups/surface-google-listing.webp',
+    crop: { left: 0, top: 0.03, width: 1, height: 0.94 },
+    ratio: 'tall', width: 900,
+  },
+  {
+    n: '04', src: '04-triage-mobile-website.jpg',
+    out: 'mockups/surface-practice-website.webp',
+    crop: { left: 0, top: 0.03, width: 1, height: 0.94 },
+    ratio: 'tall', width: 900,
+  },
+  {
+    n: '05', src: '05-triage-ai-search.jpg',
+    out: 'mockups/surface-ai-answer.webp',
+    ratio: 'band',
+  },
+
+  // ── Homepage specialty strip ─────────────────────────────────────────────
+  { n: '06', src: '06-specialty-dental.jpg',        out: 'editorial/specialty-dental-room.webp',   ratio: 'wide', grade: 4.5, width: 900 },
+  { n: '07', src: '07-specialty-dermatology.jpg',   out: 'editorial/specialty-dermatology.webp',   ratio: 'wide', grade: 4.5, width: 900 },
+  { n: '08', src: '08-specialty-physiotherapy.jpg', out: 'editorial/specialty-physiotherapy.webp', ratio: 'wide', grade: 4.5, width: 900 },
+  { n: '09', src: '09-specialty-ophthalmology.jpg', out: 'editorial/specialty-ophthalmology.webp', ratio: 'wide', grade: 4.5, width: 900 },
+  { n: '10', src: '10-specialty-paediatrics.jpg',   out: 'editorial/specialty-paediatrics.webp',   ratio: 'wide', grade: 6.0, width: 900 },
+  { n: '11', src: '11-specialty-orthopaedics.jpg',  out: 'editorial/specialty-orthopaedics.webp',  ratio: 'wide', grade: 4.5, width: 900 },
+
+  // ── /services hero aside ─────────────────────────────────────────────────
+  {
+    n: '12', src: '12-services-hub-hero.jpg',
+    out: 'mockups/services-device-suite.webp',
+    crop: { left: 0, top: 0.03, width: 1, height: 0.94 },
+    ratio: 'tall', width: 900,
+  },
+
+  // ── Service detail bodies ────────────────────────────────────────────────
+  { n: '13', src: '13-service-websites-before-after.jpg', out: 'mockups/websites-before-after.webp', ratio: 'wide' },
+  { n: '14', src: '14-service-websites-wireframe.jpg',    out: 'editorial/websites-wireframe.webp',  ratio: 'wide', grade: 4.0 },
+  { n: '15', src: '15-service-websites-responsive.jpg',   out: 'mockups/websites-responsive.webp',   ratio: 'wide', grade: 3.5 },
+  {
+    n: '16', src: '16-service-seo-ranking.jpg',
+    out: 'mockups/seo-map-pack.webp',
+    ratio: 'wide', grade: 4.0,
+    /**
+     * The third search result reads "Apollo Dental Ahmedabad" beside an
+     * invented 4.8 rating. Apollo is a real, trademarked Indian healthcare
+     * brand, and attaching a made-up rating to someone else's mark on a
+     * commercial page is a third-party problem rather than a styling one.
+     *
+     * Filled rather than blurred: the results panel is flat #FFFFFF, so a fill
+     * is invisible and the list simply reads as two results. A blur here left a
+     * soft-edged rectangle that looked like a broken render.
+     */
+    patch: [{ left: 0.578, top: 0.630, width: 0.211, height: 0.098, fill: '#FFFFFF' }],
+  },
+  { n: '17', src: '17-service-seo-analytics.jpg', out: 'editorial/seo-analytics.webp', ratio: 'wide', grade: 3.5 },
+  {
+    n: '18', src: '18-service-gbp-optimized.jpg',
+    out: 'mockups/gbp-profile-complete.webp',
+    crop: { left: 0, top: 0.03, width: 1, height: 0.94 },
+    ratio: 'tall', width: 900,
+  },
+  { n: '20', src: '20-service-care-dashboard.jpg',   out: 'mockups/care-monitoring.webp', ratio: 'wide' },
+  { n: '21', src: '21-service-care-maintenance.jpg', out: 'editorial/care-studio.webp',   ratio: 'wide', grade: 4.5 },
+  {
+    n: '22', src: '22-service-social-post.jpg',
+    out: 'mockups/social-post.webp',
+    // Square source; take the band the phone actually occupies.
+    crop: { left: 0, top: 0.22, width: 1, height: 0.68 },
+    ratio: 'wide', grade: 5.0,
+  },
+  { n: '23', src: '23-service-social-calendar.jpg', out: 'editorial/social-calendar.webp', ratio: 'wide', grade: 5.0 },
+
+  // ── /process ─────────────────────────────────────────────────────────────
+  { n: '24', src: '24-process-week1-audit.jpg', out: 'editorial/process-study.webp', ratio: 'wide', grade: 3.5 },
+  { n: '26', src: '26-process-week3-build.jpg', out: 'editorial/process-build.webp',  ratio: 'wide', grade: 4.0 },
+];
+
+/** No committed asset should exceed this; the whole point is a fast site. */
+const SIZE_CEILING_KB = 170;
+
+/**
+ * Mean Lab b* over the whole frame. Positive is the yellow axis — the warm
+ * cast the palette bans in flat colour and merely keeps on a leash in
+ * photography. Sampled at 96x96 because a cast is a global property and
+ * averaging every pixel of a 1376px source measures the same number slower.
+ */
+async function meanB(input) {
+  const { data, info } = await sharp(input)
+    .resize(96, 96, { fit: 'fill' })
+    .toColourspace('lab')
+    .raw({ depth: 'float' })
+    .toBuffer({ resolveWithObject: true });
+  const f = new Float32Array(data.buffer, data.byteOffset, data.byteLength / 4);
+  let sum = 0;
+  for (let i = 2; i < f.length; i += info.channels) sum += f[i];
+  return sum / (f.length / info.channels);
+}
+
+/**
+ * Cool a frame until its mean b* reaches `target`.
+ *
+ * b* falls close to monotonically as blue gain rises, so a short bisection
+ * lands within a fraction of a unit in four passes — far more reliable than a
+ * fixed multiplier, which over-corrects a nearly-neutral frame and barely
+ * touches a heavily amber one. Red is pulled down at a third of the blue gain
+ * so skin does not go magenta as the frame cools.
+ */
+async function coolTo(buffer, target) {
+  const before = await meanB(buffer);
+  if (before <= target) return { buffer, before, after: before, gain: 1 };
+
+  let lo = 1;
+  let hi = 1.35;
+  let best = null;
+  for (let i = 0; i < 5; i += 1) {
+    const gain = (lo + hi) / 2;
+    const candidate = await sharp(buffer)
+      .linear([1 - (gain - 1) / 3, 1, gain], [0, 0, 0])
+      .toBuffer();
+    const after = await meanB(candidate);
+    best = { buffer: candidate, before, after, gain };
+    if (after > target) lo = gain;
+    else hi = gain;
+  }
+  return best;
+}
+
+if (!existsSync(SRC_DIR)) {
+  throw new Error(
+    `Source folder not found: ${SRC_DIR}\n` +
+      'Generated drops live in the gitignored generated_images/ folder at the repo root.',
+  );
+}
+
+await mkdir(root('src/assets/editorial'), { recursive: true });
+await mkdir(root('src/assets/mockups'), { recursive: true });
+
+let oversize = 0;
+let warm = 0;
+
+for (const item of DROP) {
+  const srcPath = `${SRC_DIR}${item.src}`;
+  if (!existsSync(srcPath)) {
+    console.error(`MISSING  ${item.n}  ${item.src}`);
+    continue;
+  }
+
+  const meta = await sharp(srcPath).metadata();
+  let pipeline = sharp(srcPath);
+
+  if (item.crop) {
+    pipeline = pipeline.extract({
+      left: Math.round(item.crop.left * meta.width),
+      top: Math.round(item.crop.top * meta.height),
+      width: Math.round(item.crop.width * meta.width),
+      height: Math.round(item.crop.height * meta.height),
+    });
+  }
+
+  // Remove any region of invented text at full resolution, before the frame is
+  // scaled down, so the edit is applied to the pixels it is actually hiding.
+  if (item.patch) {
+    let base = await pipeline.toBuffer();
+    for (const region of item.patch) {
+      const bm = await sharp(base).metadata();
+      const rect = {
+        left: Math.round(region.left * bm.width),
+        top: Math.round(region.top * bm.height),
+        width: Math.round(region.width * bm.width),
+        height: Math.round(region.height * bm.height),
+      };
+      const cover = region.fill
+        ? await sharp({
+            create: { ...rect, channels: 3, background: region.fill },
+          })
+            .png()
+            .toBuffer()
+        : await sharp(base).extract(rect).blur(region.sigma ?? 6).toBuffer();
+      base = await sharp(base)
+        .composite([{ input: cover, left: rect.left, top: rect.top }])
+        .toBuffer();
+    }
+    pipeline = sharp(base);
+  }
+
+  // Never upscale: the ceiling is the source's own width after cropping.
+  const cropped = await pipeline.toBuffer();
+  const croppedMeta = await sharp(cropped).metadata();
+  const ratio = RATIOS[item.ratio];
+  const width = Math.min(item.width ?? DEFAULT_WIDTH, croppedMeta.width);
+  const height = Math.round(width / ratio);
+
+  let framed = await sharp(cropped)
+    .resize(width, height, { fit: 'cover', position: 'centre' })
+    .toBuffer();
+
+  let note = '';
+  if (item.grade !== undefined) {
+    const graded = await coolTo(framed, item.grade);
+    framed = graded.buffer;
+    note = `b* ${graded.before.toFixed(2).padStart(6)} → ${graded.after.toFixed(2).padStart(6)}`;
+    if (graded.after > item.grade + 0.75) {
+      console.warn(`  ${item.out}: b* ${graded.after.toFixed(2)} still above target ${item.grade}`);
+      warm += 1;
+    }
+  } else {
+    note = `b* ${(await meanB(framed)).toFixed(2).padStart(6)} (ungraded)`;
+  }
+
+  const outPath = root(`src/assets/${item.out}`);
+  await sharp(framed).webp({ quality: 82 }).toFile(outPath);
+
+  const kb = (await stat(outPath)).size / 1024;
+  if (kb > SIZE_CEILING_KB) {
+    console.warn(`  ${item.out}: ${kb.toFixed(0)}KB is over the ${SIZE_CEILING_KB}KB ceiling`);
+    oversize += 1;
+  }
+  console.log(
+    `${item.n}  ${item.out.padEnd(44)} ${String(width).padStart(4)}x${String(height).padEnd(4)} ` +
+      `${kb.toFixed(0).padStart(4)}KB  ${note}`,
+  );
+}
+
+const total = (
+  await Promise.all(
+    ['editorial', 'mockups'].flatMap(async (dir) => {
+      const files = await readdir(root(`src/assets/${dir}`));
+      return Promise.all(files.map(async (f) => (await stat(root(`src/assets/${dir}/${f}`))).size));
+    }),
+  )
+)
+  .flat()
+  .reduce((a, b) => a + b, 0);
+
+console.log(`\n${DROP.length} assets written. editorial + mockups total ${(total / 1024 / 1024).toFixed(2)}MB.`);
+if (oversize) console.log(`${oversize} over the size ceiling.`);
+if (warm) console.log(`${warm} still warmer than target.`);

@@ -3,7 +3,10 @@ import { getFaqsFor } from '@/lib/faqs';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHero from '@/components/PageHero.astro';
 import IllustrationPanel from '@/components/IllustrationPanel.astro';
+import Figure from '@/components/Figure.astro';
 import methodImage from '@/assets/mockups/website-care.jpg';
+import processStudy from '@/assets/editorial/process-study.webp';
+import processBuild from '@/assets/editorial/process-build.webp';
 import SectionHead from '@/components/SectionHead.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
@@ -113,6 +116,28 @@ const needFromYou = [
           </li>
         ))}
       </ol>
+
+      {/*
+        Two of the four weeks, side by side, rather than a photograph inside
+        each step card. Only weeks 1 and 3 are photographed; dropping images
+        into two of four <li>s leaves the other two visibly empty and makes a
+        deliberate four-beat rhythm read as a broken grid. A standalone pair
+        has no missing slot, and needs no change when the other weeks arrive.
+      */}
+      <div class="reveal-group mt-12 grid gap-6 sm:grid-cols-2 lg:max-w-[920px]">
+        <Figure
+          src={processStudy}
+          alt="Two people at a desk reviewing a website audit scorecard on a monitor, one pointing at the speed and listing sections."
+          caption="Week 1 — the written study"
+          maxWidth={448}
+        />
+        <Figure
+          src={processBuild}
+          alt="Two developers working together at a monitor showing code beside a live preview of the clinic site they are building."
+          caption="Week 3 — design and build"
+          maxWidth={448}
+        />
+      </div>
 
       <DiagramFigure
         label="Why this order"

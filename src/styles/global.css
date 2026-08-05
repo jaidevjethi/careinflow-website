@@ -711,6 +711,75 @@
   }
 
   /*
+   * Horizontal galleries — the hero photographs and the specialty strip.
+   *
+   * A native scroll container, not a scripted carousel. Touch, trackpad,
+   * shift-wheel, keyboard arrows and screen-reader navigation all work with no
+   * JavaScript, and `scroll-behavior: smooth` above already falls back to
+   * `auto` under prefers-reduced-motion, so the motion rule holds for free.
+   *
+   * The scrollbar is hidden because it appears and disappears on the platforms
+   * that overlay it, which makes the track twitch as the pointer moves. The
+   * affordance is carried instead by a partial card at the trailing edge, and
+   * by the dots where the slides are full-width and nothing can peek.
+   *
+   * `overscroll-behavior-x: contain` stops a swipe that reaches the end of the
+   * track from being handed to the browser as a back gesture.
+   */
+  .snap-track {
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+  .snap-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  /*
+   * Stop a dot from scrolling the page as well as the track.
+   *
+   * Fragment navigation aligns the target to the *start* of the scrollport, in
+   * both axes, and it does that even when the element is already fully visible
+   * — so a dot click scrolled the hero up under the header before moving the
+   * track sideways. The global `[id] { scroll-margin-top: 96px }` above made it
+   * worse, but removing that only fixed the second and third dots.
+   *
+   * A scroll-margin taller than the viewport puts the target box's top above
+   * the start of the document, where the vertical scroll clamps to zero and
+   * becomes a no-op. The horizontal alignment is unaffected, so the track still
+   * snaps exactly. Measured: 0px of page movement on every dot, both
+   * directions, where the first dot previously moved the page 168px.
+   */
+  .snap-track > * {
+    scroll-margin-top: 100vh;
+  }
+
+  /* 7px of dot inside a 24px target, which is the minimum this site holds
+     itself to for anything tappable. The negative margin closes the gap the
+     padding opens, so they still read as a tight row. */
+  .snap-dot {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    margin-inline: -6px;
+  }
+  .snap-dot::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: var(--color-panel-line-alt);
+    transition:
+      background-color 200ms linear,
+      transform 200ms var(--ease-instrument);
+  }
+  .snap-dot:hover::before {
+    background: var(--color-panel-accent);
+    transform: scale(1.35);
+  }
+
+  /*
    * Whole-card click target driven by one link inside it. Wrapping a card in
    * an anchor makes its accessible name the entire card, which is unusable
    * read aloud; this keeps the name to the link's own words while the target
@@ -908,5 +977,22 @@
     border-left: 3px solid var(--color-surgical);
     padding: 4px 0 4px 20px;
     color: var(--color-body-deep);
+  }
+  /*
+   * Figures keep the text measure rather than breaking out of it. The prose
+   * column is ~800px against a 680px measure, and the 120px of slack is
+   * tempting, but a figure that starts left of its own paragraphs reads as a
+   * layout error at every width where the slack is smaller than it is here.
+   * A shared left edge is worth more than the extra 120px.
+   *
+   * The vertical rhythm sits between a paragraph gap (18px) and a heading gap
+   * (52px): a figure belongs to the section it follows, so it should not float
+   * equidistant between two of them.
+   */
+  .prose-ci figure {
+    margin: 34px 0;
+  }
+  .prose-ci figure + h2 {
+    margin-top: 44px;
   }
 }

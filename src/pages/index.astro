@@ -6,6 +6,17 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import SectionHead from '@/components/SectionHead.astro';
 import ServiceIcon from '@/components/ServiceIcon.astro';
 import heroImage from '@/assets/editorial/hero-clinic-owner.webp';
+import heroConsult from '@/assets/editorial/hero-founder-consult.webp';
+import heroDoctorMobile from '@/assets/editorial/hero-doctor-mobile.webp';
+import surfaceGoogleListing from '@/assets/mockups/surface-google-listing.webp';
+import surfacePracticeWebsite from '@/assets/mockups/surface-practice-website.webp';
+import surfaceAiAnswer from '@/assets/mockups/surface-ai-answer.webp';
+import specialtyDental from '@/assets/editorial/specialty-dental-room.webp';
+import specialtyDermatology from '@/assets/editorial/specialty-dermatology.webp';
+import specialtyPhysiotherapy from '@/assets/editorial/specialty-physiotherapy.webp';
+import specialtyOphthalmology from '@/assets/editorial/specialty-ophthalmology.webp';
+import specialtyPaediatrics from '@/assets/editorial/specialty-paediatrics.webp';
+import specialtyOrthopaedics from '@/assets/editorial/specialty-orthopaedics.webp';
 import founderImage from '@/assets/jaidev-jethi.jpg';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
@@ -85,6 +96,57 @@ const heroStats = [
   { value: 'Yours', caption: 'domain, hosting and accounts' },
 ];
 
+/**
+ * The hero runs three photographs on a scroll-snap track rather than one still.
+ *
+ * Only the first is eager: it is the LCP element, and a hero that preloads
+ * three images to show one is the single most expensive mistake available on
+ * this page. The other two are lazy, so the track costs nothing until someone
+ * moves it.
+ *
+ * There is no autoplay and no JavaScript. The design system allows opacity and
+ * transform, pure CSS, nothing that escapes prefers-reduced-motion; a timed
+ * carousel needs a script, a pause control for WCAG 2.2.2, and it moves the
+ * thing a visitor is reading. Native scroll-snap already gives touch, trackpad,
+ * keyboard and screen-reader support for free.
+ */
+const heroSlides = [
+  {
+    src: heroConsult,
+    alt: 'A doctor in a white coat and a web designer sitting together at a desk, looking at a clinic website on a laptop while the designer points at the screen.',
+  },
+  {
+    src: heroDoctorMobile,
+    alt: 'A doctor standing in a busy hospital corridor, smiling at their practice website open on a mobile phone.',
+  },
+  {
+    src: heroImage,
+    alt: "A phone held up in a clinic reception, showing a dental practice website: the clinic's name, opening hours, a headline reading Gentle dentistry close to home, a booking button, and a call and WhatsApp bar along the bottom.",
+  },
+];
+
+/**
+ * Six specialties we have photographed, shown as a scroll-snap strip.
+ *
+ * Deliberately not wired to the thirteen chips below it. Six photographs
+ * mapped onto thirteen labels leaves seven chips that visibly do nothing,
+ * which reads as a broken control rather than as a shorter gallery.
+ */
+const specialtyShots = [
+  { label: 'Dental', src: specialtyDental, href: '/specialties/dental-clinics',
+    alt: 'A dentist adjusting the overhead light in a bright, modern treatment room.' },
+  { label: 'Dermatology', src: specialtyDermatology, href: '/specialties/dermatology-clinics',
+    alt: 'A dermatologist examining a patient’s skin with a magnifying diagnostic lamp.' },
+  { label: 'Physiotherapy', src: specialtyPhysiotherapy, href: '/specialties/physiotherapy-clinics',
+    alt: 'A physiotherapist guiding a patient through a shoulder resistance exercise.' },
+  { label: 'Ophthalmology', src: specialtyOphthalmology,
+    alt: 'An eye surgeon examining an older patient at a slit-lamp microscope.' },
+  { label: 'Paediatrics', src: specialtyPaediatrics,
+    alt: 'A paediatrician listening to a young girl’s heartbeat while her mother sits beside them.' },
+  { label: 'Orthopaedics', src: specialtyOrthopaedics,
+    alt: 'An orthopaedic doctor pointing at a knee X-ray on a screen while explaining it to a seated patient.' },
+];
+
 /** The value case, stated as mechanisms rather than promised results. */
 const outcomes = [
   {
@@ -115,6 +177,9 @@ const patientSurfaces = [
   {
     title: 'Your Google listing',
     accent: ACCENTS.gbp,
+    image: surfaceGoogleListing,
+    imageAlt: 'A Google Business Profile for a dental clinic open on a phone, showing the practice name, photographs of the clinic, and call and directions buttons.',
+    imagePos: 'object-[50%_16%]',
     text: 'For most clinics this is the real homepage: three results, chosen on distance, hours, photos and the newest review. We rebuild the profile and then actually maintain it.',
     rows: [
       ['Categories and services', 'rebuilt'],
@@ -127,6 +192,9 @@ const patientSurfaces = [
   {
     title: 'Your website',
     accent: ACCENTS.web,
+    image: surfacePracticeWebsite,
+    imageAlt: 'A clinic website open on a phone, showing a welcome banner, a book-appointment button and a row of treatment cards.',
+    imagePos: 'object-[50%_16%]',
     text: 'Built by hand, not from a theme. A page for each treatment, written in the words patients type. Symptom and cost, not clinical terminology.',
     rows: [
       ['A page per treatment', 'written'],
@@ -139,6 +207,9 @@ const patientSurfaces = [
   {
     title: 'The answer above the results',
     accent: ACCENTS.seo,
+    image: surfaceAiAnswer,
+    imageAlt: 'A laptop on a desk showing a search results page where an AI-written summary box sits above the ordinary blue links.',
+    imagePos: 'object-center',
     text: 'Search a treatment today and Google often writes the answer itself, above every link. It builds that from pages it can read and quote. Almost no clinic in India has published the facts it needs.',
     rows: [
       ['Practice and doctor details', 'published'],
@@ -298,24 +369,43 @@ const whatsappHref = whatsappWithMessage(
           ))}
         </dl>
         <figure class="m-0 animate-fade lg:col-start-2 lg:row-span-2 lg:row-start-1">
-          <!-- Height is capped and the frame cropped: at its native 3:2 this
-               image pushed the hero to 76vh, past the rule that no hero fills
-               the screen. -->
-          <Image
-            src={heroImage}
-            alt="A phone held up in a clinic reception, showing a dental practice website: the clinic's name, opening hours, a headline reading Gentle dentistry close to home, a booking button, and a call and WhatsApp bar along the bottom."
-            widths={[560, 840, 1120]}
-            sizes="(min-width: 1024px) 560px, 92vw"
-            loading="eager"
-            fetchpriority="high"
-            class="h-[300px] w-full rounded-3xl border border-panel-line object-cover sm:h-[380px]"
-          />
-          <!-- The scene and the page on the phone are both made, so the label
-               says so, and the link goes to the work that is not. Never let a
-               sample interface sit here unmarked: the site is the argument. -->
-          <figcaption class="mt-3 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 font-mono text-[11px] uppercase leading-[1.6] tracking-[0.06em] text-panel-text-faint">
-            <span class="chip bg-panel-chip text-panel-accent">Illustrative</span>
-            <span>A clinic page, on the phone a patient would open it on.</span>
+          <!-- Every slide keeps the same capped height. At their native ratio
+               these push the hero past 72vh, which is the rule that no hero
+               fills the screen; and three slides of differing height would
+               resize the hero as the track moves. -->
+          <div
+            class="snap-track flex snap-x snap-mandatory overflow-x-auto rounded-3xl border border-panel-line"
+            tabindex="0"
+            role="region"
+            aria-label="Photographs of the work, scrollable"
+          >
+            {heroSlides.map((slide, i) => (
+              <Image
+                id={`hero-shot-${i + 1}`}
+                src={slide.src}
+                alt={slide.alt}
+                widths={[560, 840, 1120]}
+                sizes="(min-width: 1024px) 560px, 92vw"
+                loading={i === 0 ? 'eager' : 'lazy'}
+                fetchpriority={i === 0 ? 'high' : undefined}
+                class="h-[300px] w-full shrink-0 snap-center object-cover sm:h-[380px]"
+              />
+            ))}
+          </div>
+          <figcaption class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 font-mono text-[11px] uppercase leading-[1.6] tracking-[0.06em] text-panel-text-faint">
+            <!-- Anchor links, not buttons: the track is a real scroll
+                 container, so the browser already knows how to bring a slide
+                 into view and there is nothing for a script to do. -->
+            <span class="flex items-center gap-2">
+              {heroSlides.map((_, i) => (
+                <a
+                  href={`#hero-shot-${i + 1}`}
+                  class="snap-dot"
+                  aria-label={`Show photograph ${i + 1} of ${heroSlides.length}`}
+                ></a>
+              ))}
+            </span>
+            <span>Three photographs of the work.</span>
             <a href={href('/work')} class="text-panel-accent underline underline-offset-4 hover:text-surface">
               See real work
             </a>
@@ -347,6 +437,18 @@ const whatsappHref = whatsappWithMessage(
         {patientSurfaces.map((s) => (
           <article class="card-hover card-link flex flex-col overflow-hidden rounded-3xl border border-line bg-surface">
             <span class:list={['accent-bar block h-1 w-full', s.accent.bar]} aria-hidden="true"></span>
+            {/* One band height across all three, so the row stays even even
+                though two sources are portrait phones and one is a laptop on a
+                desk. The portraits are pulled up the frame so the band opens on
+                the phone's screen rather than on the dark space above it. */}
+            <Image
+              src={s.image}
+              alt={s.imageAlt}
+              widths={[420, 640, 840]}
+              sizes="(min-width: 768px) 420px, 92vw"
+              loading="lazy"
+              class:list={['h-[240px] w-full border-b border-line object-cover', s.imagePos]}
+            />
             <div class="flex flex-1 flex-col p-8">
               <h3 class="text-[24px] font-bold tracking-[-0.03em] text-ink">{s.title}</h3>
               <p class="mt-3 text-base leading-[1.6] text-body">{s.text}</p>
@@ -617,7 +719,8 @@ const whatsappHref = whatsappWithMessage(
 
   <!-- WHO WE WORK WITH -->
   <section class="band-mist" aria-labelledby="who-title">
-    <div class="section shell grid items-center gap-12 lg:grid-cols-[1fr_440px] lg:gap-16">
+    <div class="section shell">
+    <div class="grid items-center gap-12 lg:grid-cols-[1fr_440px] lg:gap-16">
       <div>
         <SectionHead
           id="who-title"
@@ -665,6 +768,42 @@ const whatsappHref = whatsappWithMessage(
           specialties</a>. If yours is not on this list at all, it almost
           certainly still fits, so ask.
         </p>
+      </div>
+    </div>
+
+      {/* The rooms behind the chip list. Contained inside .shell rather than
+          bled to the viewport edge: a full-bleed track is the nicer gesture,
+          but it needs negative margins that have to be unwound at every
+          breakpoint, and this site's hard rule is that nothing crosses the
+          viewport at any width. The fourth card is cut by the container at
+          most widths, which is the affordance that the row keeps going. */}
+      <div
+        class="snap-track mt-14 flex snap-x gap-4 overflow-x-auto"
+        tabindex="0"
+        role="region"
+        aria-label="Photographs of the specialties we build for, scrollable"
+      >
+        {specialtyShots.map((s) => (
+          <figure class="m-0 w-[268px] shrink-0 snap-start sm:w-[320px]">
+            <Image
+              src={s.src}
+              alt={s.alt}
+              widths={[320, 640]}
+              sizes="320px"
+              loading="lazy"
+              class="h-[200px] w-full rounded-2xl border border-line object-cover"
+            />
+            <figcaption class="mt-3 font-mono text-[11px] uppercase tracking-[0.08em]">
+              {s.href ? (
+                <a href={href(s.href)} class="text-surgical underline underline-offset-4 hover:text-ink">
+                  {s.label} →
+                </a>
+              ) : (
+                <span class="text-body-deep">{s.label}</span>
+              )}
+            </figcaption>
+          </figure>
+        ))}
       </div>
     </div>
   </section>

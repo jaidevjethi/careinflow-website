@@ -34,6 +34,11 @@ faqs:
 related: ['local-seo', 'website-care']
 ---
 
+import Figure from '@/components/Figure.astro';
+import beforeAfter from '@/assets/mockups/websites-before-after.webp';
+import wireframe from '@/assets/editorial/websites-wireframe.webp';
+import responsive from '@/assets/mockups/websites-responsive.webp';
+
 ## What should a clinic website do for your practice?
 
 A patient who has never met you decides in about a minute whether your
@@ -43,6 +48,13 @@ night, after a search like "dentist near me" or "skin doctor in Mehsana".
 So your website has three jobs. Look professional. Answer the questions
 the patient actually has. Make the next step obvious. Everything we build
 serves those three jobs, and we leave out anything that does not.
+
+<Figure
+  src={beforeAfter}
+  alt="Two phones side by side: on the left a cluttered, dated clinic website with small text and a crowded menu; on the right the same practice rebuilt with a clear headline, one obvious booking button and generous spacing."
+  caption="The same practice, before and after"
+  maxWidth={680}
+/>
 
 ## Why every treatment needs its own page
 
@@ -57,6 +69,13 @@ That is also the content a search engine can quote when it writes its own
 answer above the results, which is why our website work and our
 [local SEO work](/services/local-seo) are planned together.
 
+<Figure
+  src={wireframe}
+  alt="A desk with hand-drawn page layouts for a clinic website on paper, next to a screen showing the same structure being built out in design software."
+  caption="Page order is drawn before anything is designed"
+  maxWidth={680}
+/>
+
 ## How fast should a clinic website load?
 
 Fast enough that nobody leaves. A page that takes six seconds on a ₹12,000
@@ -66,6 +85,13 @@ We use almost no JavaScript, we compress every image, and we measure the
 result on a mid-range Android over mobile data. Our reference is a largest
 contentful paint under 1.2 seconds. This website is built the same way, so
 you can test the claim on your own phone right now.
+
+<Figure
+  src={responsive}
+  alt="The same clinic website shown on a desktop monitor, a tablet and a phone, each laid out for its own screen size."
+  caption="One site, laid out for every screen a patient uses"
+  maxWidth={680}
+/>
 
 ## How patients contact you
 

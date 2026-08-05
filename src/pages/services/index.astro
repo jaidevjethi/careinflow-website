@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHero from '@/components/PageHero.astro';
 import IllustrationPanel from '@/components/IllustrationPanel.astro';
-import { serviceAccent } from '@/lib/accents';
+import deviceSuite from '@/assets/mockups/services-device-suite.webp';
 import SectionHead from '@/components/SectionHead.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import { href } from '@/lib/url';
@@ -115,7 +115,19 @@ const engagements = [
     title="Four core services, plus the support work around them."
     lede="A small number of things, done for healthcare practices only, each held to a standard we publish. If a service is not on this page we do not sell it, and we will tell you so rather than take the work."
     stats={targets}
-  />
+  >
+    {/* 340 rather than the 400 the other heroes use: this is the one portrait
+        aside on the site, and at 400 it stands 500px tall and pushes the hero
+        past the 72%-of-viewport rule on a laptop. */}
+    <IllustrationPanel
+      slot="aside"
+      src={deviceSuite}
+      alt="A laptop, tablet and phone side by side, each showing part of the same clinic's setup: an appointments dashboard, a Google Business Profile, and the practice website."
+      eager
+      maxWidth={340}
+      class="mx-auto"
+    />
+  </PageHero>
 
   <!-- SERVICE DETAILS : alternating rows -->
   <section class="border-t border-hairline bg-surface" aria-label="The four core services">

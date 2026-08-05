@@ -1,0 +1,79 @@
+---
+/**
+ * The general-purpose image frame: editorial photography and in-prose figures.
+ *
+ * `IllustrationPanel` already covers the bordered device render in a hero
+ * aside, and its four call sites do not want a caption or a bare variant. This
+ * is the one every other image goes through, so that `widths` and `sizes` are
+ * derived from a single declared width rather than hand-written per call — the
+ * site had nine different hand-tuned `sizes` strings before this existed.
+ *
+ * Two things here are load-bearing and should not be "simplified":
+ *
+ * `w-full` plus a definite `max-width`. A figure that takes its width from its
+ * content becomes a shrink-to-fit box the moment a caller centres it in a grid;
+ * it then measures 0 tall until the lazy image arrives and snaps the section
+ * open (0.219 CLS on /pricing, the bug `IllustrationPanel` documents). Align on
+ * the margins, never with justify-self.
+ *
+ * No `aspect-ratio`. `<Image>` emits the intrinsic width and height, which
+ * reserves the correct box before a byte of image data arrives. A declared
+ * ratio would round against the real one and `overflow-hidden` would then clip
+ * a hairline off every frame.
+ */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src: ImageMetadata;
+  /** What the image shows, for someone who cannot see it. Never the filename. */
+  alt: string;
+  /** Short mono note under the frame. A label, not a sentence — it sets uppercase. */
+  caption?: string;
+  /** Cap on the rendered width; drives the generated widths and sizes. */
+  maxWidth?: number;
+  /** Above-the-fold images only. Everything else stays lazy. */
+  eager?: boolean;
+  /** Drop the border and radius, for images that sit inside an existing frame. */
+  bare?: boolean;
+  class?: string;
+}
+
+const {
+  src,
+  alt,
+  caption,
+  maxWidth = 800,
+  eager = false,
+  bare = false,
+  class: className,
+} = Astro.props;
+
+/**
+ * Never ask for a width the source cannot supply: Astro would emit a variant
+ * it cannot fill and the build logs an upscale warning for every one.
+ */
+const widths = [...new Set([maxWidth, maxWidth * 1.5, maxWidth * 2])]
+  .map((w) => Math.round(Math.min(w, src.width)))
+  .filter((w, i, all) => all.indexOf(w) === i);
+---
+
+<figure class:list={['m-0 w-full', className]} style={`max-width:${maxWidth}px`}>
+  <Image
+    {src}
+    {alt}
+    {widths}
+    sizes={`(min-width: 1024px) ${maxWidth}px, 92vw`}
+    loading={eager ? 'eager' : 'lazy'}
+    fetchpriority={eager ? 'high' : undefined}
+    class:list={[
+      'block h-auto w-full',
+      !bare && 'rounded-3xl border border-line',
+    ]}
+  />
+  {caption && (
+    <figcaption class="mt-3 font-mono text-[11px] uppercase leading-[1.6] tracking-[0.06em] text-faint">
+      {caption}
+    </figcaption>
+  )}
+</figure>

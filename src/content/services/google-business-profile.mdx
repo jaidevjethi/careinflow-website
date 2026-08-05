@@ -32,6 +32,9 @@ faqs:
 related: ['local-seo', 'website-care']
 ---
 
+import Figure from '@/components/Figure.astro';
+import gbpProfile from '@/assets/mockups/gbp-profile-complete.webp';
+
 ## What is a Google Business Profile, and why does it decide who calls you?
 
 Search your own clinic's name tonight. The panel that appears, the
@@ -51,6 +54,17 @@ A missing photo set or wrong Sunday hours quietly sends them to the clinic
 listed below you. We rebuild the profile properly, correct categories,
 complete services, real photographs, holiday hours, and then keep it that
 way, month after month.
+
+{/* Portrait, so it is capped well below the text measure and centred. A
+    phone mockup run to the full 680px column stands over 800px tall and
+    swallows the section it belongs to. */}
+<Figure
+  src={gbpProfile}
+  alt="A fully completed Google Business Profile on a phone: practice name, photographs of the building and reception, call and directions buttons, opening hours, and a list of departments."
+  caption="Every field filled, and kept filled"
+  maxWidth={340}
+  class="mx-auto"
+/>
 
 ## How should a clinic handle Google reviews?
 

@@ -32,6 +32,10 @@ faqs:
 related: ['google-business-profile', 'healthcare-websites']
 ---
 
+import Figure from '@/components/Figure.astro';
+import mapPack from '@/assets/mockups/seo-map-pack.webp';
+import analytics from '@/assets/editorial/seo-analytics.webp';
+
 ## How do patients find a clinic near them?
 
 Almost every new patient starts with a search: a symptom, a treatment, or
@@ -40,6 +44,13 @@ are the ones whose groundwork is done.
 
 Local SEO is that groundwork. Not tricks, pages that genuinely answer
 what patients ask, on a site search engines can read easily.
+
+<Figure
+  src={mapPack}
+  alt="A laptop showing a search for dental clinics in Ahmedabad: a map with numbered pins beside a short list of nearby practices with their hours and addresses."
+  caption="The map results, above every ordinary link"
+  maxWidth={680}
+/>
 
 ## What decides which clinics appear in local search?
 
@@ -73,6 +84,13 @@ detects that and demotes it.
 - Fast pages that pass Google's Core Web Vitals
 - An XML sitemap, correct canonical URLs, no broken links
 - Google Search Console and analytics, set up and handed to you
+
+<Figure
+  src={analytics}
+  alt="A desk with a screen showing a search traffic graph trending upward over several months, beside a notebook of written strategy notes."
+  caption="What the quarterly review looks at"
+  maxWidth={680}
+/>
 
 ## The answer that appears above the results
 
