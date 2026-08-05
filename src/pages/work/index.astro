@@ -28,6 +28,13 @@ const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.o
 const clientWork = caseStudies.filter((cs) => !cs.data.demo);
 const demos = caseStudies.filter((cs) => cs.data.demo);
 
+/**
+ * The card that takes the full-width lead slot: the first real healthcare
+ * client. Chosen by what it is rather than by position, so re-ordering the
+ * collection can never promote a sample build into the flagship.
+ */
+const leadId = clientWork.find((cs) => cs.data.healthcare)?.id;
+
 const schema = graph(
   organizationSchema(),
   webSiteSchema(),
@@ -56,34 +63,54 @@ const schema = graph(
     ]}
   />
 
-  {/* The healthcare work leads at full width; the non-healthcare project sits
-      under it, narrower. Side by side and identically sized, a visitor counting
-      cards saw half the portfolio outside healthcare, three lines under a
-      homepage that says we do healthcare and nothing else. It is still here and
-      still labelled, just no longer weighted like the flagship. */}
+  {/*
+    One lead card across both columns, the rest paired beneath it.
+
+    The flagship slot belongs to real healthcare client work, and it is
+    identified by that rather than by being first in the list, so re-ordering
+    the collection can never hand the lead to a sample build.
+
+    The previous version gave the two secondary cards `lg:max-w-[760px]` inside
+    a single-column grid, which left roughly 500px of dead ground down the
+    right of the page and made the run of cards read as ragged. Pairing them
+    fills the row and states the hierarchy properly: one large, two small.
+
+    Screenshots are cropped to a fixed band rather than run at their natural
+    1.6. At full width that ratio made the lead image 789px tall on a 900px
+    viewport — the card became one enormous picture with every word about the
+    project below the fold. `object-top` keeps the crop on the part of a
+    homepage worth showing.
+  */}
   <section class="band-powder" aria-label="Case studies">
-    <div class="section shell grid gap-8">
-      {caseStudies.map((cs) => (
+    <div class="section shell grid gap-6 lg:grid-cols-2">
+      {caseStudies.map((cs) => {
+        const lead = cs.id === leadId;
+        return (
         <a
           href={href(`/work/${cs.id}`)}
           class:list={[
             'card-hover flex flex-col overflow-hidden rounded-3xl border border-line bg-canvas hover:no-underline',
-            // Full width is the flagship slot, and it belongs to real client
-            // work. The sample build and the non-healthcare project sit under
-            // it, narrower, so a visitor counting cards is not told the
-            // portfolio is twice the size it is.
-            (!cs.data.healthcare || cs.data.demo) && 'lg:max-w-[760px]',
+            lead && 'lg:col-span-2',
           ]}
         >
+          {/*
+            `sizes` has to describe the box the image actually fills. It said
+            620px while the lead rendered at 1263px, so the browser fetched a
+            620px variant and stretched it 2.04x — the single most important
+            screenshot in the portfolio was served at half resolution.
+          */}
           <Image
             src={cs.data.cover}
             alt={cs.data.coverAlt}
-            widths={[520, 780, 1040]}
-            sizes="(min-width: 1024px) 620px, 92vw"
+            widths={lead ? [640, 960, 1280, 1440] : [420, 640, 960, 1280]}
+            sizes={lead ? '(min-width: 1024px) 1265px, 92vw' : '(min-width: 1024px) 620px, 92vw'}
             loading="lazy"
-            class="w-full border-b border-line bg-surface"
+            class:list={[
+              'w-full border-b border-line bg-surface object-cover object-top',
+              lead ? 'h-[240px] sm:h-[340px] lg:h-[430px]' : 'h-[220px] sm:h-[300px]',
+            ]}
           />
-          <div class="flex flex-1 flex-col p-8">
+          <div class="flex flex-1 flex-col p-7 sm:p-8">
           <p class="mb-5 flex flex-wrap items-center gap-2">
             <span class="chip border border-line bg-surface text-body-deep">{cs.data.sector}</span>
             {cs.data.demo && (
@@ -92,12 +119,24 @@ const schema = graph(
             {!cs.data.healthcare && <span class="chip bg-hairline-soft text-muted">Non-healthcare</span>}
             <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{cs.data.year}</span>
           </p>
-          <h2 class="text-[clamp(22px,2.4vw,28px)] font-extrabold leading-[1.15] tracking-[-0.03em] text-ink">
+          <h2
+            class:list={[
+              'font-extrabold leading-[1.15] tracking-[-0.03em] text-ink',
+              lead ? 'text-[clamp(24px,2.6vw,32px)]' : 'text-[clamp(20px,2vw,24px)]',
+            ]}
+          >
             {cs.data.title}
           </h2>
           <p class="mt-2 text-[15px] font-semibold text-muted">{cs.data.client} · {cs.data.location}</p>
-          <p class="mt-4 text-[16px] leading-[1.65] text-body">{cs.data.summary}</p>
-          <dl class="mt-auto grid grid-cols-2 gap-x-6 gap-y-4 border-t border-line pt-6 sm:grid-cols-4">
+          <p class="mt-4 max-w-[640px] text-[16px] leading-[1.65] text-body">{cs.data.summary}</p>
+          {/* Four columns only in the lead card. In a 620px column four
+              measurements wrap to two lines each and stop being scannable. */}
+          <dl
+            class:list={[
+              'mt-auto grid grid-cols-2 gap-x-6 gap-y-4 border-t border-line pt-6',
+              lead && 'sm:grid-cols-4',
+            ]}
+          >
             {cs.data.highlights.map((h) => (
               <div>
                 <dt class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{h.label}</dt>
@@ -109,7 +148,8 @@ const schema = graph(
           <p class="prose-link mt-6 text-[16px]">Read the case study →</p>
           </div>
         </a>
-      ))}
+        );
+      })}
     </div>
   </section>
 
