@@ -2,8 +2,8 @@
 import { getFaqsFor } from '@/lib/faqs';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHero from '@/components/PageHero.astro';
+import { Image } from 'astro:assets';
 import IllustrationPanel from '@/components/IllustrationPanel.astro';
-import Figure from '@/components/Figure.astro';
 import methodImage from '@/assets/mockups/website-care.jpg';
 import processStudy from '@/assets/editorial/process-study.webp';
 import processBuild from '@/assets/editorial/process-build.webp';
@@ -41,6 +41,16 @@ const schema = graph(
   faqSchema(faqs),
 );
 
+/**
+ * The four weeks, as a timeline rather than a stack of four boxes.
+ *
+ * What each week needs *from the clinic* used to live in its own section at
+ * the bottom of the page, as five rows each tagged "week 1", "week 2", "end of
+ * week 2". The data was already keyed to the timeline; presenting it three
+ * screens away from the week it belonged to meant a reader had to hold the
+ * whole schedule in their head to answer the only question they actually have,
+ * which is "what will this cost me in time". It is folded in here instead.
+ */
 const weeks = [
   {
     step: '01',
@@ -48,6 +58,9 @@ const weeks = [
     title: 'Study',
     text: 'Before any design, we study: what patients in your area search, what your Google listing shows, what your reviews say, and what the three clinics above you are doing differently. It arrives as a written review, yours to keep, free, whether or not you hire us.',
     output: 'A written review of your current online presence',
+    fromYou: ['A one-hour conversation about your practice'],
+    image: processStudy,
+    imageAlt: 'Two people at a desk reviewing a website audit scorecard on a monitor, one pointing at the speed and listing sections.',
   },
   {
     step: '02',
@@ -55,6 +68,10 @@ const weeks = [
     title: 'Structure & words',
     text: 'The page order and the actual copy come before any visuals. You sign off the words patients will read, every treatment page, every heading, so design decorates substance instead of hiding its absence.',
     output: 'Sitemap and final copy, signed off',
+    fromYou: [
+      'Your treatment list, and how you prefer to describe costs',
+      'Sign-off on the structure and the words',
+    ],
   },
   {
     step: '03',
@@ -62,6 +79,9 @@ const weeks = [
     title: 'Design & build',
     text: 'One careful pass, on your real content, never on placeholder text. Built by hand, tested on a mid-range Android over mobile data first, because that is the phone your patients actually hold.',
     output: 'The working website, tested on real devices',
+    fromYou: ['Access for photographs, or a visit arranged'],
+    image: processBuild,
+    imageAlt: 'Two developers working together at a monitor showing code beside a live preview of the clinic site they are building.',
   },
   {
     step: '04',
@@ -69,15 +89,32 @@ const weeks = [
     title: 'Launch, then stay',
     text: 'Launch is measured against the published targets: load time reference, accessibility, valid schema. Then the ongoing schedule begins, weekly monitoring, monthly maintenance, and a written quarterly review.',
     output: 'Launch measurements + the care schedule',
+    fromYou: ['A final yes before launch'],
   },
 ];
 
-const needFromYou = [
-  { item: 'A one-hour conversation about your practice', when: 'week 1' },
-  { item: 'Treatment list and how you prefer to describe costs', when: 'week 2' },
-  { item: 'Sign-off on structure and words', when: 'end of week 2' },
-  { item: 'Access for photos, or a visit arranged', when: 'week 3' },
-  { item: 'A final yes before launch', when: 'week 4' },
+/**
+ * Facts a clinic owner can weigh, which is what the design system reserves the
+ * oversized numerals for. These used to read "01 02 03 04" against the four
+ * week names — the page's own section numbering, restated as though it were a
+ * measurement, in the most valuable four slots on the page.
+ */
+const heroStats = [
+  { value: '4 weeks', caption: 'from first call to launch' },
+  { value: 'Free', caption: 'the week-one study, yours to keep' },
+  { value: 'Week 2', caption: 'you sign off every word' },
+  { value: 'One hour', caption: 'the only call we ask you for' },
+];
+
+/**
+ * The schedule that starts at launch. Same three cadences as the table on
+ * /services, phrased shorter for a sidebar — the point here is that week four
+ * is a beginning, not that the reader should re-read the full care schedule.
+ */
+const cadence = [
+  { when: 'Every week', what: 'Uptime and performance monitored, review activity checked.' },
+  { when: 'Every month', what: 'Security updates, backups, your content edits, photos and hours refreshed.' },
+  { when: 'Every quarter', what: 'Speed re-measured, and a written review of what patients did and what to do next.' },
 ];
 ---
 
@@ -86,7 +123,7 @@ const needFromYou = [
     label="How the work runs"
     title="Four weeks, in a fixed order, with the words before the visuals."
     lede="Most website projects go wrong in a familiar way: design first, content forever late, launch quietly missed. Our method exists to make that impossible, each week has one job and one output you can hold."
-    stats={weeks.map((w) => ({ value: w.step, caption: `${w.week}, ${w.title}` }))}
+    stats={heroStats}
   >
     <IllustrationPanel
       slot="aside"
@@ -97,105 +134,166 @@ const needFromYou = [
     />
   </PageHero>
 
+  <!--
+    THE FOUR WEEKS, as a timeline.
+
+    This was four rounded boxes stacked in a column, each filled with a
+    different accent tint. Four pastel blocks in a row is a lot of colour
+    spent on nothing, and — on a page whose entire subject is a *sequence* —
+    nothing in the layout said the four things happened in an order.
+
+    The spine says it. The numeral sits on the line as a node, the line runs
+    on to the next one, and the last node stops it. That is a grid column
+    stretching to the row height with a flex-1 rule inside it: no absolute
+    positioning to keep in sync, and it stays correct however tall a week's
+    content grows.
+  -->
   <section class="border-t border-hairline bg-surface" aria-label="The four weeks">
     <div class="section shell">
-      <ol class="reveal-group grid gap-5 lg:max-w-[920px]">
-        {weeks.map((w, i) => (
-          <li class:list={['card-hover grid gap-5 rounded-3xl border border-line p-8 sm:grid-cols-[110px_1fr]', cycleAccent(i).tint]}>
-            <div>
-              <p class:list={['numeral text-[clamp(44px,5vw,64px)]', cycleAccent(i).text]}>{w.step}</p>
-              <p class="mt-2 font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{w.week}</p>
-            </div>
-            <div>
-              <h2 class="text-[24px] font-extrabold tracking-[-0.03em] text-ink">{w.title}</h2>
-              <p class="mt-3 max-w-[640px] text-[16px] leading-[1.65] text-body">{w.text}</p>
-              <p class="mt-4 font-mono text-[11px] uppercase tracking-[0.08em] text-pass">
-                Output, {w.output}
-              </p>
-            </div>
-          </li>
-        ))}
-      </ol>
-
-      {/*
-        Two of the four weeks, side by side, rather than a photograph inside
-        each step card. Only weeks 1 and 3 are photographed; dropping images
-        into two of four <li>s leaves the other two visibly empty and makes a
-        deliberate four-beat rhythm read as a broken grid. A standalone pair
-        has no missing slot, and needs no change when the other weeks arrive.
-      */}
-      <div class="reveal-group mt-12 grid gap-6 sm:grid-cols-2 lg:max-w-[920px]">
-        <Figure
-          src={processStudy}
-          alt="Two people at a desk reviewing a website audit scorecard on a monitor, one pointing at the speed and listing sections."
-          caption="Week 1 — the written study"
-          maxWidth={448}
-        />
-        <Figure
-          src={processBuild}
-          alt="Two developers working together at a monitor showing code beside a live preview of the clinic site they are building."
-          caption="Week 3 — design and build"
-          maxWidth={448}
-        />
+      <div class="mb-13 max-w-[700px]">
+        <div class="tick-rule mb-3.5" aria-hidden="true"></div>
+        <p class="label-mono mb-5 text-surgical">Week by week</p>
+        <h2 class="text-[clamp(30px,4.5vw,46px)] font-extrabold leading-[1.06] tracking-[-0.04em] text-ink">
+          Each week has one job, one thing you receive, and one thing we need from you.
+        </h2>
+        <p class="mt-4.5 text-lg leading-[1.62] text-body">
+          Everything else is our job. The build does not stall waiting for you
+          to write pages, writing them is part of what you are paying for.
+        </p>
       </div>
 
+      <ol class="reveal-group grid lg:max-w-[920px]">
+        {weeks.map((w, i) => {
+          const a = cycleAccent(i);
+          const last = i === weeks.length - 1;
+          return (
+            <li class="grid gap-x-7 sm:grid-cols-[72px_1fr]">
+              {/* The spine column. Hidden below sm, where the numeral moves
+                  inline above the card and a vertical rule would waste a
+                  quarter of a 320px screen. */}
+              <div class="hidden flex-col items-center sm:flex">
+                <span
+                  class:list={[
+                    'numeral flex size-[72px] shrink-0 items-center justify-center rounded-2xl text-[30px]',
+                    a.tint,
+                    a.text,
+                  ]}
+                >
+                  {w.step}
+                </span>
+                {!last && <span class="mt-3 w-px flex-1 bg-line" aria-hidden="true"></span>}
+              </div>
+
+              <div class:list={[!last && 'pb-6']}>
+                <article class="card-hover overflow-hidden rounded-3xl border border-line bg-canvas">
+                  <span class:list={['accent-bar block h-1 w-full', a.bar]} aria-hidden="true"></span>
+                  {w.image && (
+                    <Image
+                      src={w.image}
+                      alt={w.imageAlt}
+                      widths={[440, 880]}
+                      sizes="(min-width: 1024px) 830px, 92vw"
+                      loading="lazy"
+                      class="h-[210px] w-full border-b border-line object-cover"
+                    />
+                  )}
+                  <div class="p-7 sm:p-8">
+                    <p class="mb-2 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.08em] text-faint">
+                      <span class:list={['numeral text-[22px] sm:hidden', a.text]}>{w.step}</span>
+                      {w.week}
+                    </p>
+                    <h3 class="text-[24px] font-extrabold tracking-[-0.03em] text-ink">{w.title}</h3>
+                    <p class="mt-3 max-w-[640px] text-[16px] leading-[1.65] text-body">{w.text}</p>
+
+                    {/* The two things a buyer is actually scanning for, given
+                        equal weight and their own frame. "Output" used to be
+                        an 11px mono line trailing the paragraph, and what the
+                        week needed from the clinic was three screens away. */}
+                    <dl class="mt-6 grid gap-3 border-t border-hairline pt-5 sm:grid-cols-2">
+                      <div>
+                        <dt class="label-mono text-faint">You receive</dt>
+                        <dd class="mt-1.5 text-[15px] font-semibold leading-[1.5] text-pass">{w.output}</dd>
+                      </div>
+                      <div>
+                        <dt class="label-mono text-faint">From you</dt>
+                        <dd class="mt-1.5 text-[15px] leading-[1.5] text-body-deep">
+                          {w.fromYou.join(' · ')}
+                        </dd>
+                      </div>
+                    </dl>
+                  </div>
+                </article>
+              </div>
+            </li>
+          );
+        })}
+      </ol>
+    </div>
+  </section>
+
+  <section class="band-powder" aria-label="Why the weeks run in this order">
+    <div class="section shell">
       <DiagramFigure
         label="Why this order"
         title="Design first is the thing that makes website projects late."
-        class="reveal mt-12 lg:max-w-[920px]"
+        class="reveal lg:max-w-[920px]"
       >
         <MethodOrder />
       </DiagramFigure>
     </div>
   </section>
 
-  <section class="section shell" aria-labelledby="need-title">
-    <div class="grid items-start gap-12 lg:grid-cols-[1fr_440px] lg:gap-20">
-      <div>
-        <SectionHead
-          label="What we need from you"
-          title="How much of your time does it take?"
-          lede="Everything else is our job. The build does not stall waiting for you to write pages, writing them is part of what you are paying for."
-        />
-      </div>
-      <div class="rounded-3xl border border-line bg-surface p-7">
-        <h2 id="need-title" class="label-mono mb-4 text-faint" style="letter-spacing:0.12em">From your side</h2>
-        <dl>
-          {needFromYou.map((n, i) => (
-            <div
-              class:list={[
-                'flex items-baseline justify-between gap-6 py-3 text-[15px]',
-                i < needFromYou.length - 1 && 'border-b border-hairline',
-              ]}
-            >
-              <dt class="text-body-deep">{n.item}</dt>
-              <dd class="whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.06em] text-surgical">{n.when}</dd>
-            </div>
-          ))}
-        </dl>
-      </div>
-    </div>
-  </section>
+  <!--
+    The page's one mid-tone band, and its only real depth step. /pricing sits
+    next to this one in the browse order and takes `deep`, so this takes `moss`
+    to keep the pair from going monotone.
 
-  <section class="band-powder" aria-labelledby="after-title">
+    On moss, `muted` and `faint` fail AA. Every text token here is ink,
+    body-deep or surgical, and SectionHead carries `onBand` so its lede comes
+    up to ink rather than sitting in the usual grey.
+  -->
+  <section class="band-moss" aria-labelledby="after-title">
     <div class="section shell">
-      <SectionHead
-        id="after-title"
-        label="After week four"
-        title="What happens after week four?"
-        lede="Launch begins the maintenance schedule: weekly monitoring, monthly upkeep, and a quarterly written review of what patients did and what to do next. The full schedule is on the ongoing care page."
-      />
-      <p class="mt-6 max-w-[680px] text-[16px] leading-[1.65] text-muted">
-        Care is {rupees(STANDALONE_MONTHLY.care)} a month, or
-        {' '}{rupees(PLANS[1]!.monthly)} with your Google Business Profile
-        managed alongside it. Month to month, no lock-in, and the website stays
-        yours either way, see the <a href={href('/pricing')} class="prose-link">full price list</a>.
-      </p>
-      <p class="mt-7">
-        <a href={href('/services/website-care')} class="btn-secondary px-6 py-3.5 text-[16px]">
-          See the care schedule
-        </a>
-      </p>
+      <div class="grid items-start gap-12 lg:grid-cols-[1fr_400px] lg:gap-20">
+        <div>
+          <SectionHead
+            id="after-title"
+            onBand
+            label="After week four"
+            title="What happens after week four?"
+            lede="Launch begins the maintenance schedule: weekly monitoring, monthly upkeep, and a quarterly written review of what patients did and what to do next. The full schedule is on the ongoing care page."
+          />
+          <p class="mt-6 max-w-[620px] text-[16px] leading-[1.65] text-ink/90">
+            Care is {rupees(STANDALONE_MONTHLY.care)} a month, or
+            {' '}{rupees(PLANS[1]!.monthly)} with your Google Business Profile
+            managed alongside it. Month to month, no lock-in, and the website
+            stays yours either way, see the
+            {' '}<a href={href('/pricing')} class="font-semibold text-surgical underline underline-offset-4">full price list</a>.
+          </p>
+          <p class="mt-7">
+            <a href={href('/services/website-care')} class="btn-secondary px-6 py-3.5 text-[16px]">
+              See the care schedule
+            </a>
+          </p>
+        </div>
+
+        <div class="rounded-3xl border border-line bg-surface p-7">
+          <p class="label-mono mb-4 text-faint" style="letter-spacing:0.12em">The ongoing cadence</p>
+          <dl>
+            {cadence.map((c, i) => (
+              <div
+                class:list={[
+                  'py-3.5',
+                  i < cadence.length - 1 && 'border-b border-hairline',
+                ]}
+              >
+                <dt class="font-mono text-[11px] uppercase tracking-[0.08em] text-surgical">{c.when}</dt>
+                <dd class="mt-1.5 text-[15px] leading-[1.55] text-body">{c.what}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
     </div>
   </section>
 
