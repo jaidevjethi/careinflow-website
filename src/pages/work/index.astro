@@ -14,26 +14,11 @@ import {
   itemListSchema,
 } from '@/lib/schema';
 
-const title = 'Work, real projects, shown honestly | CareInflow';
+const title = 'Clinic websites we have built, live and open | CareInflow';
 const description =
-  'Selected work by CareInflow: a bilingual dental clinic website in Mehsana and a search-focused services site. Real projects only: no padded portfolio.';
+  'Healthcare websites built by CareInflow: a bilingual dental clinic in Mehsana, a dermatology sample, and a services site. Open each one and time it yourself.';
 
 const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.order - b.data.order);
-
-/**
- * Counted separately so the hero can never quietly fold a sample build into a
- * client count. "0 mockups presented as clients" stays literally true only for
- * as long as something enforces it.
- */
-const clientWork = caseStudies.filter((cs) => !cs.data.demo);
-const demos = caseStudies.filter((cs) => cs.data.demo);
-
-/**
- * The card that takes the full-width lead slot: the first real healthcare
- * client. Chosen by what it is rather than by position, so re-ordering the
- * collection can never promote a sample build into the flagship.
- */
-const leadId = clientWork.find((cs) => cs.data.healthcare)?.id;
 
 const schema = graph(
   organizationSchema(),
@@ -54,112 +39,95 @@ const schema = graph(
 <BaseLayout {title} {description} path="/work" {schema}>
   <PageHero
     label="Our work"
-    title="A short portfolio, shown honestly."
-    lede="A short page, no padded portfolio and no screenshots of work we did not do. Two are real practices. One is a sample site we built to show what a clinic receives, and it says so on its own page. As new practices launch, we publish what happened for each one, including what did not work."
+    title="Open the work. Do not take our word for any of it."
+    lede="Every site on this page is live right now. Open one on your phone, time how long it takes to appear, tap the WhatsApp button and watch where the message goes. Two were built for real practices. The third is a sample, built to show a clinic exactly what it receives, and it says so on its own page."
     stats={[
-      { value: String(clientWork.length), caption: 'real clients, shown in full' },
-      { value: String(demos.length), caption: 'sample site, labelled as one' },
-      { value: '0', caption: 'mockups presented as clients' },
+      { value: 'Live', caption: 'open every one on your own phone' },
+      { value: 'Healthcare', caption: 'the only work this studio takes' },
+      { value: 'Fixed', caption: 'price agreed before anything starts' },
     ]}
   />
 
   {/*
-    One lead card across both columns, the rest paired beneath it.
+    Three identical cards in three columns.
 
-    The flagship slot belongs to real healthcare client work, and it is
-    identified by that rather than by being first in the list, so re-ordering
-    the collection can never hand the lead to a sample build.
+    Two earlier arrangements were wrong in the same way. Giving the flagship
+    full width and the others `max-w-[760px]` left ~500px of dead ground down
+    the page; pairing two under a full-width lead fixed the ragged edge but
+    still sized the cards by how important we consider each project, which is
+    a judgement a visitor has not asked for. Equal cards let the work argue
+    for itself, and the eye can compare three things at one size.
 
-    The previous version gave the two secondary cards `lg:max-w-[760px]` inside
-    a single-column grid, which left roughly 500px of dead ground down the
-    right of the page and made the run of cards read as ragged. Pairing them
-    fills the row and states the hierarchy properly: one large, two small.
+    Three into three columns divides evenly, which is the grid rule here — the
+    alternative of two columns would strand the third on its own row and read
+    as a page that ran out. Below lg they stack; three columns at tablet width
+    leaves ~210px per card, which is narrower than this content can survive.
 
-    Screenshots are cropped to a fixed band rather than run at their natural
-    1.6. At full width that ratio made the lead image 789px tall on a 900px
-    viewport — the card became one enormous picture with every word about the
-    project below the fold. `object-top` keeps the crop on the part of a
-    homepage worth showing.
+    Card heights match because the grid stretches every item in a row and each
+    card is a flex column with `mt-auto` on the measurements, so the numbers
+    and the link sit on a shared baseline however long a summary runs.
   */}
   <section class="band-powder" aria-label="Case studies">
-    <div class="section shell grid gap-6 lg:grid-cols-2">
-      {caseStudies.map((cs) => {
-        const lead = cs.id === leadId;
-        return (
+    <div class="section shell grid items-stretch gap-6 lg:grid-cols-3">
+      {caseStudies.map((cs) => (
         <a
           href={href(`/work/${cs.id}`)}
-          class:list={[
-            'card-hover flex flex-col overflow-hidden rounded-3xl border border-line bg-canvas hover:no-underline',
-            lead && 'lg:col-span-2',
-          ]}
+          class="card-hover flex flex-col overflow-hidden rounded-3xl border border-line bg-canvas hover:no-underline"
         >
           {/*
-            `sizes` has to describe the box the image actually fills. It said
-            620px while the lead rendered at 1263px, so the browser fetched a
-            620px variant and stretched it 2.04x — the single most important
-            screenshot in the portfolio was served at half resolution.
+            `sizes` has to describe the box the image actually fills. It once
+            said 620px while the card rendered it at 1263px, so the browser
+            fetched a 620px variant and stretched it 2.04x — the portfolio's
+            most important screenshot served at half resolution. One card width
+            now means one honest `sizes` for all three.
           */}
           <Image
             src={cs.data.cover}
             alt={cs.data.coverAlt}
-            widths={lead ? [640, 960, 1280, 1440] : [420, 640, 960, 1280]}
-            sizes={lead ? '(min-width: 1024px) 1265px, 92vw' : '(min-width: 1024px) 620px, 92vw'}
+            widths={[420, 640, 840]}
+            sizes="(min-width: 1024px) 405px, 92vw"
             loading="lazy"
-            class:list={[
-              'w-full border-b border-line bg-surface object-cover object-top',
-              lead ? 'h-[240px] sm:h-[340px] lg:h-[430px]' : 'h-[220px] sm:h-[300px]',
-            ]}
+            class="h-[230px] w-full border-b border-line bg-surface object-cover object-top"
           />
-          <div class="flex flex-1 flex-col p-7 sm:p-8">
-          <p class="mb-5 flex flex-wrap items-center gap-2">
+          <div class="flex flex-1 flex-col p-6 sm:p-7">
+          <p class="mb-4 flex flex-wrap items-center gap-2">
             <span class="chip border border-line bg-surface text-body-deep">{cs.data.sector}</span>
             {cs.data.demo && (
-              <span class="chip border border-surgical/40 bg-surgical-tint text-surgical">Sample site, not a client</span>
+              <span class="chip border border-surgical/40 bg-surgical-tint text-surgical">Sample</span>
             )}
             {!cs.data.healthcare && <span class="chip bg-hairline-soft text-muted">Non-healthcare</span>}
             <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{cs.data.year}</span>
           </p>
-          <h2
-            class:list={[
-              'font-extrabold leading-[1.15] tracking-[-0.03em] text-ink',
-              lead ? 'text-[clamp(24px,2.6vw,32px)]' : 'text-[clamp(20px,2vw,24px)]',
-            ]}
-          >
+          <h2 class="text-[clamp(20px,1.7vw,23px)] font-extrabold leading-[1.18] tracking-[-0.03em] text-ink">
             {cs.data.title}
           </h2>
-          <p class="mt-2 text-[15px] font-semibold text-muted">{cs.data.client} · {cs.data.location}</p>
-          <p class="mt-4 max-w-[640px] text-[16px] leading-[1.65] text-body">{cs.data.summary}</p>
-          {/* Four columns only in the lead card. In a 620px column four
-              measurements wrap to two lines each and stop being scannable. */}
-          <dl
-            class:list={[
-              'mt-auto grid grid-cols-2 gap-x-6 gap-y-4 border-t border-line pt-6',
-              lead && 'sm:grid-cols-4',
-            ]}
-          >
+          <p class="mt-2 text-[14px] font-semibold text-muted">{cs.data.client} · {cs.data.location}</p>
+          <p class="mt-3.5 text-[15px] leading-[1.6] text-body">{cs.data.summary}</p>
+          <dl class="mt-auto grid grid-cols-2 gap-x-5 gap-y-4 border-t border-line pt-6">
             {cs.data.highlights.map((h) => (
               <div>
                 <dt class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{h.label}</dt>
-                <dd class="mt-1 text-lg font-extrabold tracking-[-0.03em] text-ink">{h.value}</dd>
-                {h.ref && <dd class="mt-0.5 font-mono text-[11px] uppercase tracking-[0.06em] text-muted">{h.ref}</dd>}
+                <dd class="mt-1 text-[17px] font-extrabold leading-[1.2] tracking-[-0.03em] text-ink">{h.value}</dd>
+                {h.ref && <dd class="mt-0.5 font-mono text-[11px] uppercase leading-[1.5] tracking-[0.06em] text-muted">{h.ref}</dd>}
               </div>
             ))}
           </dl>
           <p class="prose-link mt-6 text-[16px]">Read the case study →</p>
           </div>
         </a>
-        );
-      })}
+      ))}
     </div>
   </section>
 
   <section class="section shell">
     <div class="max-w-[680px] rounded-3xl border border-line bg-surface p-8">
-      <h2 class="label-mono mb-4 text-faint">How we work</h2>
+      <h2 class="label-mono mb-4 text-faint">What yours would involve</h2>
       <p class="text-[16px] leading-[1.65] text-body">
-        Every engagement runs the same way: a fixed price in writing, direct
-        access to the person doing the work, and a published record
-        afterwards. The <a href={href('/about')} class="prose-link">about page</a>
+        Every build runs the same way: one fixed price agreed in writing before
+        anything starts, the person building your site on the other end of
+        WhatsApp, and a written record when it launches. Four weeks, and the
+        study in the first week is free whether or not you go ahead.
+        The <a href={href('/about')} class="prose-link">about page</a>
         explains who is behind the work, and the
         <a href={href('/process')} class="prose-link">method page</a> shows how a
         four-week build runs.

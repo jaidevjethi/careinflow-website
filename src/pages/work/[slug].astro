@@ -17,6 +17,11 @@ import {
   caseStudySchema,
 } from '@/lib/schema';
 
+/** Small counts read better as words in a heading than as digits. */
+const COUNT_WORD: Record<number, string> = {
+  1: 'One', 2: 'Two', 3: 'Three', 4: 'Four', 5: 'Five', 6: 'Six',
+};
+
 export async function getStaticPaths() {
   const caseStudies = await getCollection('caseStudies');
   return caseStudies.map((cs) => ({
@@ -27,6 +32,12 @@ export async function getStaticPaths() {
 
 const { cs } = Astro.props;
 const { Content } = await render(cs);
+
+const galleryCount = cs.data.gallery?.length ?? 0;
+const galleryTitle =
+  `${COUNT_WORD[galleryCount] ?? galleryCount} ` +
+  `${galleryCount === 1 ? 'decision' : 'decisions'}, and what ` +
+  `${galleryCount === 1 ? 'it looks' : 'they look'} like`;
 
 const path = `/work/${cs.id}`;
 const title = `${cs.data.client}, case study | CareInflow`;
@@ -173,19 +184,50 @@ const schema = graph(
         thinking, so every shot carries the decision it illustrates. */}
     {cs.data.gallery && cs.data.gallery.length > 0 && (
       <section class="section shell" aria-labelledby="gallery-title">
+        {/* The count was hardcoded as "Three" against a gallery of any
+            length, and the lede promised "the live site" on a page that can
+            now be a sample. Both follow the data instead. */}
         <SectionHead
           id="gallery-title"
           label="Inside the build"
-          title="Three decisions, and what they look like"
-          lede="Every screenshot below is the live site. The note beside each one is why it was built that way rather than the obvious way."
+          title={galleryTitle}
+          lede={
+            cs.data.demo
+              ? 'Every screenshot below is the deployed sample, not a drawing of one. The note beside each is the decision it shows, and each of those decisions carries over to a real build.'
+              : 'Every screenshot below is the live site. The note beside each one is why it was built that way rather than the obvious way.'
+          }
         />
         <div class="reveal-group mt-13 grid gap-14">
-          {cs.data.gallery.map((shot, i) => (
+          {cs.data.gallery.map((shot, i) => {
+            /*
+             * Alternating rows swap the caption to the left, and the column
+             * template has to swap with it. It did not: the wide 1.35fr column
+             * stayed first while the caption moved into it, so every other
+             * screenshot rendered in the narrow column — 694px, then 514px,
+             * then 694px down the page. Mirroring the template keeps the image
+             * on the wide track whichever side it sits.
+             */
+            /*
+             * Written out as four literals on purpose. Building the class with
+             * a template literal produced the right string in the markup and no
+             * rule in the stylesheet — Tailwind's JIT only sees class names it
+             * can read in the source, so the flipped rows silently collapsed to
+             * a single column and rendered their screenshot at full width.
+             */
+            const flipped = i % 2 === 1;
+            const cols = shot.phone
+              ? flipped
+                ? 'lg:grid-cols-[1fr_260px]'
+                : 'lg:grid-cols-[260px_1fr]'
+              : flipped
+                ? 'lg:grid-cols-[1fr_1.35fr]'
+                : 'lg:grid-cols-[1.35fr_1fr]';
+            return (
             <figure
               class:list={[
                 'm-0 grid items-center gap-8 lg:gap-14',
-                shot.phone ? 'lg:grid-cols-[260px_1fr]' : 'lg:grid-cols-[1.35fr_1fr]',
-                i % 2 === 1 && 'lg:[&>figcaption]:order-first',
+                cols,
+                flipped && 'lg:[&>figcaption]:order-first',
               ]}
             >
               <Image
@@ -209,7 +251,8 @@ const schema = graph(
                 <p class="mt-3 text-[16px] leading-[1.7] text-body">{shot.caption}</p>
               </figcaption>
             </figure>
-          ))}
+            );
+          })}
         </div>
       </section>
     )}

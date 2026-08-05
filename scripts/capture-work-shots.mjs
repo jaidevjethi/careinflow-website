@@ -33,6 +33,9 @@ const SHOTS = [
   // so, not the screenshot being softer.
   { url: 'https://jaidevjethi.github.io/lavanya-skin-clinic/', out: 'lavanya-desktop.webp', width: 1440, height: 900 },
   { url: 'https://jaidevjethi.github.io/lavanya-skin-clinic/', out: 'lavanya-mobile.webp', width: 500, height: 900 },
+  { url: 'https://jaidevjethi.github.io/lavanya-skin-clinic/treatments', out: 'lavanya-treatments.webp', width: 1440, height: 1000 },
+  { url: 'https://jaidevjethi.github.io/lavanya-skin-clinic/treatments', out: 'lavanya-treatments-mobile.webp', width: 500, height: 1000 },
+  { url: 'https://jaidevjethi.github.io/lavanya-skin-clinic/contact', out: 'lavanya-contact.webp', width: 1440, height: 1000 },
 ];
 
 await mkdir(root('src/assets/work'), { recursive: true });
@@ -71,17 +74,30 @@ for (const shot of SHOTS) {
       .webp({ quality: 82 })
       .toFile(root(`src/assets/work/${shot.out}`));
 
-    // A clipped capture is worse than none: it shows a client's site as broken
-    // when it is not. The last column of a complete page is page background.
+    /*
+     * A clipped capture is worse than none: it shows a site as broken when it
+     * is not. The last column of a complete page is page background, and page
+     * background is *uniform* — which is the property to test.
+     *
+     * This used to test for brightness instead, warning whenever the right
+     * edge measured darker than 235. That is only true of sites with a light
+     * background; every page with a dark hero tripped it, so the warning fired
+     * five times in a row on a set of perfectly good captures and stopped
+     * meaning anything. Variance catches a real clip on a light or dark page
+     * and stays quiet on both when there is nothing wrong.
+     */
     const { data, info } = await sharp(raw)
       .extract({ left: (await sharp(raw).metadata()).width - 4, top: 0, width: 4, height: 200 })
       .raw()
       .toBuffer({ resolveWithObject: true });
-    let sum = 0;
-    for (let i = 0; i < data.length; i += info.channels) sum += data[i];
-    const edge = sum / (data.length / info.channels);
-    if (edge < 235) {
-      console.warn(`  WARNING ${shot.out}: right edge is dark (${edge.toFixed(0)}), page may be clipped`);
+    const samples = [];
+    for (let i = 0; i < data.length; i += info.channels) samples.push(data[i]);
+    const mean = samples.reduce((a, b) => a + b, 0) / samples.length;
+    const sd = Math.sqrt(samples.reduce((a, b) => a + (b - mean) ** 2, 0) / samples.length);
+    if (sd > 24) {
+      console.warn(
+        `  WARNING ${shot.out}: right edge varies (sd ${sd.toFixed(0)}), page may be clipped mid-content`,
+      );
     }
     console.log('captured', shot.out);
   } catch (err) {
