@@ -1,0 +1,51 @@
+---
+/**
+ * A short set of parallel points, as cards rather than as consecutive
+ * paragraphs with bold lead-ins.
+ *
+ * Both case studies had a run of four such paragraphs — "A page for every
+ * treatment…", "Bilingual, all the way down.", "Fully static.", "Symptom
+ * language, everywhere." — which is a list wearing prose clothing. Rendered as
+ * prose it produced the longest unbroken stretch on the site: 1.9 screens on
+ * /work/pramukh-dental with nothing for the eye to land on. The content was
+ * already structured; only the markup was not.
+ *
+ * The card recipe is the one the homepage already uses for `outcomes`, so this
+ * introduces a component, not a new look.
+ */
+interface Point {
+  title: string;
+  /**
+   * Rendered as HTML so a point can keep the inline links it had as prose —
+   * several of these paragraphs carry internal links that the site's own SEO
+   * rules want kept. The content is authored in this repo, never user input.
+   */
+  text: string;
+}
+
+interface Props {
+  points: Point[];
+  /** Number the cards, for a set where the order is part of the point. */
+  numbered?: boolean;
+  class?: string;
+}
+
+const { points, numbered = false, class: className } = Astro.props;
+---
+
+<div
+  class:list={[
+    'reveal-group not-prose grid gap-4 sm:grid-cols-2',
+    className,
+  ]}
+>
+  {points.map((p, i) => (
+    <article class="card-hover rounded-2xl border border-line bg-canvas p-6">
+      {numbered && (
+        <p class="numeral mb-1.5 text-[26px] text-surgical">{String(i + 1).padStart(2, '0')}</p>
+      )}
+      <h3 class="text-[17px] font-bold leading-[1.3] tracking-[-0.02em] text-ink">{p.title}</h3>
+      <p class="mt-2.5 text-[15px] leading-[1.62] text-body [&_a]:font-semibold [&_a]:text-surgical [&_a]:underline [&_a]:underline-offset-4" set:html={p.text} />
+    </article>
+  ))}
+</div>

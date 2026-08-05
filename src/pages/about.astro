@@ -6,6 +6,8 @@ import PageHero from '@/components/PageHero.astro';
 import studioImage from '@/assets/editorial/founder-working.webp';
 import founderImage from '@/assets/jaidev-jethi.jpg';
 import SectionHead from '@/components/SectionHead.astro';
+import Figure from '@/components/Figure.astro';
+import consultImage from '@/assets/editorial/hero-founder-consult.webp';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import { BUSINESS, CANONICAL_HOST } from '@/config/site';
@@ -172,15 +174,29 @@ const notList = [
     </div>
   </section>
 
+  {/* This section closed the page on a heading, a paragraph and a button, at
+      the tail of the longest prose run on /about (1.5 screens). The photograph
+      is the section's own subject — the visit, and the person you actually
+      deal with — so it earns the slot rather than filling it. */}
   <section class="section shell">
-    <SectionHead
-      label="Where we are today"
-      title="Based in Mehsana. Working with clinics anywhere."
-      lede="Every practice gets fixed terms in writing and direct access to the person doing the work. We are near enough to visit clinics across Gujarat and photograph them properly, and everything except the photography works just as well at a distance."
-    />
-    <p class="mt-7">
-      <a href={href('/free-review')} class="btn-secondary px-6 py-3.5 text-[16px]">Start with a free review</a>
-    </p>
+    <div class="grid items-center gap-12 lg:grid-cols-[1fr_460px] lg:gap-16">
+      <div>
+        <SectionHead
+          label="Where we are today"
+          title="Based in Mehsana. Working with clinics anywhere."
+          lede="Every practice gets fixed terms in writing and direct access to the person doing the work. We are near enough to visit clinics across Gujarat and photograph them properly, and everything except the photography works just as well at a distance."
+        />
+        <p class="mt-7">
+          <a href={href('/free-review')} class="btn-secondary px-6 py-3.5 text-[16px]">Start with a free review</a>
+        </p>
+      </div>
+      <Figure
+        src={consultImage}
+        alt="A doctor and a web designer sitting together at a desk, going through a clinic website on a laptop."
+        caption="No account manager in between"
+        maxWidth={460}
+      />
+    </div>
   </section>
 
   <FaqSection

@@ -30,12 +30,18 @@ gallery:
     alt: 'The patient information page, headed Your first visit explained, with a four-step walkthrough, a What to bring list and an If you feel anxious note.'
     title: 'The page that answers the fear'
     caption: 'Most dental hesitation is not about price, it is about not knowing what is going to happen. So the first-visit page walks through all four steps, says what to bring, and addresses anxiety directly rather than pretending it does not exist. This page exists because the clinic told us what patients ask in the chair, and we wrote it down.'
+  - src: '../../assets/work/pramukh-gallery.webp'
+    alt: 'The smile gallery page, headed Real Patient Outcomes, showing before-and-after cases in a grid with a drag handle across each image and the diagnosis and treatment written underneath.'
+    title: 'Before and after, with the diagnosis attached'
+    caption: 'A dental practice lives on results a patient can see, so the gallery is a page in its own right rather than a strip on the homepage. Each case carries the diagnosis and the treatment in plain words, which turns a photograph into an explanation — and the drag handle lets a patient compare the two states themselves instead of being shown a chosen crop.'
   - src: '../../assets/work/pramukh-treatment-mobile.webp'
     alt: 'The same treatment page on a phone, with the call and WhatsApp bar fixed along the bottom of the screen.'
     title: 'Built for the phone it will be read on'
     caption: 'Almost every visitor arrives on a mid-range Android over mobile data, often at an odd hour. The call and WhatsApp bar stays fixed at the bottom of every page, so an enquiry is never more than one tap away no matter how far down someone has read.'
     phone: true
 ---
+
+import KeyPoints from '@/components/KeyPoints.astro';
 
 ## What the clinic needed
 
@@ -50,30 +56,27 @@ already chose the practice. It is written for the patient who has not.
 
 ## The four decisions that shaped the build
 
-**A page for every treatment, not a services list.** All eleven treatments
-the clinic offers have their own page: root canal, re-root canal, emergency
-care, esthetic dentistry, post and core, surgical endodontics and the rest.
-One combined "Services" page cannot rank for eleven different searches and
-cannot answer eleven different worries. Splitting them is most of why the
-site gets found at all.
-
-**Bilingual, all the way down.** Many of the clinic's patients are more
-comfortable reading Gujarati. Every heading and every treatment explanation
-works in both languages behind a single toggle, driven by one translation
-dictionary so the two versions cannot drift apart as pages are added. A
-language switch that only translates the menu is worse than none, because it
-promises something it does not deliver.
-
-**Fully static.** The site ships plain HTML and CSS with no framework
-JavaScript. There is nothing to slow it down on an inexpensive phone and
-nothing to break at two in the morning. Images are WebP, capped at 1600px.
-This is also the cheapest possible thing to host, which matters over years.
-
-**Symptom language, everywhere.** Clinical accuracy in the content, patient
-vocabulary in the headings. The page is titled "Painless Root Canals" and
-the first line says it takes forty-five minutes. The word "endodontic"
-appears where it belongs, further down, once the reader already knows they
-are in the right place.
+<KeyPoints
+  numbered
+  points={[
+    {
+      title: 'A page for every treatment, not a services list',
+      text: 'All eleven treatments the clinic offers have their own page: root canal, re-root canal, emergency care, esthetic dentistry, post and core, surgical endodontics and the rest. One combined "Services" page cannot rank for eleven different searches and cannot answer eleven different worries. Splitting them is most of why the site gets found at all.',
+    },
+    {
+      title: 'Bilingual, all the way down',
+      text: 'Many of the clinic’s patients are more comfortable reading Gujarati. Every heading and every treatment explanation works in both languages behind a single toggle, driven by one translation dictionary so the two versions cannot drift apart as pages are added. A language switch that only translates the menu is worse than none, because it promises something it does not deliver.',
+    },
+    {
+      title: 'Fully static',
+      text: 'The site ships plain HTML and CSS with no framework JavaScript. There is nothing to slow it down on an inexpensive phone and nothing to break at two in the morning. Images are WebP, capped at 1600px. This is also the cheapest possible thing to host, which matters over years.',
+    },
+    {
+      title: 'Symptom language, everywhere',
+      text: 'Clinical accuracy in the content, patient vocabulary in the headings. The page is titled "Painless Root Canals" and the first line says it takes forty-five minutes. The word "endodontic" appears where it belongs, further down, once the reader already knows they are in the right place.',
+    },
+  ]}
+/>
 
 ## The details that matter
 

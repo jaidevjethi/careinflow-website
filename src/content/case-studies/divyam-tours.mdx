@@ -18,7 +18,24 @@ highlights:
   - { label: 'Found by', value: 'Service searches', ref: 'not the business name' }
   - { label: 'Enquiry', value: 'On every page', ref: 'never more than one tap away' }
   - { label: 'Languages', value: 'EN + HI', ref: 'both spoken by the customers' }
+gallery:
+  - src: '../../assets/work/divyam-service.webp'
+    alt: 'The taxi services page, headed Private taxi service in Varanasi built around tourist routes, with WhatsApp and call buttons and a panel listing pickup window, coverage, vehicles and booking method.'
+    title: 'The page is named after the search, not the company'
+    caption: 'Nobody types "Divyam Tours". They type "taxi in Varanasi", so that is the sentence the page leads with. The panel underneath answers the four things a visitor was going to ask anyway — how soon, how far, what vehicle, how to book — before they have to ask any of them. A clinic''s treatment page is built exactly this way, with the symptom in place of the route.'
+  - src: '../../assets/work/divyam-fleet.webp'
+    alt: 'The vehicles page, headed Pick your Varanasi taxi by group size and luggage, with a photograph of the fleet parked at the ghats.'
+    title: 'Sorted by the question, not by the inventory'
+    caption: 'The obvious way to build a fleet page is a list of car models. Nobody chooses a car model; they know how many people and how much luggage they have. So the page sorts by that instead, and says plainly that exact models are confirmed on WhatsApp rather than promising a specific vehicle it might not have that day.'
+  - src: '../../assets/work/divyam-service-mobile.webp'
+    alt: 'The same taxi services page on a phone, the heading stacked above a full-width Book on WhatsApp button.'
+    title: 'The enquiry button follows you down every page'
+    caption: 'Most visitors arrive on a phone, often mid-trip and on a weak connection. Booking is one tap from anywhere on any page, and it opens WhatsApp with the message already written so the customer only has to send it. This is the same enquiry flow we build for clinics, doing the same job for a different kind of hurry.'
+    phone: true
 ---
+
+import KeyPoints from '@/components/KeyPoints.astro';
+import { href } from '@/lib/url';
 
 ## Why this project is on a healthcare site
 
@@ -35,29 +52,26 @@ car.
 
 ## What we built, and why
 
-**A page for every service.** Taxi hire, airport transfer, local
-sightseeing and multi-day tours each have their own page, targeting what
-people genuinely type, instead of one thin page trying to rank for
-everything at once. It is the same reasoning behind a page per treatment on
-a [clinic website](/services/healthcare-websites): one page cannot answer
-four different questions, and search engines will not pretend it can.
-
-**Structured data from the first commit.** LocalBusiness JSON-LD ships in
-the base layout, so every page states plainly what the business is, where it
-works and how to reach it. On a clinic this is the same groundwork that
-decides whether a search engine can describe you correctly, including in the
-summary it now writes above the results.
-
-**An enquiry that never disappears.** A call-to-action follows the visitor
-down every page. Somebody ready to book should never have to scroll back up
-to find out how. On a clinic site that button is WhatsApp, and it matters
-more, because the person tapping it is often in pain.
-
-**Two languages, because the customers have two.** English and Hindi, for a
-customer base that includes both pilgrims and foreign visitors. The same
-argument as Gujarati on the [dental clinic](/work/pramukh-dental): a
-language toggle that only translates the menu promises something it does not
-deliver.
+<KeyPoints
+  points={[
+    {
+      title: 'A page for every service',
+      text: `Taxi hire, airport transfer, local sightseeing and multi-day tours each have their own page, targeting what people genuinely type, instead of one thin page trying to rank for everything at once. It is the same reasoning behind a page per treatment on a <a href="${href('/services/healthcare-websites')}">clinic website</a>: one page cannot answer four different questions, and search engines will not pretend it can.`,
+    },
+    {
+      title: 'Structured data from the first commit',
+      text: 'LocalBusiness JSON-LD ships in the base layout, so every page states plainly what the business is, where it works and how to reach it. On a clinic this is the same groundwork that decides whether a search engine can describe you correctly, including in the summary it now writes above the results.',
+    },
+    {
+      title: 'An enquiry that never disappears',
+      text: 'A call-to-action follows the visitor down every page. Somebody ready to book should never have to scroll back up to find out how. On a clinic site that button is WhatsApp, and it matters more, because the person tapping it is often in pain.',
+    },
+    {
+      title: 'Two languages, because the customers have two',
+      text: `English and Hindi, for a customer base that includes both pilgrims and foreign visitors. The same argument as Gujarati on the <a href="${href('/work/pramukh-dental')}">dental clinic</a>: a language toggle that only translates the menu promises something it does not deliver.`,
+    },
+  ]}
+/>
 
 ## Honest scope
 

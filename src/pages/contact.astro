@@ -4,6 +4,8 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
 import PageHero from '@/components/PageHero.astro';
 import studioImage from '@/assets/editorial/founder-working.webp';
+import Figure from '@/components/Figure.astro';
+import deskImage from '@/assets/about-studio.jpg';
 import FaqSection from '@/components/FaqSection.astro';
 import { BUSINESS, WHATSAPP_URL, whatsappWithMessage } from '@/config/site';
 import { cycleAccent, ACCENTS } from '@/lib/accents';
@@ -117,17 +119,29 @@ const steps = [
         </p>
       </div>
 
-      <aside class:list={["top-24 rounded-3xl border border-line p-7 lg:sticky", ACCENTS.care.tint]}>
-        <h2 class="label-mono mb-4 text-faint" style="letter-spacing:0.12em">The review covers</h2>
-        <ul class="text-[15px] leading-[2.05] text-body-deep">
-          {reviewCovers.map((item) => (
-            <li>{item}</li>
-          ))}
-        </ul>
-        <p class="mt-4 border-t border-line pt-3.5 font-mono text-[11px] uppercase tracking-[0.08em] text-surgical">
-          Free · 2 working days
-        </p>
-      </aside>
+      <div class="top-24 grid gap-6 lg:sticky">
+        <aside class:list={["rounded-3xl border border-line p-7", ACCENTS.care.tint]}>
+          <h2 class="label-mono mb-4 text-faint" style="letter-spacing:0.12em">The review covers</h2>
+          <ul class="text-[15px] leading-[2.05] text-body-deep">
+            {reviewCovers.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+          <p class="mt-4 border-t border-line pt-3.5 font-mono text-[11px] uppercase tracking-[0.08em] text-surgical">
+            Free · 2 working days
+          </p>
+        </aside>
+        {/* The page had nothing to look at below the hero. The caption talks
+            about how the work runs rather than about the room: this is a
+            photograph of a working setup, not of the Mehsana studio, and it
+            sits directly under an address, where the difference matters. */}
+        <Figure
+          src={deskImage}
+          alt="A laptop and a notebook on a plain wooden desk in a quiet, whitewashed room lit by a single window."
+          caption="One studio, one person, nobody in between"
+          maxWidth={380}
+        />
+      </div>
     </div>
   </section>
 

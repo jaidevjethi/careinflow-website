@@ -28,6 +28,9 @@ const SHOTS = [
   { url: 'https://pramukhdentalclinic.com/', out: 'pramukh-dental-mobile.webp', width: 500, height: 900 },
   { url: 'https://pramukhdentalclinic.com/treatments.html', out: 'pramukh-dental-desktop.webp', width: 1440, height: 900 },
   { url: 'https://jaidevjethi.github.io/divyam-website/', out: 'divyam-desktop.webp', width: 1440, height: 900 },
+  { url: 'https://jaidevjethi.github.io/divyam-website/taxi-services/', out: 'divyam-service.webp', width: 1440, height: 1000 },
+  { url: 'https://jaidevjethi.github.io/divyam-website/fleet/', out: 'divyam-fleet.webp', width: 1440, height: 1000 },
+  { url: 'https://jaidevjethi.github.io/divyam-website/taxi-services/', out: 'divyam-service-mobile.webp', width: 500, height: 1000 },
   // Demo build, not a client. Captured the same way as the real sites because
   // it is a real deployed page — what makes it a demo is the case study saying
   // so, not the screenshot being softer.
@@ -75,28 +78,25 @@ for (const shot of SHOTS) {
       .toFile(root(`src/assets/work/${shot.out}`));
 
     /*
-     * A clipped capture is worse than none: it shows a site as broken when it
-     * is not. The last column of a complete page is page background, and page
-     * background is *uniform* — which is the property to test.
+     * Assert the capture is the size we asked for.
      *
-     * This used to test for brightness instead, warning whenever the right
-     * edge measured darker than 235. That is only true of sites with a light
-     * background; every page with a dark hero tripped it, so the warning fired
-     * five times in a row on a set of perfectly good captures and stopped
-     * meaning anything. Variance catches a real clip on a light or dark page
-     * and stays quiet on both when there is nothing wrong.
+     * This slot held two different guesses at "does the right edge look
+     * clipped", and both cried wolf. The first tested brightness, so every
+     * site with a dark hero tripped it. The second tested variance, so every
+     * site with a photographic hero tripped it instead — five false warnings
+     * on five captures I had already checked by eye. A warning that fires on
+     * good output is worse than no warning, because you learn to scroll past
+     * it.
+     *
+     * The failure it was guarding against is Chrome laying the page out wider
+     * than the window and cropping the difference, and that is already blocked
+     * outright by the MIN_WINDOW_WIDTH throw above. What is left worth testing
+     * is deterministic: the file is either the requested size or it is not.
      */
-    const { data, info } = await sharp(raw)
-      .extract({ left: (await sharp(raw).metadata()).width - 4, top: 0, width: 4, height: 200 })
-      .raw()
-      .toBuffer({ resolveWithObject: true });
-    const samples = [];
-    for (let i = 0; i < data.length; i += info.channels) samples.push(data[i]);
-    const mean = samples.reduce((a, b) => a + b, 0) / samples.length;
-    const sd = Math.sqrt(samples.reduce((a, b) => a + (b - mean) ** 2, 0) / samples.length);
-    if (sd > 24) {
+    const outMeta = await sharp(root(`src/assets/work/${shot.out}`)).metadata();
+    if (outMeta.width !== shot.width || outMeta.height !== shot.height) {
       console.warn(
-        `  WARNING ${shot.out}: right edge varies (sd ${sd.toFixed(0)}), page may be clipped mid-content`,
+        `  WARNING ${shot.out}: got ${outMeta.width}x${outMeta.height}, asked for ${shot.width}x${shot.height}`,
       );
     }
     console.log('captured', shot.out);
