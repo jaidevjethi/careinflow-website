@@ -20,6 +20,14 @@ const description =
 
 const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.order - b.data.order);
 
+/**
+ * Counted separately so the hero can never quietly fold a sample build into a
+ * client count. "0 mockups presented as clients" stays literally true only for
+ * as long as something enforces it.
+ */
+const clientWork = caseStudies.filter((cs) => !cs.data.demo);
+const demos = caseStudies.filter((cs) => cs.data.demo);
+
 const schema = graph(
   organizationSchema(),
   webSiteSchema(),
@@ -40,10 +48,10 @@ const schema = graph(
   <PageHero
     label="Our work"
     title="A short portfolio, shown honestly."
-    lede="A short page, and everything on it is real, no padded portfolio, no screenshots of work we did not do. As new practices launch, we publish what happened for each one, including what did not work."
+    lede="A short page, no padded portfolio and no screenshots of work we did not do. Two are real practices. One is a sample site we built to show what a clinic receives, and it says so on its own page. As new practices launch, we publish what happened for each one, including what did not work."
     stats={[
-      { value: String(caseStudies.length), caption: 'projects, all of them real' },
-      { value: String(caseStudies.filter((c) => c.data.healthcare).length), caption: 'in healthcare' },
+      { value: String(clientWork.length), caption: 'real clients, shown in full' },
+      { value: String(demos.length), caption: 'sample site, labelled as one' },
       { value: '0', caption: 'mockups presented as clients' },
     ]}
   />
@@ -60,7 +68,11 @@ const schema = graph(
           href={href(`/work/${cs.id}`)}
           class:list={[
             'card-hover flex flex-col overflow-hidden rounded-3xl border border-line bg-canvas hover:no-underline',
-            !cs.data.healthcare && 'lg:max-w-[760px]',
+            // Full width is the flagship slot, and it belongs to real client
+            // work. The sample build and the non-healthcare project sit under
+            // it, narrower, so a visitor counting cards is not told the
+            // portfolio is twice the size it is.
+            (!cs.data.healthcare || cs.data.demo) && 'lg:max-w-[760px]',
           ]}
         >
           <Image
@@ -74,6 +86,9 @@ const schema = graph(
           <div class="flex flex-1 flex-col p-8">
           <p class="mb-5 flex flex-wrap items-center gap-2">
             <span class="chip border border-line bg-surface text-body-deep">{cs.data.sector}</span>
+            {cs.data.demo && (
+              <span class="chip border border-surgical/40 bg-surgical-tint text-surgical">Sample site, not a client</span>
+            )}
             {!cs.data.healthcare && <span class="chip bg-hairline-soft text-muted">Non-healthcare</span>}
             <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{cs.data.year}</span>
           </p>

@@ -249,6 +249,12 @@ export function caseStudySchema(opts: {
   year: number;
   image: SchemaImage;
   liveUrl?: string;
+  /**
+   * A demonstration build has no client. `mentions` would assert to a search
+   * engine that the practice named in it is a real Organization, which is the
+   * one claim a demo must never make, so it is dropped.
+   */
+  demo?: boolean;
 }) {
   return {
     '@type': 'Article',
@@ -268,7 +274,7 @@ export function caseStudySchema(opts: {
       creator: { '@id': ORG_ID },
       ...(opts.liveUrl ? { url: opts.liveUrl } : {}),
     },
-    mentions: { '@type': 'Organization', name: opts.client },
+    ...(opts.demo ? {} : { mentions: { '@type': 'Organization', name: opts.client } }),
   };
 }
 

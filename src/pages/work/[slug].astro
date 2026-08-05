@@ -60,6 +60,7 @@ const schema = graph(
     client: cs.data.client,
     year: cs.data.year,
     image: shareImage,
+    demo: cs.data.demo,
     ...(cs.data.url ? { liveUrl: cs.data.url } : {}),
   }),
 );
@@ -84,17 +85,32 @@ const schema = graph(
       <p class="mt-6 text-base font-semibold text-panel-text">
         {cs.data.client} · {cs.data.location}
       </p>
-      {!cs.data.healthcare && (
-        <p class="mt-4">
-          <span class="chip border border-panel-line bg-panel-card text-panel-text">
-            Not a clinic, included honestly, to show the same method elsewhere
-          </span>
+      {/*
+        The demo says what it is before anything else on the page, and says it
+        about the *content* rather than only about the client. A visitor who
+        reads "sample" as "unbuilt mockup" has the wrong idea; one who reads
+        the copy as our recommended medical claims has a worse one.
+
+        Deliberately not a `.chip`. Chips are `white-space: nowrap` with
+        `text-overflow: ellipsis`, which is right for a location label and
+        exactly wrong here — the sentence overflowed its column and then
+        truncated, so on a phone the disclaimer trailed off before reaching
+        the word "invented". A note that wraps cannot lose its own ending.
+
+        Demos only. The non-healthcare project carried a matching chip, but
+        its lede already opens "Not a clinic. Included honestly…" and at this
+        size the note restated that line almost verbatim, three lines below
+        it. The card on /work still labels it.
+      */}
+      {cs.data.demo && (
+        <p class="mt-5 max-w-[520px] rounded-xl border border-panel-accent/45 bg-panel-chip px-4 py-3 font-mono text-[11px] uppercase leading-[1.65] tracking-[0.06em] text-panel-accent">
+          A sample site. The practice, the doctor and every number in it are invented.
         </p>
       )}
       {cs.data.url && (
         <p class="mt-7">
           <a href={cs.data.url} rel="noopener" class="btn-accent px-6 py-3.5 text-[16px]">
-            Visit the live site ↗
+            {cs.data.demo ? 'Open the sample site ↗' : 'Visit the live site ↗'}
           </a>
         </p>
       )}

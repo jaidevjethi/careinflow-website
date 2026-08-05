@@ -28,6 +28,11 @@ const SHOTS = [
   { url: 'https://pramukhdentalclinic.com/', out: 'pramukh-dental-mobile.webp', width: 500, height: 900 },
   { url: 'https://pramukhdentalclinic.com/treatments.html', out: 'pramukh-dental-desktop.webp', width: 1440, height: 900 },
   { url: 'https://jaidevjethi.github.io/divyam-website/', out: 'divyam-desktop.webp', width: 1440, height: 900 },
+  // Demo build, not a client. Captured the same way as the real sites because
+  // it is a real deployed page — what makes it a demo is the case study saying
+  // so, not the screenshot being softer.
+  { url: 'https://jaidevjethi.github.io/lavanya-skin-clinic/', out: 'lavanya-desktop.webp', width: 1440, height: 900 },
+  { url: 'https://jaidevjethi.github.io/lavanya-skin-clinic/', out: 'lavanya-mobile.webp', width: 500, height: 900 },
 ];
 
 await mkdir(root('src/assets/work'), { recursive: true });

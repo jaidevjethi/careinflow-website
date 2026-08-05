@@ -48,8 +48,14 @@ const faqs = await getFaqsFor('home');
 const allCaseStudies = (await getCollection('caseStudies')).sort(
   (a, b) => a.data.order - b.data.order,
 );
-const featured = allCaseStudies.filter((cs) => cs.data.healthcare);
-const otherWorkCount = allCaseStudies.length - featured.length;
+/**
+ * Real healthcare clients only. The section this feeds says "Not mockups.
+ * Open one on your own phone and time it yourself", so a sample build cannot
+ * appear in it however good it looks — it lives on /work, labelled.
+ */
+const featured = allCaseStudies.filter((cs) => cs.data.healthcare && !cs.data.demo);
+const otherWorkCount = allCaseStudies.filter((cs) => !cs.data.healthcare && !cs.data.demo).length;
+const demoCount = allCaseStudies.filter((cs) => cs.data.demo).length;
 
 const schema = graph(
   organizationSchema(),
@@ -712,6 +718,10 @@ const whatsappHref = whatsappWithMessage(
           {' '}{otherWorkCount === 1 ? 'project' : 'projects'} on the
           {' '}<a href={href('/work')} class="prose-link">work page</a>, labelled as such,
           because the method is the same even when the client is not a clinic.</>
+        )}{demoCount > 0 && (
+          <>{' '}The work page also carries {demoCount === 1 ? 'a' : String(demoCount)} complete
+          {' '}{demoCount === 1 ? 'sample site' : 'sample sites'} built to show what a practice
+          receives. It is marked as a sample, and everything written inside it is invented.</>
         )}
       </p>
     </div>

@@ -123,6 +123,18 @@ const caseStudies = defineCollection({
     sector: z.string(),
     /** True only for healthcare projects; non-healthcare work is labeled. */
     healthcare: z.boolean(),
+    /**
+     * A demonstration build with no client behind it — a complete, deployed
+     * site made to show what a practice receives, whose copy and every figure
+     * in it are invented.
+     *
+     * This exists because /work leads with "everything on it is real" and the
+     * homepage promises "not mockups", and those lines are worth keeping true.
+     * A demo is excluded from the homepage's featured slot, labelled wherever
+     * it appears, and drops the `mentions` Organization from its schema so no
+     * search engine is told the practice exists.
+     */
+    demo: z.boolean().default(false),
     year: z.number(),
     url: z.string().url().optional(),
     description: z.string(),
