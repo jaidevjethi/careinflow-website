@@ -3,6 +3,8 @@ import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHero from '@/components/PageHero.astro';
+import IllustrationPanel from '@/components/IllustrationPanel.astro';
+import specialtyRange from '@/assets/mockups/specialty-range.webp';
 import CtaPanel from '@/components/CtaPanel.astro';
 import { ACCENTS } from '@/lib/accents';
 import { href } from '@/lib/url';
@@ -67,7 +69,20 @@ const schema = graph(
       { value: String(specialties.length + alsoWorkWith.length), caption: 'we build for' },
       { value: '0', caption: 'work outside healthcare' },
     ]}
-  />
+  >
+    {/* Deliberately here rather than on /work. It shows a spread of clinic
+        sites across different specialties, which is the subject of this page.
+        On the portfolio page, next to a headline saying two of these were
+        built for real practices, a grid of unnamed clinic sites would read as
+        a claim about how many clients there are. */}
+    <IllustrationPanel
+      slot="aside"
+      src={specialtyRange}
+      alt="An arrangement of laptops, tablets and phones, each showing a different clinic website: dental, orthopaedic, cardiology and general practice."
+      eager
+      maxWidth={400}
+    />
+  </PageHero>
 
   <section class="band-mist" aria-label="Specialties with a full page">
     <div class="section shell">

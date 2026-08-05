@@ -151,8 +151,37 @@ const DROP = [
   { n: '23', src: '23-service-social-calendar.jpg', out: 'editorial/social-calendar.webp', ratio: 'wide', grade: 5.0 },
 
   // ── /process ─────────────────────────────────────────────────────────────
-  { n: '24', src: '24-process-week1-audit.jpg', out: 'editorial/process-study.webp', ratio: 'wide', grade: 3.5 },
-  { n: '26', src: '26-process-week3-build.jpg', out: 'editorial/process-build.webp',  ratio: 'wide', grade: 4.0 },
+  { n: '24', src: '24-process-week1-audit.jpg',     out: 'editorial/process-study.webp',     ratio: 'wide', grade: 3.5 },
+  { n: '25', src: '25-process-week2-structure.jpg', out: 'editorial/process-structure.webp', ratio: 'wide', grade: 3.5 },
+  { n: '26', src: '26-process-week3-build.jpg',     out: 'editorial/process-build.webp',     ratio: 'wide', grade: 4.0 },
+  { n: '27', src: '27-process-week4-seo.jpg',       out: 'editorial/process-launch.webp',    ratio: 'wide', grade: 3.0 },
+
+  // ── Second drop ──────────────────────────────────────────────────────────
+  { n: '19', src: '19-service-gbp-reviews.jpg', out: 'editorial/gbp-reviews.webp', ratio: 'wide', grade: 4.0 },
+  { n: '28', src: '28-pricing-hero.jpg',        out: 'editorial/pricing-consult.webp', ratio: 'wide', grade: 4.0 },
+  { n: '30', src: '30-pricing-promise-seal.jpg', out: 'mockups/pricing-promise.webp', ratio: 'wide', grade: 4.5 },
+  { n: '31', src: '31-work-portfolio-collage.jpg', out: 'mockups/specialty-range.webp', ratio: 'wide' },
+  { n: '32', src: '32-work-detail-before.jpg', out: 'mockups/speed-before.webp', ratio: 'wide', grade: 4.5 },
+  { n: '33', src: '33-work-detail-after.jpg',  out: 'mockups/speed-after.webp',  ratio: 'wide', grade: 4.5 },
+  { n: '34', src: '34-about-mehsana-studio.jpg', out: 'editorial/about-studio-team.webp', ratio: 'wide', grade: 5.0 },
+  { n: '35', src: '35-about-gujarat-map.jpg',  out: 'editorial/gujarat-map.webp', ratio: 'wide' },
+  { n: '36', src: '36-areas-hero-map.jpg',     out: 'editorial/areas-map.webp',  ratio: 'wide' },
+  { n: '37', src: '37-resource-cover-gbp.jpg', out: 'mockups/gbp-article-cover.webp', ratio: 'wide', grade: 5.0 },
+
+  /*
+   * 29 (pricing tier cards) is deliberately absent.
+   *
+   * It reads "Local Google Map dominance" and "Dominant Search & Map
+   * Authority" across three cards, and this site's one unbreakable promise is
+   * that it never promises a ranking. It also names three packages — Starter
+   * Presence, Complete Practice, Regional Authority — that do not exist in
+   * src/config/pricing.ts, on the page whose figures are guarded by
+   * check-prices.mjs precisely so nothing can contradict that file. The neon
+   * glassmorphism and the magenta are a distant third problem.
+   *
+   * The text is large and crisp, so unlike the other mockups here it cannot be
+   * made illegible by rendering it small.
+   */
 ];
 
 /** No committed asset should exceed this; the whole point is a fast site. */

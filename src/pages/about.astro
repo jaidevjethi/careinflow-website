@@ -7,7 +7,8 @@ import studioImage from '@/assets/editorial/founder-working.webp';
 import founderImage from '@/assets/jaidev-jethi.jpg';
 import SectionHead from '@/components/SectionHead.astro';
 import Figure from '@/components/Figure.astro';
-import consultImage from '@/assets/editorial/hero-founder-consult.webp';
+import gujaratMap from '@/assets/editorial/gujarat-map.webp';
+import studioTeam from '@/assets/editorial/about-studio-team.webp';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import { BUSINESS, CANONICAL_HOST } from '@/config/site';
@@ -132,6 +133,12 @@ const notList = [
             how the work gets genuinely good: the same reason specialists
             exist in medicine.
           </p>
+          <Figure
+            src={studioTeam}
+            alt="Work in progress on two screens in the studio: a clinic page being laid out on one, the code behind it on the other."
+            caption="One kind of client, built over and over"
+            maxWidth={680}
+          />
           <h2>What we promise, and what we refuse</h2>
           <p>
             Our standards are published, because published standards are
@@ -191,9 +198,9 @@ const notList = [
         </p>
       </div>
       <Figure
-        src={consultImage}
-        alt="A doctor and a web designer sitting together at a desk, going through a clinic website on a laptop."
-        caption="No account manager in between"
+        src={gujaratMap}
+        alt="An illustrated map of North Gujarat with Mehsana lit at the centre and lines running out to Patan, Visnagar, Gandhinagar and Ahmedabad."
+        caption="Mehsana at the centre, and the towns it reaches"
         maxWidth={460}
       />
     </div>

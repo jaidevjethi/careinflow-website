@@ -7,6 +7,8 @@ import IllustrationPanel from '@/components/IllustrationPanel.astro';
 import methodImage from '@/assets/mockups/website-care.jpg';
 import processStudy from '@/assets/editorial/process-study.webp';
 import processBuild from '@/assets/editorial/process-build.webp';
+import processStructure from '@/assets/editorial/process-structure.webp';
+import processLaunch from '@/assets/editorial/process-launch.webp';
 import SectionHead from '@/components/SectionHead.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
@@ -68,6 +70,8 @@ const weeks = [
     title: 'Structure & words',
     text: 'The page order and the actual copy come before any visuals. You sign off the words patients will read, every treatment page, every heading, so design decorates substance instead of hiding its absence.',
     output: 'Sitemap and final copy, signed off',
+    image: processStructure,
+    imageAlt: 'Two designers at a desk marking up printed page-structure sheets headed Patient Journey Architecture and Cardiology Treatment Pages, with wireframe sketches spread around them.',
     fromYou: [
       'Your treatment list, and how you prefer to describe costs',
       'Sign-off on the structure and the words',
@@ -89,6 +93,8 @@ const weeks = [
     title: 'Launch, then stay',
     text: 'Launch is measured against the published targets: load time reference, accessibility, valid schema. Then the ongoing schedule begins, weekly monitoring, monthly maintenance, and a written quarterly review.',
     output: 'Launch measurements + the care schedule',
+    image: processLaunch,
+    imageAlt: 'A laptop and a phone on a desk at launch: the laptop showing a launch checklist of speed, structured data and Core Web Vitals checks, the phone showing the clinic answering a spoken search.',
     fromYou: ['A final yes before launch'],
   },
 ];

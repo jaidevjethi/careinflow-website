@@ -3,6 +3,8 @@ import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHero from '@/components/PageHero.astro';
+import IllustrationPanel from '@/components/IllustrationPanel.astro';
+import areasMap from '@/assets/editorial/areas-map.webp';
 import CtaPanel from '@/components/CtaPanel.astro';
 import { ACCENTS } from '@/lib/accents';
 import { BUSINESS } from '@/config/site';
@@ -56,6 +58,16 @@ const schema = graph(
       the build, the Google listing, the monthly upkeep and the quarterly
       review. For photographs we come to you.
     </p>
+    {/* An abstract map, and the alt text says so. The pins mark places served
+        rather than anything staffed, which is the distinction this page opens
+        with, and the illustration carries no place names it could get wrong. */}
+    <IllustrationPanel
+      slot="aside"
+      src={areasMap}
+      alt="An illustrated dark map with glowing pins scattered across it, marking the towns served from one studio."
+      eager
+      maxWidth={400}
+    />
   </PageHero>
 
   <section class="band-powder" aria-label="Areas with a full page">

@@ -9,6 +9,10 @@ imageAlt: 'A hand holding a phone at an Indian roadside, the screen still mostly
 order: 5
 ---
 
+import Figure from '@/components/Figure.astro';
+import speedBefore from '@/assets/mockups/speed-before.webp';
+import speedAfter from '@/assets/mockups/speed-after.webp';
+
 Here is an uncomfortable experiment: open your clinic's website on a
 phone, on mobile data, outside your own Wi-Fi. Count the seconds until
 you can actually read it.
@@ -26,6 +30,13 @@ nothing is medically wrong, but something is off.
 This matters doubly in North Gujarat, where the typical patient searches
 on a mid-range Android over a mobile connection. Sites that feel fine on
 an office laptop routinely take five or more seconds there.
+
+<Figure
+  src={speedBefore}
+  alt="A dated clinic website on an older phone, still showing a loading bar part-way through and a cluttered page behind it."
+  caption="Eighteen per cent loaded, and the patient is already gone"
+  maxWidth={680}
+/>
 
 ## What does Google measure?
 
@@ -52,6 +63,13 @@ features nobody uses, autoplaying video, and a decade of plugins nobody
 removed. None of it is necessary. A clinic website's content, text,
 photos, a map, a WhatsApp button, is genuinely lightweight when built
 with discipline.
+
+<Figure
+  src={speedAfter}
+  alt="The same kind of clinic site rebuilt: a clean page on a phone, already loaded, with treatments listed and a booking button in reach."
+  caption="The same practice, built to open before anyone gives up"
+  maxWidth={680}
+/>
 
 ## How to test your own website in two minutes
 

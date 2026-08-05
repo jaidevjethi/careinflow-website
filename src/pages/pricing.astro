@@ -4,6 +4,9 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHero from '@/components/PageHero.astro';
 import PriceEstimator from '@/components/PriceEstimator.astro';
 import SectionHead from '@/components/SectionHead.astro';
+import Figure from '@/components/Figure.astro';
+import pricingConsult from '@/assets/editorial/pricing-consult.webp';
+import promiseSeal from '@/assets/mockups/pricing-promise.webp';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import CtaStrip from '@/components/CtaStrip.astro';
@@ -143,6 +146,13 @@ const principles = [
         Work out your number
       </a>
     </p>
+    <IllustrationPanel
+      slot="aside"
+      src={pricingConsult}
+      alt="A doctor and a web designer sitting together, going through a written price estimate on a tablet between them."
+      eager
+      maxWidth={400}
+    />
   </PageHero>
 
   <PriceEstimator />
@@ -447,6 +457,15 @@ const principles = [
             ))}
           </dl>
         </div>
+        {/* Sits under the list it illustrates rather than beside the heading:
+            the four fixed things are the promise, and the seal is the picture
+            of it. */}
+        <Figure
+          src={promiseSeal}
+          alt="A printed fixed-price agreement with a seal on it, two people shaking hands out of focus behind."
+          maxWidth={360}
+          class="lg:col-start-2"
+        />
       </div>
     </div>
   </section>
