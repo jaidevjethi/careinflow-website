@@ -10,9 +10,21 @@ permissions:
   pages: write
   id-token: write
 
+# One deployment at a time, but never kill one that is already running.
+#
+# This was `cancel-in-progress: true`, which is right for CI on a pull request
+# and wrong for a production deploy. On 2026-08-06 four dispatches landed in
+# seven minutes while GitHub Actions was in a major outage, and each cancelled
+# the one before it — including a run that had already finished `build: success`
+# and was on the publish step. Retrying always killed the deploy closest to
+# finishing, so the site never went out.
+#
+# `false` is what GitHub's own Pages starter workflow ships. Queued runs still
+# collapse to the latest, so a burst of pushes costs a few minutes rather than
+# a lost deployment.
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
