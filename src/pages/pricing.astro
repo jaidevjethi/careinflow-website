@@ -474,10 +474,13 @@ const principles = [
   <!-- The one mid-tone on the longest page. Safe here because the only text
        sitting directly on the band is the label and the title; every word of
        body copy is inside a canvas card. -->
-  <section class="band-deep" aria-labelledby="paysfor-title">
+  {/* The other dark beat on the site's longest page. Light cards on a dark
+      ground, which is the strongest card treatment available and the reason
+      this section no longer needs a mid-tone to have presence. */}
+  <section class="band-panel" aria-labelledby="paysfor-title">
     <div class="section shell">
       <SectionHead
-        onBand
+        dark
         id="paysfor-title"
         label="What you pay for"
         title="What does the price include?"

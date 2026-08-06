@@ -90,41 +90,25 @@
    * Every neutral below is now b* <= 0, and ink shares the grounds' hue.
    *
    *   surface  #FFFFFF  L*100    cards, and the lightest sections
-   *   canvas   #EDF3F9  L* 96.4  default body        (1.12 from surface)
-   *   powder   #DFE9F5  L* 91.9  quiet band, blue    (1.12 from canvas)
-   *   mist     #D7EBE9  L* 91.6  quiet band, teal, a hue turn from powder
-   *   deep     #9FC4D6  L* 77.1  mid-tone block, blue  (1.51 from powder)
-   *   moss     #B2BCE6  L* 76.8  mid-tone block, periwinkle (a tint of the accent)
-   *   panel    #0B2440  L* 13.8  midnight, reserved
+   *   canvas   #F4F7FD  L* 97.2  default body      hue 272
+   *   powder   #E9EEF9  L* 94.0  quiet band        hue 274
+   *   mist     #DDE4F4  L* 90.5  quiet band        hue 275
+   *   panel    #0B2440  L* 13.8  midnight: header, hero, CTA, footer
+   *   panel-section #0E1B33 L* 9.9  the in-page dark band
+   *
+   * Three degrees of hue across the light grounds, against 93 before, and all
+   * three carry every one of the six text tokens. The two mid-tones that used
+   * to sit between `mist` and `panel` are gone: at L*77 they cleared AA for
+   * only three of the six, so every section on one was typographically poorer
+   * than the rest of the site. Depth is a dark band now, not a medium one.
    *
    * A card lifts 1.118 on canvas and 1.227 on powder. Crisp white cards on a
    * cool ice ground is the setting that reads current; cream on cream did not.
    */
   --color-surface: #ffffff;
-  --color-canvas: #edf3f9;
-  --color-powder: #dfe9f5;
-  --color-mist: #d7ebe9;
-  --color-deep: #9fc4d6;
-  /*
-   * `moss` was a sage teal-green (#9BC7BE) and it was the one ground that
-   * looked borrowed from another palette. Measured, that is exactly what it
-   * was: every other ground leans blue on the b* axis (powder −7.0, canvas
-   * −3.6) while moss sat at b* −0.3 with its colour coming off the green a*
-   * axis instead. At L*77 that green is a full section band, so it read as a
-   * different brand's colour rather than as this one's mid-tone.
-   *
-   * The replacement is a periwinkle at the same lightness (L* 76.8 against
-   * 77.0), so the ground ladder's arithmetic is untouched, but at b* −22.1 it
-   * is firmly in the blue-violet family — and it is a tint of the brand accent
-   * rather than a hue that appears nowhere else. deltaE against `deep` is 16.4,
-   * slightly wider than the 15.1 it replaced, so the two mid-tones still read
-   * as two colours.
-   *
-   * Text pairs are preserved almost exactly: ink 8.44 (was 8.50), body-deep
-   * 6.28 (6.32), surgical 4.86 (4.89). `muted` and `faint` still fail here, as
-   * they did on moss — that rule is unchanged.
-   */
-  --color-moss: #b2bce6;
+  --color-canvas: #f4f7fd;
+  --color-powder: #e9eef9;
+  --color-mist: #dde4f4;
   --color-line: #cbd9e8;
   --color-line-strong: #afc4da;
   --color-hairline: #dce6f1;
@@ -142,7 +126,11 @@
    * bar is simply that it must look intended rather than accidental.
    */
   --color-rule: #5f7a96;
-  --color-rule-dark: #2f6382;
+  /* The same mark on a dark ground. #2F6382 was itself dark and measured 2.64
+     on the in-page dark band, so the motif vanished exactly where the section
+     is trying to feel deliberate. This reads 4.07 there and 3.72 on the hero,
+     matching the 4.15 the light-ground rule gets on canvas. */
+  --color-rule-dark: #4a80ad;
 
   /*
    * Brand. `surgical` is the AA-safe primary used for text, labels and links.
@@ -198,31 +186,34 @@
    * beside the others without looking like a stain; periwinkle gives it a
    * genuine hue of its own and keeps it in the family.
    *
-   * Closest tint pair is 4.0 deltaE, where 2.3 is the point a human can see a
-   * difference at all, so no two cards read as the same colour. The `-vivid`
-   * values are only ever `accent-bar`, which is aria-hidden, so they are held
-   * to the 3:1 non-text bar and not to the 4.5 text bar.
+   * Measured, on the re-toned arc: closest tint pair is 5.3 deltaE, where 2.3
+   * is the point a human can see a difference at all, so no two cards read as
+   * the same colour. Every tint clears 4.5 for `faint`, the lightest text
+   * token, which is the constraint that actually binds — a first pass at these
+   * checked `ink` only, and all five tints failed `faint` by about a tenth.
+   * The `-vivid` values are only ever `accent-bar`, which is aria-hidden, so
+   * they are held to the 3:1 non-text bar and not to the 4.5 text bar.
    */
-  /* web = primary navy — healthcare websites */
-  --color-a-web: #0f4c75;
-  --color-a-web-vivid: #2c7cb8;
-  --color-a-web-tint: #cedcef;
-  /* seo = mid blue — local SEO */
-  --color-a-seo: #16639a;
-  --color-a-seo-vivid: #3e9bd6;
-  --color-a-seo-tint: #ddeffd;
-  /* gbp = clinical teal — Google Business Profile, and the signature accent */
-  --color-a-gbp: #0a6f68;
-  --color-a-gbp-vivid: #0fbfae;
-  --color-a-gbp-tint: #cfebe6;
-  /* care = periwinkle — website care */
-  --color-a-care: #414b87;
-  --color-a-care-vivid: #6c77c4;
-  --color-a-care-tint: #e2e3f7;
-  /* social = green — social media */
-  --color-a-social: #2f6b57;
-  --color-a-social-vivid: #4c9b7e;
-  --color-a-social-tint: #d6eadf;
+  /* web = indigo — healthcare websites */
+  --color-a-web: #34419e;
+  --color-a-web-vivid: #6a72cc;
+  --color-a-web-tint: #e3e3fb;
+  /* seo = blue — local SEO */
+  --color-a-seo: #1a5ecb;
+  --color-a-seo-vivid: #5090e8;
+  --color-a-seo-tint: #d6e7fd;
+  /* gbp = cyan-blue — Google Business Profile */
+  --color-a-gbp: #0f6f9e;
+  --color-a-gbp-vivid: #3b9ac9;
+  --color-a-gbp-tint: #cfeaf8;
+  /* care = violet — website care */
+  --color-a-care: #6039b2;
+  --color-a-care-vivid: #9376db;
+  --color-a-care-tint: #eee0fc;
+  /* social = magenta-violet — social media */
+  --color-a-social: #8a3499;
+  --color-a-social-vivid: #b972c6;
+  --color-a-social-tint: #f8e1f4;
 
   /*
    * Midnight family — hero, CTA, footer and one section per page. Rebuilt on
@@ -239,6 +230,13 @@
   --color-panel-text-dim: #a8bdd3;
   --color-panel-text-faint: #93aac4;
   --color-panel-accent: #a5b4fc;
+  /*
+   * The in-page dark section, slightly deeper than `panel` so a dark band
+   * sitting under the sticky midnight header reads as its own block rather
+   * than as a continuation of the header. White measures 17.2 on it and the
+   * accent 5.76.
+   */
+  --color-panel-section: #0e1b33;
 
   /*
    * Spacing scale — four values, and nothing outside this file may invent a
@@ -608,24 +606,21 @@
     );
   }
   /*
-   * Chapter bands, the middle of the ladder. Between near-white and midnight
-   * there used to be nothing, which is what made every page read flat. These
-   * fill that gap.
+   * Chapter bands.
    *
-   * `powder` and `mist` are the quiet pair: soft blue and soft teal, a hue
-   * apart at the same value, so putting one after the other turns the page's
-   * colour without changing its weight. `deep` and `moss` are the mid-tones and
-   * carry real presence; use at most one per page, and alternate which one
-   * between page types.
+   * There used to be four: two quiet near-whites and two mid-tones at L*77.
+   * The mid-tones are gone, and the reason is measured rather than aesthetic —
+   * at that lightness only three of the six text tokens cleared AA, so every
+   * mid-tone section was typographically poorer than the rest of the site and
+   * looked it.
    *
-   * TEXT RULE, measured. On `deep`: ink, body-deep, body and surgical clear AA.
-   * On `moss`: ink, body-deep and surgical. `muted` and `faint` fail on both.
-   * Ink for copy, surgical for small labels, nothing lighter. This is the same
-   * rule as "vivid fills take ink text", for the same reason.
+   * What is left is two near-white steps on one hue, and both of them carry
+   * ALL six text tokens. Nothing on the page is now constrained by the ground
+   * it sits on.
    *
-   * A full-bleed vivid teal used to sit here, which made a supporting list of
-   * benefits louder than both the hero and the CTA it led into. Mid-tone, not
-   * vivid, is the setting that gives the page depth without taking the eye.
+   * The depth the mid-tones were supposed to provide comes from `.band-panel`
+   * instead. Light, light, dark, light is the rhythm; light, medium, light is
+   * the one that reads flat, which is what the six-step ladder kept producing.
    */
   .band-powder {
     background: var(--color-powder);
@@ -635,13 +630,14 @@
     background: var(--color-mist);
     color: var(--color-ink);
   }
-  .band-deep {
-    background: var(--color-deep);
-    color: var(--color-ink);
-  }
-  .band-moss {
-    background: var(--color-moss);
-    color: var(--color-ink);
+  /*
+   * The in-page dark section. Up to two midnight blocks per page now — this
+   * one plus the hero, or this one plus the CTA panel — because the rhythm
+   * depends on a dark beat somewhere in the middle of a long page.
+   */
+  .band-panel {
+    background: var(--color-panel-section);
+    color: var(--color-panel-text);
   }
   /* Oversized numeral — the personality device. Large, tight, and set in the
      accent so a section reads as a chapter rather than another card grid. */
@@ -651,18 +647,12 @@
     line-height: 0.85;
     font-variant-numeric: tabular-nums;
   }
-  /*
-   * The rule takes the signature teal on the quiet bands, where it has room to
-   * read, and drops to the primary navy on the mid-tones, where a bright teal
-   * on a mid teal would disappear.
-   */
+  /* The rule takes the accent on the light bands and on the dark one, where
+     it has room to read either way. */
   .band-powder .band-rule,
-  .band-mist .band-rule {
+  .band-mist .band-rule,
+  .band-panel .band-rule {
     background: var(--color-vivid);
-  }
-  .band-deep .band-rule,
-  .band-moss .band-rule {
-    background: var(--color-surgical);
   }
 
   /* Uppercase mono section label (record vocabulary). */

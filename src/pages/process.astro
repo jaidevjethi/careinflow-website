@@ -250,26 +250,23 @@ const cadence = [
   </section>
 
   <!--
-    The page's one mid-tone band, and its only real depth step. /pricing sits
-    next to this one in the browse order and takes `deep`, so this takes `moss`
-    to keep the pair from going monotone.
-
-    On moss, `muted` and `faint` fail AA. Every text token here is ink,
-    body-deep or surgical, and SectionHead carries `onBand` so its lede comes
-    up to ink rather than sitting in the usual grey.
+    A quiet band, not a mid-tone. The mid-tones are gone from the system: at
+    L*77 they carried only three of the six text tokens, so every section on
+    one was typographically poorer than the rest of the site. This page already
+    has its depth from the timeline and the diagram, so it takes the quiet step
+    and /pricing takes the dark one.
   -->
-  <section class="band-moss" aria-labelledby="after-title">
+  <section class="band-powder" aria-labelledby="after-title">
     <div class="section shell">
       <div class="grid items-start gap-12 lg:grid-cols-[1fr_400px] lg:gap-20">
         <div>
           <SectionHead
             id="after-title"
-            onBand
             label="After week four"
             title="What happens after week four?"
             lede="Launch begins the maintenance schedule: weekly monitoring, monthly upkeep, and a quarterly written review of what patients did and what to do next. The full schedule is on the ongoing care page."
           />
-          <p class="mt-6 max-w-[620px] text-[16px] leading-[1.65] text-ink/90">
+          <p class="mt-6 max-w-[620px] text-[16px] leading-[1.65] text-muted">
             Care is {rupees(STANDALONE_MONTHLY.care)} a month, or
             {' '}{rupees(PLANS[1]!.monthly)} with your Google Business Profile
             managed alongside it. Month to month, no lock-in, and the website

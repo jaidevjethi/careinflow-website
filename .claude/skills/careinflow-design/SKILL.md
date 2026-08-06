@@ -28,11 +28,9 @@ regardless of how good its type was.
 | Token | Value | L* | Role |
 |---|---|---|---|
 | `surface` | `#FFFFFF` | 100 | cards, and the lightest sections |
-| `canvas` | `#EDF3F9` | 96.4 | default body, cool ice |
-| `powder` | `#DFE9F5` | 91.9 | quiet band, blue |
-| `mist` | `#D7EBE9` | 91.6 | quiet band, teal, a hue turn from powder |
-| `deep` | `#9FC4D6` | 77.1 | mid-tone block, blue |
-| `moss` | `#B2BCE6` | 76.8 | mid-tone block, periwinkle (a tint of the accent) |
+| `canvas` | `#F4F7FD` | 97.2 | default body, hue 272 |
+| `powder` | `#E9EEF9` | 94.0 | quiet band, hue 274 |
+| `mist` | `#DDE4F4` | 90.5 | quiet band, hue 275 |
 | `panel` | `#0B2440` | 13.8 | midnight, reserved |
 
 Adjacent steps: surface→canvas 1.12, canvas→powder 1.12, powder→deep 1.51,

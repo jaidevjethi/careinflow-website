@@ -565,15 +565,22 @@ const whatsappHref = whatsappWithMessage(
   </section>
 
   <!-- WHAT CHANGES : the value case, stated as mechanisms -->
-  <section class="band-moss" aria-labelledby="outcomes-title">
+  {/*
+    The page's dark beat, and the reason the mid-tone band it replaced is gone.
+    A medium ground could only carry three of the six text tokens; a dark one
+    carries the whole panel set, so this section finally has the same
+    typographic range as every other. It is also the value case — what actually
+    changes for the practice — which is the right thing to give the weight to.
+  */}
+  <section class="band-panel" aria-labelledby="outcomes-title">
     <div class="section shell">
       <div class="max-w-[760px]">
         <div class="band-rule mb-3.5 h-[7px] max-w-[200px]" aria-hidden="true"></div>
-        <p class="label-mono mb-5 text-ink/90">What changes</p>
-        <h2 id="outcomes-title" class="text-[clamp(30px,4.5vw,46px)] font-extrabold leading-[1.06] tracking-[-0.04em] text-ink">
+        <p class="label-mono mb-5 text-panel-accent">What changes</p>
+        <h2 id="outcomes-title" class="text-[clamp(30px,4.5vw,46px)] font-extrabold leading-[1.06] tracking-[-0.04em] text-surface">
           What is different once the work is done
         </h2>
-        <p class="mt-4.5 text-lg leading-[1.62] text-ink/90">
+        <p class="mt-4.5 text-lg leading-[1.62] text-panel-text">
           We will not promise you a number of patients. Nobody can. Here is
           what we do control, and what changes for your practice once it is
           done.
@@ -581,9 +588,9 @@ const whatsappHref = whatsappWithMessage(
       </div>
       <div class="reveal-group mt-13 grid gap-6 sm:grid-cols-2">
         {outcomes.map((o) => (
-          <article class="rounded-2xl border border-line bg-surface p-7">
-            <h3 class="text-[19px] font-bold tracking-[-0.02em] text-ink">{o.title}</h3>
-            <p class="mt-2.5 text-[16px] leading-[1.62] text-body">{o.text}</p>
+          <article class="rounded-2xl border border-panel-line bg-panel-card p-7">
+            <h3 class="text-[19px] font-bold tracking-[-0.02em] text-surface">{o.title}</h3>
+            <p class="mt-2.5 text-[16px] leading-[1.62] text-panel-text-dim">{o.text}</p>
           </article>
         ))}
       </div>
