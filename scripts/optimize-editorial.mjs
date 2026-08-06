@@ -189,6 +189,35 @@ const DROP = [
   { n: '41', src: '41-contact-studio-exterior.jpg',      out: 'editorial/studio-exterior.webp',   ratio: 'wide', grade: 5.0 },
   { n: '42', src: '42-free-review-report.jpg',           out: 'mockups/review-report.webp',       ratio: 'wide', grade: 4.0 },
 
+  // ── Fourth drop ──────────────────────────────────────────────────────────
+  { n: '43', src: '43-contact-hero-collaboration.jpg',            out: 'editorial/contact-consult.webp',    ratio: 'wide', grade: 4.0 },
+  { n: '45', src: '45-service-websites-hero.jpg',                 out: 'editorial/websites-desk.webp',      ratio: 'wide', grade: 4.5 },
+  { n: '46', src: '46-service-websites-speed-score.jpg',          out: 'mockups/websites-speed.webp',       ratio: 'wide', grade: 4.0 },
+  { n: '47', src: '47-service-websites-copywriting.jpg',          out: 'editorial/websites-copywriting.webp', ratio: 'wide', grade: 5.0 },
+  { n: '49', src: '49-service-gbp-optimization-comparison.jpg',   out: 'mockups/gbp-before-after.webp',     ratio: 'wide' },
+  { n: '50', src: '50-service-care-maintenance-hero.jpg',         out: 'editorial/care-monitoring-desk.webp', ratio: 'wide', grade: 3.0 },
+  { n: '52', src: '52-service-care-performance-optimization.jpg', out: 'mockups/care-speed-chart.webp',     ratio: 'wide', grade: 3.5 },
+  { n: '53', src: '53-specialty-dental-hero.jpg',                 out: 'editorial/dental-consult.webp',     ratio: 'wide', grade: 3.5 },
+  { n: '54', src: '54-specialty-dental-treatment-room.jpg',       out: 'editorial/dental-suite.webp',       ratio: 'wide' },
+
+  /*
+   * 48 is deliberately absent, and not for a stylistic reason.
+   *
+   * It shows a Google map pack listing three REAL Gujarat hospitals by name —
+   * Sterling Hospital, HCG Cancer Centre, Bhagwan Mahavir — each with an
+   * invented 4.9 rating and review count, ranked one to three, on the page
+   * that sells local ranking. These are real businesses in the studio's own
+   * market and plausibly future clients.
+   *
+   * The same problem as the "Apollo Dental Ahmedabad" row patched out of
+   * seo-map-pack.webp, except there it was one line inside a results list and
+   * here it is three headline rows that are the entire subject of the frame.
+   * There is no crop or fill that leaves an image behind.
+   *
+   * 51 is absent too, for the ordinary reason: neon glassmorphism on a palette
+   * that was just unified to one cool family reads as lifted from another site.
+   */
+
   /*
    * 29 and 44 (the two package-tier card renders) are deliberately absent.
    *

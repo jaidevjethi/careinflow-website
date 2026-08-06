@@ -40,22 +40,14 @@ const description =
 const faqs = await getFaqsFor('home');
 
 /**
- * Healthcare only on the homepage. The non-healthcare project is real work and
- * stays on /work, labelled. But the page two lines above says we build for
- * healthcare "and nothing else", and a taxi service in the featured slot
- * undercuts that before a doctor reaches the second sentence.
+ * The whole portfolio, in `order`. The homepage used to show one card and
+ * describe the other two in a paragraph, which hid the strongest asset on the
+ * site on its most-read page. Each card carries its own label, so the sample
+ * cannot be mistaken for a client.
  */
 const allCaseStudies = (await getCollection('caseStudies')).sort(
   (a, b) => a.data.order - b.data.order,
 );
-/**
- * Real healthcare clients only. The section this feeds says "Not mockups.
- * Open one on your own phone and time it yourself", so a sample build cannot
- * appear in it however good it looks — it lives on /work, labelled.
- */
-const featured = allCaseStudies.filter((cs) => cs.data.healthcare && !cs.data.demo);
-const otherWorkCount = allCaseStudies.filter((cs) => !cs.data.healthcare && !cs.data.demo).length;
-const demoCount = allCaseStudies.filter((cs) => cs.data.demo).length;
 
 const schema = graph(
   organizationSchema(),
@@ -439,7 +431,7 @@ const whatsappHref = whatsappWithMessage(
            the dark panel that used to sit here pulled every eye to the one
            surface a doctor is least likely to be shopping for. Each card is a
            door to the service that fixes it. -->
-      <div class="reveal-group grid gap-6 md:grid-cols-3">
+      <div class="reveal-group grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
         {patientSurfaces.map((s) => (
           <article class="card-hover card-link flex flex-col overflow-hidden rounded-3xl border border-line bg-surface">
             <span class:list={['accent-bar block h-1 w-full', s.accent.bar]} aria-hidden="true"></span>
@@ -451,14 +443,18 @@ const whatsappHref = whatsappWithMessage(
               src={s.image}
               alt={s.imageAlt}
               widths={[420, 640, 840]}
-              sizes="(min-width: 768px) 420px, 92vw"
+              sizes="(min-width: 1280px) 400px, (min-width: 640px) 46vw, 92vw"
               loading="lazy"
-              class:list={['h-[240px] w-full border-b border-line object-cover', s.imagePos]}
+              class:list={['h-[140px] w-full border-b border-line object-cover xl:h-[210px]', s.imagePos]}
             />
-            <div class="flex flex-1 flex-col p-8">
+            <div class="flex flex-1 flex-col p-5 xl:p-7">
               <h3 class="text-[24px] font-bold tracking-[-0.03em] text-ink">{s.title}</h3>
-              <p class="mt-3 text-base leading-[1.6] text-body">{s.text}</p>
-              <dl class="mt-6 rounded-xl border border-line bg-canvas p-4">
+              <p class="mt-3 line-clamp-3 text-base leading-[1.6] text-body xl:line-clamp-4">{s.text}</p>
+              {/* The three-row detail box is 147px — a fifth of a phone screen —
+                  and it is supporting detail for a card whose whole job is to
+                  send you to the service page, where the same rows appear in
+                  full. It returns at sm. */}
+              <dl class="mt-6 hidden rounded-xl border border-line bg-canvas p-4 xl:block">
                 {s.rows.map((row, i) => (
                   <div
                     class:list={[
@@ -581,9 +577,9 @@ const whatsappHref = whatsappWithMessage(
           What is different once the work is done
         </h2>
         <p class="mt-4.5 text-lg leading-[1.62] text-panel-text">
-          We will not promise you a number of patients. Nobody can. Here is
-          what we do control, and what changes for your practice once it is
-          done.
+Four things change for your practice, and every one of them is
+          something we control and you can check. What we will not do is put a
+          number on how many patients that becomes.
         </p>
       </div>
       <div class="reveal-group mt-13 grid gap-6 sm:grid-cols-2">
@@ -673,63 +669,62 @@ const whatsappHref = whatsappWithMessage(
           id="featured-title"
           label="Our work"
           title="Websites we have actually built"
-          lede="Not mockups. Open one on your own phone and time it yourself. We would rather hand you a working site than describe one."
+          lede="Three live sites you can open right now. Time how fast they appear, tap the enquiry button, and see where the message lands."
         />
         <a href={href('/work')} class="prose-link whitespace-nowrap text-base">See the work →</a>
       </div>
 
-      {featured.map((cs) => (
-        <a
-          href={href(`/work/${cs.id}`)}
-          class="card-hover grid overflow-hidden rounded-3xl border border-line bg-canvas hover:no-underline lg:grid-cols-[1.35fr_1fr]"
-        >
-          <Image
-            src={cs.data.cover}
-            alt={cs.data.coverAlt}
-            widths={[640, 960, 1280]}
-            sizes="(min-width: 1024px) 780px, 92vw"
-            loading="lazy"
-            class="h-full w-full border-b border-line bg-surface object-cover object-top lg:border-b-0 lg:border-r"
-          />
-          <div class="flex flex-col justify-center p-8 sm:p-10">
-            <p class="mb-4 flex flex-wrap items-center gap-2">
-              <span class="chip border border-line bg-surface text-body-deep">{cs.data.sector}</span>
-              <span class="chip bg-hairline-soft text-muted">{cs.data.location}</span>
-            </p>
-            <h3 class="text-[clamp(22px,2.4vw,28px)] font-extrabold leading-[1.15] tracking-[-0.03em] text-ink">
-              {cs.data.client}
-            </h3>
-            <p class="mt-3 text-[16px] leading-[1.62] text-muted">{cs.data.summary}</p>
-            <dl class="mt-7 border-t border-hairline pt-5">
-              {cs.data.highlights.slice(0, 3).map((h, i) => (
-                <div
-                  class:list={[
-                    'flex items-baseline justify-between gap-6 py-2.5 text-[15px]',
-                    i < 2 && 'border-b border-hairline',
-                  ]}
-                >
-                  <dt class="text-muted">{h.label}</dt>
-                  <dd class="whitespace-nowrap font-semibold text-pass">{h.value}</dd>
-                </div>
-              ))}
-            </dl>
-            <span class="prose-link mt-6 inline-block text-[16px]">Read the case study →</span>
-          </div>
-        </a>
-      ))}
+      {/* All three projects, in the same three-up grid /work uses, so the two
+          pages agree with each other. The sample keeps its chip here too —
+          that label is what lets the whole portfolio be shown without the
+          section contradicting the sentence above it. */}
+      <div class="reveal-group grid items-stretch gap-6 sm:grid-cols-2 xl:grid-cols-3">
+        {allCaseStudies.map((cs) => (
+          <a
+            href={href(`/work/${cs.id}`)}
+            class="card-hover flex flex-col overflow-hidden rounded-3xl border border-line bg-canvas hover:no-underline"
+          >
+            <Image
+              src={cs.data.cover}
+              alt={cs.data.coverAlt}
+              widths={[420, 640, 840]}
+              sizes="(min-width: 1280px) 400px, (min-width: 640px) 46vw, 92vw"
+              loading="lazy"
+              class="h-[150px] w-full border-b border-line bg-surface object-cover object-top xl:h-[210px]"
+            />
+            <div class="flex flex-1 flex-col p-5 xl:p-7">
+              <p class="mb-4 flex flex-wrap items-center gap-2">
+                <span class="chip border border-line bg-surface text-body-deep">{cs.data.sector}</span>
+                {cs.data.demo && (
+                  <span class="chip border border-surgical/40 bg-surgical-tint text-surgical">Sample</span>
+                )}
+                <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{cs.data.year}</span>
+              </p>
+              <h3 class="text-[clamp(20px,1.7vw,23px)] font-extrabold leading-[1.18] tracking-[-0.03em] text-ink">
+                {cs.data.client}
+              </h3>
+              <p class="mt-2 text-[14px] font-semibold text-muted">{cs.data.location}</p>
+              <p class="mt-3 line-clamp-3 text-[15px] leading-[1.6] text-body xl:mt-3.5 xl:line-clamp-4">
+                {cs.data.summary}
+              </p>
+              <dl class="mt-auto hidden grid-cols-2 gap-x-5 gap-y-4 border-t border-line pt-5 xl:grid xl:pt-6">
+                {cs.data.highlights.map((h, i) => (
+                  <div >
+                    <dt class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{h.label}</dt>
+                    <dd class="mt-1 text-[17px] font-extrabold leading-[1.2] tracking-[-0.03em] text-ink">{h.value}</dd>
+                  </div>
+                ))}
+              </dl>
+              <p class="prose-link mt-6 text-[16px]">Read the case study →</p>
+            </div>
+          </a>
+        ))}
+      </div>
 
-      <p class="mt-7 max-w-[720px] text-[16px] leading-[1.65] text-muted">
-        One healthcare project, shown in full, rather than a portfolio padded
-        out with work we did not do. {otherWorkCount > 0 && (
-          <>There {otherWorkCount === 1 ? 'is' : 'are'} also {otherWorkCount} non-healthcare
-          {' '}{otherWorkCount === 1 ? 'project' : 'projects'} on the
-          {' '}<a href={href('/work')} class="prose-link">work page</a>, labelled as such,
-          because the method is the same even when the client is not a clinic.</>
-        )}{demoCount > 0 && (
-          <>{' '}The work page also carries {demoCount === 1 ? 'a' : String(demoCount)} complete
-          {' '}{demoCount === 1 ? 'sample site' : 'sample sites'} built to show what a practice
-          receives. It is marked as a sample, and everything written inside it is invented.</>
-        )}
+      <p class="mt-8 max-w-[720px] text-[16px] leading-[1.65] text-muted">
+        Every one of these is live. Open them on your phone, time how long they
+        take to appear, and tap the enquiry button to see where it goes. Two
+        were built for practices; the third is a sample, and its page says so.
       </p>
     </div>
   </section>

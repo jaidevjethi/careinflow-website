@@ -3,7 +3,7 @@ import { getFaqsFor } from '@/lib/faqs';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
 import PageHero from '@/components/PageHero.astro';
-import studioImage from '@/assets/editorial/founder-working.webp';
+import consultImage from '@/assets/editorial/contact-consult.webp';
 import Figure from '@/components/Figure.astro';
 import waImage from '@/assets/mockups/contact-whatsapp.webp';
 import studioExterior from '@/assets/editorial/studio-exterior.webp';
@@ -77,8 +77,8 @@ const steps = [
 
     <Image
       slot="aside"
-      src={studioImage}
-      alt="The CareInflow studio desk in Mehsana, a laptop open beside a printed page."
+      src={consultImage}
+      alt="Two people either side of a desk going through a clinic website design on a laptop between them."
       widths={[400, 600, 800]}
       sizes="(min-width: 1024px) 400px, 92vw"
       loading="eager"
