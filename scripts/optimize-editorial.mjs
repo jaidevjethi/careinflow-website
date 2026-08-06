@@ -83,6 +83,20 @@ const DROP = [
     out: 'mockups/surface-google-listing.webp',
     crop: { left: 0, top: 0.03, width: 1, height: 0.94 },
     ratio: 'tall', width: 900,
+    /*
+     * "4.8 ★★★★★ (127 reviews)" was legible at full size in the homepage
+     * triage card — an invented rating, on the page whose neighbouring copy
+     * says we never fabricate reviews. That is the one contradiction a
+     * sceptical doctor needs to spot to discount everything else here.
+     *
+     * The listing panel behind it is pure #FFFFFF, so a fill is invisible and
+     * the card simply reads as a profile with no rating yet, which is what a
+     * new practice's listing actually looks like.
+     */
+    /* Coordinates are relative to the CROPPED frame, not the source — `patch`
+       runs after `crop` in the pipeline. Getting that wrong the first time
+       sliced the rating in half instead of removing it. */
+    patch: [{ left: 0.276, top: 0.2358, width: 0.295, height: 0.0257, fill: '#FFFFFF' }],
   },
   {
     n: '04', src: '04-triage-mobile-website.jpg',
@@ -168,8 +182,29 @@ const DROP = [
   { n: '36', src: '36-areas-hero-map.jpg',     out: 'editorial/areas-map.webp',  ratio: 'wide' },
   { n: '37', src: '37-resource-cover-gbp.jpg', out: 'mockups/gbp-article-cover.webp', ratio: 'wide', grade: 5.0 },
 
+  // ── Third drop ───────────────────────────────────────────────────────────
+  { n: '38', src: '38-resource-cover-local-seo.jpg',     out: 'mockups/seo-article-cover.webp',   ratio: 'wide', grade: 4.5 },
+  { n: '39', src: '39-resource-cover-website-needs.jpg', out: 'mockups/needs-article-cover.webp', ratio: 'wide' },
+  { n: '40', src: '40-contact-whatsapp-mockup.jpg',      out: 'mockups/contact-whatsapp.webp',    ratio: 'wide', grade: 4.5 },
+  { n: '41', src: '41-contact-studio-exterior.jpg',      out: 'editorial/studio-exterior.webp',   ratio: 'wide', grade: 5.0 },
+  { n: '42', src: '42-free-review-report.jpg',           out: 'mockups/review-report.webp',       ratio: 'wide', grade: 4.0 },
+
   /*
-   * 29 (pricing tier cards) is deliberately absent.
+   * 29 and 44 (the two package-tier card renders) are deliberately absent.
+   *
+   * 44 is the worse of the pair: it prints "LOCAL SEO #1" and "REGIONAL
+   * DOMINANCE" in large type. A guaranteed ranking is the single claim this
+   * site never makes, on any page, for any price.
+   *
+   * Both also name packages that do not exist — Starter Presence, Regional
+   * Authority Platform, Multi-Specialty Practice — none of which appear in
+   * src/config/pricing.ts, which check-prices.mjs guards precisely so that
+   * nothing on the site can contradict that file. 44 additionally labels 8.2s
+   * as "FAST", which is roughly seven times the load target published two
+   * pages away.
+   *
+   * Their text is large and crisp, so unlike every other mockup here they
+   * cannot be defused by rendering them small.
    *
    * It reads "Local Google Map dominance" and "Dominant Search & Map
    * Authority" across three cards, and this site's one unbreakable promise is

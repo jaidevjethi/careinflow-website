@@ -3,7 +3,7 @@ name: careinflow-design
 description: The CareInflow design system — the ground ladder, palette, type, layout, motion and component rules. Use whenever building or editing any page, component or style in this repo.
 ---
 
-# CareInflow design system — "Clinical Blue & Teal"
+# CareInflow design system — "Clinical Blue & Indigo"
 
 Tokens live in `src/styles/global.css` under `@theme`. **Always use the token,
 never a raw hex.** Type, layout, spacing and motion follow direction 2a
@@ -80,7 +80,7 @@ rather than merely dark.
 | Token | Value | Use |
 |---|---|---|
 | `surgical` | `#0F4C75` | primary; AA-safe as text at 8.30 on canvas |
-| `vivid` | `#0FBFAE` | teal fill only; takes **ink** text (6.83), never white |
+| `vivid` | `#818CF8` | periwinkle indigo fill only; takes **ink** text (5.29), never white |
 | `pass` | `#0A6E62` | verified measurements only |
 | `ink` | `#0E2439` | deep navy. Headings and body on light, and on every vivid fill |
 | `body` / `muted` / `faint` | `#33506E` / `#4A6685` / `#4E6883` | the same navy taken down in steps |

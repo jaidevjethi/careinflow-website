@@ -5,7 +5,8 @@ import { Image } from 'astro:assets';
 import PageHero from '@/components/PageHero.astro';
 import studioImage from '@/assets/editorial/founder-working.webp';
 import Figure from '@/components/Figure.astro';
-import deskImage from '@/assets/about-studio.jpg';
+import waImage from '@/assets/mockups/contact-whatsapp.webp';
+import studioExterior from '@/assets/editorial/studio-exterior.webp';
 import FaqSection from '@/components/FaqSection.astro';
 import { BUSINESS, WHATSAPP_URL, whatsappWithMessage } from '@/config/site';
 import { cycleAccent, ACCENTS } from '@/lib/accents';
@@ -101,6 +102,14 @@ const steps = [
           ))}
         </ol>
 
+        <Figure
+          src={waImage}
+          alt="A WhatsApp conversation on a phone: a doctor sending their clinic name, and a reply from the studio confirming the review will follow."
+          caption="The whole enquiry, start to finish"
+          maxWidth={640}
+          class="mt-10"
+        />
+
         <h2 class="mt-14 text-[clamp(24px,3vw,34px)] font-extrabold leading-[1.1] tracking-[-0.03em] text-ink">
           Where we are
         </h2>
@@ -131,13 +140,9 @@ const steps = [
             Free · 2 working days
           </p>
         </aside>
-        {/* The page had nothing to look at below the hero. The caption talks
-            about how the work runs rather than about the room: this is a
-            photograph of a working setup, not of the Mehsana studio, and it
-            sits directly under an address, where the difference matters. */}
         <Figure
-          src={deskImage}
-          alt="A laptop and a notebook on a plain wooden desk in a quiet, whitewashed room lit by a single window."
+          src={studioExterior}
+          alt="The glass entrance to the CareInflow studio, reception desk and seating visible inside."
           caption="One studio, one person, nobody in between"
           maxWidth={380}
         />

@@ -1,5 +1,5 @@
 /*
- * CareInflow design system — "Clinical Blue & Teal".
+ * CareInflow design system — "Clinical Blue & Indigo".
  * Type, layout, spacing and motion follow direction 2a "Instrument"
  * (docs/design/careinflow-design-system.dc.html); its COLOUR section, and the
  * Midnight & Citrus palette that replaced it, are both superseded by this one.
@@ -8,9 +8,13 @@
  * It reads as a tech product, and amber carries a warning signal in a clinical
  * context. Healthcare branding research puts the trust foundation on blue and
  * white, and names muted navy with powder blue and ice grey as the palette
- * dentists, dermatologists and surgical practices respond to. The teal accent
- * is the second half of that research: blue reads as trust, green as wellbeing,
- * and the two together give the calm tone clinics want.
+ * dentists, dermatologists and surgical practices respond to.
+ *
+ * The accent moved from mint teal to periwinkle indigo. Teal was defensible —
+ * green reads as wellbeing — but at the saturation it was set to it read as a
+ * consumer health app, and it is the one colour on every button on every page.
+ * Indigo is where established studios have landed, it stays inside the one
+ * cool family, and it was picked on luminance so no contrast pair regressed.
  *
  * Colour rules:
  *  - ONE COOL FAMILY. Every neutral is a desaturated tint of the brand blue
@@ -18,8 +22,9 @@
  *    page is borrowed from another family. Measured: no neutral has a
  *    positive b*, which is the axis beige lives on.
  *  - `surgical` #0F4C75 is the primary and is AA-safe as text: 8.30 on canvas.
- *  - Vivid values are FILLS ONLY. Teal fills take INK text (6.83), never
- *    white, which fails body copy on every teal light enough to be a fill.
+ *  - Vivid values are FILLS ONLY, and they take INK text (5.29), never white
+ *    (2.98). True of the indigo for the same reason it was true of the teal:
+ *    any accent light enough to sit on midnight is too light for white text.
  *  - Measurements stay green. A passing reading should read as passing.
  *  - Deep blue is reserved for moments: the header, the hero, the CTA panel,
  *    the footer, and at most one section per page.
@@ -30,8 +35,8 @@
  *    elements. No gradients, no glass, no glow: crisp edges are the point.
  *  - The grounds form a measured ladder, not two values. A page that only
  *    owns near-white and midnight reads flat however good its type is.
- *  - Interest comes from hue and depth, not from warmth. Five accents on a
- *    cool arc (navy, blue, teal, periwinkle, green) and a six-step ground
+ *  - Interest comes from hue and depth, not from warmth. Five service accents
+ *    on a cool arc (navy, blue, teal, periwinkle, green) and a six-step ground
  *    ladder do the work a warm neutral was being asked to do and failing.
  */
 /*
@@ -105,11 +110,31 @@
   --color-line-strong: #afc4da;
   --color-hairline: #dce6f1;
   --color-hairline-soft: #eaf0f7;
-  --color-line-hover: #0fbfae;
+  --color-line-hover: #818cf8;
 
-  /* Brand. `surgical` is the AA-safe primary used for text, labels and links. */
+  /*
+   * Brand. `surgical` is the AA-safe primary used for text, labels and links.
+   *
+   * `vivid` was a mint turquoise (#0FBFAE). It was not wrong in hue — green
+   * reads as wellbeing — but it was wrong in saturation: bright enough to read
+   * as a consumer health app rather than as a studio, and it is the one colour
+   * a visitor sees on every button on every page.
+   *
+   * The replacement is a periwinkle indigo, the accent most established
+   * studios have settled on, and it stays inside the rule that the whole
+   * palette is one cool family. It was chosen by luminance rather than by eye:
+   * ink on it measures 5.29 and it holds 5.25 against the midnight hero, so
+   * the primary CTA is legible on the dark ground *and* on light sections
+   * without changing a single other token. It keeps `vivid`'s original
+   * contract — a fill that takes ink text, never white.
+   *
+   * This also un-collides two things that used to share a hex: brand `vivid`
+   * and the Google Business Profile service accent were both #0FBFAE, so the
+   * CTA and one of the five service accents were the same colour. The service
+   * arc keeps its teal; only the brand accent moved.
+   */
   --color-surgical: #0f4c75;
-  --color-vivid: #0fbfae;
+  --color-vivid: #818cf8;
   --color-support: #a8c5dd;
   /* Measurements stay green, because a passing reading should read as passing. */
   --color-pass: #0a6e62;
@@ -177,11 +202,11 @@
   --color-panel-line: #24486e;
   --color-panel-line-alt: #315a84;
   --color-panel-divider: #163150;
-  --color-panel-chip: #0a2f36;
+  --color-panel-chip: #242a63;
   --color-panel-text: #cfdcea;
   --color-panel-text-dim: #a8bdd3;
   --color-panel-text-faint: #93aac4;
-  --color-panel-accent: #3fc4b4;
+  --color-panel-accent: #a5b4fc;
 
   /*
    * Spacing scale — four values, and nothing outside this file may invent a
@@ -191,11 +216,24 @@
    *
    * Consumed by .section / .section-tight / PageHero. The mobile step happens
    * in those rules, not here — a custom property cannot carry a media query.
+   *
+   * 112px was too much. Because it applies to both ends, every adjacent pair of
+   * sections put 224px of nothing between them, and the homepage measured
+   * 10,768px — twelve screens on a laptop, of which roughly a quarter was this
+   * padding. Whitespace reads as confidence only when it surrounds dense
+   * content; around a card grid it reads as a page that ran out of things to
+   * say. 88px still clears the largest card shadow and keeps the bands
+   * distinct.
+   *
+   * Measured saving: 10,768px → 10,241px, about 0.6 of a screen. Worth having,
+   * but it is honest to record that padding was not the main cause of the
+   * length — eleven sections were. Cutting the page further is an editorial
+   * decision about which sections earn their place, not a spacing one.
    */
-  --space-section: 112px;
-  --space-section-sm: 72px;
-  --space-section-tight: 72px;
-  --space-section-tight-sm: 48px;
+  --space-section: 88px;
+  --space-section-sm: 60px;
+  --space-section-tight: 60px;
+  --space-section-tight-sm: 44px;
   /* Deliberately small: the headline should start just under the menu, not a
      screen-and-a-bit below it. Was 96px, which cost 23% of the first screen. */
   --space-hero-top: 32px;
@@ -638,7 +676,8 @@
     transform: translateY(-2px);
     text-decoration: none;
   }
-  /* Citrus CTA — ink text, because white on citrus fails AA. */
+  /* Primary CTA — ink text on the accent fill; white on it measures 2.98
+     and fails. Same contract the mint teal had before it. */
   .btn-accent {
     display: inline-flex;
     align-items: center;

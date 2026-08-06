@@ -95,7 +95,10 @@ const schema = graph(
             {cs.data.demo && (
               <span class="chip border border-surgical/40 bg-surgical-tint text-surgical">Sample</span>
             )}
-            {!cs.data.healthcare && <span class="chip bg-hairline-soft text-muted">Non-healthcare</span>}
+            {/* No separate "Non-healthcare" chip: the sector chip beside it
+                already reads "Travel services (non-healthcare)", so the row
+                said it twice and wrapped to two lines, dropping that card's
+                headline 36px below the other two. Measured, not guessed. */}
             <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{cs.data.year}</span>
           </p>
           <h2 class="text-[clamp(20px,1.7vw,23px)] font-extrabold leading-[1.18] tracking-[-0.03em] text-ink">

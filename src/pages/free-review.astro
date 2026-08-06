@@ -7,7 +7,7 @@ import { cycleAccent } from '@/lib/accents';
 import reviewImage from '@/assets/mockups/free-review.jpg';
 import SectionHead from '@/components/SectionHead.astro';
 import Figure from '@/components/Figure.astro';
-import studyImage from '@/assets/editorial/process-study.webp';
+import reportImage from '@/assets/mockups/review-report.webp';
 import FaqSection from '@/components/FaqSection.astro';
 import { BUSINESS, whatsappFor } from '@/config/site';
 import { href } from '@/lib/url';
@@ -136,13 +136,13 @@ const outline = [
           call. Some reviews end with "your presence is healthy". Those
           practices remember us anyway.
         </p>
-        {/* The page ran from its hero to its CTA with nothing to look at. This
-            sits beside the outline of the review rather than above it, so the
-            picture and the list it belongs to are read together. */}
+        {/* The page's weak point was that "a written review" stayed abstract.
+            This is the deliverable itself, which is the thing worth showing on
+            the page where the offer is accepted. */}
         <Figure
-          src={studyImage}
-          alt="Two people at a desk going through a website audit scorecard on a monitor, one pointing at the speed and listing sections."
-          caption="Week one, before anyone has paid anything"
+          src={reportImage}
+          alt="A printed clinic website audit report fanned across a desk, showing a performance scorecard, load-time dials and pages of written findings."
+          caption="What arrives, before anyone has paid anything"
           maxWidth={620}
           class="mt-9"
         />
