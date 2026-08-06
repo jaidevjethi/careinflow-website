@@ -1,0 +1,99 @@
+---
+/**
+ * The portfolio card, used by /work and by the homepage.
+ *
+ * It lives here because it was written twice, and the two copies had already
+ * drifted: the homepage band was 140px where /work's was 150px. Whatever the
+ * next change is, there is now one place to make it.
+ *
+ * ONE COMPOSITION, AT EVERY WIDTH. The previous version swapped to a taller
+ * "full" card at xl, on the theory that desktop has room. It does not, in the
+ * way that mattered: xl is also where the grid goes to three columns, so the
+ * card drops from a 452px column at 1024 to a 352px one at 1280. The full card
+ * was being shown in *less* width than the compact one, and measured 827px —
+ * 103% of a 1280x800 laptop, taller than it had ever been on a phone.
+ *
+ *   1280x800   827px (103%)  ->  555px (69%)
+ *   1440x900   779px  (87%)  ->  518px (58%)
+ *    360x640   526px  (82%)  ->  526px (82%)   unchanged
+ *
+ * The band and padding now step at sm and stop. Two measurements from sm up,
+ * not four: at 352px a 2x2 grid of them was 193px of card, and the third and
+ * fourth are the ones a visitor scans past. All four are on the case study,
+ * which is the click this card exists to earn.
+ */
+import { Image } from 'astro:assets';
+import { href } from '@/lib/url';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  study: CollectionEntry<'caseStudies'>;
+  /** Rendered as h2 on /work where the cards are the page, h3 on the homepage. */
+  headingLevel?: 'h2' | 'h3';
+  /**
+   * /work leads with the project headline, because the visitor came to read
+   * about projects. The homepage leads with the practice name, because the
+   * visitor is scanning for who we have worked with. Both were already true
+   * of the two hand-written copies; keeping the difference deliberate beats
+   * flattening it to make the component tidier.
+   */
+  heading?: 'title' | 'client';
+  loading?: 'lazy' | 'eager';
+}
+
+const { study, headingLevel = 'h2', heading = 'title', loading = 'lazy' } = Astro.props;
+const d = study.data;
+const Heading = headingLevel;
+const headline = heading === 'client' ? d.client : d.title;
+const subline = heading === 'client' ? d.location : `${d.client} · ${d.location}`;
+---
+
+<a
+  href={href(`/work/${study.id}`)}
+  class="card-hover flex flex-col overflow-hidden rounded-3xl border border-line bg-canvas hover:no-underline"
+>
+  {/*
+    `sizes` has to describe the box the image actually fills. It once said
+    620px while the card rendered it at 1263px, so the browser fetched a 620px
+    variant and stretched it 2.04x — the portfolio's most important screenshot
+    served at half resolution. One card means one honest `sizes` for all three.
+  */}
+  <Image
+    src={d.cover}
+    alt={d.coverAlt}
+    widths={[420, 640, 840]}
+    sizes="(min-width: 1280px) 400px, (min-width: 640px) 46vw, 92vw"
+    {loading}
+    class="h-[150px] w-full border-b border-line bg-surface object-cover object-top sm:h-[168px]"
+  />
+  <div class="flex flex-1 flex-col p-5 sm:p-6">
+    <p class="mb-4 flex flex-wrap items-center gap-2">
+      <span class="chip border border-line bg-surface text-body-deep">{d.sector}</span>
+      {d.demo && (
+        <span class="chip border border-surgical/40 bg-surgical-tint text-surgical">Sample</span>
+      )}
+      {/* No separate "Non-healthcare" chip: the sector chip beside it already
+          reads "Travel services (non-healthcare)", so the row said it twice
+          and wrapped to two lines, dropping that card's headline 36px below
+          the other two. Measured, not guessed. */}
+      <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{d.year}</span>
+    </p>
+    <Heading class="text-[clamp(20px,1.7vw,23px)] font-extrabold leading-[1.18] tracking-[-0.03em] text-ink">
+      {headline}
+    </Heading>
+    <p class="mt-2 text-[14px] font-semibold text-muted">{subline}</p>
+    <p class="mt-3 line-clamp-3 text-[15px] leading-[1.6] text-body">{d.summary}</p>
+    <dl class="mt-auto hidden grid-cols-2 gap-x-5 border-t border-line pt-5 sm:grid">
+      {d.highlights.slice(0, 2).map((h) => (
+        <div>
+          <dt class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{h.label}</dt>
+          <dd class="mt-1 text-[17px] font-extrabold leading-[1.2] tracking-[-0.03em] text-ink">{h.value}</dd>
+          {h.ref && (
+            <dd class="mt-0.5 font-mono text-[11px] uppercase leading-[1.5] tracking-[0.06em] text-muted">{h.ref}</dd>
+          )}
+        </div>
+      ))}
+    </dl>
+    <p class="prose-link mt-5 text-[16px]">Read the case study →</p>
+  </div>
+</a>

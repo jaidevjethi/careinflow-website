@@ -191,7 +191,7 @@ const engagements = [
 
   <!-- ENGAGEMENTS : the page's one dark panel -->
   <section class="section shell" aria-labelledby="engagements-title">
-    <div class="panel-depth rounded-3xl p-8 sm:p-12 lg:p-16">
+    <div class="panel-depth panel-box">
       <SectionHead
         id="engagements-title"
         dark
@@ -201,7 +201,7 @@ const engagements = [
       />
       <div class="reveal-group mt-12 grid gap-5 lg:grid-cols-3">
         {engagements.map((e) => (
-          <article class="rounded-3xl border border-panel-line bg-panel-card p-7">
+          <article class="rounded-3xl border border-panel-line bg-panel-card p-6 sm:p-7">
             <h3 class="text-xl font-bold tracking-[-0.02em] text-surface">{e.name}</h3>
             <p class="mt-2.5 font-mono text-[12px] uppercase leading-[1.5] tracking-[0.06em] text-panel-accent">
               {e.price}

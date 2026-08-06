@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import CaseStudyCard from '@/components/CaseStudyCard.astro';
 import { getFaqsFor } from '@/lib/faqs';
 import { Image } from 'astro:assets';
 import BaseLayout from '@/layouts/BaseLayout.astro';
@@ -445,16 +446,26 @@ const whatsappHref = whatsappWithMessage(
               widths={[420, 640, 840]}
               sizes="(min-width: 1280px) 400px, (min-width: 640px) 46vw, 92vw"
               loading="lazy"
-              class:list={['h-[140px] w-full border-b border-line object-cover xl:h-[210px]', s.imagePos]}
+              class:list={['h-[140px] w-full border-b border-line object-cover sm:h-[168px]', s.imagePos]}
             />
-            <div class="flex flex-1 flex-col p-5 xl:p-7">
+            <div class="flex flex-1 flex-col p-5 sm:p-6">
               <h3 class="text-[24px] font-bold tracking-[-0.03em] text-ink">{s.title}</h3>
-              <p class="mt-3 line-clamp-3 text-base leading-[1.6] text-body xl:line-clamp-4">{s.text}</p>
-              {/* The three-row detail box is 147px — a fifth of a phone screen —
-                  and it is supporting detail for a card whose whole job is to
-                  send you to the service page, where the same rows appear in
-                  full. It returns at sm. */}
-              <dl class="mt-6 hidden rounded-xl border border-line bg-canvas p-4 xl:block">
+              <p class="mt-3 line-clamp-3 text-base leading-[1.6] text-body">{s.text}</p>
+              {/*
+                Steps at sm and stops, rather than at xl.
+
+                Restoring the fuller card at xl was backwards: xl is also where
+                the grid goes to three columns, so the card gets a *narrower*
+                box (352px at 1280) than it had in two columns at 1024 (452px).
+                The taller band and looser padding landed exactly where there
+                was least room — 358px at 1024 became 718px at 1280, 90% of
+                that laptop's viewport.
+
+                The detail rows are supporting material for a card whose whole
+                job is to send you to the service page, where they appear in
+                full. They return at sm, where the second column arrives.
+              */}
+              <dl class="mt-6 hidden rounded-xl border border-line bg-canvas p-4 sm:block">
                 {s.rows.map((row, i) => (
                   <div
                     class:list={[
@@ -515,12 +526,7 @@ const whatsappHref = whatsappWithMessage(
 
   <!-- 03 · INDICATION : WHY HEALTHCARE ONLY (the page's one dark panel) -->
   <section class="section shell" aria-labelledby="indication-title">
-    {/* Padding is per-screen because it compounds. This is a card inside a
-        padded panel inside a padded shell: at 360px the three together took
-        216px before a word was set, leaving the step text 112px wide and
-        wrapping a two-line paragraph to nine. Desktop keeps the generous
-        frame; the phone gets the width back. */}
-    <div class="panel-depth rounded-3xl p-4 sm:p-12 lg:p-16">
+    <div class="panel-depth panel-box">
       <div class="grid items-start gap-12 lg:grid-cols-[1fr_520px] lg:gap-16">
         <div>
           <SectionHead
@@ -688,44 +694,7 @@ Four things change for your practice, and every one of them is
           section contradicting the sentence above it. */}
       <div class="reveal-group grid items-stretch gap-6 sm:grid-cols-2 xl:grid-cols-3">
         {allCaseStudies.map((cs) => (
-          <a
-            href={href(`/work/${cs.id}`)}
-            class="card-hover flex flex-col overflow-hidden rounded-3xl border border-line bg-canvas hover:no-underline"
-          >
-            <Image
-              src={cs.data.cover}
-              alt={cs.data.coverAlt}
-              widths={[420, 640, 840]}
-              sizes="(min-width: 1280px) 400px, (min-width: 640px) 46vw, 92vw"
-              loading="lazy"
-              class="h-[150px] w-full border-b border-line bg-surface object-cover object-top xl:h-[210px]"
-            />
-            <div class="flex flex-1 flex-col p-5 xl:p-7">
-              <p class="mb-4 flex flex-wrap items-center gap-2">
-                <span class="chip border border-line bg-surface text-body-deep">{cs.data.sector}</span>
-                {cs.data.demo && (
-                  <span class="chip border border-surgical/40 bg-surgical-tint text-surgical">Sample</span>
-                )}
-                <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{cs.data.year}</span>
-              </p>
-              <h3 class="text-[clamp(20px,1.7vw,23px)] font-extrabold leading-[1.18] tracking-[-0.03em] text-ink">
-                {cs.data.client}
-              </h3>
-              <p class="mt-2 text-[14px] font-semibold text-muted">{cs.data.location}</p>
-              <p class="mt-3 line-clamp-3 text-[15px] leading-[1.6] text-body xl:mt-3.5 xl:line-clamp-4">
-                {cs.data.summary}
-              </p>
-              <dl class="mt-auto hidden grid-cols-2 gap-x-5 gap-y-4 border-t border-line pt-5 xl:grid xl:pt-6">
-                {cs.data.highlights.map((h, i) => (
-                  <div >
-                    <dt class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{h.label}</dt>
-                    <dd class="mt-1 text-[17px] font-extrabold leading-[1.2] tracking-[-0.03em] text-ink">{h.value}</dd>
-                  </div>
-                ))}
-              </dl>
-              <p class="prose-link mt-6 text-[16px]">Read the case study →</p>
-            </div>
-          </a>
+          <CaseStudyCard study={cs} headingLevel="h3" heading="client" />
         ))}
       </div>
 

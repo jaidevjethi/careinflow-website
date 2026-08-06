@@ -597,6 +597,36 @@
     );
   }
 
+  /*
+   * A midnight panel used as a box rather than a full-bleed band, with its
+   * padding owned by the class.
+   *
+   * The padding lives here because it compounds and nobody remembers that at
+   * the call site. Every one of these sits inside the shell and holds cards
+   * that carry padding of their own: on /services, shell + a p-8 panel + a
+   * p-7 card left the text 198px wide on a 360px phone, wrapping two-line
+   * paragraphs to five. The four call sites had each written the same
+   * `p-8 sm:p-12 lg:p-16` by hand, so fixing one would have left three.
+   *
+   * Phones get the width back; from sm the generous frame is unchanged.
+   */
+  .panel-box {
+    border-radius: 24px;
+    padding: 16px;
+  }
+
+  @media (min-width: 640px) {
+    .panel-box {
+      padding: 48px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .panel-box {
+      padding: 64px;
+    }
+  }
+
   /* Decorative sheen for accent rules — pairs with a bg-a-*-vivid class. */
   .accent-bar {
     background-image: linear-gradient(
