@@ -515,7 +515,12 @@ const whatsappHref = whatsappWithMessage(
 
   <!-- 03 · INDICATION : WHY HEALTHCARE ONLY (the page's one dark panel) -->
   <section class="section shell" aria-labelledby="indication-title">
-    <div class="panel-depth rounded-3xl p-8 sm:p-12 lg:p-16">
+    {/* Padding is per-screen because it compounds. This is a card inside a
+        padded panel inside a padded shell: at 360px the three together took
+        216px before a word was set, leaving the step text 112px wide and
+        wrapping a two-line paragraph to nine. Desktop keeps the generous
+        frame; the phone gets the width back. */}
+    <div class="panel-depth rounded-3xl p-4 sm:p-12 lg:p-16">
       <div class="grid items-start gap-12 lg:grid-cols-[1fr_520px] lg:gap-16">
         <div>
           <SectionHead
@@ -532,19 +537,22 @@ const whatsappHref = whatsappWithMessage(
           </div>
         </div>
 
-        <div class="rounded-3xl border border-panel-line bg-panel-card p-8">
-          <h3 class="label-mono mb-5 text-panel-text-faint" style="letter-spacing:0.12em">How the work runs</h3>
+        <div class="rounded-3xl border border-panel-line bg-panel-card p-5 sm:p-8">
+          <h3 class="label-mono mb-4 text-panel-text-faint sm:mb-5" style="letter-spacing:0.12em">How the work runs</h3>
           <ol>
+            {/* The numeral column is fixed at 62px, which is right beside a
+                420px text column and absurd beside a 112px one. Below sm it
+                sits inline at 22px and the prose runs the full card. */}
             {method.map((m, i) => (
               <li
                 class:list={[
-                  'grid grid-cols-[62px_1fr] gap-4 py-5',
+                  'flex gap-3 py-4 sm:grid sm:grid-cols-[62px_1fr] sm:gap-4 sm:py-5',
                   i === 0 && 'pt-0',
                   i < method.length - 1 && 'border-b border-panel-divider',
                   i === method.length - 1 && 'pb-0',
                 ]}
               >
-                <span class="numeral text-[34px] text-panel-accent">{m.step}</span>
+                <span class="numeral shrink-0 text-[22px] leading-[1.3] text-panel-accent sm:text-[34px] sm:leading-none">{m.step}</span>
                 <div>
                   <h4 class="text-[17px] font-bold text-surface">{m.title}</h4>
                   <p class="mt-1 text-[15px] leading-[1.55] text-panel-text-dim">{m.text}</p>

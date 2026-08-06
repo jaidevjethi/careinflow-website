@@ -176,7 +176,7 @@ const principles = [
             ]}
           >
             <span class:list={['accent-bar block h-1 w-full', cycleAccent(i).bar]} aria-hidden="true"></span>
-            <div class="flex h-full flex-col p-7 sm:p-8">
+            <div class="flex h-full flex-col p-6 sm:p-7">
               <div class="flex flex-wrap items-center gap-2.5">
                 <h3 class="text-[20px] font-bold tracking-[-0.025em] text-ink">{build.name}</h3>
                 {build.recommended && (
@@ -199,16 +199,22 @@ const principles = [
                 <span class="chip border border-line bg-surface text-body-deep">{build.timeline}</span>
               </p>
 
-              <ul class="mt-6 grow border-t border-hairline pt-5 text-[15px] leading-[1.55] text-body">
+              {/* Half the card is this list, and most items wrap to two or
+                  three lines in a 380px column. py-1 rather than py-1.5 across
+                  eight items, and the tighter card padding above, take the
+                  wrapping down without dropping a single inclusion — this is
+                  the page where a buyer compares, so nothing here gets hidden
+                  behind a disclosure. */}
+              <ul class="mt-5 grow border-t border-hairline pt-4 text-[15px] leading-[1.55] text-body">
                 {build.includes.map((line) => (
-                  <li class="flex gap-3 py-1.5">
+                  <li class="flex gap-3 py-1">
                     <span class="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-pass" aria-hidden="true"></span>
                     <span>{line}</span>
                   </li>
                 ))}
               </ul>
 
-              <p class="mt-5 border-t border-hairline pt-4 text-[14px] leading-[1.6] text-muted">
+              <p class="mt-4 border-t border-hairline pt-3.5 text-[14px] leading-[1.6] text-muted">
                 {build.excludes}
               </p>
             </div>
@@ -309,7 +315,7 @@ const principles = [
             ]}
           >
             <span class:list={['block h-1 w-full', cycleAccent(i + 3).bar]} aria-hidden="true"></span>
-            <div class="flex h-full flex-col p-7 sm:p-8">
+            <div class="flex h-full flex-col p-6 sm:p-7">
               <div class="flex flex-wrap items-center gap-2.5">
                 <h3 class="text-[20px] font-bold tracking-[-0.025em] text-ink">{plan.name}</h3>
                 {plan.recommended && (
@@ -328,16 +334,16 @@ const principles = [
                 {plan.combines ? `${rupees(partsTotal(plan))} bought separately` : plan.priceNote}
               </p>
 
-              <ul class="mt-6 grow border-t border-hairline pt-5 text-[15px] leading-[1.55] text-body">
+              <ul class="mt-5 grow border-t border-hairline pt-4 text-[15px] leading-[1.55] text-body">
                 {plan.includes.map((line) => (
-                  <li class="flex gap-3 py-1.5">
+                  <li class="flex gap-3 py-1">
                     <span class="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-pass" aria-hidden="true"></span>
                     <span>{line}</span>
                   </li>
                 ))}
               </ul>
 
-              <p class="mt-5 border-t border-hairline pt-4 text-[14px] leading-[1.6] text-muted">
+              <p class="mt-4 border-t border-hairline pt-3.5 text-[14px] leading-[1.6] text-muted">
                 {plan.suits}
               </p>
             </div>
