@@ -94,7 +94,7 @@
    *   powder   #DFE9F5  L* 91.9  quiet band, blue    (1.12 from canvas)
    *   mist     #D7EBE9  L* 91.6  quiet band, teal, a hue turn from powder
    *   deep     #9FC4D6  L* 77.1  mid-tone block, blue  (1.51 from powder)
-   *   moss     #9BC7BE  L* 77.0  mid-tone block, teal  (1.50 from mist)
+   *   moss     #B2BCE6  L* 76.8  mid-tone block, periwinkle (a tint of the accent)
    *   panel    #0B2440  L* 13.8  midnight, reserved
    *
    * A card lifts 1.118 on canvas and 1.227 on powder. Crisp white cards on a
@@ -105,12 +105,44 @@
   --color-powder: #dfe9f5;
   --color-mist: #d7ebe9;
   --color-deep: #9fc4d6;
-  --color-moss: #9bc7be;
+  /*
+   * `moss` was a sage teal-green (#9BC7BE) and it was the one ground that
+   * looked borrowed from another palette. Measured, that is exactly what it
+   * was: every other ground leans blue on the b* axis (powder −7.0, canvas
+   * −3.6) while moss sat at b* −0.3 with its colour coming off the green a*
+   * axis instead. At L*77 that green is a full section band, so it read as a
+   * different brand's colour rather than as this one's mid-tone.
+   *
+   * The replacement is a periwinkle at the same lightness (L* 76.8 against
+   * 77.0), so the ground ladder's arithmetic is untouched, but at b* −22.1 it
+   * is firmly in the blue-violet family — and it is a tint of the brand accent
+   * rather than a hue that appears nowhere else. deltaE against `deep` is 16.4,
+   * slightly wider than the 15.1 it replaced, so the two mid-tones still read
+   * as two colours.
+   *
+   * Text pairs are preserved almost exactly: ink 8.44 (was 8.50), body-deep
+   * 6.28 (6.32), surgical 4.86 (4.89). `muted` and `faint` still fail here, as
+   * they did on moss — that rule is unchanged.
+   */
+  --color-moss: #b2bce6;
   --color-line: #cbd9e8;
   --color-line-strong: #afc4da;
   --color-hairline: #dce6f1;
   --color-hairline-soft: #eaf0f7;
   --color-line-hover: #818cf8;
+  /*
+   * The tick rule under every section label. It was #CFC8BB — a warm beige at
+   * b* +7.4, left behind by the retired citrus palette and the only value in
+   * the whole system still on the banned warm axis. It was also the weakest
+   * mark on the page, measuring 1.12–1.66 against the grounds it sits on, so
+   * on a saturated band it read as dirt rather than as a deliberate motif.
+   * This is cool (b* −18.2) and reads as a deliberate mark on every ground:
+   * 4.46 on surface, 3.99 on canvas, 3.63 on powder, 2.38 on the periwinkle
+   * mid-tone. It is decorative and aria-hidden, so it carries no AA duty — the
+   * bar is simply that it must look intended rather than accidental.
+   */
+  --color-rule: #5f7a96;
+  --color-rule-dark: #2f6382;
 
   /*
    * Brand. `surgical` is the AA-safe primary used for text, labels and links.
@@ -385,17 +417,16 @@
   /* --------------------------------------------------------------------------
      Focus ring. The site prints "AA" as a headline number, so this has to earn it.
 
-     A single colour cannot: surgical green measured 2.85:1 on the midnight
-     panel — below the 3:1 in WCAG 2.2 SC 1.4.11 — and that panel is the sticky
-     header on every page. Citrus would pass there and vanish on the citrus band.
+     A single colour cannot: any one accent that passes on the midnight header
+     vanishes on a light band, and that header is sticky on every page.
 
      So the ring is two-tone. The dark outline sits 2–4px out; the light
      box-shadow fills 0–6px and shows on either side of it. Whatever the ring
      lands on, one of the two tones carries the contrast:
 
-       ink #12304F on citrus #C97B5A ......... 9.9:1
-       ink #12304F on canvas #F4F6F8 ........ 14.3:1
-       surface #FAFBFC on panel #12304F ..... 16.5:1
+       ink #0E2439 on canvas #EDF3F9 ........ 13.9:1
+       ink #0E2439 on accent #818CF8 ......... 5.3:1
+       surface #FFFFFF on panel #0B2440 ..... 16.6:1
 
      `!important` on the shadow because buttons and cards declare their own in
      @layer components — and an important declaration in an earlier layer wins,
@@ -528,14 +559,14 @@
     max-width: 200px;
     background: repeating-linear-gradient(
       to right,
-      #cfc8bb 0 1px,
+      var(--color-rule) 0 1px,
       transparent 1px 11px
     );
   }
   .tick-rule-dark {
     background: repeating-linear-gradient(
       to right,
-      #2f6382 0 1px,
+      var(--color-rule-dark) 0 1px,
       transparent 1px 11px
     );
   }
@@ -552,7 +583,7 @@
    * Depth for large midnight fields. A flat dark rectangle reads unfinished
    * at hero scale; this lifts the top-left corner just enough to give the
    * field dimension. At the lightest stop (#1A2F54) surface text is still
-   * 12.1:1 and citrus 7.3:1.
+   * 12.1:1 and the accent 5.9:1.
    */
   /*
    * Depth, not a gradient. The previous stops ran from #23517F to #101F39 to
@@ -934,8 +965,8 @@
     text-underline-offset: 3px;
   }
 
-  /* The on-dark counterpart to .prose-link: citrus on midnight, and the same
-     inline tap padding so standalone arrow links clear 24px. */
+  /* The on-dark counterpart to .prose-link: the accent on midnight, and the
+     same inline tap padding so standalone arrow links clear 24px. */
   .link-accent {
     color: var(--color-panel-accent);
     font-weight: 600;

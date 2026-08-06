@@ -32,7 +32,7 @@ regardless of how good its type was.
 | `powder` | `#DFE9F5` | 91.9 | quiet band, blue |
 | `mist` | `#D7EBE9` | 91.6 | quiet band, teal, a hue turn from powder |
 | `deep` | `#9FC4D6` | 77.1 | mid-tone block, blue |
-| `moss` | `#9BC7BE` | 77.0 | mid-tone block, teal |
+| `moss` | `#B2BCE6` | 76.8 | mid-tone block, periwinkle (a tint of the accent) |
 | `panel` | `#0B2440` | 13.8 | midnight, reserved |
 
 Adjacent steps: surface→canvas 1.12, canvas→powder 1.12, powder→deep 1.51,
