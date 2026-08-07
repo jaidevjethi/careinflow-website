@@ -156,6 +156,22 @@
   --color-surgical: #0f4c75;
   --color-vivid: #818cf8;
   --color-support: #a8c5dd;
+  /*
+   * The header CTA, and the one colour on the site chosen by constraint rather
+   * than by eye.
+   *
+   * It has to do two incompatible things at once: carry WHITE text (so it needs
+   * to be dark) and separate from the midnight header #0B2440 it sits on (so it
+   * needs to be light). White on `vivid` is 2.98:1 and fails AA outright;
+   * `surgical` carries white at 9.09:1 but scores 1.72:1 against the header and
+   * disappears into it.
+   *
+   * Solving both leaves a narrow luminance window — L* between 0.151 and 0.183.
+   * #2D6FE0 sits inside it: white text 4.71:1 (AA), and 3.33:1 against the
+   * header, clearing the 3.0 a non-text control needs. Move it lighter and the
+   * text fails; darker and the button vanishes.
+   */
+  --color-cta: #2d6fe0;
   /* Measurements stay green, because a passing reading should read as passing. */
   --color-pass: #0a6e62;
   --color-ink: #0e2439;
@@ -745,6 +761,30 @@
   .btn-accent:hover {
     transform: translateY(-2px);
     filter: brightness(1.06);
+    text-decoration: none;
+  }
+
+  /*
+   * The header CTA. Separate from .btn-accent on purpose: that class is used on
+   * light grounds where its periwinkle fill takes ink text at 5.29:1, and
+   * recolouring it in place would have broken every one of those.
+   */
+  .btn-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: var(--color-cta);
+    color: var(--color-surface);
+    font-weight: 700;
+    border-radius: 12px;
+    transition:
+      transform 200ms var(--ease-instrument),
+      filter 200ms linear;
+  }
+  .btn-cta:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.08);
     text-decoration: none;
   }
 
