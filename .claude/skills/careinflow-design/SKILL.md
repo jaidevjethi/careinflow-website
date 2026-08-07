@@ -25,16 +25,23 @@ site once owned only near-white and midnight with nothing between them, and
 invisible and a card barely lifted off the page behind it. Every page read flat
 regardless of how good its type was.
 
-| Token | Value | L* | Role |
-|---|---|---|---|
-| `surface` | `#FFFFFF` | 100 | cards, and the lightest sections |
-| `canvas` | `#F4F7FD` | 97.2 | default body, hue 272 |
-| `powder` | `#E9EEF9` | 94.0 | quiet band, hue 274 |
-| `mist` | `#DDE4F4` | 90.5 | quiet band, hue 275 |
-| `panel` | `#0B2440` | 13.8 | midnight, reserved |
+| Token | Value | L* | b* | Role |
+|---|---|---|---|---|
+| `surface` | `#FFFFFF` | 100 | 0.0 | cards, and the lightest sections |
+| `canvas` | `#F4F7FD` | 97.2 | −3.2 | default body |
+| `powder` | `#E9EEF9` | 94.0 | −5.9 | quiet band |
+| `mist` | `#DDE4F4` | 90.5 | −8.6 | quiet band |
+| `panel` | `#0B2440` | 13.8 | — | midnight, reserved |
 
-Adjacent steps: surface→canvas 1.12, canvas→powder 1.12, powder→deep 1.51,
-mist→moss 1.50. A `surface` card lifts 1.118 on canvas and 1.227 on powder.
+**Five, not six.** The two mid-tones (`deep`, `moss`) were deleted: at L*77
+they cleared AA for only three of the six text tokens, which made every band
+section typographically poorer than the rest of the site. There is no
+`--color-deep`, no `--color-moss`, no `.band-deep` and no `.band-moss` — if you
+find a reference to one, it is stale. Depth now comes from a dark band
+(`.band-panel`), never a medium one.
+
+Adjacent steps: surface→canvas 1.12, canvas→powder 1.12, powder→mist 1.13. A
+`surface` card lifts 1.118 on canvas and 1.227 on powder.
 
 **Nothing here is warm, and that is a hard rule.** The set before this one was
 warm paper: `canvas` measured b* +5.4 in Lab, `line` +6.1, `hairline` +5.0, and
@@ -42,31 +49,28 @@ positive b* is the yellow axis, which is what beige is. Because `canvas` is the
 default body ground, cream appeared on every page whether a section asked for it
 or not. Every neutral now measures b* ≤ 0. If you add one, measure it.
 
-Apply with `.band-powder` / `.band-mist` / `.band-deep` / `.band-moss`. They set
-background and text colour only, so they wrap a `.section.shell` div to stay
-full-bleed. Putting a band class directly on a `.shell` element constrains the
-colour to the content width, which is wrong.
+Apply with `.band-powder` / `.band-mist` / `.band-panel`. They set background
+and text colour only, so they wrap a `.section.shell` div to stay full-bleed.
+Putting a band class directly on a `.shell` element constrains the colour to the
+content width, which is wrong.
 
 **Every page must change ground as you scroll.** The canonical sequence:
 
 ```
-midnight hero → surface → canvas → powder → mid-tone band → canvas → midnight CTA → footer
+midnight hero → surface → canvas → powder → dark band → canvas → midnight CTA → footer
 ```
 
-At most one mid-tone band per page. Alternate deep and moss between
-neighbouring page types so the site does not go monotone when browsed in order.
 Short pages take a subset but must include at least one `powder` or `mist`.
 
 ### Text on the bands, measured
 
-On `deep`, `ink`, `body-deep`, `body` and `surgical` clear AA. On `moss`, only
-`ink`, `body-deep` and `surgical` do. **`muted` and `faint` fail on both.** Ink
-for copy, surgical for small labels, nothing lighter. Same rule as "vivid fills
-take ink text", for the same reason. `SectionHead` takes an `onBand` prop that
-lifts its lede to ink; set it whenever the component sits on a mid-tone.
+**All three light grounds carry all six text tokens**, so no section is
+constrained by the ground it sits on. That is the point of deleting the
+mid-tones: `ink`, `body-deep`, `body`, `muted`, `faint` and `surgical` all clear
+AA on `surface`, `canvas`, `powder` and `mist`.
 
-On `powder` and `mist` every text token passes, which is why the quiet bands can
-carry ordinary sections and the mid-tones carry only sections you have checked.
+On `panel`, use the `panel-*` text tokens. The "vivid fills take ink text, never
+white" rule still holds everywhere.
 
 **Ink is a deep navy, never black.** `#0E2439` sits at the same hue as the
 grounds. The previous ink was a blue-green near-black on blue grounds: two
@@ -88,18 +92,28 @@ the previous set was named green/amber/blue/teal/plum and stopped being true
 the day the palette moved. Each has the bare name (AA-safe text), `-vivid`
 (fills, bars, dots, never text on light) and `-tint` (large light areas).
 
-| Accent | Owns | Text | Tint |
-|---|---|---|---|
-| `web` | healthcare websites | `#0F4C75` navy | `#CEDCEF` |
-| `seo` | local SEO | `#16639A` blue | `#DDEFFD` |
-| `gbp` | Google Business Profile | `#0A6F68` teal | `#CFEBE6` |
-| `care` | website care | `#414B87` periwinkle | `#E2E3F7` |
-| `social` | social media | `#2F6B57` green | `#D6EADF` |
+| Accent | Owns | Text | Tint | hue | on its tint | worst light ground |
+|---|---|---|---|---|---|---|
+| `web` | healthcare websites | `#34419E` indigo | `#E3E3FB` | 296 | 6.95 | 6.88 |
+| `seo` | local SEO | `#1A5ECB` blue | `#D6E7FD` | 289 | 4.76 | 4.70 |
+| `gbp` | Google Business Profile | `#0E6A97` cyan-blue | `#CFEAF8` | 256 | 4.76 | 4.67 |
+| `care` | website care | `#6039B2` violet | `#EEE0FC` | 308 | 6.13 | 6.05 |
+| `social` | social media | `#8A3499` magenta | `#F8E1F4` | 323 | 5.63 | 5.44 |
 
-Five hues on a cool arc: navy, blue, teal, periwinkle, green. The closest tint
-pair is 4.0 deltaE, where 2.3 is the point a human can see any difference at
-all. Keep it that way; if you add an accent, measure deltaE against all the
-others, not just contrast.
+Five hues on a cool arc from cyan-blue to violet, 256° → 323°. Smallest
+pairwise deltaE between the text colours is **15.1** (`web`/`seo`); between the
+tints it is 5.3 (`web`/`care`), where 2.3 is the point a human can see any
+difference at all. Keep it that way; if you add an accent, measure deltaE
+against all the others, not just contrast.
+
+No accent sits in the sage band (hue 150–205) except `pass`, which stays green
+on purpose because it means a verified measurement.
+
+**Every one of these clears AA as text on all four light grounds and on its own
+tint** — the worst case is `gbp` at 4.67 on `mist`. It was 4.35 until August
+2026, which failed, and the fix was 1.9 points of L* at the same hue. If you
+change an accent, recompute that whole column; the margins are thin by design
+and eyeballing will not catch a 4.43.
 
 Two things this set fixed. `web` and `gbp` were once the same deep teal, so the
 website card and the Google card read as one block wherever they sat together.
@@ -107,7 +121,7 @@ And `care` was a warm sand-grey, the only accent that could not sit beside the
 others without looking like a stain; periwinkle gives it a hue of its own.
 
 **Interest comes from hue and depth, not from warmth.** A warm accent was tried
-and removed. Five cool hues across a six-step ground ladder do the work it was
+and removed. Five cool hues across a five-step ground ladder do the work it was
 being asked to do.
 
 ## Where midnight goes
