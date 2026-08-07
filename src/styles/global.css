@@ -239,7 +239,12 @@
   --color-a-seo-vivid: #5090e8;
   --color-a-seo-tint: #d6e7fd;
   /* gbp = cyan-blue — Google Business Profile */
-  --color-a-gbp: #0f6f9e;
+  /* L*42.2 rather than 44.1. At 44.1 this was the one accent that missed AA
+     on two of its own grounds — 4.43 on its tint and 4.35 on mist, against
+     4.5 — so the "Working in Gandhinagar" links on /areas and the Google
+     Business Profile chips on /resources were failing. Same hue to a tenth
+     of a degree (256.0), so the cool arc and every deltaE are unchanged. */
+  --color-a-gbp: #0e6a97;
   --color-a-gbp-vivid: #3b9ac9;
   --color-a-gbp-tint: #cfeaf8;
   /* care = violet — website care */

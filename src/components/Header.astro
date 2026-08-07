@@ -50,9 +50,29 @@ const isActive = (itemHref: string) => currentPath === itemHref || currentPath.s
       aria-expanded="false"
       aria-controls="mobile-nav"
     >
-      <span class="sr-only">Menu</span>
-      <svg width="18" height="14" viewBox="0 0 18 14" fill="none" aria-hidden="true">
+      <span class="sr-only" id="nav-toggle-label">Menu</span>
+      {/* Two icons, one shown at a time, so the control's state is visible and
+          not only announced. `hidden` is toggled with aria-expanded. */}
+      <svg
+        data-nav-icon="closed"
+        width="18"
+        height="14"
+        viewBox="0 0 18 14"
+        fill="none"
+        aria-hidden="true"
+      >
         <path d="M1 1h16M1 7h16M1 13h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </svg>
+      <svg
+        data-nav-icon="open"
+        width="18"
+        height="14"
+        viewBox="0 0 18 14"
+        fill="none"
+        aria-hidden="true"
+        hidden
+      >
+        <path d="M2 1l14 12M16 1L2 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
       </svg>
     </button>
   </div>
@@ -82,10 +102,40 @@ const isActive = (itemHref: string) => currentPath === itemHref || currentPath.s
 <script>
   const toggle = document.getElementById('nav-toggle');
   const menu = document.getElementById('mobile-nav');
-  toggle?.addEventListener('click', () => {
-    const open = toggle.getAttribute('aria-expanded') === 'true';
-    toggle.setAttribute('aria-expanded', String(!open));
-    menu?.classList.toggle('hidden', open);
+  const label = document.getElementById('nav-toggle-label');
+  const icons = toggle?.querySelectorAll<SVGElement>('[data-nav-icon]');
+
+  /**
+   * The menu opens over the page on a phone, so it needs the three things any
+   * disclosure needs and this one did not have: a state you can see as well as
+   * hear, Escape to leave, and focus put back where it came from rather than
+   * stranded on a control that is no longer there.
+   */
+  const setOpen = (open: boolean) => {
+    if (!toggle || !menu) return;
+    toggle.setAttribute('aria-expanded', String(open));
+    menu.classList.toggle('hidden', !open);
+    if (label) label.textContent = open ? 'Close menu' : 'Menu';
+    icons?.forEach((icon) => {
+      icon.toggleAttribute('hidden', (icon.dataset.navIcon === 'open') !== open);
+    });
+  };
+
+  const isOpen = () => toggle?.getAttribute('aria-expanded') === 'true';
+
+  toggle?.addEventListener('click', () => setOpen(!isOpen()));
+
+  // Escape closes it and returns focus to the button that opened it.
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape' || !isOpen()) return;
+    setOpen(false);
+    toggle?.focus();
+  });
+
+  // Following a link to the page you are already on leaves the menu covering
+  // it, because nothing navigates. Close on activation rather than on unload.
+  menu?.addEventListener('click', (event) => {
+    if ((event.target as Element | null)?.closest('a')) setOpen(false);
   });
 
   /**

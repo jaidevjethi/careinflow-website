@@ -405,7 +405,14 @@ const whatsappHref = whatsappWithMessage(
               ))}
             </span>
             <span>Three photographs of the work.</span>
-            <a href={href('/work')} class="text-panel-accent underline underline-offset-4 hover:text-surface">
+            {/* py-1 is not decoration. The figcaption is a flex row, which
+                blockifies this link and dropped it to an 18px-tall target,
+                under the 24px WCAG 2.2 asks for. The row is centred, so the
+                padding costs nothing visually. */}
+            <a
+              href={href('/work')}
+              class="py-1 text-panel-accent underline underline-offset-4 hover:text-surface"
+            >
               See real work
             </a>
           </figcaption>
