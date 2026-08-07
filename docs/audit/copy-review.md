@@ -1,8 +1,25 @@
 # Copy review — every page, August 2026
 
 A read of all 37 indexable pages against `careinflow-voice`, the integrity
-rules in CLAUDE.md, and what the rest of the site says. Nothing here has been
-applied. **Approve the rows you want and they ship in one commit.**
+rules in CLAUDE.md, and what the rest of the site says.
+
+**Status: reviewed and applied.** Every row below was approved and has shipped,
+with the decisions recorded against each one. Two items remain open and are
+listed in §4.
+
+Decisions taken:
+
+- **§2.1 Divyam Tours** — the site is live on GitHub Pages at
+  `jaidevjethi.github.io/divyam-website/`, verified by fetching it. The URL is
+  now in the frontmatter, which makes the three "open it yourself" claims true
+  without changing a word of them.
+- **§2.3 Studio age** — say it plainly, framed so the newness is the reason the
+  terms protect the client rather than an apology for it.
+- **§3.3 Speed** — softened to "on 4G" rather than the LCP figure, so the
+  condition is stated without putting a technical term in front of a
+  non-technical reader.
+- **§1.2 Service count** — the stat now reads five and both counts are computed
+  from the collection, so neither can drift again.
 
 ## What the review did not find
 
@@ -141,13 +158,14 @@ So what follows is short.
 
 ---
 
-## 4 — Needs your input before anything can be written
+## 4 — Still open
 
-### 4.1 Is the Divyam Tours site live, and at what URL?
+### 4.1 ~~Is the Divyam Tours site live?~~ — resolved
 
-It has no URL in the repo. If it is live, adding `url:` to
-`src/content/case-studies/divyam-tours.mdx` resolves §2.1 with no copy change.
-If it is not live, §2.1 option (b) applies.
+Yes, on GitHub Pages at `https://jaidevjethi.github.io/divyam-website/`,
+confirmed by fetching it (title: *Divyam Tours Varanasi | Taxi, Airport Pickup,
+Day Tours*). Added to the frontmatter. Note that only Pramukh Dental is on its
+own domain; the sample and Divyam are both GitHub Pages.
 
 ### 4.2 Does Pramukh Dental stand behind "ten years and five thousand procedures"?
 

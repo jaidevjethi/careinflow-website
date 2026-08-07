@@ -24,6 +24,16 @@ const description =
 
 const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
 
+/**
+ * Both counts on this page come from the collection, because a hand-written
+ * one drifted: the stat said "Nine" — the homepage's count of capability
+ * cards — above five priced services, on a page whose own H1 says four core
+ * services plus support. Three numbers on one screen, two of them wrong for
+ * the thing a reader was looking at.
+ */
+const NUMBER_WORDS = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+const spell = (n: number) => NUMBER_WORDS[n] ?? String(n);
+
 const schema = graph(
   organizationSchema(),
   webSiteSchema(),
@@ -49,7 +59,7 @@ const schema = graph(
  * are not four things a doctor can weigh in the first ten seconds of a page.
  */
 const targets = [
-  { value: 'Nine', caption: 'services, priced on the page' },
+  { value: String(services.length), caption: 'services, each priced on this page' },
   { value: 'Three', caption: 'is what most clinics start with' },
   { value: 'Fixed', caption: 'price, agreed before we start' },
   { value: 'Free', caption: 'written review before you pay' },
@@ -196,7 +206,7 @@ const engagements = [
         id="engagements-title"
         dark
         label="Where to start"
-        title="Most clinics need three of our nine services to begin. These are the usual starting points."
+        title={`Most clinics need three of our ${spell(services.length)} services to begin. These are the usual starting points.`}
         lede="Every engagement is one fixed price, agreed in writing after the free review. No hourly billing and no invoice you did not expect. What a package excludes is written as plainly as what it includes."
       />
       <div class="reveal-group mt-12 grid gap-5 lg:grid-cols-3">

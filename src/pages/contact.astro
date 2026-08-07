@@ -10,7 +10,7 @@ import reportImage from '@/assets/mockups/review-report.webp';
 import studioExterior from '@/assets/editorial/studio-exterior.webp';
 import SectionHead from '@/components/SectionHead.astro';
 import FaqSection from '@/components/FaqSection.astro';
-import { BUSINESS, WHATSAPP_URL, whatsappWithMessage } from '@/config/site';
+import { BUSINESS, WHATSAPP_URL, whatsappFor } from '@/config/site';
 import { BUILDS, STANDALONE_MONTHLY, rupees } from '@/config/pricing';
 import { href } from '@/lib/url';
 import { cycleAccent, ACCENTS } from '@/lib/accents';
@@ -40,9 +40,13 @@ const schema = graph(
   faqSchema(faqs),
 );
 
-const whatsappHref = whatsappWithMessage(
-  "Hi CareInflow, I'd like a free written review of my practice's online presence. Clinic name: ",
-);
+/*
+ * The default prefill, not a copy of it. This page had its own hardcoded
+ * wording that differed from PREFILLS.default in a comma, a contraction and a
+ * full stop — two openings for the same conversation, and the only one on the
+ * site using a contraction. Prefills live in site.ts (see careinflow-funnel).
+ */
+const whatsappHref = whatsappFor('default');
 
 /*
  * The free review used to be a page of its own, competing with this one for
