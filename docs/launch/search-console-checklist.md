@@ -15,12 +15,35 @@ make the site *eligible* and give you the instruments to see what happens.
 **URL-prefix** property for `https://www.careinflow.com/`.
 
 **Never delete it.** Removing it un-verifies the property and takes the Search
-Console history with it. `npm run verify` fails the build if the file is missing
-or if its token is altered, so it cannot be tidied away by accident.
+Console history with it. Two things guard it:
 
-Nothing else on the site needs to change for this to work: it is a static file
-in `public/`, it is not a route, it is not in the sitemap, and nothing links to
-it.
+- `npm run verify` fails the build if the file is missing from the output or if
+  its token has been altered.
+- `public/_redirects` carries a `200` rewrite for it, and that line matters as
+  much as the file.
+
+### Why the rewrite is there
+
+**Cloudflare Pages strips `.html` extensions.** Left alone it 308s
+`/google86e87b3d4788a10e.html` to `/google86e87b3d4788a10e` and serves the token
+at the extensionless URL. The token was reachable, but only through a redirect,
+and Google fetches the exact URL it issued.
+
+```
+/google86e87b3d4788a10e.html   →  308  →  /google86e87b3d4788a10e  →  200
+```
+
+The `200` rule in `_redirects` is a rewrite rather than a redirect: the same
+content served *under* the `.html` URL with no hop. Confirmed working — the
+exact URL now returns `200`, zero redirects, and a body byte-identical to the
+file Google issued. The apex form resolves too, in one hop via the apex→www
+redirect.
+
+If you ever add another `.html` file to `public/` that something external
+fetches by exact URL, it will need the same treatment.
+
+Nothing else on the site needs to change: it is a static file in `public/`, it
+is not a route, it is not in the sitemap, and nothing links to it.
 
 ## 1. Also verify a Domain property
 

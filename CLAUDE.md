@@ -16,6 +16,7 @@ Astro 5 · TypeScript strict · Tailwind CSS v4 (`@tailwindcss/vite`, tokens in 
 - `site`/`base` come from env: production/Cloudflare = `https://www.careinflow.com` at root; GitHub Pages build sets `SITE=https://jaidevjethi.github.io BASE_PATH=/careinflow-website`. Canonical URLs ALWAYS point to `https://www.careinflow.com` (see `src/config/site.ts` — single source for URLs, NAP, WhatsApp). **www is canonical**: Cloudflare serves the site there and 301s the apex, so a canonical on the bare domain names a URL that redirects.
 - `trailingSlash: 'always'`, so **every internal link must end in a slash**. `href()` and the `rehypeInternalLinks` plugin add it; a link without one costs a 308 on every click. Files (`.svg`, `.xml`, `.txt`) keep their exact path.
 - Deploys: GitHub Actions → GitHub Pages (mirror); Cloudflare Pages builds the same repo at root (production). `public/_headers` and `public/_redirects` are Cloudflare-only; GitHub Pages ignores both.
+- **Cloudflare Pages strips `.html` extensions**, 308ing `/file.html` → `/file`. Anything fetched by exact URL — the Search Console token in `public/google86e87b3d4788a10e.html` — needs a `200` rewrite in `_redirects`. Never delete that file or its rule; `npm run verify` fails the build if the file goes.
 
 ## Design system 2a "Instrument" (hard rules)
 
