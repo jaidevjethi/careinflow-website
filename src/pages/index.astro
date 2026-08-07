@@ -383,7 +383,11 @@ const whatsappHref = whatsappWithMessage(
                 id={`hero-shot-${i + 1}`}
                 src={slide.src}
                 alt={slide.alt}
-                widths={[560, 840, 1120]}
+                {/* 700 sits between 560 and 840 because that is where a phone
+                    actually lands: 92vw of a 375–412px screen at DPR 2 asks
+                    for 690–758px, and without this step every one of them took
+                    the 840. */}
+                widths={[560, 700, 840, 1120]}
                 sizes="(min-width: 1024px) 560px, 92vw"
                 loading={i === 0 ? 'eager' : 'lazy'}
                 fetchpriority={i === 0 ? 'high' : undefined}
@@ -395,7 +399,7 @@ const whatsappHref = whatsappWithMessage(
             <!-- Anchor links, not buttons: the track is a real scroll
                  container, so the browser already knows how to bring a slide
                  into view and there is nothing for a script to do. -->
-            <span class="flex items-center gap-2">
+            <span class="flex items-center">
               {heroSlides.map((_, i) => (
                 <a
                   href={`#hero-shot-${i + 1}`}
@@ -450,7 +454,7 @@ const whatsappHref = whatsappWithMessage(
             <Image
               src={s.image}
               alt={s.imageAlt}
-              widths={[420, 640, 840]}
+              widths={[420, 640, 700, 840]}
               sizes="(min-width: 1280px) 400px, (min-width: 640px) 46vw, 92vw"
               loading="lazy"
               class:list={['h-[140px] w-full border-b border-line object-cover sm:h-[168px]', s.imagePos]}

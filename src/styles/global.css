@@ -960,13 +960,21 @@
   /* 7px of dot inside a 24px target, which is the minimum this site holds
      itself to for anything tappable. The negative margin closes the gap the
      padding opens, so they still read as a tight row. */
+  /*
+   * 24px is the floor WCAG 2.2 sets for a target, and these were exactly that
+   * — then pulled 6px into each neighbour to tighten the visual spacing of the
+   * 7px dots inside them. Against the 8px flex gap that left the hit boxes
+   * overlapping by 4px, so a tap in the seam between two dots landed on
+   * whichever the browser resolved first. The negative margin is gone and the
+   * row sets `gap-0`, which puts the boxes edge to edge: still 24px, no
+   * overlap, and the dots themselves move 4px further apart.
+   */
   .snap-dot {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 24px;
     height: 24px;
-    margin-inline: -6px;
   }
   .snap-dot::before {
     content: '';
