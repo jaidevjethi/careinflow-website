@@ -107,9 +107,10 @@ render-blocking stylesheet, and an unverified quote about a client's clinician.
 
 | # | Item |
 |---|---|
-| 1 | `/work/pramukh-dental` states Dr. Chinmay Patel has *"more than ten years and five thousand procedures behind him"*. A claim about a third party's professional record. Confirm the clinic has said it and would repeat it, or it should go. |
-| 2 | `PAGESPEED_API_KEY` in `.env` is expired ("API key expired. Please renew"), and the anonymous PSI quota for that project is exhausted. Nothing in the build uses it; renew it if you want scripted monitoring. |
-| 3 | The sample build at `jaidevjethi.github.io/lavanya-skin-clinic` measures **CLS 0.057** — inside Google's good band but not the 0 this site and Pramukh both hit. `/work` invites people to open and measure it. Fix in that repo. |
+| 1 | **Cloudflare Web Analytics is on, and the site's own CSP blocks it.** Cloudflare injects `static.cloudflareinsights.com/beacon.min.js` at the edge — it is not in the build; `dist/index.html` contains no reference to it. `script-src 'self'` refuses it, so every page load logs two CSP violations, Lighthouse best practices scores 93 instead of 100, and no analytics data has ever been collected. This predates the audit: the previous policy was `script-src 'self' 'unsafe-inline'`, which does not permit a cross-origin script either. **Decision taken: disable Web Analytics in the Cloudflare dashboard.** That keeps `/privacy`'s claim that the site "embeds no third-party trackers" true, which allowing the beacon would have made false. Nothing to change in this repository. |
+| 2 | `/work/pramukh-dental` states Dr. Chinmay Patel has *"more than ten years and five thousand procedures behind him"*. A claim about a third party's professional record. Confirm the clinic has said it and would repeat it, or it should go. |
+| 3 | `PAGESPEED_API_KEY` in `.env` is expired ("API key expired. Please renew"), and the anonymous PSI quota for that project is exhausted. Nothing in the build uses it; renew it if you want scripted monitoring. |
+| 4 | The sample build at `jaidevjethi.github.io/lavanya-skin-clinic` measures **CLS 0.057** — inside Google's good band but not the 0 this site and Pramukh both hit. `/work` invites people to open and measure it. Fix in that repo. |
 
 ### MONITOR AFTER LAUNCH
 
@@ -142,9 +143,15 @@ All Lighthouse, mobile, against the built site.
 | `/work/pramukh-dental/` | 99 | 100 | 100 | 100 | 2.1 s | 0 | 0 ms |
 | `/services/healthcare-websites/` | 99 | 100 | 100 | 100 | 2.2 s | 0 | 0 ms |
 
-Those use Lighthouse's default mobile preset, which simulates roughly 1.6 Mbps
-at 150 ms RTT with a 4× CPU penalty — deliberately pessimistic. On a profile
-closer to typical Indian 4G (9 Mbps, 70 ms, 2× CPU):
+Those are the built site served locally. **Against live production** on the same
+default preset: performance 97, accessibility 100, SEO 100, best practices
+**93** — the three lost points are entirely the blocked Cloudflare beacon
+logging two console errors, and they return to 100 the moment Web Analytics is
+switched off (owner input 1).
+
+Lighthouse's default mobile preset simulates roughly 1.6 Mbps at 150 ms RTT
+with a 4× CPU penalty — deliberately pessimistic. On a profile closer to
+typical Indian 4G (9 Mbps, 70 ms, 2× CPU):
 
 | Site | Performance | FCP | LCP | CLS |
 |---|---|---|---|---|
@@ -184,15 +191,37 @@ ever printed a tick.
 
 ## Remaining steps before you are done
 
-1. Verify the **Domain** property `careinflow.com` in Search Console via a
+1. **Disable Web Analytics** in the Cloudflare dashboard (owner input 1). This
+   is the only step that changes what a visitor's browser reports, and it is
+   the only one that cannot be done from this repository.
+2. Verify the **Domain** property `careinflow.com` in Search Console via a
    Cloudflare TXT record. See `search-console-checklist.md`.
-2. Submit `https://www.careinflow.com/sitemap-index.xml`.
-3. Inspect and request indexing for the homepage and the five service pages.
-4. Run the Rich Results Test on `/`, `/pricing/` and `/work/pramukh-dental/`.
-5. Answer owner-input item 1 (the Pramukh clinician claim).
-6. Create the Google Business Profile when ready, following
+3. Submit `https://www.careinflow.com/sitemap-index.xml`.
+4. Inspect and request indexing for the homepage and the five service pages.
+5. Run the Rich Results Test on `/`, `/pricing/` and `/work/pramukh-dental/`.
+6. Answer owner input 2 (the Pramukh clinician claim).
+7. Create the Google Business Profile when ready, following
    `google-business-profile-checklist.md`, then add its Maps URL to `PROFILES`
    in `src/config/site.ts`.
-7. Optionally fix the sample build's 0.057 CLS, and renew the PageSpeed key.
+8. Optionally fix the sample build's 0.057 CLS, and renew the PageSpeed key.
 
 No DNS, Cloudflare or Business Profile settings were touched during this audit.
+
+---
+
+## A note on how the live site was checked
+
+The accessibility sweep — 38 pages × 6 widths, every text element measured
+against its own computed background — was run against the built site served
+locally, not against production. That is not a shortcut: `frame-ancestors
+'none'` means the live site refuses to be framed by anything including itself,
+which is correct and is why the technique cannot run there. The markup and CSS
+measured are byte-for-byte what Cloudflare serves, confirmed by crawling all 47
+internal link targets on live (zero non-200, zero redirects) and by spot-checking
+`/areas/` on production directly, where the repaired `a-gbp` reads
+`rgb(14, 106, 151)` and the contrast failures are gone.
+
+Screenshots were not captured. The browser pane in this session was not
+displayed, so it composited no frames and every screenshot request timed out.
+Everything above was measured through the DOM and computed styles rather than
+by eye, and it is stated that way rather than dressed up as a visual review.
