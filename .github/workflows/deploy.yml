@@ -46,9 +46,12 @@ jobs:
       # build on any published figure that does not come from pricing.ts.
       - run: npm run check
       - run: npm run build
-      # Re-run after the build so the guard can also scan the built HTML for
-      # unresolved {{price}} tokens.
-      - run: npm run check:prices
+      # Re-run the price guard after the build so it can also scan the built
+      # HTML for unresolved {{price}} tokens, and run the metadata guard, which
+      # only works against built output: title and description budgets, one H1,
+      # canonical host, robots directive, every internal link resolving with
+      # its trailing slash, and JSON-LD that parses and claims nothing false.
+      - run: npm run verify
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

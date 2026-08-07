@@ -23,8 +23,16 @@ npm install        # install
 npm run dev        # local dev — http://localhost:4321
 npm run build      # production build → dist/
 npm run preview    # serve the production build
-npm run check      # astro check (types + content)
+npm run check      # astro check (types + content) + the price guard
+npm run verify     # after a build: price + metadata/link/JSON-LD guards
 ```
+
+`npm run verify` runs against `dist/`, so build first. It enforces the title
+(≤62) and description (≤158) budgets, one H1 per page, the canonical host, the
+robots directive for the build target, every internal link resolving with the
+trailing slash `trailingSlash: 'always'` requires, and JSON-LD that parses,
+keeps its `@id`s on the canonical host and never claims a review or rating.
+CI runs it on every push.
 
 ## Deployment
 
