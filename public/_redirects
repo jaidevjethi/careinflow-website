@@ -1,5 +1,17 @@
 # Cloudflare Pages redirects (ignored by GitHub Pages, which gets the
 # meta-refresh page Astro's `redirects` config emits instead).
+
+# Google Search Console verification.
+#
+# Cloudflare Pages strips .html extensions: it 308s /file.html to /file and
+# serves the content there. Google fetches the exact URL it issued, ending
+# .html, so the token was reachable only through a redirect. The 200 below is
+# a rewrite rather than a redirect — same content, served under the URL Google
+# asks for, no hop in between.
+#
+# Do not remove either this line or public/google86e87b3d4788a10e.html.
+# Removing them un-verifies the property and loses its history.
+/google86e87b3d4788a10e.html   /google86e87b3d4788a10e   200
 #
 # /free-review was a second enquiry route competing with /contact for the same
 # conversion. Its content now lives on /contact in full. A meta-refresh is all
