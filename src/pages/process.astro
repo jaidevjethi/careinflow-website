@@ -62,6 +62,8 @@ const weeks = [
     output: 'A written review of your current online presence',
     fromYou: ['A one-hour conversation about your practice'],
     image: processStudy,
+    // Her face sits 25-53% down the frame; the default centre crop cut the top of her head.
+    imagePos: 'object-[50%_35%]',
     imageAlt: 'Two people at a desk reviewing a website audit scorecard on a monitor, one pointing at the speed and listing sections.',
   },
   {
@@ -71,6 +73,8 @@ const weeks = [
     text: 'The page order and the actual copy come before any visuals. You sign off the words patients will read, every treatment page, every heading, so design decorates substance instead of hiding its absence.',
     output: 'Sitemap and final copy, signed off',
     image: processStructure,
+    // Both faces sit high, 12-38% down, because they are looking at the table.
+    imagePos: 'object-[50%_15%]',
     imageAlt: 'Two designers at a desk marking up printed page-structure sheets headed Patient Journey Architecture and Cardiology Treatment Pages, with wireframe sketches spread around them.',
     fromYou: [
       'Your treatment list, and how you prefer to describe costs',
@@ -85,6 +89,8 @@ const weeks = [
     output: 'The working website, tested on real devices',
     fromYou: ['Access for photographs, or a visit arranged'],
     image: processBuild,
+    // Two faces at 16-41%; the centre crop took the top half of both.
+    imagePos: 'object-[50%_20%]',
     imageAlt: 'Two developers working together at a monitor showing code beside a live preview of the clinic site they are building.',
   },
   {
@@ -200,7 +206,15 @@ const cadence = [
                       widths={[440, 880]}
                       sizes="(min-width: 1024px) 830px, 92vw"
                       loading="lazy"
-                      class="h-[210px] w-full border-b border-line object-cover"
+                      {/* These band into 210px from a 3:2 source, which keeps
+                          only 39% of the frame. Centred, that took the top of
+                          every head in three of the four. Each week sets where
+                          its own crop should sit; the homepage cards already
+                          work this way. */}
+                      class:list={[
+                        'h-[210px] w-full border-b border-line object-cover',
+                        w.imagePos,
+                      ]}
                     />
                   )}
                   <div class="p-7 sm:p-8">
