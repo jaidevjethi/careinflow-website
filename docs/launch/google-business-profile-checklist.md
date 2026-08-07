@@ -51,6 +51,71 @@ Secondary categories worth adding: *Internet marketing service*, *Marketing
 agency*. Skip *Advertising agency* — the site says plainly, in four places, that
 paid advertising is not offered.
 
+## Business description
+
+Paste this. 741 characters, inside Google's 750 limit, with the whole offer in
+the first sentence because that is roughly all that shows before "read more".
+
+> CareInflow is a healthcare-only web design studio in Mehsana, Gujarat. We
+> build websites for dental, dermatology, physiotherapy, eye, orthopaedic and
+> paediatric clinics, manage their Google Business Profiles, and do the local
+> search work behind both.
+>
+> Every site is built by hand, with a page for each treatment written in the
+> words patients search rather than clinical terms, and tested on the mid-range
+> Android phones patients actually use. Enquiries arrive on WhatsApp, where a
+> clinic will see them.
+>
+> We work with practices across Mehsana, Ahmedabad, Gandhinagar, Visnagar,
+> Patan and the towns around them, from one studio on Radhanpur Road. Prices
+> are published rather than quoted behind a call, and agreed in writing before
+> work begins.
+
+A 499-character version, if you would rather it all sat above the fold:
+
+> CareInflow is a healthcare-only web design studio in Mehsana, Gujarat. We
+> build websites for dental, dermatology, physiotherapy, eye and orthopaedic
+> clinics, manage their Google Business Profiles, and do the local search work
+> behind both. Every site is built by hand, with a page for each treatment
+> written in the words patients search, and tested on the phones patients
+> actually use. We work with practices across Mehsana, Ahmedabad, Gandhinagar
+> and North Gujarat from one studio on Radhanpur Road.
+
+### What is deliberately not in it
+
+Google rejects or suppresses descriptions carrying any of these, and the first
+four are also things this studio has decided not to say anywhere:
+
+- **The free review.** It is the strongest thing on the website and it must not
+  go here — Google's rules bar promotional and sales content from the
+  description. Put it in a **Post** and in the **Services** descriptions, where
+  offers are allowed.
+- **Prices.** Same rule. "Prices are published" is a statement of how the studio
+  works, not a price, which is why that phrasing survives.
+- **Superlatives** — best, leading, top-rated, number one. Against Google's
+  guidelines and against the site's own voice.
+- **Ranking claims.** Nothing that implies a search result can be promised.
+- **URLs, phone numbers, email addresses, or HTML.** Google strips or rejects
+  them, and every one of them already has its own field on the profile.
+- **Emoji and ALL CAPS.**
+- **Keyword stuffing.** "Web design Mehsana web designer Mehsana clinic website
+  Mehsana" is the fastest route to a suppressed description. The towns above
+  appear once each, in a sentence that means something.
+
+### Where the rest of the words go
+
+The description is one of several text surfaces and it is not the most useful
+one. In rough order of what actually moves a local result:
+
+1. **Services** — each of the five, named as the site names them, with a short
+   description. This is the field that matches what people type.
+2. **Products** — the three website builds work well here, with images.
+3. **Posts** — weekly-ish, and the only place promotional content belongs. The
+   free review, a new case study, a treatment-page explainer.
+4. **Questions & answers** — seed the real ones from `/faq` yourself. An empty
+   Q&A section invites strangers to answer for you.
+5. **Description** — last, and mostly read by people already on the profile.
+
 ## Services, to match the site
 
 List exactly the five the site prices, with the same names:
