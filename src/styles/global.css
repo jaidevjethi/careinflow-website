@@ -172,6 +172,26 @@
    * text fails; darker and the button vanishes.
    */
   --color-cta: #2d6fe0;
+
+  /*
+   * WhatsApp green. The one colour on this site that belongs to somebody else,
+   * and the only sanctioned green besides `pass` — it is a channel mark, not a
+   * brand accent, which is why it is exempt from the one-cool-family rule. Its
+   * hue is 142, outside the banned sage band, so it does not read as a second
+   * `pass`.
+   *
+   * Two of them, because one cannot do both jobs. The brand green is bright:
+   * on midnight it is a clean 7.9:1, and as a button fill it takes ink text at
+   * 7.96:1 — but as text on a light ground it measures 1.56–1.98:1, which is
+   * illegible. WhatsApp's own white-on-green is 1.98:1 and fails AA in their
+   * app too; we do not copy that.
+   *
+   * So `whatsapp` is for fills and for text on midnight, and `whatsapp-deep`
+   * is the same hue taken down until it clears 4.5:1 on every light ground
+   * (6.02 on surface, 4.72 on mist) for links in running text.
+   */
+  --color-whatsapp: #25d366;
+  --color-whatsapp-deep: #137236;
   /* Measurements stay green, because a passing reading should read as passing. */
   --color-pass: #0a6e62;
   --color-ink: #0e2439;
@@ -786,6 +806,55 @@
     transform: translateY(-2px);
     filter: brightness(1.08);
     text-decoration: none;
+  }
+
+  /*
+   * The WhatsApp action. Ink on the brand green, never white: white on
+   * #25D366 is 1.98:1, which fails AA even though it is what WhatsApp ships.
+   * Ink measures 7.96:1 and the button still reads unmistakably as WhatsApp,
+   * because it is the fill people recognise, not the label colour.
+   */
+  .btn-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: var(--color-whatsapp);
+    color: var(--color-ink);
+    font-weight: 700;
+    border-radius: 12px;
+    transition:
+      transform 200ms var(--ease-instrument),
+      filter 200ms linear;
+  }
+  .btn-whatsapp:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.06);
+    text-decoration: none;
+  }
+
+  /*
+   * A WhatsApp mention inside running text. Takes the deepened green on light
+   * grounds; on midnight the brand green is legible directly, so
+   * `.link-whatsapp-dark` is used there instead.
+   */
+  .link-whatsapp {
+    color: var(--color-whatsapp-deep);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+  .link-whatsapp:hover {
+    text-decoration-thickness: 2px;
+  }
+  .link-whatsapp-dark {
+    color: var(--color-whatsapp);
+    font-weight: 600;
+  }
+  .link-whatsapp-dark:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   /* Outlined button for midnight sections. */

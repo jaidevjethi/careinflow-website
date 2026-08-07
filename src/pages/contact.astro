@@ -98,7 +98,7 @@ const steps = [
     lede={'No form, no discovery call, no slide deck. One WhatsApp message starts it, and if the honest answer is "change nothing", that is the answer you will get.'}
   >
     <div class="mt-9 flex flex-wrap items-center gap-4">
-      <a href={whatsappHref} rel="noopener" class="btn-accent px-7 py-4 text-[17px]">
+      <a href={whatsappHref} rel="noopener" class="btn-whatsapp px-7 py-4 text-[17px]">
         WhatsApp {BUSINESS.phoneDisplay}
       </a>
       <a href={`tel:${BUSINESS.phone}`} class="btn-on-dark px-6 py-[15px] text-base">
@@ -151,7 +151,7 @@ const steps = [
         <address class="mt-5 max-w-[640px] text-[16px] not-italic leading-[1.7] text-body">
           {BUSINESS.name} · {BUSINESS.address.street},<br />
           {BUSINESS.address.locality}, {BUSINESS.address.region}, India<br />
-          <a href={WHATSAPP_URL} rel="noopener" class="prose-link">WhatsApp {BUSINESS.phoneDisplay}</a> ·
+          <a href={WHATSAPP_URL} rel="noopener" class="link-whatsapp">WhatsApp {BUSINESS.phoneDisplay}</a> ·
           <a href={`tel:${BUSINESS.phone}`} class="prose-link">Call the studio</a>
         </address>
         <p class="mt-5 max-w-[640px] text-[15px] leading-[1.65] text-muted">
