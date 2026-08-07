@@ -8,14 +8,30 @@ Nothing here promises indexing, ranking or traffic. Google decides all three,
 and competition, relevance and time decide them with it. What this list does is
 make the site *eligible* and give you the instruments to see what happens.
 
-## 1. Verify a Domain property, not a URL prefix
+## 0. The HTML verification file is already in place
+
+`public/google86e87b3d4788a10e.html` ships with every build and is served at
+`https://www.careinflow.com/google86e87b3d4788a10e.html`. It verifies a
+**URL-prefix** property for `https://www.careinflow.com/`.
+
+**Never delete it.** Removing it un-verifies the property and takes the Search
+Console history with it. `npm run verify` fails the build if the file is missing
+or if its token is altered, so it cannot be tidied away by accident.
+
+Nothing else on the site needs to change for this to work: it is a static file
+in `public/`, it is not a route, it is not in the sitemap, and nothing links to
+it.
+
+## 1. Also verify a Domain property
+
+The file above covers one host. A Domain property covers `careinflow.com`,
+`www.careinflow.com`, every other subdomain and both schemes in one place —
+which matters here because the apex 301s to www, so links to the bare domain
+are real traffic that a URL-prefix property would not report on.
+
+Do both. They coexist, and the Domain property is the one to use day to day.
 
 In Search Console, choose **Domain** and enter `careinflow.com`.
-
-A Domain property covers `careinflow.com`, `www.careinflow.com`, every other
-subdomain and both `http` and `https` in one place. A URL-prefix property would
-cover only the exact string you typed, and this site has traffic arriving on
-two hosts — the apex redirect means links to the bare domain still land here.
 
 Verification is a **TXT record in DNS**. Cloudflare is your DNS provider, so:
 Cloudflare dashboard → `careinflow.com` → DNS → Records → Add record → type
@@ -23,8 +39,10 @@ Cloudflare dashboard → `careinflow.com` → DNS → Records → Add record →
 gives you. Proxy status is not applicable to TXT records. Verification usually
 completes within minutes.
 
-**Do not** use the HTML-file or meta-tag method. Both verify one host only, and
-the meta-tag method would put a verification token in this repository.
+Avoid the **meta-tag** method: it verifies one host only and puts a token into
+the page template, where it is one careless edit away from disappearing. The
+HTML-file method (§0) is fine and already done — a file in `public/` is inert
+and guarded.
 
 ## 2. Submit the sitemap
 

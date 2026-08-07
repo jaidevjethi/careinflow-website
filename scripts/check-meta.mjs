@@ -85,7 +85,28 @@ const decode = (s) =>
 const attr = (html, re) => html.match(re)?.[1];
 
 const problems = [];
-const pages = walk(DIST).filter((f) => f.endsWith('.html'));
+
+/**
+ * Google Search Console's HTML verification file. It is a single line of text
+ * with an .html extension and none of the structure a page has, so it is
+ * excluded from the page checks below and asserted separately instead.
+ *
+ * Deleting it un-verifies the property, which loses the Search Console history
+ * with it. The build fails rather than let that happen quietly.
+ */
+const GSC_VERIFICATION = 'google86e87b3d4788a10e.html';
+const gscFile = join(DIST, GSC_VERIFICATION);
+if (!existsSync(gscFile)) {
+  problems.push(
+    `${GSC_VERIFICATION} is missing from the build — it lives in public/ and must never be removed`,
+  );
+} else if (!readFileSync(gscFile, 'utf8').includes('google-site-verification')) {
+  problems.push(`${GSC_VERIFICATION} no longer contains its verification token`);
+}
+
+const pages = walk(DIST)
+  .filter((f) => f.endsWith('.html'))
+  .filter((f) => !f.endsWith(GSC_VERIFICATION));
 const id = (file) => relative(DIST, file).split(sep).join('/');
 
 const titles = new Map();
