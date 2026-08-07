@@ -45,7 +45,10 @@ export function organizationSchema() {
     // One studio, in Mehsana. `areaServed` lists places served, never staffed.
     areaServed: BUSINESS.serviceAreas.map((name) => ({ '@type': 'City', name })),
     founder: { '@id': FOUNDER_ID },
-    sameAs: PROFILES,
+    // Omitted entirely while empty. `"sameAs": []` is a declared-and-blank
+    // claim; leaving the property out says nothing, which is the truth until
+    // the Google listing exists.
+    ...(PROFILES.length ? { sameAs: PROFILES } : {}),
     knowsAbout: [
       'Healthcare website design',
       'Local SEO for clinics',

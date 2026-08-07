@@ -1,6 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHero from '@/components/PageHero.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
@@ -33,6 +33,23 @@ const path = `/resources/${resource.id}`;
 const title = `${resource.data.title} | CareInflow`;
 const description = resource.data.description;
 
+/**
+ * The article's own lead image doubles as its share card and its Article
+ * image, the way a case study's screenshot already did. Every guide has one;
+ * the studio card only stands in if a future one ships without.
+ */
+const cover = resource.data.image
+  ? await getImage({ src: resource.data.image, width: 1200, format: 'jpg' })
+  : null;
+const shareImage = cover
+  ? {
+      url: new URL(cover.src, CANONICAL_HOST).href,
+      width: Number(cover.attributes.width ?? 1200),
+      height: Number(cover.attributes.height ?? 630),
+      alt: resource.data.imageAlt,
+    }
+  : { url: `${CANONICAL_HOST}/og-default.png`, width: 2500, height: 1313, alt: undefined };
+
 const schema = graph(
   organizationSchema(),
   founderSchema(),
@@ -49,10 +66,8 @@ const schema = graph(
     description,
     publishDate: resource.data.publishDate,
     updatedDate: resource.data.updatedDate,
-    // Google treats Article.image as required for a rich result. These guides
-    // have no bespoke artwork yet, so the studio card stands in — real file,
-    // real dimensions, rather than a URL that does not resolve.
-    image: { url: `${CANONICAL_HOST}/og-default.png`, width: 2500, height: 1313 },
+    // Google treats Article.image as required for a rich result.
+    image: shareImage,
   }),
 );
 
@@ -67,6 +82,10 @@ const dateFmt = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long'
   ogType="article"
   publishDate={resource.data.publishDate}
   updatedDate={resource.data.updatedDate}
+  image={shareImage.url}
+  imageAlt={shareImage.alt}
+  imageWidth={shareImage.width}
+  imageHeight={shareImage.height}
 >
   <article>
     <PageHero

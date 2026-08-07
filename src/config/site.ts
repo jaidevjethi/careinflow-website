@@ -77,11 +77,17 @@ export const WHATSAPP_URL = `https://wa.me/${BUSINESS.phone.replace('+', '')}`;
  * content on it. An empty page costs more trust than an absent one, and a
  * studio that sells Google Business Profile management is judged on its own.
  *
- * Uncomment each line the day that profile is live:
+ * Empty on purpose. `sameAs` is for pages that *are* the entity somewhere else
+ * — a listing, a profile, a company page a search engine can reconcile against
+ * this one. A wa.me link is a click-to-chat handoff, not a page about
+ * CareInflow, so it was asserting an identity that does not exist at that URL.
+ * The phone it encodes is already published as `telephone`.
+ *
+ * Add each line the day that profile is live:
  *   'https://www.google.com/maps/place/?q=place_id:…'  ← the GBP listing
  *   'https://www.instagram.com/careinflow/'            ← once the handle moves
  */
-export const PROFILES: string[] = [WHATSAPP_URL];
+export const PROFILES: string[] = [];
 
 export const whatsappWithMessage = (text: string): string =>
   `${WHATSAPP_URL}?text=${encodeURIComponent(text)}`;

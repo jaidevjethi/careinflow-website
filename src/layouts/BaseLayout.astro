@@ -24,6 +24,9 @@ interface Props {
   /** Absolute URL of a page-specific share image (case studies, articles). */
   image?: string;
   imageAlt?: string;
+  /** Pixel size of that image, so the share card lays out before it loads. */
+  imageWidth?: number;
+  imageHeight?: number;
   noindex?: boolean;
 }
 
@@ -37,6 +40,8 @@ const {
   updatedDate,
   image,
   imageAlt,
+  imageWidth,
+  imageHeight,
   noindex,
 } = Astro.props;
 ---
@@ -65,7 +70,19 @@ const {
       title="CareInflow, guides for clinic owners"
       href={href('/rss.xml')}
     />
-    <SEO {title} {description} {path} {ogType} {publishDate} {updatedDate} {image} {imageAlt} {noindex} />
+    <SEO
+      {title}
+      {description}
+      {path}
+      {ogType}
+      {publishDate}
+      {updatedDate}
+      {image}
+      {imageAlt}
+      {imageWidth}
+      {imageHeight}
+      {noindex}
+    />
     {schema && <JsonLd data={schema} />}
   </head>
   <body class="pb-[60px] sm:pb-0">

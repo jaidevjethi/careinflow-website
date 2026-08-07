@@ -52,7 +52,8 @@ const isActive = (itemHref: string) => currentPath === itemHref || currentPath.s
     >
       <span class="sr-only" id="nav-toggle-label">Menu</span>
       {/* Two icons, one shown at a time, so the control's state is visible and
-          not only announced. `hidden` is toggled with aria-expanded. */}
+          not only announced. Toggled with the `hidden` class alongside
+          aria-expanded — the same mechanism the menu itself uses. */}
       <svg
         data-nav-icon="closed"
         width="18"
@@ -70,7 +71,7 @@ const isActive = (itemHref: string) => currentPath === itemHref || currentPath.s
         viewBox="0 0 18 14"
         fill="none"
         aria-hidden="true"
-        hidden
+        class="hidden"
       >
         <path d="M2 1l14 12M16 1L2 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
       </svg>
@@ -117,7 +118,7 @@ const isActive = (itemHref: string) => currentPath === itemHref || currentPath.s
     menu.classList.toggle('hidden', !open);
     if (label) label.textContent = open ? 'Close menu' : 'Menu';
     icons?.forEach((icon) => {
-      icon.toggleAttribute('hidden', (icon.dataset.navIcon === 'open') !== open);
+      icon.classList.toggle('hidden', (icon.dataset.navIcon === 'open') !== open);
     });
   };
 
