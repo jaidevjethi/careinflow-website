@@ -42,10 +42,10 @@ export const BUSINESS = {
   phone: '+919773456668',
   phoneDisplay: '+91 97734 56668',
   address: {
-    street: 'Shop F-27, Platinum Plaza Complex, Radhanpur Road',
+    street: 'F-27, Platinum Plaza, Radhanpur Rd',
     locality: 'Mehsana',
     region: 'Gujarat',
-    postalCode: '384002',
+    postalCode: '384005',
     country: 'IN',
   },
   /** Studio coordinates, for LocalBusiness geo and the map link. */

@@ -14,12 +14,18 @@ from that one file, so they cannot drift apart.
 | Field | Value |
 |---|---|
 | Name | CareInflow |
-| Street | Shop F-27, Platinum Plaza Complex, Radhanpur Road |
-| Locality | Mehsana, Gujarat 384002, India |
+| Street | F-27, Platinum Plaza, Radhanpur Rd |
+| Locality | Mehsana, Gujarat 384005, India |
 | Phone | +91 97734 56668 |
 | Website | `https://www.careinflow.com/` |
 | Hours | Monday–Saturday, 10:00–19:00. Closed Sunday |
 | Coordinates | 23.5985, 72.3693 |
+
+**Check the coordinates against the pin before you publish.** They were set when
+the postcode on file was 384002; the address is now 384005, and nobody has
+verified the latitude and longitude since. Whatever pin you drop on the Business
+Profile is the one `BUSINESS.geo` in `src/config/site.ts` should match, because
+that is what the `LocalBusiness` schema publishes.
 
 Use the name exactly as written. Not "CareInflow — Healthcare Web Design", not
 "CareInflow Mehsana". Keyword-stuffing the business name is the single most

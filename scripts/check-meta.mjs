@@ -184,6 +184,48 @@ for (const file of pages) {
   }
 }
 
+/* ---- the studio address -------------------------------------------------- */
+
+/*
+ * The footer and the JSON-LD render the address from BUSINESS.address, but two
+ * FAQ answers spell it out by hand — content collections are MDX and JSON and
+ * cannot import the config. When the address changed in August 2026 those two
+ * were still publishing the old building name and the old postcode, on pages a
+ * patient might use to find the place.
+ *
+ * So: any street line anywhere in the build must be the configured one, letter
+ * for letter. NAP consistency is the whole basis of local search, and a second
+ * version of the address is worth less than no address at all.
+ */
+const street = siteConfig.match(/street:\s*'([^']+)'/)?.[1];
+const postcode = siteConfig.match(/postalCode:\s*'([^']+)'/)?.[1];
+if (!street || !postcode) {
+  console.error('\n✗ could not read the address from src/config/site.ts\n');
+  process.exit(1);
+}
+
+/** Matches any "<unit>, <building>, <road>" shaped line for this address. */
+const STREET_SHAPE = /(?:Shop\s+)?F-?\s?27\s*,[^,<]{0,40},\s*Radhanpur\s+(?:Road|Rd)/gi;
+/** Any Mehsana postcode: 384 followed by three digits. */
+const POSTCODE_SHAPE = /\b384\d{3}\b/g;
+
+for (const file of pages) {
+  const html = readFileSync(file, 'utf8');
+  const page = id(file);
+  const text = html.replace(/<[^>]+>/g, ' ').replace(/&#8377;/g, '₹').replace(/\s+/g, ' ');
+
+  for (const [match] of [...text.matchAll(STREET_SHAPE)].map((m) => [m[0]])) {
+    if (match.trim() !== street) {
+      problems.push(`${page}  address "${match.trim()}" — config says "${street}"`);
+    }
+  }
+  for (const [match] of [...text.matchAll(POSTCODE_SHAPE)].map((m) => [m[0]])) {
+    if (match !== postcode) {
+      problems.push(`${page}  postcode ${match} — config says ${postcode}`);
+    }
+  }
+}
+
 /* ---- structured data ----------------------------------------------------- */
 
 /** Claims the site has no evidence for and must never emit. */

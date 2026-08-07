@@ -277,7 +277,7 @@ the honest escape hatch — if the answer is "change nothing", we say so.
 ## Business Facts (from the design doc, confirmed for use)
 
 - Founder: Jaidev Jethi
-- Address: Shop F-27, Platinum Plaza Complex, Radhanpur Road, Mehsana, Gujarat, India
+- Address: F-27, Platinum Plaza, Radhanpur Rd, Mehsana, Gujarat 384005, India
 - WhatsApp / phone: +91 97734 56668
 - Email: jaydevjethi123@gmail.com (until a careinflow.com mailbox exists)
 - Canonical domain: https://careinflow.com
