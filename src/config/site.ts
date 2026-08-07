@@ -1,10 +1,16 @@
 /**
  * Single source of truth for business facts, URLs, and navigation.
  * Canonical URLs always use CANONICAL_HOST, including on the GitHub Pages
- * mirror, so search engines treat careinflow.com as the one real site.
+ * mirror, so search engines treat one host as the one real site.
+ *
+ * That host is the **www** subdomain. Cloudflare serves the site there and
+ * 301s the apex to it, so a canonical on the bare domain pointed every page
+ * at a URL that redirects — telling Google the preferred address is one it
+ * has to be forwarded away from. Change this and the canonicals, `og:url`,
+ * sitemap, robots.txt, llms.txt and every JSON-LD `@id` move with it.
  */
 
-export const CANONICAL_HOST = 'https://careinflow.com';
+export const CANONICAL_HOST = 'https://www.careinflow.com';
 
 export const BUSINESS = {
   name: 'CareInflow',

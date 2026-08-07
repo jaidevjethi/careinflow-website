@@ -13,8 +13,9 @@ Healthcare-focused web design & digital growth studio site. This site is itself 
 Astro 5 · TypeScript strict · Tailwind CSS v4 (`@tailwindcss/vite`, tokens in `src/styles/global.css` `@theme`) · MDX + Content Collections · static output.
 
 - `npm run dev` / `npm run build` (→ `dist/`) / `npx astro check`
-- `site`/`base` come from env: production/Cloudflare = `https://careinflow.com` at root; GitHub Pages build sets `SITE=https://jaidevjethi.github.io BASE_PATH=/careinflow-website`. Canonical URLs ALWAYS point to `https://careinflow.com` (see `src/config/site.ts` — single source for URLs, NAP, WhatsApp).
-- Deploys: GitHub Actions → GitHub Pages (mirror); Cloudflare Pages builds the same repo at root (production).
+- `site`/`base` come from env: production/Cloudflare = `https://www.careinflow.com` at root; GitHub Pages build sets `SITE=https://jaidevjethi.github.io BASE_PATH=/careinflow-website`. Canonical URLs ALWAYS point to `https://www.careinflow.com` (see `src/config/site.ts` — single source for URLs, NAP, WhatsApp). **www is canonical**: Cloudflare serves the site there and 301s the apex, so a canonical on the bare domain names a URL that redirects.
+- `trailingSlash: 'always'`, so **every internal link must end in a slash**. `href()` and the `rehypeInternalLinks` plugin add it; a link without one costs a 308 on every click. Files (`.svg`, `.xml`, `.txt`) keep their exact path.
+- Deploys: GitHub Actions → GitHub Pages (mirror); Cloudflare Pages builds the same repo at root (production). `public/_headers` and `public/_redirects` are Cloudflare-only; GitHub Pages ignores both.
 
 ## Design system 2a "Instrument" (hard rules)
 

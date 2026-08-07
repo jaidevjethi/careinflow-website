@@ -1,0 +1,9 @@
+# Cloudflare Pages redirects (ignored by GitHub Pages, which gets the
+# meta-refresh page Astro's `redirects` config emits instead).
+#
+# /free-review was a second enquiry route competing with /contact for the same
+# conversion. Its content now lives on /contact in full. A meta-refresh is all
+# a static build can emit; this makes it a real 301 so link equity and any
+# indexed result move properly.
+/free-review     /contact/     301
+/free-review/    /contact/     301
