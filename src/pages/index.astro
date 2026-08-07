@@ -378,15 +378,15 @@ const whatsappHref = whatsappWithMessage(
             role="region"
             aria-label="Photographs of the work, scrollable"
           >
+            {/* 700 sits between 560 and 840 because that is where a phone
+                actually lands: 92vw of a 375–412px screen at DPR 2 asks for
+                690–758px, and without that step every one of them took the
+                840 and threw most of it away. */}
             {heroSlides.map((slide, i) => (
               <Image
                 id={`hero-shot-${i + 1}`}
                 src={slide.src}
                 alt={slide.alt}
-                {/* 700 sits between 560 and 840 because that is where a phone
-                    actually lands: 92vw of a 375–412px screen at DPR 2 asks
-                    for 690–758px, and without this step every one of them took
-                    the 840. */}
                 widths={[560, 700, 840, 1120]}
                 sizes="(min-width: 1024px) 560px, 92vw"
                 loading={i === 0 ? 'eager' : 'lazy'}

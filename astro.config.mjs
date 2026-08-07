@@ -87,6 +87,15 @@ export default defineConfig({
   },
   vite: {
     plugins: [tailwindcss()],
+    build: {
+      // Astro inlines a bundled script when the chunk is small, and both of
+      // this site's scripts are. An inlined script needs `'unsafe-inline'` in
+      // script-src, which is the one allowance that makes a CSP not worth
+      // much — so the two of them were holding the whole policy open. Emitted
+      // as files they are covered by `'self'`, cached with the rest of
+      // /_astro, and cost one request each on the two pages that use them.
+      assetsInlineLimit: 0,
+    },
   },
   build: {
     inlineStylesheets: 'auto',

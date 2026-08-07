@@ -6,7 +6,16 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
   Cross-Origin-Opener-Policy: same-origin
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+  # script-src is 'self' with no 'unsafe-inline'. Both of the site's scripts
+  # are emitted as files under /_astro (vite assetsInlineLimit: 0), and the
+  # estimator reads its rates from an application/json block, which is inert
+  # and needs no allowance. 'unsafe-inline' in script-src is the one grant
+  # that makes a policy close to worthless, so it is worth the two requests.
+  #
+  # style-src keeps it: Astro inlines critical CSS and Tailwind emits a few
+  # arbitrary-value styles as attributes, neither of which can be hashed from
+  # a static build.
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
 
 # Hashed filenames, so these can never go stale.
 /_astro/*

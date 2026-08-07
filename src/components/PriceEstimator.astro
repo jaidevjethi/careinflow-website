@@ -5,8 +5,11 @@
  * Three rules it has to keep:
  *
  * 1. Every rate comes from `src/config/pricing.ts`. They are serialised into
- *    the script below via define:vars, so this component cannot invent a
- *    figure and the price guard still covers the whole site.
+ *    the JSON block below and read back by the script, so this component
+ *    cannot invent a figure and the price guard still covers the whole site.
+ *    (They used to arrive via `define:vars`, which forces `is:inline` and so
+ *    forced `'unsafe-inline'` into the site's script-src. A data island costs
+ *    nothing and lets the header drop it.)
  * 2. It produces an estimate, never a quote. The studio's whole position is
  *    that the real number is fixed in writing after the free review, so the
  *    output says so and the action underneath it is the WhatsApp message.
@@ -235,37 +238,46 @@ const planOptions = [
   </div>
 </section>
 
-<script is:inline define:vars={{ rates }}>
+{/* A data island, not a script: JSON in a non-executable type is inert, so no
+    CSP allowance is needed to read it. */}
+<script id="ci-rates" type="application/json" set:html={JSON.stringify(rates)} is:inline />
+
+<script>
   (() => {
-    const form = document.getElementById('ci-estimator');
+    const form = document.getElementById('ci-estimator') as HTMLFormElement | null;
     if (!form) return;
+    const ratesEl = document.getElementById('ci-rates');
+    if (!ratesEl?.textContent) return;
+    const rates = JSON.parse(ratesEl.textContent);
 
     const once = document.getElementById('ci-once');
     const monthly = document.getElementById('ci-monthly');
     const breakdown = document.getElementById('ci-breakdown');
-    const wa = document.getElementById('ci-whatsapp');
+    const wa = document.getElementById('ci-whatsapp') as HTMLAnchorElement | null;
     const existing = document.getElementById('ci-existing');
+    if (!once || !monthly || !breakdown || !wa || !existing) return;
 
     // Indian digit grouping, same as rupees() on the server.
     const inr = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 });
-    const money = (n) => '₹' + inr.format(n);
+    const money = (n: number) => '₹' + inr.format(n);
 
-    const num = (name) => {
-      const el = form.elements[name];
-      return el ? Number(el.value) || 0 : 0;
+    const field = (name: string) => form.elements.namedItem(name) as HTMLInputElement | null;
+
+    const num = (name: string) => Number(field(name)?.value) || 0;
+    const checked = (name: string) => {
+      const el = field(name);
+      return el?.checked ? Number(el.dataset.price) || 0 : 0;
     };
-    const checked = (name) => {
-      const el = form.elements[name];
-      return el && el.checked ? Number(el.dataset.price) || 0 : 0;
-    };
-    const radio = (name) => {
-      const el = form.querySelector(`input[name="${name}"]:checked`);
+    const radio = (name: string) => {
+      const el = form.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`);
       return el
         ? { value: el.value, price: Number(el.dataset.price) || 0, label: el.dataset.label || '' }
         : { value: 'none', price: 0, label: '' };
     };
 
-    function update() {
+    // An arrow assigned to a const, not a hoisted `function`, so the null
+    // guard above still narrows these five elements inside the closure.
+    const update = () => {
       const build = radio('build');
       const plan = radio('plan');
       const hasBuild = build.value !== 'none';
@@ -273,9 +285,10 @@ const planOptions = [
       // The takeover and rebuild options only make sense without a new build.
       existing.hidden = hasBuild;
       if (hasBuild) {
-        ['takeover', 'gbpRebuild'].forEach((n) => {
-          if (form.elements[n]) form.elements[n].checked = false;
-        });
+        for (const n of ['takeover', 'gbpRebuild']) {
+          const el = field(n);
+          if (el) el.checked = false;
+        }
       }
 
       const pages = Math.max(0, Math.min(20, num('extraPages')));
@@ -288,7 +301,7 @@ const planOptions = [
       once.textContent = oneTime ? money(oneTime) : 'Nothing';
       monthly.textContent = perMonth ? money(perMonth) : 'Nothing';
 
-      const parts = [];
+      const parts: string[] = [];
       if (hasBuild) parts.push(`${build.label} website`);
       if (pages) parts.push(`${pages} extra page${pages > 1 ? 's' : ''}`);
       if (checked('gujarati')) parts.push('Gujarati version');
@@ -304,7 +317,7 @@ const planOptions = [
         `That came to ${money(oneTime)} one time and ${money(perMonth)} a month. ` +
         "I'd like a free written review first. Clinic name: ";
       wa.href = rates.whatsapp + '?text=' + encodeURIComponent(message);
-    }
+    };
 
     form.addEventListener('input', update);
     form.addEventListener('change', update);
