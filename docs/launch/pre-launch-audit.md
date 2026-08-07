@@ -107,10 +107,43 @@ render-blocking stylesheet, and an unverified quote about a client's clinician.
 
 | # | Item |
 |---|---|
-| 1 | **Cloudflare Web Analytics is on, and the site's own CSP blocks it.** Cloudflare injects `static.cloudflareinsights.com/beacon.min.js` at the edge — it is not in the build; `dist/index.html` contains no reference to it. `script-src 'self'` refuses it, so every page load logs two CSP violations, Lighthouse best practices scores 93 instead of 100, and no analytics data has ever been collected. This predates the audit: the previous policy was `script-src 'self' 'unsafe-inline'`, which does not permit a cross-origin script either. **Decision taken: disable Web Analytics in the Cloudflare dashboard.** That keeps `/privacy`'s claim that the site "embeds no third-party trackers" true, which allowing the beacon would have made false. Nothing to change in this repository. |
+| 1 | ~~Cloudflare Web Analytics blocked by the site's own CSP~~ — **resolved, see below** |
 | 2 | `/work/pramukh-dental` states Dr. Chinmay Patel has *"more than ten years and five thousand procedures behind him"*. A claim about a third party's professional record. Confirm the clinic has said it and would repeat it, or it should go. |
 | 3 | `PAGESPEED_API_KEY` in `.env` is expired ("API key expired. Please renew"), and the anonymous PSI quota for that project is exhausted. Nothing in the build uses it; renew it if you want scripted monitoring. |
 | 4 | The sample build at `jaidevjethi.github.io/lavanya-skin-clinic` measures **CLS 0.057** — inside Google's good band but not the 0 this site and Pramukh both hit. `/work` invites people to open and measure it. Fix in that repo. |
+
+### RESOLVED — the Cloudflare analytics beacon
+
+Cloudflare was injecting `static.cloudflareinsights.com/beacon.min.js` at the
+edge. It was never in the build — `dist/index.html` contains no reference to
+it — and `script-src 'self'` refused it, so every page load logged two CSP
+violations and no analytics data was ever collected. This predated the audit:
+the previous policy was `script-src 'self' 'unsafe-inline'`, which does not
+admit a cross-origin script either.
+
+Web Analytics was disabled rather than allowed through the CSP, because
+`/privacy` tells visitors the site "embeds no third-party trackers" and
+allowing it would have made that false.
+
+Two things were worth learning from how it went:
+
+- **The zone-level and Pages-project switches are separate.** Turning off the
+  account-level Web Analytics entry did nothing; the beacon kept appearing with
+  the same token. What proved it was the Pages project rather than the zone was
+  that `careinflow-website.pages.dev` — which is not part of the
+  `careinflow.com` zone and so cannot be affected by zone settings — carried the
+  beacon too.
+- **The Pages setting binds at deploy time, not serve time.** Disabling it left
+  the running deployment unchanged. An empty commit (`9645f19`) to force a fresh
+  build was what actually cleared it, and during the rollout both hosts flipped
+  between clean and beaconed for about a minute while the two deployments
+  overlapped.
+
+Verified after: 8 pages × 3 rounds with cache-busting query strings, zero beacon
+references; zero external script hosts of any kind; and Lighthouse against live
+production moving **best practices 93 → 100** and performance 97 → 98, with
+accessibility and SEO already at 100 and the `errors-in-console` audit now
+passing with no errors at all.
 
 ### MONITOR AFTER LAUNCH
 
@@ -144,10 +177,13 @@ All Lighthouse, mobile, against the built site.
 | `/services/healthcare-websites/` | 99 | 100 | 100 | 100 | 2.2 s | 0 | 0 ms |
 
 Those are the built site served locally. **Against live production** on the same
-default preset: performance 97, accessibility 100, SEO 100, best practices
-**93** — the three lost points are entirely the blocked Cloudflare beacon
-logging two console errors, and they return to 100 the moment Web Analytics is
-switched off (owner input 1).
+default preset, after the analytics beacon was removed:
+
+| | Performance | Accessibility | Best practices | SEO |
+|---|---|---|---|---|
+| `https://www.careinflow.com/` | **98** | **100** | **100** | **100** |
+
+LCP 2.2 s, CLS 0, TBT 0 ms, and no console errors of any kind.
 
 Lighthouse's default mobile preset simulates roughly 1.6 Mbps at 150 ms RTT
 with a 4× CPU penalty — deliberately pessimistic. On a profile closer to
@@ -191,9 +227,7 @@ ever printed a tick.
 
 ## Remaining steps before you are done
 
-1. **Disable Web Analytics** in the Cloudflare dashboard (owner input 1). This
-   is the only step that changes what a visitor's browser reports, and it is
-   the only one that cannot be done from this repository.
+1. ~~Disable Web Analytics in the Cloudflare dashboard~~ — done, verified.
 2. Verify the **Domain** property `careinflow.com` in Search Console via a
    Cloudflare TXT record. See `search-console-checklist.md`.
 3. Submit `https://www.careinflow.com/sitemap-index.xml`.
