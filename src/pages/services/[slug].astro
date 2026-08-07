@@ -3,7 +3,6 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHero from '@/components/PageHero.astro';
 import IllustrationPanel from '@/components/IllustrationPanel.astro';
-import { serviceAccent } from '@/lib/accents';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import CtaStrip from '@/components/CtaStrip.astro';
@@ -49,7 +48,6 @@ const prefillByService: Record<string, PrefillKey> = {
   'social-media': 'social',
 };
 const prefill = prefillByService[service.id] ?? 'default';
-const accent = serviceAccent(service.id);
 
 /** Resolved from `pricing.ts` via the frontmatter key — never from the MDX. */
 const price = service.data.pricing ? SERVICE_PRICES[service.data.pricing.ref] : undefined;
@@ -148,7 +146,7 @@ const schema = graph(
           )}
           <p class="mt-5 border-t border-line pt-4 text-[14px] leading-[1.6] text-muted">
             Your exact figure is fixed in writing after the
-            <a href={href('/free-review')} class="prose-link">free review</a>.
+            <a href={href('/contact')} class="prose-link">free review</a>.
           </p>
         </aside>
       </div>

@@ -69,7 +69,7 @@ ${NEVER_CHARGED.map((n) => `- ${n}`).join('\n')}
 
 ## Key pages
 
-- [Free written review](${url('/free-review/')}): The starting point. Send the clinic's name on WhatsApp; within two working days ${BUSINESS.name} returns a free written review covering listing accuracy, mobile load time, treatment page coverage, review handling, AI answer readiness, and the three clinics ranking above you. No obligation.
+- [Free written review](${url('/contact')}): The starting point. Send the clinic's name on WhatsApp; within two working days ${BUSINESS.name} returns a free written review covering listing accuracy, mobile load time, treatment page coverage, review handling, AI answer readiness, and the three clinics ranking above you. No obligation.
 - [Method](${url('/process/')}): The four-week build, study, structure & words, design & build, launch then stay.
 - [Pricing](${url('/pricing/')}): The full published price list, what moves a price, and what is never charged for.
 - [Work](${url('/work/')}): Real projects only, including a bilingual dental clinic website in ${BUSINESS.address.locality} (pramukhdentalclinic.com). One non-healthcare project is included and labelled as such.

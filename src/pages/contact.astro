@@ -6,9 +6,13 @@ import PageHero from '@/components/PageHero.astro';
 import consultImage from '@/assets/editorial/contact-consult.webp';
 import Figure from '@/components/Figure.astro';
 import waImage from '@/assets/mockups/contact-whatsapp.webp';
+import reportImage from '@/assets/mockups/review-report.webp';
 import studioExterior from '@/assets/editorial/studio-exterior.webp';
+import SectionHead from '@/components/SectionHead.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import { BUSINESS, WHATSAPP_URL, whatsappWithMessage } from '@/config/site';
+import { BUILDS, STANDALONE_MONTHLY, rupees } from '@/config/pricing';
+import { href } from '@/lib/url';
 import { cycleAccent, ACCENTS } from '@/lib/accents';
 import {
   graph,
@@ -19,9 +23,9 @@ import {
   faqSchema,
 } from '@/lib/schema';
 
-const title = 'Contact CareInflow, send your clinic\'s name on WhatsApp';
+const title = 'Contact CareInflow | Free clinic website review, 2 days';
 const description =
-  'Send your clinic\'s name on WhatsApp or call. A free written review of what patients see, in two working days. Based in Mehsana.';
+  'Send your clinic\'s name on WhatsApp. Gujarat\'s healthcare-only web studio replies with a free written review of what patients see, in two working days.';
 
 const faqs = await getFaqsFor('contact');
 
@@ -40,13 +44,44 @@ const whatsappHref = whatsappWithMessage(
   "Hi CareInflow, I'd like a free written review of my practice's online presence. Clinic name: ",
 );
 
+/*
+ * The free review used to be a page of its own, competing with this one for
+ * the same conversion. It is the offer this page exists to earn, so it lives
+ * here now in full rather than a click away. The old URL redirects here.
+ */
 const reviewCovers = [
-  'Listing accuracy',
-  'Mobile load time',
-  'Treatment page coverage',
-  'Review handling',
-  'AI answer readiness',
-  'The three clinics above you',
+  {
+    item: 'Listing accuracy',
+    detail: 'Your Google Business Profile checked line by line, categories, services, hours, photos, against what a patient actually needs.',
+  },
+  {
+    item: 'Mobile load time',
+    detail: 'Your website measured on a mid-range Android over mobile data, with the numbers and their reference ranges.',
+  },
+  {
+    item: 'Treatment page coverage',
+    detail: 'Which of the searches patients type can your site answer today, and which send them to a competitor.',
+  },
+  {
+    item: 'Review handling',
+    detail: 'What your recent reviews say, whether anyone replies, and what that pattern signals to the next patient.',
+  },
+  {
+    item: 'AI answer readiness',
+    detail: 'What Google writes above the results when someone searches a treatment you offer nearby, and whether your practice appears in it at all.',
+  },
+  {
+    item: 'The three clinics above you',
+    detail: 'What the practices ranking above you are doing differently, specifically.',
+  },
+];
+
+const outline = [
+  { n: '01', line: 'Where patients find you today, the searches and surfaces that matter in your area' },
+  { n: '02', line: 'What they currently see: screenshots of your listing, your site, and the answer Google writes above both' },
+  { n: '03', line: 'The gaps costing you patients, ranked by impact' },
+  { n: '04', line: 'What to fix first, useful with or without us' },
+  { n: '05', line: 'What it would cost, fixed, in writing, only if work is worth doing' },
 ];
 
 const steps = [
@@ -130,14 +165,22 @@ const steps = [
 
       <div class="top-24 grid gap-6 lg:sticky">
         <aside class:list={["rounded-3xl border border-line p-7", ACCENTS.care.tint]}>
-          <h2 class="label-mono mb-4 text-faint" style="letter-spacing:0.12em">The review covers</h2>
-          <ul class="text-[15px] leading-[2.05] text-body-deep">
-            {reviewCovers.map((item) => (
-              <li>{item}</li>
+          <h2 class="label-mono mb-5 text-faint" style="letter-spacing:0.12em">The review, in outline</h2>
+          <ol>
+            {outline.map((o, i) => (
+              <li
+                class:list={[
+                  'grid grid-cols-[32px_1fr] gap-3 py-3 text-[15px] leading-[1.55] text-body-deep',
+                  i < outline.length - 1 && 'border-b border-line',
+                ]}
+              >
+                <span class="font-mono text-[12px] text-surgical">{o.n}</span>
+                {o.line}
+              </li>
             ))}
-          </ul>
+          </ol>
           <p class="mt-4 border-t border-line pt-3.5 font-mono text-[11px] uppercase tracking-[0.08em] text-surgical">
-            Free · 2 working days
+            Free · 2 working days · yours to keep
           </p>
         </aside>
         <Figure
@@ -150,9 +193,66 @@ const steps = [
     </div>
   </section>
 
+  {/* The free review, absorbed from /contact. It is the reason most people
+      reach this page, so it gets the room it had as a page of its own. */}
+  <section class="border-t border-hairline bg-surface" aria-labelledby="covers-title">
+    <div class="section shell">
+      <SectionHead
+        id="covers-title"
+        label="What it covers"
+        title="What the free review checks"
+        lede="Six things, written in plain language and specific to your practice. Useful whether or not you ever hire us."
+      />
+      <div class="reveal-group mt-11 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        {reviewCovers.map((c, i) => (
+          <article class="card-hover rounded-2xl border border-line bg-canvas p-6">
+            <p class:list={['numeral mb-2 text-[clamp(34px,3.6vw,46px)]', cycleAccent(i).text]}>
+              {String(i + 1).padStart(2, '0')}
+            </p>
+            <h3 class="text-lg font-bold tracking-[-0.02em] text-ink">{c.item}</h3>
+            <p class="mt-2 text-[15px] leading-[1.6] text-muted">{c.detail}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="band-mist" aria-labelledby="why-free-title">
+    <div class="section shell grid items-start gap-12 lg:grid-cols-[1fr_460px] lg:gap-20">
+      <div>
+        <SectionHead
+          id="why-free-title"
+          label="What you receive"
+          title="What you get, and why it costs nothing"
+          lede="Most reviews run three to five pages. You keep it either way."
+        />
+        <p class="mt-6 max-w-[620px] text-lg leading-[1.62] text-body">
+          It is free because it is the fastest way to show you we see what
+          other studios miss, before you pay anything and before anyone asks
+          you to sit through a call. Some reviews end with "your presence is
+          healthy". Those practices remember us anyway.
+        </p>
+        <p class="mt-5 max-w-[620px] text-[16px] leading-[1.65] text-muted">
+          You can see the scale before you message:
+          {' '}<a href={href('/pricing')} class="prose-link">our prices are published</a> —
+          websites from {rupees(BUILDS[0]!.from)}, monthly care from
+          {' '}{rupees(STANDALONE_MONTHLY.care)}. The review tells you which of
+          those your practice actually needs, and sometimes the answer is none
+          of them.
+        </p>
+      </div>
+      <Figure
+        src={reportImage}
+        alt="A printed clinic website audit report fanned across a desk, showing a performance scorecard, load-time dials and pages of written findings."
+        caption="What arrives, before anyone has paid anything"
+        maxWidth={460}
+      />
+    </div>
+  </section>
+
   <FaqSection
     {faqs}
     label="Before you message"
-    title="Two things people check first"
+    title="Questions people ask first"
   />
 </BaseLayout>

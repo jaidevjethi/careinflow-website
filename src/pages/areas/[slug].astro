@@ -6,7 +6,6 @@ import PageHero from '@/components/PageHero.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import CtaStrip from '@/components/CtaStrip.astro';
-import { ACCENTS } from '@/lib/accents';
 import { resolveFaqs } from '@/lib/faqs';
 import { BUSINESS } from '@/config/site';
 import { href } from '@/lib/url';
@@ -32,7 +31,6 @@ const { data } = area;
 const path = `/areas/${area.id}`;
 const title = `${data.title} | CareInflow`;
 const description = data.description;
-const accent = ACCENTS[data.accent];
 const faqs = resolveFaqs(data.faqs);
 
 const others = (await getCollection('areas'))

@@ -11,7 +11,7 @@ The whole site funnels to **one low-friction offer**: a free written review of t
 
 ```
 Any entry page
-   → /free-review  (the offer, explained)
+   → /contact  (the offer, explained)
       → WhatsApp message with the clinic's name
          → written review in 2 working days
             → fixed-price scope in writing (only if work is worth doing)
@@ -23,17 +23,24 @@ Trust is earned before it is asked for. A page may only ask once it has demonstr
 
 | Placement | Component | Rule |
 |---|---|---|
-| Header (every page) | "Free website review" → `/free-review` | Low-commitment entry for cold visitors. Never a raw WhatsApp link — that asks too early. |
-| Hero (home, free-review, contact) | Primary WhatsApp button + secondary `/free-review` | Only pages where the visitor already arrived with intent. |
+| Header (every page) | "Contact us" → `/contact` | Low-commitment entry for cold visitors. Never a raw WhatsApp link — that asks too early. Uses `.btn-cta`, not `.btn-accent`: white text needs the darker `--color-cta` fill to pass on the midnight header. |
+| Hero (home, contact) | Primary WhatsApp button + secondary `/contact` | Only pages where the visitor already arrived with intent. |
 | Mid-page, after body content | `CtaStrip` | One calm line. Service pages, resource articles. |
 | Page close (every page) | `CtaPanel` | Same card everywhere, word for word, plus `nextStep` for readers not ready yet. |
-| Mobile, always | Sticky bar in `BaseLayout` | Two targets: `/free-review` and WhatsApp. |
+| Mobile, always | Sticky bar in `BaseLayout` | Two targets: `/contact` and WhatsApp. |
 
 ## `nextStep` chaining
 
 `CtaPanel` takes an optional `nextStep` for visitors who want more evidence first. The chain reflects how a skeptical clinic owner reads:
 
-home → services · services → work · work → pricing · pricing → free-review · resources → services · about → work · process → pricing
+home → services · services → work · work → pricing · pricing → contact · resources → services · about → work · process → pricing
+
+## One enquiry page
+
+There is exactly one, `/contact`, and it carries the free written review in
+full. There used to be a second, `/free-review`, which split the same
+conversion across two URLs and two sets of FAQs; it now redirects here. When
+adding a CTA, the destination is `/contact` — never invent a parallel route.
 
 ## WhatsApp prefills
 

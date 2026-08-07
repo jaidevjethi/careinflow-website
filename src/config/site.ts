@@ -143,7 +143,7 @@ export const FOOTER_GROUPS = [
   {
     title: 'Answers',
     links: [
-      { label: 'Free review', href: '/free-review' },
+      { label: 'Free review', href: '/contact' },
       { label: 'Resources', href: '/resources' },
       { label: 'Questions', href: '/faq' },
       { label: 'Contact', href: '/contact' },

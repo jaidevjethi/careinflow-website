@@ -44,6 +44,18 @@ export default defineConfig({
   // on the URL the page declares canonical.
   trailingSlash: 'always',
   output: 'static',
+  // /free-review was a second enquiry route competing with /contact for the
+  // same conversion. Its content now lives on /contact in full. The old URL
+  // keeps working — a static build emits a meta-refresh page here — so any
+  // existing link or indexed result lands on the merged page rather than a 404.
+  //
+  // The target has to carry BASE_PATH itself. Astro applies `base` to links it
+  // renders but not to redirect targets, so a literal '/contact/' works at the
+  // root and 404s on the GitHub Pages mirror, which serves from
+  // /careinflow-website. Same trap rehypeBasePath above exists to avoid.
+  redirects: {
+    '/free-review': `${BASE_PATH.replace(/\/$/, '')}/contact/`,
+  },
   integrations: [
     mdx(),
     sitemap({
