@@ -12,6 +12,21 @@
 
 export const CANONICAL_HOST = 'https://www.careinflow.com';
 
+/**
+ * True only for the build that is actually served on CANONICAL_HOST.
+ *
+ * The GitHub Pages mirror publishes the same 37 pages on a second host. Their
+ * canonicals point here, which is most of the defence, but a canonical is a
+ * hint and a second crawlable copy of a small site is a liability with no
+ * upside — the mirror exists as a deploy fallback, not as an audience. On a
+ * non-canonical build every page goes out `noindex, follow` and robots.txt
+ * disallows everything, so production is the only copy that can be indexed.
+ *
+ * `import.meta.env.SITE` is whatever `site` was set to in astro.config, which
+ * the mirror workflow overrides via the SITE environment variable.
+ */
+export const IS_CANONICAL_HOST = import.meta.env.SITE === CANONICAL_HOST;
+
 export const BUSINESS = {
   name: 'CareInflow',
   legalName: 'CareInflow',

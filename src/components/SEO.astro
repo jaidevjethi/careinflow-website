@@ -1,5 +1,5 @@
 ---
-import { CANONICAL_HOST, BUSINESS } from '@/config/site';
+import { CANONICAL_HOST, IS_CANONICAL_HOST, BUSINESS } from '@/config/site';
 import { canonicalUrl } from '@/lib/url';
 
 interface Props {
@@ -45,10 +45,14 @@ const ogImageAlt =
   max-image-preview:large is what lets Google use the full-width thumbnail, and
   max-snippet:-1 lets answer engines quote a whole answer rather than a clipped
   one, both matter more here than they would on a site with less to quote.
+
+  `follow` either way, including on the mirror: the pages should still be
+  crawled through so the canonicals on them are read, they just must not be
+  indexed as a second copy of the site.
 */}
 <meta
   name="robots"
-  content={noindex
+  content={noindex || !IS_CANONICAL_HOST
     ? 'noindex, follow'
     : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'}
 />
