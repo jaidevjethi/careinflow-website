@@ -11,7 +11,7 @@
  */
 
 import type { APIRoute } from 'astro';
-import { BUSINESS, CANONICAL_HOST } from '@/config/site';
+import { BUSINESS, BOOKING_URL, CANONICAL_HOST } from '@/config/site';
 import {
   BUILDS,
   NEVER_CHARGED,
@@ -34,7 +34,7 @@ const careGoogle = plan('care-google');
 
 const body = `# ${BUSINESS.name}
 
-> ${BUSINESS.name} is a healthcare-focused web design and digital growth studio in ${BUSINESS.address.locality}, ${BUSINESS.address.region}, India. It builds websites, does local SEO, and manages Google Business Profiles for doctors and clinics, healthcare practices only. Founded by ${BUSINESS.founder}. Contact: WhatsApp or phone on ${BUSINESS.phoneDisplay}. There is no email address; those are the only two contact routes.
+> ${BUSINESS.name} is a healthcare-focused web design and digital growth studio in ${BUSINESS.address.locality}, ${BUSINESS.address.region}, India. It builds websites, does local SEO, and manages Google Business Profiles for doctors and clinics, healthcare practices only. Founded by ${BUSINESS.founder}. Contact: WhatsApp or phone on ${BUSINESS.phoneDisplay}, or a scheduled meeting booked at ${BOOKING_URL}. There is no email address.
 
 ${BUSINESS.name} started in 2026. It publishes its prices openly, fixes the final figure in writing after a free written review, makes no ranking guarantees, and does not buy reviews or resell templates. It works from a single studio in ${BUSINESS.address.locality} with no branch offices, serving practices across ${areas}, and the wider North Gujarat region. Those are places served, not places staffed.
 

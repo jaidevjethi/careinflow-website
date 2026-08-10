@@ -34,9 +34,12 @@ export const BUSINESS = {
     'Healthcare-focused web design and digital growth studio in Mehsana, Gujarat',
   founder: 'Jaidev Jethi',
   /**
-   * No email. WhatsApp and the phone are the only two contact routes on the
-   * site. They are how clinic owners here reach a supplier, and a message on
-   * WhatsApp gets answered faster than an inbox ever does.
+   * No email. WhatsApp and the phone are the two direct routes — they are how
+   * clinic owners here reach a supplier, and a message on WhatsApp gets
+   * answered faster than an inbox ever does. BOOKING_URL below is the third
+   * and quietest: a time in the diary for anyone who would rather talk than
+   * type. If you add another route, search for "two" first — several pages
+   * state the count as a fact.
    */
   /** E.164, displayed as +91 97734 56668 */
   phone: '+919773456668',
@@ -71,6 +74,13 @@ export const BUSINESS = {
 } as const;
 
 export const WHATSAPP_URL = `https://wa.me/${BUSINESS.phone.replace('+', '')}`;
+
+/**
+ * Scheduling link, for visitors who would rather book a time than send a
+ * message. Linked, never embedded: an embed would load third-party scripts,
+ * which the CSP forbids and which /privacy promises the site does not do.
+ */
+export const BOOKING_URL = 'https://calendly.com/careinflow';
 
 /**
  * Profiles published in `sameAs`. Only list a profile that exists and has real

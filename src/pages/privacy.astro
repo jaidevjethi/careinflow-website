@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHero from '@/components/PageHero.astro';
-import { BUSINESS, WHATSAPP_URL } from '@/config/site';
+import { BUSINESS, BOOKING_URL, WHATSAPP_URL } from '@/config/site';
 import { href } from '@/lib/url';
 import {
   graph,
@@ -47,11 +47,22 @@ const schema = graph(
         </p>
         <h2>When you contact us</h2>
         <p>
-          WhatsApp and the phone are the only two ways to reach us, and both
-          run through one number. When you message or call, we receive
-          your number and what you send. We use it to reply and, if you engage
-          us, to do the work. We do not sell it, share it, or add you to a
-          mailing list. There is no mailing list.
+          WhatsApp and the phone both run through one number. When you message
+          or call, we receive your number and what you send. We use it to reply
+          and, if you engage us, to do the work. We do not sell it, share it,
+          or add you to a mailing list. There is no mailing list.
+        </p>
+        <p>
+          There is a third route, and it is worth being clear about because it
+          is the one place a third party is involved. The
+          {' '}<a href={BOOKING_URL} rel="noopener">booking link</a> in our
+          footer opens Calendly, a scheduling service we do not run. Whatever
+          you give it — usually a name, an email address and a time — is held
+          by Calendly under their privacy policy as well as reaching us. It is
+          a link, not an embed: nothing from Calendly loads on this site unless
+          you choose to go there, which is why the page you are reading still
+          sets no cookies. If you would rather not use it, WhatsApp reaches the
+          same person.
         </p>
         <p>
           If you would like your contact history deleted, message us and we

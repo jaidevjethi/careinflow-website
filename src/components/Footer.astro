@@ -1,5 +1,5 @@
 ---
-import { BUSINESS, FOOTER_GROUPS, WHATSAPP_URL } from '@/config/site';
+import { BUSINESS, BOOKING_URL, FOOTER_GROUPS, WHATSAPP_URL } from '@/config/site';
 import { href } from '@/lib/url';
 
 const year = new Date().getFullYear();
@@ -11,11 +11,44 @@ const AREA_PAGES: Record<string, string> = {
   Ahmedabad: '/areas/ahmedabad',
   Gandhinagar: '/areas/gandhinagar',
 };
+
+/**
+ * The three ways to reach the studio, in the order they are meant to be used.
+ *
+ * This block is deliberately quiet. `CtaPanel` sits directly above the footer
+ * on every page and makes the ask in full, so repeating it here at the same
+ * weight would be the same pitch twice in one screen. What the footer owes a
+ * reader who has scrolled this far is the details, laid out so they can be
+ * scanned — not another attempt to convert them.
+ */
+const ROUTES = [
+  {
+    label: 'WhatsApp',
+    value: BUSINESS.phoneDisplay,
+    note: 'Usually answered the same day',
+    url: WHATSAPP_URL,
+    class: 'link-whatsapp-dark',
+  },
+  {
+    label: 'Phone',
+    value: `Call ${BUSINESS.phoneDisplay}`,
+    note: `${BUSINESS.hours.opens}–${BUSINESS.hours.closes}, Monday to Saturday`,
+    url: `tel:${BUSINESS.phone}`,
+    class: 'text-panel-text hover:text-surface',
+  },
+  {
+    label: 'Meeting',
+    value: 'Book a time to talk',
+    note: 'Online, at a time you pick',
+    url: BOOKING_URL,
+    class: 'text-panel-accent hover:text-surface',
+  },
+];
 ---
 
 <footer class="panel-depth">
   <div class="section shell">
-    <div class="grid gap-12 lg:grid-cols-[minmax(0,320px)_1fr] lg:gap-20">
+    <div class="grid gap-14 lg:grid-cols-[minmax(0,300px)_1fr] lg:gap-20">
       <div class="max-w-sm">
         <div class="mb-4 flex items-center gap-2.5">
           <img
@@ -33,18 +66,43 @@ const AREA_PAGES: Record<string, string> = {
           Websites, local SEO, and Google Business Profile management, for
           healthcare practices and nothing else.
         </p>
-        <address class="mt-5 text-sm not-italic leading-[1.7] text-panel-text-faint">
+
+        {/* Each route carries what a reader actually wants to know before
+            using it: how fast it is answered, when someone picks up, what
+            happens after. A bare list of three links answers none of that. */}
+        <h2 class="label-mono mb-3 mt-9 text-panel-text-faint">Reach us</h2>
+        <ul class="grid gap-3.5">
+          {ROUTES.map((route) => (
+            <li class="grid gap-0.5">
+              <a
+                href={route.url}
+                rel="noopener"
+                class:list={[
+                  'inline-flex min-h-[24px] w-fit items-center text-[15px] font-semibold',
+                  route.class,
+                ]}
+              >
+                {route.value}
+              </a>
+              <span class="text-[13px] leading-[1.5] text-panel-text-faint">{route.note}</span>
+            </li>
+          ))}
+        </ul>
+
+        <h2 class="label-mono mb-3 mt-9 text-panel-text-faint">The studio</h2>
+        <address class="text-sm not-italic leading-[1.7] text-panel-text-faint">
           {BUSINESS.address.street},<br />
-          {BUSINESS.address.locality}, {BUSINESS.address.region}, India<br />
-          <a href={WHATSAPP_URL} rel="noopener" class="link-whatsapp-dark inline-block py-1">
-            WhatsApp {BUSINESS.phoneDisplay}
-          </a>
-          ·
-          <a href={`tel:${BUSINESS.phone}`} class="inline-block py-1 text-panel-text-dim hover:text-surface">Call</a>
+          {BUSINESS.address.locality}, {BUSINESS.address.region} {BUSINESS.address.postalCode}, India
         </address>
+        <p class="mt-2 text-[13px] leading-[1.5] text-panel-text-faint">
+          One studio, and no branch offices anywhere.
+        </p>
       </div>
 
-      <nav aria-label="Footer" class="grid grid-cols-2 gap-x-10 gap-y-10 sm:grid-cols-3 sm:gap-x-14 xl:grid-cols-5 xl:gap-x-12">
+      <nav
+        aria-label="Footer"
+        class="grid grid-cols-2 gap-x-10 gap-y-11 sm:grid-cols-3 sm:gap-x-14 xl:grid-cols-5 xl:gap-x-10"
+      >
         {FOOTER_GROUPS.map((group) => (
           <div>
             <h2 class="label-mono mb-4 text-panel-text-faint">{group.title}</h2>
@@ -65,24 +123,47 @@ const AREA_PAGES: Record<string, string> = {
       </nav>
     </div>
 
-    <div class="mt-14 border-t border-panel-divider pt-7">
-      <p class="font-mono text-[11px] uppercase tracking-[0.1em] leading-[1.8] text-panel-text-faint">
-        Based in Mehsana, Gujarat, working with healthcare practices across{' '}
-        {BUSINESS.serviceAreas.map((city, i) => (
-          <>
-            {i > 0 && ' · '}
-            {AREA_PAGES[city] ? (
-              <a href={href(AREA_PAGES[city]!)} class="inline-block py-1.5 text-panel-text-dim hover:text-surface">{city}</a>
-            ) : (
-              city
-            )}
-          </>
-        ))}
-        {' '}and beyond
-      </p>
-      <p class="mt-3 text-[14px] text-panel-text-faint">
-        © {year} {BUSINESS.name}. Built by hand in Mehsana, this site is our own best evidence.
-      </p>
+    {/* The towns used to run as one unbroken mono line, which read as a list
+        of keywords rather than a list of places. Labelled and given room, it
+        reads as what it is: where the work happens. */}
+    <div class="mt-16 grid gap-6 border-t border-panel-divider pt-8 lg:grid-cols-[minmax(0,300px)_1fr] lg:gap-20">
+      {/* Not "Where we work" — that is already a nav group heading above, and
+          two identical headings in one landmark is a maze to anyone browsing
+          by heading. */}
+      <h2 class="label-mono text-panel-text-faint">Towns we serve</h2>
+      <div>
+        {/* A wrapping list rather than inline text with separator spans. Those
+            spans carried their own padding, so at 320px a separator left
+            behind at the end of a line pushed 15px past the viewport. Flex gap
+            wraps cleanly and a list of places is a list. */}
+        <ul class="flex flex-wrap items-center gap-x-1 gap-y-0.5 text-sm text-panel-text-faint">
+          {BUSINESS.serviceAreas.map((city, i) => (
+            <li class="flex items-center">
+              {i > 0 && (
+                <span class="pr-1 text-panel-line-alt" aria-hidden="true">·</span>
+              )}
+              {AREA_PAGES[city] ? (
+                <a
+                  href={href(AREA_PAGES[city]!)}
+                  class="inline-flex min-h-[24px] items-center text-panel-text-dim hover:text-surface"
+                >
+                  {city}
+                </a>
+              ) : (
+                <span class="inline-flex min-h-[24px] items-center">{city}</span>
+              )}
+            </li>
+          ))}
+        </ul>
+        <p class="mt-1.5 text-[13px] leading-[1.6] text-panel-text-faint">
+          Places we serve, not places we staff. Based in Mehsana, and further
+          afield where the work suits it.
+        </p>
+      </div>
     </div>
+
+    <p class="mt-10 border-t border-panel-divider pt-7 text-[14px] leading-[1.7] text-panel-text-faint">
+      © {year} {BUSINESS.name}. Built by hand in Mehsana, and this site is our own best evidence.
+    </p>
   </div>
 </footer>

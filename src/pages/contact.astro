@@ -114,6 +114,9 @@ const steps = [
       {' '}{BUSINESS.hours.opens} and {BUSINESS.hours.closes}, Monday to Saturday.
     </p>
 
+    {/* Uncropped at desktop. On a phone the band is wider than the source
+        allows and takes 18% off the width — centred, that clipped the
+        doctor's head at the right edge. Off-centre keeps both faces. */}
     <Image
       slot="aside"
       src={consultImage}
@@ -122,9 +125,6 @@ const steps = [
       sizes="(min-width: 1024px) 400px, 92vw"
       loading="eager"
       fetchpriority="high"
-      {/* Uncropped at desktop. On a phone the band is wider than the source
-          allows and takes 18% off the width — centred, that clipped the
-          doctor's head at the right edge. Off-centre keeps both faces. */}
       class="h-[260px] w-full rounded-3xl border border-panel-line object-cover object-[65%_50%]"
     />
   </PageHero>
