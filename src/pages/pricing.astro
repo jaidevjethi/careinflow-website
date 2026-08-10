@@ -106,10 +106,17 @@ const schema = graph(
 );
 
 /** The three figures a visitor is really scanning for. */
+/*
+ * These read left to right under the figure, so the caption has to be a noun
+ * phrase. It used to be `${label} · ${suffix}`, which rendered
+ * "₹24,999 / WEBSITES, ONE-TIME · FROM" — the word "from" landing after the
+ * number it qualifies. Every figure on this page is a starting point and the
+ * lede above says so, so the captions just name the thing.
+ */
 const headline = [
-  { label: 'Websites, one-time', value: rupees(BUILDS[0]!.from), suffix: 'from' },
-  { label: 'Local SEO & Google', value: rupees(PLANS[0]!.monthly), suffix: 'a month, after launch' },
-  { label: 'Social media', value: rupees(STANDALONE_MONTHLY.social), suffix: 'from, a month' },
+  { label: 'Websites, one-time', value: rupees(BUILDS[0]!.from) },
+  { label: 'Local SEO & Google, monthly', value: rupees(PLANS[0]!.monthly) },
+  { label: 'Social media, monthly', value: rupees(STANDALONE_MONTHLY.social) },
 ];
 
 const principles = [
@@ -137,7 +144,7 @@ const principles = [
     label="Pricing"
     title="Our prices are on this page. You should not have to ask."
     lede="Most studios make you sit through a call before they say a number. Here is what things cost, what moves the figure up, and what we never charge for. Your exact price is fixed in writing after the free review."
-    stats={headline.map((h) => ({ value: h.value, caption: `${h.label} · ${h.suffix}` }))}
+    stats={headline.map((h) => ({ value: h.value, caption: h.label }))}
   >
     <div class="mt-7 flex flex-wrap items-center gap-3.5">
       <a href={whatsappFor('pricing')} rel="noopener" class="btn-whatsapp px-6 py-3.5 text-[16px]">
@@ -148,29 +155,6 @@ const principles = [
       </a>
     </div>
 
-    {/* A page this long needs a way in. Real anchors to real sections, so they
-        work with JavaScript off and can be opened in a new tab. */}
-    <nav aria-label="On this page" class="mt-8 border-t border-panel-divider pt-5">
-      <p class="label-mono mb-3 text-panel-text-faint">On this page</p>
-      <ul class="flex flex-wrap gap-x-5 gap-y-2">
-        {[
-          { label: 'The four packages', href: '#packages' },
-          { label: 'Monthly, after launch', href: '#monthly' },
-          { label: 'The Google audit', href: '#google-audit' },
-          { label: 'Bought on its own', href: '#add-ons' },
-          { label: 'Work out your number', href: '#estimate' },
-        ].map((item) => (
-          <li>
-            <a
-              href={item.href}
-              class="inline-flex min-h-[24px] items-center text-[15px] text-panel-text-dim underline underline-offset-4 hover:text-surface"
-            >
-              {item.label}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
     {/* A photograph, so it takes the plain image treatment the /contact and
         /about heroes use rather than IllustrationPanel, which exists for
         device renders. A 3:2 source in this 260px band keeps 97% of the
@@ -183,9 +167,34 @@ const principles = [
       sizes="(min-width: 1024px) 400px, 92vw"
       loading="eager"
       fetchpriority="high"
-      class="h-[260px] w-full rounded-3xl border border-panel-line object-cover"
+      class="h-[340px] w-full rounded-3xl border border-panel-line object-cover"
     />
   </PageHero>
+
+  {/* Moved out of the hero, which was running to 90% of a laptop viewport
+      against the design system's ~72% cap. It also belongs here: a jump nav
+      is more use directly above the thing it jumps to. Real anchors, so it
+      works with JavaScript off, and :root already sets scroll-margin-top so
+      each target clears the sticky header. */}
+  <nav aria-label="On this page" class="border-b border-hairline bg-canvas">
+    <div class="shell flex flex-wrap items-center gap-x-6 gap-y-2 py-4">
+      <p class="label-mono text-faint">On this page</p>
+      {[
+        { label: 'The four packages', href: '#packages' },
+        { label: 'Monthly, after launch', href: '#monthly' },
+        { label: 'The Google audit', href: '#google-audit' },
+        { label: 'Bought on its own', href: '#add-ons' },
+        { label: 'Work out your number', href: '#estimate' },
+      ].map((item) => (
+        <a
+          href={item.href}
+          class="inline-flex min-h-[24px] items-center text-[15px] text-body-deep underline underline-offset-4 hover:text-ink"
+        >
+          {item.label}
+        </a>
+      ))}
+    </div>
+  </nav>
 
   <!-- THE PACKAGES -->
   <!-- The decision, and only the decision. These cards used to carry their
@@ -199,8 +208,8 @@ const principles = [
       <SectionHead
         id="builds-title"
         label="Websites, one-time"
-        title="Four rungs, and each one says how much we take on."
-        lede="What separates these is responsibility, not page count. The smallest builds the site and lays the foundation under it; the largest takes on the whole search architecture of a complex practice. Fixed in writing before anything begins."
+        title="Four packages. Each one says how much we take on."
+        lede="What separates them is how much of the work we take responsibility for, not how many pages you get. The smallest builds the site and lays the search foundation under it. The largest takes on the whole search architecture of a complex practice. Every price is fixed in writing before anything begins."
       />
 
       <div class="reveal-group mt-12 grid items-stretch gap-5 sm:grid-cols-2 xl:grid-cols-4">
@@ -213,7 +222,10 @@ const principles = [
           >
             <span class:list={['accent-bar block h-1 w-full', cycleAccent(i).bar]} aria-hidden="true"></span>
             <div class="flex h-full flex-col p-6">
-              <div class="min-h-[26px]">
+              {/* The chip band is reserved only once the cards sit side by
+                  side. Stacked on a phone there is nothing to align with, and
+                  an empty 26px band above the name just reads as a gap. */}
+              <div class="sm:min-h-[26px]">
                 {build.recommended && (
                   <span class="chip bg-surgical-tint text-surgical">Most practices start here</span>
                 )}
@@ -222,13 +234,24 @@ const principles = [
                 )}
               </div>
 
-              <h3 class="mt-2.5 text-[19px] font-bold tracking-[-0.025em] text-ink">{build.name}</h3>
+              {/*
+                Two lines reserved for the name and two for the meta, from the
+                breakpoint the cards line up at. "Healthcare Website + Local
+                SEO" wraps where the other three do not, which pushed its price
+                29px below theirs and its body 45px below — and the price row is
+                the one row on a comparison grid that has to scan straight
+                across. Reserving the space costs a little air on the short
+                cards and buys an aligned grid.
+              */}
+              <h3 class="mt-2.5 text-[19px] font-bold leading-[1.3] tracking-[-0.025em] text-ink sm:min-h-[50px]">
+                {build.name}
+              </h3>
 
-              <p class="mt-4 flex items-baseline gap-2">
+              <p class="mt-3 flex items-baseline gap-2">
                 <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">from</span>
                 <span class="settle numeral text-[clamp(28px,2.6vw,36px)] text-ink">{rupees(build.from)}</span>
               </p>
-              <p class="mt-1.5 font-mono text-[11px] uppercase tracking-[0.08em] text-faint">
+              <p class="mt-1.5 font-mono text-[11px] uppercase leading-[1.45] tracking-[0.08em] text-faint sm:min-h-[32px]">
                 {build.pages} · {build.timeline}
               </p>
 
