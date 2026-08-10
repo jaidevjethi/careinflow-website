@@ -198,6 +198,14 @@ export const WHERE_RETURN_COMES_FROM = {
       title: 'What happens after they message',
       text: 'A good site with no follow-through earns nothing. The enquiry arrives on WhatsApp where you will actually see it, already carrying what the patient was reading, so you are not starting the conversation cold.',
     },
+    {
+      title: 'Brand alignment',
+      text: 'A site that feels like a different practice from the one a patient walks into breaks trust quietly. We match the site to your signage, your reception and the way you already speak to patients, so it is the same practice in both places.',
+    },
+    {
+      title: 'Build quality you can measure',
+      text: 'Hand-built, nearly zero JavaScript, and timed on a mid-range Android against a published reference rather than on our own laptops. You can check every claim on the site you are reading.',
+    },
   ],
   closing:
     'The sites are hand-built and static. Nothing to break, and nearly nothing to host. We do not price them like software, because they are not software. You are paying for the decisions, not the code.',

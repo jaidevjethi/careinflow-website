@@ -43,7 +43,13 @@ import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const root = (p) => fileURLToPath(new URL(`../${p}`, import.meta.url));
-const SRC_DIR = fileURLToPath(new URL('../../../../generated_images/', import.meta.url));
+/*
+ * The header says the drop lives in `generated_images/` at the repo root, and
+ * .gitignore ignores it there. This resolved four levels above the repo
+ * instead — to D:\generated_images on this machine — so the script could only
+ * ever have run from one particular checkout location.
+ */
+const SRC_DIR = root('generated_images/');
 
 const RATIOS = { wide: 3 / 2, band: 16 / 9, tall: 4 / 5 };
 
@@ -172,7 +178,6 @@ const DROP = [
 
   // ── Second drop ──────────────────────────────────────────────────────────
   { n: '19', src: '19-service-gbp-reviews.jpg', out: 'editorial/gbp-reviews.webp', ratio: 'wide', grade: 4.0 },
-  { n: '28', src: '28-pricing-hero.jpg',        out: 'editorial/pricing-consult.webp', ratio: 'wide', grade: 4.0 },
   { n: '30', src: '30-pricing-promise-seal.jpg', out: 'mockups/pricing-promise.webp', ratio: 'wide', grade: 4.5 },
   { n: '31', src: '31-work-portfolio-collage.jpg', out: 'mockups/specialty-range.webp', ratio: 'wide' },
   { n: '32', src: '32-work-detail-before.jpg', out: 'mockups/speed-before.webp', ratio: 'wide', grade: 4.5 },
@@ -181,6 +186,18 @@ const DROP = [
   { n: '35', src: '35-about-gujarat-map.jpg',  out: 'editorial/gujarat-map.webp', ratio: 'wide' },
   { n: '36', src: '36-areas-hero-map.jpg',     out: 'editorial/areas-map.webp',  ratio: 'wide' },
   { n: '37', src: '37-resource-cover-gbp.jpg', out: 'mockups/gbp-article-cover.webp', ratio: 'wide', grade: 5.0 },
+  /*
+   * Replaces the previous pricing hero. A photograph rather than a device
+   * render, so the hero uses the plain <Image> treatment the /contact and
+   * /about heroes use, not IllustrationPanel. Both faces sit 13–45% down the
+   * frame and a 3:2 source in the 260px hero band keeps 97% of the height, so
+   * the default centre crop leaves them intact.
+   */
+  {
+    n: '56', src: '56-pricing-founder-consultation.jpg',
+    out: 'editorial/pricing-consult.webp',
+    ratio: 'wide', grade: 4.0,
+  },
 
   // ── Third drop ───────────────────────────────────────────────────────────
   { n: '38', src: '38-resource-cover-local-seo.jpg',     out: 'mockups/seo-article-cover.webp',   ratio: 'wide', grade: 4.5 },
