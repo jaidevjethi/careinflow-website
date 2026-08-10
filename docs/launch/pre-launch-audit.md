@@ -243,6 +243,40 @@ No DNS, Cloudflare or Business Profile settings were touched during this audit.
 
 ---
 
+## Post-change verification, against live production
+
+Run after the last content change (`f8d5a88`) and its Cloudflare deploy, to
+confirm nothing in the crop, footer, booking-link or copy work broke crawling.
+
+| Check | Result |
+|---|---|
+| Sitemap index → `sitemap-0.xml` | 37 URLs, **all 37 on www**, `lastmod` matching the deploy |
+| `robots.txt` | `Allow: /` and the www sitemap, no stray rules |
+| All 37 sitemap URLs | **0 failures** — every one 200, self-canonical, `index, follow` |
+| Internal links, live crawl | 47 unique targets, **0 non-200 and 0 redirects** |
+| External links | 5, all 200: Calendly, the two GitHub Pages builds, the client site, WhatsApp |
+| Titles / descriptions | **0 over budget**, 37 unique titles out of 37 |
+| H1 | exactly one on every page |
+| JSON-LD | 37 blocks, **0 problems** — all parse, every `@id` on www, no `Review` or `AggregateRating` |
+| Search Console token | 200, **0 redirects**, body intact |
+| `/free-review` | 301 → `/contact/` |
+| Apex | 301 → www |
+| `/404` | 404 status, `noindex, follow` |
+| `llms.txt`, `rss.xml` | 200 |
+| GitHub Pages mirror | `noindex, follow`, and still advertises no sitemap |
+| Open Graph | absolute `og:url` and `og:image` with dimensions on every page |
+
+Lighthouse, live, mobile:
+
+| Page | Performance | Accessibility | Best practices | SEO | LCP | CLS | Console errors |
+|---|---|---|---|---|---|---|---|
+| `/` | 99 | 100 | 100 | 100 | 2.1 s | 0 | 0 |
+| `/contact/` | 99 | 100 | 100 | 100 | 2.0 s | 0 | 0 |
+| `/process/` | 99 | 100 | 100 | 100 | 2.0 s | 0 | 0 |
+
+Best practices is 100 rather than the earlier 93 because the Cloudflare
+analytics beacon is gone, so no page logs a CSP violation any more.
+
 ## A note on how the live site was checked
 
 The accessibility sweep — 38 pages × 6 widths, every text element measured
