@@ -182,9 +182,61 @@ listings are a suspension risk as well as a lie.
 4. Consider adding the listing to the Search Console property's associated
    accounts so the two report against each other.
 
+## What actually moves a local ranking
+
+Google ranks the local pack on three things: **proximity** (where the searcher
+is, which nobody controls), **relevance** (how well the listing and site match
+the query), and **prominence** (how well known the business is, on and off the
+web). Everything you can act on sits in the second and third.
+
+In the order they are worth doing:
+
+1. **Reviews, genuinely earned, and every one replied to.** This is the single
+   largest lever available to a new listing, and the slowest. Ask every real
+   client after real work. Reply to all of them. Never buy, incentivise or
+   gate them — that risks the listing, which costs more than the reviews earn.
+2. **Categories.** Primary *Website designer*. The primary category carries
+   more weight than every secondary combined, so it is worth getting exactly
+   right rather than broad.
+3. **Completeness.** Every field filled: services, hours including holidays,
+   photos, description, attributes. Google favours listings it does not have
+   to guess about.
+4. **NAP consistency** everywhere the business appears. The name, the address
+   and the phone number must be byte-identical on the site, the listing and any
+   directory. This is why the address lives in one config file with a build
+   guard, and why the 2.9km error in the coordinates mattered.
+5. **Posts, weekly-ish.** Cheap, and a live signal that the business is active.
+6. **Pages that answer local queries.** Nine area pages already exist, each
+   saying something the others do not. Thin duplicates of these would hurt
+   rather than help.
+7. **Citations** — consistent listings on Justdial, Sulekha, IndiaMART and
+   local directories. Low value each, cumulative over time.
+
+### What is already done, on the site side
+
+The website half of this is finished and verified:
+
+- `LocalBusiness`/`ProfessionalService` schema with address, geo taken from the
+  listing pin, opening hours, `areaServed` for all nine towns, and `priceRange`
+- `sameAs` and `hasMap` both pointing at the listing's CID, which is what ties
+  the site and the profile together as one entity
+- One canonical host, every page indexable, a valid sitemap, and the whole site
+  loading in about a second on 4G
+- Nine area pages and three specialty pages, each genuinely distinct
+- FAQ schema on the pages that carry questions
+
 ## What nobody can promise
 
+**No one can guarantee a number-one local ranking — not us, not any agency.**
+The site says so on its own FAQ page, and refusing to promise it is part of
+what the studio sells.
+
 Whether the listing appears in the local pack, for which searches, and against
-which competitors is Google's decision and it depends on proximity, relevance,
-prominence, review activity and competition. Everything above makes the listing
-*eligible and accurate*. None of it is a ranking.
+which competitors is Google's decision. It depends on proximity to the
+searcher, on competition that changes without notice, on review activity, and
+on time — a listing created this month competes with ones that have been
+accumulating signals for years. The list above is what makes the business
+*eligible, accurate and prominent*. Ranking is downstream of that and belongs
+to Google.
+
+Anyone who tells you otherwise is either guessing or selling something.
