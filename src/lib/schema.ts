@@ -19,8 +19,14 @@ export function organizationSchema() {
     description:
       'Healthcare-focused web design and digital growth studio. Websites, local SEO, and Google Business Profile management for doctors and clinics.',
     url: `${CANONICAL_HOST}/`,
-    // No email: WhatsApp and the phone are the only two routes the site offers.
+    // What kind of business this is, in a vocabulary that is not our own —
+    // a search engine reconciling this entity with the "Website designer"
+    // category on the Google listing has something external to match against.
+    additionalType: 'https://en.wikipedia.org/wiki/Web_design',
     telephone: BUSINESS.phone,
+    email: BUSINESS.email,
+    foundingDate: '2026',
+    foundingLocation: { '@type': 'Place', name: `${BUSINESS.address.locality}, ${BUSINESS.address.region}, India` },
     logo: `${CANONICAL_HOST}/logo.svg`,
     image: `${CANONICAL_HOST}/og-default.png`,
     address: {
@@ -53,12 +59,39 @@ export function organizationSchema() {
     // `sameAs` carrying the same CID is what lets a search engine reconcile
     // the site and the profile as one business rather than two.
     hasMap: GBP_URL,
+    // How to reach the studio, with the languages it answers in.
+    // `availableLanguage` is not valid on the organisation itself, which is
+    // why it hangs off the contact point.
+    contactPoint: {
+      '@type': 'ContactPoint',
+      telephone: BUSINESS.phone,
+      email: BUSINESS.email,
+      contactType: 'customer service',
+      availableLanguage: ['English', 'Gujarati'],
+      areaServed: 'IN',
+    },
+    /*
+     * What this studio demonstrably works on, drawn from what the site
+     * actually publishes: a page per service, a page per specialty, a page per
+     * town. Relevance in local search is decided on topic, and this is the
+     * machine-readable statement of the topics — not a keyword list, which is
+     * why every entry here maps to a page that exists.
+     */
     knowsAbout: [
       'Healthcare website design',
       'Local SEO for clinics',
       'Google Business Profile management',
       'Website maintenance',
+      'Dental clinic websites',
+      'Dermatology clinic websites',
+      'Physiotherapy clinic websites',
+      'Healthcare social media content',
+      'Schema markup for healthcare websites',
+      'Core Web Vitals and page speed',
+      'Web accessibility (WCAG 2.2 AA)',
+      'Gujarati language websites',
     ],
+    serviceType: 'Healthcare web design, local SEO and Google Business Profile management',
     slogan: 'Websites, local search, and Google presence for healthcare practices.',
     priceRange: PRICE_RANGE,
     currenciesAccepted: CURRENCY,

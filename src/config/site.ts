@@ -34,16 +34,27 @@ export const BUSINESS = {
     'Healthcare-focused web design and digital growth studio in Mehsana, Gujarat',
   founder: 'Jaidev Jethi',
   /**
-   * No email. WhatsApp and the phone are the two direct routes — they are how
-   * clinic owners here reach a supplier, and a message on WhatsApp gets
-   * answered faster than an inbox ever does. BOOKING_URL below is the third
-   * and quietest: a time in the diary for anyone who would rather talk than
-   * type. If you add another route, search for "two" first — several pages
-   * state the count as a fact.
+   * WhatsApp and the phone are the two routes the site actually pushes — they
+   * are how clinic owners here reach a supplier, and a message on WhatsApp
+   * gets answered faster than an inbox ever does. BOOKING_URL below is the
+   * third and quietest: a time in the diary for anyone who would rather talk
+   * than type. If you add another route, search for "two" first — several
+   * pages state the count as a fact.
    */
   /** E.164, displayed as +91 97734 56668 */
   phone: '+919773456668',
   phoneDisplay: '+91 97734 56668',
+  /**
+   * The mailbox behind the Google account that owns the Business Profile.
+   *
+   * Published in structured data and in llms.txt, because a LocalBusiness that
+   * declares no way to write to it is a thinner entity than one that does, and
+   * because directories that hold a different address need a source to be
+   * corrected against. Deliberately NOT promoted as a contact route in the
+   * page copy: the funnel is WhatsApp first by design, and an inbox competing
+   * with it would slow the one thing that gets answered same-day.
+   */
+  email: 'careinflow.support@gmail.com',
   address: {
     street: 'F-27, Platinum Plaza, Radhanpur Rd',
     locality: 'Mehsana',
@@ -135,6 +146,14 @@ export const GBP_URL = 'https://www.google.com/maps?cid=4850821887290042955';
 
 /** Place feature id, for the embed and anything else that needs the pin. */
 export const GBP_PLACE_ID = '0x395c43110e8cd923:0x435194ce449cea4b';
+
+/**
+ * The Open Location Code the listing itself publishes. Read off the profile
+ * rather than derived, so it is the same string Google prints — a second,
+ * independent way to state where this studio is that does not depend on the
+ * street address being parsed correctly.
+ */
+export const PLUS_CODE = 'J88X+XJ Mehsana, Gujarat';
 
 /**
  * Profiles published in `sameAs`. Only list a profile that exists and has real
