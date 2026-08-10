@@ -168,7 +168,7 @@
   {
     "id": "packages-or-separate",
     "question": "What is the difference between the four website packages?",
-    "answer": "Responsibility, not page count. At {{buildPractice}} we build the website properly and lay the local-search foundation under it, including an audit of your Google listing. At {{buildGoogle}} we also take responsibility for the Google presence itself: the profile rebuilt, categories and services corrected, and the listing made to agree with the site. At {{buildSeo}} we research what your practice should be discoverable for, treatment by treatment, and build the site around those opportunities. Above {{buildMulti}} we take on the whole search architecture of a complex practice, and that one is quoted rather than packaged. The free review tells you which rung you are on, and it is usually lower than people expect.",
+    "answer": "How much we do for you, not how many pages you get. At {{buildPractice}} we build the website and set it up so Google can find it, and we check your Google listing before we start. At {{buildGoogle}} we also fix the listing itself: the right categories, the right services, correct hours and photos, and a listing that says the same thing as your site. At {{buildSeo}} we work out which treatments patients are searching for near you, and build the site to answer those. Above {{buildMulti}} we plan and build the whole thing for a practice with several doctors, departments or branches, and that one is quoted rather than sold as a package. The free review tells you which one you need, and it is usually a smaller one than people expect.",
     "pages": [
       "faq",
       "pricing"

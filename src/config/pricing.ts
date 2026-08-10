@@ -35,10 +35,10 @@ export const unitSuffix: Record<PriceUnit, string> = {
 /* -------------------------------------------------------------------------
  * Website packages. One-time, fixed price
  *
- * Four rungs of one ladder, and the rung is defined by responsibility rather
- * than by page count. Each one states how much of the local-search system the
- * studio takes on, because the failure mode this replaces is a client buying
- * a website and reading it as a promise about rankings.
+ * Four steps of one ladder, and the step is defined by how much the studio
+ * does rather than by page count. Each one says so in a sentence a doctor can
+ * read, because the failure mode this replaces is a client buying a website
+ * and reading it as a promise about rankings.
  * ---------------------------------------------------------------------- */
 
 export interface Build {
