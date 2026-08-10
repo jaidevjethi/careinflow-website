@@ -1,4 +1,4 @@
-import { BUSINESS, CANONICAL_HOST, PROFILES } from '@/config/site';
+import { BUSINESS, CANONICAL_HOST, GBP_URL, PROFILES } from '@/config/site';
 import { CURRENCY, PRICE_RANGE, type PriceUnit } from '@/config/pricing';
 import { canonicalUrl } from '@/lib/url';
 
@@ -46,9 +46,13 @@ export function organizationSchema() {
     areaServed: BUSINESS.serviceAreas.map((name) => ({ '@type': 'City', name })),
     founder: { '@id': FOUNDER_ID },
     // Omitted entirely while empty. `"sameAs": []` is a declared-and-blank
-    // claim; leaving the property out says nothing, which is the truth until
-    // the Google listing exists.
+    // claim; leaving the property out says nothing, which was the truth until
+    // the Google listing existed.
     ...(PROFILES.length ? { sameAs: PROFILES } : {}),
+    // The listing this entity is, stated as the map for it. `hasMap` and
+    // `sameAs` carrying the same CID is what lets a search engine reconcile
+    // the site and the profile as one business rather than two.
+    hasMap: GBP_URL,
     knowsAbout: [
       'Healthcare website design',
       'Local SEO for clinics',

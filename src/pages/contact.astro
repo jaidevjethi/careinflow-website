@@ -9,6 +9,7 @@ import waImage from '@/assets/mockups/contact-whatsapp.webp';
 import reportImage from '@/assets/mockups/review-report.webp';
 import studioExterior from '@/assets/editorial/studio-exterior.webp';
 import SectionHead from '@/components/SectionHead.astro';
+import MapPanel from '@/components/MapPanel.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import { BUSINESS, BOOKING_URL, WHATSAPP_URL, whatsappFor } from '@/config/site';
 import { BUILDS, STANDALONE_MONTHLY, rupees } from '@/config/pricing';
@@ -167,7 +168,8 @@ const steps = [
         </h2>
         <address class="mt-5 max-w-[640px] text-[16px] not-italic leading-[1.7] text-body">
           {BUSINESS.name} · {BUSINESS.address.street},<br />
-          {BUSINESS.address.locality}, {BUSINESS.address.region}, India<br />
+          {BUSINESS.address.locality}, {BUSINESS.address.region}
+          {' '}{BUSINESS.address.postalCode}, India<br />
           <a href={WHATSAPP_URL} rel="noopener" class="link-whatsapp">WhatsApp {BUSINESS.phoneDisplay}</a> ·
           <a href={`tel:${BUSINESS.phone}`} class="prose-link">Call the studio</a>
         </address>
@@ -178,6 +180,8 @@ const steps = [
           suits it. Close enough to visit and photograph your practice
           properly; everything else works just as well at a distance.
         </p>
+
+        <MapPanel class="mt-8 max-w-[640px]" />
       </div>
 
       <div class="top-24 grid gap-6 lg:sticky">

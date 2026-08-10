@@ -51,8 +51,14 @@ export const BUSINESS = {
     postalCode: '384005',
     country: 'IN',
   },
-  /** Studio coordinates, for LocalBusiness geo and the map link. */
-  geo: { latitude: 23.5985, longitude: 72.3693 },
+  /**
+   * Studio coordinates, taken from the Google Business Profile pin itself so
+   * the schema and the listing agree. They were 23.5985, 72.3693 until the
+   * listing existed to check against — 2.9km out, which is a different part
+   * of Mehsana. A `LocalBusiness` whose geo disagrees with its own listing is
+   * publishing a contradiction about the one fact local search is built on.
+   */
+  geo: { latitude: 23.6174258, longitude: 72.3491067 },
   /**
    * Published hours. Stated because a LocalBusiness without them is a weaker
    * local-search entity, and because a doctor deciding when to ring should
@@ -83,21 +89,32 @@ export const WHATSAPP_URL = `https://wa.me/${BUSINESS.phone.replace('+', '')}`;
 export const BOOKING_URL = 'https://calendly.com/careinflow';
 
 /**
+ * The Google Business Profile listing.
+ *
+ * This is the `cid` form rather than the `maps.app.goo.gl` short link or the
+ * long `/maps/place/…` URL. The short link is a redirect that Google can
+ * retire; the long one carries a session token and a viewport that change
+ * every time it is copied. The CID is the listing's permanent identifier, so
+ * it is the form that belongs in structured data.
+ */
+export const GBP_URL = 'https://www.google.com/maps?cid=4850821887290042955';
+
+/** Place feature id, for the embed and anything else that needs the pin. */
+export const GBP_PLACE_ID = '0x395c43110e8cd923:0x435194ce449cea4b';
+
+/**
  * Profiles published in `sameAs`. Only list a profile that exists and has real
  * content on it. An empty page costs more trust than an absent one, and a
  * studio that sells Google Business Profile management is judged on its own.
  *
- * Empty on purpose. `sameAs` is for pages that *are* the entity somewhere else
- * — a listing, a profile, a company page a search engine can reconcile against
- * this one. A wa.me link is a click-to-chat handoff, not a page about
- * CareInflow, so it was asserting an identity that does not exist at that URL.
- * The phone it encodes is already published as `telephone`.
+ * `sameAs` is for pages that *are* the entity somewhere else — a listing, a
+ * profile, a page a search engine can reconcile against this one. It held a
+ * wa.me link once, which is a click-to-chat handoff rather than a page about
+ * CareInflow, and asserted an identity that did not exist at that URL.
  *
- * Add each line the day that profile is live:
- *   'https://www.google.com/maps/place/?q=place_id:…'  ← the GBP listing
- *   'https://www.instagram.com/careinflow/'            ← once the handle moves
+ * Add the Instagram handle here the day it has real content on it.
  */
-export const PROFILES: string[] = [];
+export const PROFILES: string[] = [GBP_URL];
 
 export const whatsappWithMessage = (text: string): string =>
   `${WHATSAPP_URL}?text=${encodeURIComponent(text)}`;
