@@ -14,11 +14,11 @@ import type { APIRoute } from 'astro';
 import { BUSINESS, BOOKING_URL, CANONICAL_HOST, HOURS_LABEL } from '@/config/site';
 import {
   BUILDS,
+  GBP_AUDIT,
   NEVER_CHARGED,
   ONE_TIME_ITEMS,
   PLANS,
   STANDALONE_MONTHLY,
-  partsTotal,
   rupees,
 } from '@/config/pricing';
 
@@ -27,10 +27,9 @@ const url = (path: string) => `${CANONICAL_HOST}${path}`;
 const areas = `${BUSINESS.serviceAreas.slice(0, -1).join(', ')} and ${BUSINESS.serviceAreas.at(-1)}`;
 
 const build = (id: string) => BUILDS.find((b) => b.id === id)!;
-const plan = (id: string) => PLANS.find((p) => p.id === id)!;
 const once = (item: string) => ONE_TIME_ITEMS.find((i) => i.item.startsWith(item))!;
 
-const careGoogle = plan('care-google');
+const carePlan = PLANS[0]!;
 
 const body = `# ${BUSINESS.name}
 
@@ -42,15 +41,14 @@ ${BUSINESS.name} started in 2026. It publishes its prices openly, fixes the fina
 
 Published in full at ${url('/pricing/')}. Every figure below is a starting point for a described scope, in Indian rupees, excluding GST. Monthly plans run month to month with no lock-in.
 
-- Website build, single practice: from ${rupees(build('single-practice').from)} (${build('single-practice').pages.toLowerCase()}, ${build('single-practice').timeline})
-- Website build, established clinic: from ${rupees(build('established-clinic').from)} (${build('established-clinic').pages.toLowerCase()}, ${build('established-clinic').timeline})
-- Website build, multi-specialty: from ${rupees(build('multi-specialty').from)} (${build('multi-specialty').pages}, ${build('multi-specialty').timeline})
-- Website care: ${rupees(STANDALONE_MONTHLY.care)} a month
-- Google Business Profile management: ${rupees(STANDALONE_MONTHLY.gbp)} a month
-- Care + Google together: ${rupees(careGoogle.monthly)} a month (the parts cost ${rupees(partsTotal(careGoogle))} separately; the work genuinely overlaps, and it is not a discount)
-- Full visibility, care, Google and local SEO: ${rupees(plan('full-visibility').monthly)} a month
-- Local SEO on its own: ${rupees(STANDALONE_MONTHLY.seo)} a month
-- Social media content: ${rupees(STANDALONE_MONTHLY.social)} a month, added to a plan and never sold first
+There are four website packages, one ongoing plan, and a small number of things bought on their own. What separates the packages is how much of the local-search system CareInflow takes responsibility for, not page count.
+
+- ${build('practice-website').name}: ${rupees(build('practice-website').from)} one-time (${build('practice-website').pages.toLowerCase()}, ${build('practice-website').timeline}). ${build('practice-website').responsibility}
+- ${build('practice-website-google').name}: ${rupees(build('practice-website-google').from)} one-time (${build('practice-website-google').pages.toLowerCase()}, ${build('practice-website-google').timeline}). ${build('practice-website-google').responsibility} This is the package most practices need, and includes 90 days of post-launch support.
+- ${build('healthcare-seo').name}: ${rupees(build('healthcare-seo').from)} one-time (${build('healthcare-seo').pages.toLowerCase()}, ${build('healthcare-seo').timeline}). ${build('healthcare-seo').responsibility} Includes 90 days of post-launch support.
+- ${build('multi-specialty').name}: from ${rupees(build('multi-specialty').from)}, quoted rather than packaged. ${build('multi-specialty').responsibility} The figure depends on doctors, specialties, treatments, locations and content.
+- ${carePlan.name}: ${rupees(carePlan.monthly)} a month, month to month with no lock-in. ${carePlan.summary} It does not promise rankings; it promises continuous local-search improvement and maintenance.
+- Healthcare social media content: from ${rupees(STANDALONE_MONTHLY.social)} a month, sold on its own or alongside anything else. Strategy, up to 4 content pieces a week and 3 reel edits a month. Complex carousels, shoots and additional production are quoted separately, and advertising spend is always paid by the client directly.
 - One-time Google Business Profile rebuild: ${rupees(once('Google Business Profile rebuild').price)}
 - Website takeover audit: ${rupees(once('Website takeover audit').price)}
 - Extra treatment or area page: ${rupees(once('Extra treatment').price)} a page
@@ -64,8 +62,8 @@ ${NEVER_CHARGED.map((n) => `- ${n}`).join('\n')}
 - [Healthcare websites](${url('/services/healthcare-websites/')}): Custom clinic websites: a page per treatment, WhatsApp enquiry flow, speed measured on mid-range Android phones (reference <1.2s LCP), WCAG AA accessibility.
 - [Local SEO](${url('/services/local-seo/')}): Treatment and location pages, technical SEO, schema markup, Search Console setup, AI answer readiness. No ranking promises.
 - [Google Business Profile management](${url('/services/google-business-profile/')}): Profile setup, categories, services, photos, hours, and honest review strategy, maintained monthly.
-- [Ongoing website care](${url('/services/website-care/')}): Weekly monitoring, monthly maintenance and backups, quarterly written reviews. Month to month; clients own all accounts.
-- [Social media for clinics](${url('/services/social-media/')}): A support service, not a core one, educational posts, treatment explainers and clinic updates written within patient-privacy limits. No paid advertising, no follower-count chasing, and ${BUSINESS.name} will say so when a practice's website or Google listing needs fixing first.
+- [Ongoing website care](${url('/services/website-care/')}): Part of Local SEO & Google Care at ${rupees(carePlan.monthly)} a month: monitoring, maintenance, backups, content changes and a written monthly report. Month to month; clients own all accounts.
+- [Social media for clinics](${url('/services/social-media/')}): Strategy-led content for healthcare practices, sold on its own. Instagram optimisation, a monthly content strategy and calendar, up to 4 pieces a week, captions, and 3 reel edits a month. Content formats follow the strategy rather than a fixed quota. No paid advertising spend, no follower-count chasing.
 
 ## Key pages
 
@@ -77,12 +75,18 @@ ${NEVER_CHARGED.map((n) => `- ${n}`).join('\n')}
 - [FAQ](${url('/faq/')}): Costs, timelines, ownership, clients own everything, and what ${BUSINESS.name} will not do.
 - [Contact](${url('/contact/')}): One WhatsApp message gets a free written review within two working days. Phone answered ${HOURS_LABEL}.
 
+## Every website project starts with a Google Business Profile audit
+
+${GBP_AUDIT.statement}
+
+The audit is included in every package and costs nothing on its own. It checks: ${GBP_AUDIT.checks.map((c) => c.replace(/\?$/, '').toLowerCase()).join('; ')}.
+
 ## What ${BUSINESS.name} will not do
 
 - Guarantee a search ranking. Nobody honestly can.
 - Buy or incentivise reviews.
 - Resell a template as bespoke work.
-- Sell social media to a practice whose website or Google listing needs fixing first.
+- Promise a number of patients, or a position in the local results.
 - Run paid advertising or build mobile apps. Neither is offered.
 - Claim clients, testimonials or ratings it does not have. There are no testimonials on the site because there are none to publish yet.
 `;

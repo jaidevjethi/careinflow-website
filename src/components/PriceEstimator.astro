@@ -38,12 +38,19 @@ const rates = {
 };
 
 const buildOptions = [
-  ...BUILDS.map((b) => ({ value: b.id, label: b.name, note: b.pages, price: b.from })),
+  ...BUILDS.map((b) => ({
+    value: b.id,
+    label: b.name,
+    // The custom package has a floor, so the note says so rather than
+    // implying the estimate lands anywhere near the final figure.
+    note: b.custom ? `${b.pages} — quoted, this is the floor` : b.pages,
+    price: b.from,
+  })),
   { value: 'none', label: 'I already have a website', note: 'Keep it, and we work on what it does', price: 0 },
 ];
 
 const planOptions = [
-  { value: 'none', label: 'Nothing monthly', note: 'Build only, and you manage it', price: 0 },
+  { value: 'none', label: 'Nothing monthly', note: 'Build only, and you manage it afterwards', price: 0 },
   ...PLANS.map((p) => ({ value: p.id, label: p.name, note: p.summary, price: p.monthly })),
 ];
 ---
@@ -190,7 +197,7 @@ const planOptions = [
                 {rupees(STANDALONE_MONTHLY.social)}/mo
               </span>
               <span class="mt-1 block text-[14px] leading-[1.5] text-muted">
-                A support service. If your site or listing needs work, that comes first.
+                Strategy, up to four pieces a week and three reel edits a month.
               </span>
             </span>
           </label>
@@ -216,7 +223,7 @@ const planOptions = [
 
         <p class="mt-6 border-t border-line pt-5">
           <span id="ci-monthly" class="numeral block text-[clamp(30px,3.6vw,42px)] text-ink">
-            {rupees(PLANS[1]!.monthly)}
+            {rupees(PLANS[0]!.monthly)}
           </span>
           <span class="mt-1 block font-mono text-[11px] uppercase tracking-[0.08em] text-surgical">
             a month, to keep it working
@@ -302,7 +309,8 @@ const planOptions = [
       monthly.textContent = perMonth ? money(perMonth) : 'Nothing';
 
       const parts: string[] = [];
-      if (hasBuild) parts.push(`${build.label} website`);
+      // The package names already say "Website", so nothing is appended.
+      if (hasBuild) parts.push(build.label);
       if (pages) parts.push(`${pages} extra page${pages > 1 ? 's' : ''}`);
       if (checked('gujarati')) parts.push('Gujarati version');
       if (checked('takeover')) parts.push('takeover audit');
@@ -315,7 +323,7 @@ const planOptions = [
         "Hi CareInflow. I used the estimator on your pricing page. " +
         (parts.length ? 'I picked: ' + parts.join(', ') + '. ' : '') +
         `That came to ${money(oneTime)} one time and ${money(perMonth)} a month. ` +
-        "I'd like a free written review first. Clinic name: ";
+        'I would like a free written review first. Clinic name: ';
       wa.href = rates.whatsapp + '?text=' + encodeURIComponent(message);
     };
 

@@ -25,7 +25,8 @@ import {
   PRICE_NOTES,
   PRICE_PROMISE,
   STANDALONE_MONTHLY,
-  partsTotal,
+  SOCIAL_ADDONS,
+  GBP_AUDIT,
   rupees,
 } from '@/config/pricing';
 import {
@@ -41,7 +42,22 @@ import {
 const title = 'Pricing for clinic websites and local SEO | CareInflow';
 /** Built from the config so the meta description can never drift from the page. */
 const description =
-  `Clinic websites from ${rupees(BUILDS[0]!.from)}, monthly care from ${rupees(PLANS[0]!.monthly)}, Google listing management from ${rupees(STANDALONE_MONTHLY.gbp)}. Published prices, fixed in writing after a free review.`;
+  `Clinic websites from ${rupees(BUILDS[0]!.from)}, and local SEO with Google Business Profile care from ${rupees(PLANS[0]!.monthly)} a month. Published prices, fixed in writing.`;
+
+/*
+ * Three fixed-price packages in the grid, and the multi-specialty one on its
+ * own below it. It has a floor rather than a range because the figure depends
+ * on doctors, specialties, locations and content — rendering it as a fourth
+ * card would put a number beside three real ones and imply it behaves the
+ * same way. It also keeps the grid dividing evenly, which the design system
+ * requires.
+ */
+/** Counts in prose come from the array, so they cannot drift when it grows. */
+const NUMBER_WORDS = ['No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight'];
+const spell = (n: number) => NUMBER_WORDS[n] ?? String(n);
+
+const FIXED_BUILDS = BUILDS.filter((b) => !b.custom);
+const CUSTOM_BUILD = BUILDS.find((b) => b.custom)!;
 
 const faqs = await getFaqsFor('pricing');
 
@@ -57,17 +73,24 @@ const schema = graph(
     name: 'CareInflow published prices',
     path: '/pricing',
     offers: [
+      // The package names already contain "Website", so nothing is appended.
       ...BUILDS.map((b) => ({
-        name: `${b.name} website`,
-        description: `${b.suits} ${b.pages}, ${b.timeline}.`,
+        name: b.name,
+        description: `${b.responsibility} ${b.suits} ${b.pages}, ${b.timeline}.`,
         from: b.from,
         unit: 'project' as const,
       })),
       ...PLANS.map((p) => ({
-        name: `${p.name} plan`,
+        name: p.name,
         description: p.summary,
         from: p.monthly,
         unit: 'month' as const,
+      })),
+      ...STANDALONE_ITEMS.map((o) => ({
+        name: o.item,
+        description: o.note,
+        from: o.price,
+        unit: o.unit,
       })),
       ...ONE_TIME_ITEMS.map((o) => ({
         name: o.item,
@@ -83,8 +106,8 @@ const schema = graph(
 /** The three figures a visitor is really scanning for. */
 const headline = [
   { label: 'Websites, one-time', value: rupees(BUILDS[0]!.from), suffix: 'from' },
-  { label: 'Monthly care', value: rupees(PLANS[0]!.monthly), suffix: 'from, a month' },
-  { label: 'Google listing', value: rupees(STANDALONE_ITEMS[0]!.price), suffix: 'from, a month' },
+  { label: 'Local SEO & Google', value: rupees(PLANS[0]!.monthly), suffix: 'a month, after launch' },
+  { label: 'Social media', value: rupees(STANDALONE_MONTHLY.social), suffix: 'from, a month' },
 ];
 
 const paysFor = [
@@ -163,12 +186,12 @@ const principles = [
       <SectionHead
         id="builds-title"
         label="Websites, one-time"
-        title="Three shapes of practice, three starting prices."
-        lede="Most of what you are paying for here is the writing and the enquiry path, not the building, so these are lower than agency quotes for the same work. Fixed in writing before anything begins, with exclusions listed as plainly as inclusions."
+        title="Four rungs, and each one says how much we take on."
+        lede="What separates these is responsibility, not page count. The smallest builds the site and lays the foundation under it; the largest takes on the whole search architecture of a complex practice. Fixed in writing before anything begins, with exclusions listed as plainly as inclusions."
       />
 
       <div class="reveal-group mt-12 grid items-start gap-5 xl:grid-cols-3">
-        {BUILDS.map((build, i) => (
+        {FIXED_BUILDS.map((build, i) => (
           <article
             class:list={[
               'card-hover flex h-full flex-col overflow-hidden rounded-3xl border bg-canvas',
@@ -184,6 +207,9 @@ const principles = [
                 )}
               </div>
               <p class="mt-2.5 text-[16px] leading-[1.6] text-muted">{build.suits}</p>
+              <p class="mt-3 border-l-2 border-surgical pl-3 text-[15px] font-semibold leading-[1.5] text-body-deep">
+                {build.responsibility}
+              </p>
 
               <p class="mt-6 flex items-baseline gap-2.5">
                 <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">from</span>
@@ -191,9 +217,11 @@ const principles = [
                   {rupees(build.from)}
                 </span>
               </p>
-              <p class="mt-2 font-mono text-[11px] uppercase tracking-[0.08em] text-faint">
-                Usually {rupees(build.from)} – {rupees(build.typicalTo)}
-              </p>
+              {build.typicalTo && (
+                <p class="mt-2 font-mono text-[11px] uppercase tracking-[0.08em] text-faint">
+                  Usually {rupees(build.from)} – {rupees(build.typicalTo)}
+                </p>
+              )}
               <p class="mt-3.5 flex flex-wrap gap-2">
                 <span class="chip border border-line bg-surface text-body-deep">{build.pages}</span>
                 <span class="chip border border-line bg-surface text-body-deep">{build.timeline}</span>
@@ -222,8 +250,49 @@ const principles = [
         ))}
       </div>
 
+      {/* The fourth rung. Presented as a quote rather than a package, because
+          that is what it is. */}
+      <article class="mt-5 overflow-hidden rounded-3xl border border-surgical bg-canvas">
+        <span class="accent-bar block h-1 w-full bg-a-care-vivid" aria-hidden="true"></span>
+        <div class="grid gap-8 p-6 sm:p-8 lg:grid-cols-[minmax(0,360px)_1fr] lg:gap-14">
+          <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+              <h3 class="text-[20px] font-bold tracking-[-0.025em] text-ink">{CUSTOM_BUILD.name}</h3>
+              <span class="chip border border-line bg-surface text-body-deep">Quoted</span>
+            </div>
+            <p class="mt-2.5 text-[16px] leading-[1.6] text-muted">{CUSTOM_BUILD.suits}</p>
+            <p class="mt-3 border-l-2 border-surgical pl-3 text-[15px] font-semibold leading-[1.5] text-body-deep">
+              {CUSTOM_BUILD.responsibility}
+            </p>
+            <p class="mt-6 flex items-baseline gap-2.5">
+              <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">from</span>
+              <span class="settle numeral text-[clamp(32px,3.8vw,44px)] text-ink">
+                {rupees(CUSTOM_BUILD.from)}
+              </span>
+            </p>
+            <p class="mt-3.5 flex flex-wrap gap-2">
+              <span class="chip border border-line bg-surface text-body-deep">{CUSTOM_BUILD.pages}</span>
+              <span class="chip border border-line bg-surface text-body-deep">{CUSTOM_BUILD.timeline}</span>
+            </p>
+          </div>
+          <div>
+            <ul class="grid gap-x-10 border-t border-hairline pt-4 text-[15px] leading-[1.55] text-body sm:grid-cols-2">
+              {CUSTOM_BUILD.includes.map((line) => (
+                <li class="flex gap-3 py-1">
+                  <span class="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-pass" aria-hidden="true"></span>
+                  <span>{line}</span>
+                </li>
+              ))}
+            </ul>
+            <p class="mt-4 border-t border-hairline pt-3.5 text-[14px] leading-[1.6] text-muted">
+              {CUSTOM_BUILD.excludes}
+            </p>
+          </div>
+        </div>
+      </article>
+
       <p class="mt-8 max-w-[680px] text-[16px] leading-[1.65] text-muted">
-        Not sure which shape your practice is? That is exactly what the
+        Not sure which rung your practice is on? That is exactly what the
         <a href={href('/contact')} class="prose-link">free written review</a>
         answers, and it often answers "less than you expected".
       </p>
@@ -270,7 +339,7 @@ const principles = [
     <SectionHead
       id="movers-title"
       label="What moves the number"
-      title="Five things decide where your price lands."
+      title={`${spell(PRICE_MOVERS.length)} things decide where your price lands.`}
       lede="A quotation with no explanation is just a number to argue about. These are the factors we actually price against, in the order they matter."
     />
     <div class="mt-10 max-w-[900px] overflow-x-auto">
@@ -297,70 +366,96 @@ const principles = [
   </section>
 
   <!-- MONTHLY PLANS -->
+  <!-- THE ONE MONTHLY PLAN -->
+  <!-- There were five monthly products here, in a three-column grid, with a
+       note underneath explaining why a bundle cost less than its parts. One
+       plan needs no comparison and no arithmetic, so it gets a single panel
+       and the room to list what it actually does. -->
   <section class="band-powder" aria-labelledby="plans-title">
     <div class="section shell">
       <SectionHead
         id="plans-title"
         label="Monthly, after launch"
-        title="Launch is the start. These are the plans that keep it working."
-        lede="Month to month, no lock-in, cancel by sending a message. Whatever you choose, the website and every account stay in your name."
+        title="Launch is the start. One plan keeps it working, and keeps improving it."
+        lede="Month to month, no lock-in, cancel by sending a message. The website and every account stay in your name whatever you decide."
       />
 
-      <div class="reveal-group mt-12 grid items-start gap-5 xl:grid-cols-3">
-        {PLANS.map((plan, i) => (
-          <article
-            class:list={[
-              'card-hover flex h-full flex-col overflow-hidden rounded-3xl border bg-canvas',
-              plan.recommended ? 'border-surgical shadow-card' : 'border-line',
-            ]}
-          >
-            <span class:list={['block h-1 w-full', cycleAccent(i + 3).bar]} aria-hidden="true"></span>
-            <div class="flex h-full flex-col p-6 sm:p-7">
-              <div class="flex flex-wrap items-center gap-2.5">
-                <h3 class="text-[20px] font-bold tracking-[-0.025em] text-ink">{plan.name}</h3>
-                {plan.recommended && (
-                  <span class="chip bg-surgical-tint text-surgical">Our recommendation</span>
-                )}
-              </div>
+      {PLANS.map((plan) => (
+        <article class="mt-12 overflow-hidden rounded-3xl border border-surgical bg-surface shadow-card">
+          <span class="accent-bar block h-1 w-full bg-a-seo-vivid" aria-hidden="true"></span>
+          <div class="grid gap-8 p-6 sm:p-8 lg:grid-cols-[minmax(0,320px)_1fr] lg:gap-14">
+            <div>
+              <h3 class="text-[22px] font-bold tracking-[-0.025em] text-ink">{plan.name}</h3>
               <p class="mt-2.5 text-[16px] leading-[1.6] text-muted">{plan.summary}</p>
-
               <p class="mt-6 flex items-baseline gap-2">
-                <span class="settle text-[clamp(30px,3.6vw,40px)] font-extrabold leading-none tracking-[-0.045em] text-ink">
+                <span class="settle text-[clamp(34px,4vw,46px)] font-extrabold leading-none tracking-[-0.045em] text-ink">
                   {rupees(plan.monthly)}
                 </span>
                 <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">/ month</span>
               </p>
               <p class="mt-3 font-mono text-[11px] uppercase leading-[1.5] tracking-[0.06em] text-surgical">
-                {plan.combines ? `${rupees(partsTotal(plan))} bought separately` : plan.priceNote}
+                {plan.priceNote}
               </p>
-
-              <ul class="mt-5 grow border-t border-hairline pt-4 text-[15px] leading-[1.55] text-body">
-                {plan.includes.map((line) => (
-                  <li class="flex gap-3 py-1">
-                    <span class="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-pass" aria-hidden="true"></span>
-                    <span>{line}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <p class="mt-4 border-t border-hairline pt-3.5 text-[14px] leading-[1.6] text-muted">
+              <p class="mt-5 border-t border-hairline pt-4 text-[15px] leading-[1.6] text-muted">
                 {plan.suits}
               </p>
             </div>
-          </article>
-        ))}
-      </div>
+
+            <ul class="grid gap-x-10 border-t border-hairline pt-4 text-[15px] leading-[1.55] text-body sm:grid-cols-2 lg:border-t-0 lg:pt-0">
+              {plan.includes.map((line) => (
+                <li class="flex gap-3 py-1">
+                  <span class="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-pass" aria-hidden="true"></span>
+                  <span>{line}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </article>
+      ))}
 
       <div class="mt-8 max-w-[820px] rounded-2xl border border-line bg-canvas px-6 py-5 sm:px-7">
-        <p class="label-mono mb-3 text-faint" style="letter-spacing:0.12em">Why the combined price is lower</p>
+        <p class="label-mono mb-3 text-faint" style="letter-spacing:0.12em">What it does not promise</p>
         <p class="text-[16px] leading-[1.65] text-body">
-          Because the work genuinely overlaps, not because it is an offer. Run
-          together, these share one monthly pass over your presence, one set of
-          measurements and one written report instead of three. We have passed
-          the difference on rather than charged you for our own convenience.
-          There is no discount here to ask us for.
+          Rankings. What it promises is continuous local-search improvement and
+          maintenance: the listing kept right, the reviews answered, a new page
+          every month, and a written report saying what changed and what we did
+          about it. Where a practice ends up in the results is Google's
+          decision, and we would be careful with anyone who tells you otherwise.
         </p>
       </div>
+    </div>
+  </section>
+
+  <!-- THE AUDIT THAT STARTS EVERY PROJECT -->
+  <!-- The most important section on the page. It is what stops a website
+       purchase being read as a ranking promise. -->
+  <section class="section shell" aria-labelledby="audit-title">
+    <SectionHead
+      id="audit-title"
+      label="Before any design"
+      title={GBP_AUDIT.headline}
+      lede={GBP_AUDIT.lede}
+    />
+
+    <div class="mt-11 grid gap-10 lg:grid-cols-[1fr_minmax(0,420px)] lg:gap-16">
+      <ul class="grid gap-x-10 border-t border-line pt-5 text-[15px] leading-[1.55] text-body sm:grid-cols-2">
+        {GBP_AUDIT.checks.map((check) => (
+          <li class="flex gap-3 py-1.5">
+            <span class="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-a-gbp" aria-hidden="true"></span>
+            <span>{check}</span>
+          </li>
+        ))}
+      </ul>
+
+      <aside class="rounded-3xl border border-line bg-canvas p-7 sm:p-8">
+        <h3 class="label-mono mb-4 text-faint" style="letter-spacing:0.12em">What we are saying, plainly</h3>
+        <p class="text-[16px] leading-[1.65] text-body-deep">{GBP_AUDIT.statement}</p>
+        <p class="mt-5 border-t border-hairline pt-4 text-[15px] leading-[1.6] text-muted">
+          The audit is included in every package, and it costs nothing on its
+          own either — it is part of the
+          {' '}<a href={href('/contact')} class="prose-link">free written review</a>.
+        </p>
+      </aside>
     </div>
   </section>
 
@@ -403,6 +498,28 @@ const principles = [
           ))}
         </dl>
       </div>
+    </div>
+
+    {/* Ranges, not fixed figures, because the work genuinely varies. A
+        seven-slide researched carousel and a static post are not the same
+        production, and pricing them the same is how a content plan quietly
+        stops being profitable. */}
+    <div class="mt-12">
+      <h3 class="label-mono mb-4 text-surgical">Social media, quoted on top</h3>
+      <dl class="border-t border-line">
+        {SOCIAL_ADDONS.map((item) => (
+          <div class="flex flex-wrap items-baseline justify-between gap-x-6 border-b border-hairline py-4.5">
+            <dt class="text-[16px] font-semibold leading-[1.45] text-ink">{item.item}</dt>
+            <dd class="whitespace-nowrap font-mono text-[15px] font-semibold text-pass">{item.price}</dd>
+            <dd class="mt-1.5 w-full text-[15px] leading-[1.55] text-muted">{item.note}</dd>
+          </div>
+        ))}
+      </dl>
+      <p class="mt-4 max-w-[760px] text-[15px] leading-[1.6] text-muted">
+        Your advertising spend is always separate, paid by you directly, and
+        never marked up by us. Full scope on the
+        {' '}<a href={href('/services/social-media')} class="prose-link">social media page</a>.
+      </p>
     </div>
 
     <div class="mt-12 max-w-[820px] rounded-3xl border border-line bg-surface p-7 sm:p-8">

@@ -11,7 +11,7 @@ import studioExterior from '@/assets/editorial/studio-exterior.webp';
 import SectionHead from '@/components/SectionHead.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import { BUSINESS, BOOKING_URL, HOURS_LABEL, WHATSAPP_URL, whatsappFor } from '@/config/site';
-import { BUILDS, STANDALONE_MONTHLY, rupees } from '@/config/pricing';
+import { BUILDS, PLANS, rupees } from '@/config/pricing';
 import { href } from '@/lib/url';
 import { cycleAccent, ACCENTS } from '@/lib/accents';
 import {
@@ -258,8 +258,8 @@ const steps = [
         <p class="mt-5 max-w-[620px] text-[16px] leading-[1.65] text-muted">
           You can see the scale before you message:
           {' '}<a href={href('/pricing')} class="prose-link">our prices are published</a> —
-          websites from {rupees(BUILDS[0]!.from)}, monthly care from
-          {' '}{rupees(STANDALONE_MONTHLY.care)}. The review tells you which of
+          websites from {rupees(BUILDS[0]!.from)}, and monthly care at
+          {' '}{rupees(PLANS[0]!.monthly)}. The review tells you which of
           those your practice actually needs, and sometimes the answer is none
           of them.
         </p>

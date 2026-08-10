@@ -18,40 +18,32 @@
 import {
   BUILDS,
   ONE_TIME_ITEMS,
-  PLANS,
   STANDALONE_MONTHLY,
-  partsTotal,
   rupees,
   type PriceUnit,
 } from '@/config/pricing';
 
 const build = (id: string) => BUILDS.find((b) => b.id === id)!;
-const plan = (id: string) => PLANS.find((p) => p.id === id)!;
 const oneTime = (item: string) => ONE_TIME_ITEMS.find((i) => i.item.startsWith(item))!;
 
 /**
  * Every figure prose is allowed to name. Values are numbers, not strings, so
  * they format through `rupees()` once and read identically everywhere.
+ *
+ * Removing a token is how a repricing finds its own stale copy:
+ * `resolvePrices()` throws on an unknown one, so a page still quoting a
+ * product that no longer exists fails the build rather than the client.
  */
 export const PRICE_TOKENS = {
-  /* Builds */
-  build: build('single-practice').from,
-  buildTypicalTo: build('single-practice').typicalTo,
-  buildEstablished: build('established-clinic').from,
+  /* The four website packages */
+  buildPractice: build('practice-website').from,
+  buildGoogle: build('practice-website-google').from,
+  buildSeo: build('healthcare-seo').from,
   buildMulti: build('multi-specialty').from,
-  buildMax: build('multi-specialty').typicalTo,
 
-  /* Monthly, bought on its own */
-  care: STANDALONE_MONTHLY.care,
-  gbp: STANDALONE_MONTHLY.gbp,
-  seo: STANDALONE_MONTHLY.seo,
+  /* Monthly */
+  careGoogle: STANDALONE_MONTHLY.careGoogle,
   social: STANDALONE_MONTHLY.social,
-
-  /* Monthly plans, and what their parts cost separately */
-  careGoogle: plan('care-google').monthly,
-  careGoogleParts: partsTotal(plan('care-google')),
-  fullVisibility: plan('full-visibility').monthly,
-  fullVisibilityParts: partsTotal(plan('full-visibility')),
 
   /* One-time */
   gbpRebuild: oneTime('Google Business Profile rebuild').price,
@@ -84,12 +76,22 @@ export function resolvePrices(text: string): string {
  * The published starting price for each service page, keyed by the `ref` its
  * MDX frontmatter carries. The figure itself is never written in the MDX —
  * only the key — so a service page cannot disagree with /pricing.
+ *
+ * Local SEO and Google Business Profile no longer sell as standalone monthly
+ * products, so their pages quote the thing that does contain them: the
+ * package that builds it in, and the plan that keeps it running. A price line
+ * naming a product a visitor cannot buy is worse than no price line.
  */
 export const SERVICE_PRICES = {
-  build: { from: PRICE_TOKENS.build, unit: 'project' },
-  seo: { from: PRICE_TOKENS.seo, unit: 'month' },
-  gbp: { from: PRICE_TOKENS.gbp, unit: 'month' },
-  care: { from: PRICE_TOKENS.care, unit: 'month' },
+  /** Healthcare websites — the entry package. */
+  build: { from: PRICE_TOKENS.buildPractice, unit: 'project' },
+  /** Local SEO — built in from the package that researches treatments. */
+  seo: { from: PRICE_TOKENS.buildGoogle, unit: 'project' },
+  /** Google Business Profile — rebuilt in a package, or kept in the plan. */
+  gbp: { from: PRICE_TOKENS.careGoogle, unit: 'month' },
+  /** Ongoing care — the one monthly plan. */
+  care: { from: PRICE_TOKENS.careGoogle, unit: 'month' },
+  /** Social, now sold on its own. */
   social: { from: PRICE_TOKENS.social, unit: 'month' },
 } as const satisfies Record<string, { from: number; unit: PriceUnit }>;
 

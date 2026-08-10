@@ -25,7 +25,7 @@
   {
     "id": "what-does-it-cost",
     "question": "What does a clinic website cost?",
-    "answer": "Our prices are published, so you do not have to ask. A single-practice website starts at {{build}}. An established clinic with a page per treatment starts at {{buildEstablished}}. A multi-specialty or diagnostic centre starts at {{buildMulti}}. Monthly care starts at {{care}}, and Google Business Profile management at {{gbp}}. Those are starting points for a described scope. Your exact number is fixed in writing after the free review, and sometimes the honest answer is 'less than you expected'.",
+    "answer": "Our prices are published, so you do not have to ask. There are four website packages, and what separates them is how much of your local search we take responsibility for. A practice website is {{buildPractice}}. A practice website with your Google listing rebuilt and matched to it is {{buildGoogle}}, and that is the one most practices need. A site built around the treatments you want to compete for is {{buildSeo}}. A multi-specialty or multi-location practice starts at {{buildMulti}} and is quoted rather than packaged. After launch, Local SEO and Google Care is {{careGoogle}} a month. Those are starting points for a described scope. Your exact number is fixed in writing after the free review, and sometimes the honest answer is 'less than you expected'.",
     "pages": [
       "faq",
       "pricing",
@@ -57,7 +57,7 @@
   {
     "id": "after-launch",
     "question": "What happens after my website launches?",
-    "answer": "Whatever you choose. With ongoing care we monitor weekly, maintain monthly, and send a written quarterly review of what patients did and what to do next. Without it you still own everything. Domain, hosting, code and accounts are in your name from day one, and that is written into every agreement.",
+    "answer": "Whatever you choose. Local SEO and Google Care is {{careGoogle}} a month: your Google listing managed, every review answered, local search and Search Console watched, one new treatment page written and published each month, and a written report. The two larger website packages include 90 days of support after launch before any of that starts. Without a plan you still own everything. Domain, hosting, code and accounts are in your name from day one, and that is written into every agreement.",
     "pages": [
       "faq",
       "process"
@@ -88,7 +88,7 @@
   {
     "id": "do-you-do-apps",
     "question": "Do you build apps, do branding, or run advertising?",
-    "answer": "No. We are not an advertising agency, a branding studio or an app developer. We do websites, local SEO, Google Business Profile management and ongoing website care, for healthcare practices, and we write social media content as a support service alongside a plan rather than on its own. Those are what we are good at and we would rather stay good at them.",
+    "answer": "No. We are not an advertising agency, a branding studio or an app developer. We do websites, local SEO, Google Business Profile management, ongoing care and social media content, for healthcare practices. Those are what we are good at and we would rather stay good at them.",
     "pages": [
       "faq",
       "about"
@@ -139,7 +139,7 @@
   {
     "id": "do-you-do-social",
     "question": "Do you handle social media for clinics?",
-    "answer": "Yes, as a support service rather than a main one. We write educational posts: treatment explainers, clinic updates, honest answers to the questions patients ask in the chair. All of it stays inside the limits patient privacy sets. We do not run paid ads or chase follower counts. If your website or Google listing still needs work, we will tell you to fix those first, because that is where patients actually decide.",
+    "answer": "Yes, and it is a service in its own right rather than an add-on. It starts at {{social}} a month: a monthly content strategy and calendar, Instagram profile optimisation, up to four content pieces a week, captions and publishing, three reel edits from footage you provide, and a monthly review of what worked. The mix of formats follows the strategy rather than a fixed quota, so we are accountable for the volume and the thinking, not for manufacturing sixteen identical graphics. All of it stays inside the limits patient privacy sets. Shoots, complex carousels and advertising are quoted separately, and we do not chase follower counts.",
     "pages": [
       "faq"
     ],
@@ -167,8 +167,8 @@
   },
   {
     "id": "packages-or-separate",
-    "question": "Why does a combined monthly plan cost less than buying the parts?",
-    "answer": "Because the work overlaps, not because it is a discount. We do not run offers. Website care is {{care}} a month and Google Business Profile management is {{gbp}}. Together they are {{careGoogle}}, because they share one monthly pass over your presence, one set of measurements and one written report instead of three. The same arithmetic makes Full visibility {{fullVisibility}} rather than {{fullVisibilityParts}}.",
+    "question": "What is the difference between the four website packages?",
+    "answer": "Responsibility, not page count. At {{buildPractice}} we build the website properly and lay the local-search foundation under it, including an audit of your Google listing. At {{buildGoogle}} we also take responsibility for the Google presence itself: the profile rebuilt, categories and services corrected, and the listing made to agree with the site. At {{buildSeo}} we research what your practice should be discoverable for, treatment by treatment, and build the site around those opportunities. Above {{buildMulti}} we take on the whole search architecture of a complex practice, and that one is quoted rather than packaged. The free review tells you which rung you are on, and it is usually lower than people expect.",
     "pages": [
       "faq",
       "pricing"
@@ -178,7 +178,7 @@
   {
     "id": "only-google-listing",
     "question": "What if I only want my Google listing fixed?",
-    "answer": "Then that is all we will sell you. A one-time Google Business Profile rebuild is {{gbpRebuild}}: claimed or verified, categories and services rebuilt, hours, photos, questions seeded and a review flow set up, with no monthly commitment attached. If you want it kept that way afterwards, management is {{gbp}} a month. If you do not, nothing changes and you owe nothing further.",
+    "answer": "Then that is all we will sell you. A one-time Google Business Profile rebuild is {{gbpRebuild}}: claimed or verified, categories and services rebuilt, hours, photos, questions seeded and a review flow set up, with no monthly commitment attached. If you want it kept that way afterwards, Local SEO and Google Care is {{careGoogle}} a month and covers the listing along with the rest. If you do not, nothing changes and you owe nothing further.",
     "pages": [
       "faq",
       "pricing"
@@ -204,5 +204,27 @@
       "pricing"
     ],
     "order": 20
+  },
+  {
+    "id": "gbp-audit-included",
+    "question": "Do you look at my Google listing before building the website?",
+    "answer": "Always, and it is included in every package including the smallest. We go through the profile line by line first: is it verified, is the name and address and phone right, is the primary category correct, does it link to the right website, are the hours and services right, are there photographs, what do the reviews say and does anyone reply, are there duplicate listings, and who is competing with you. You cannot sensibly build a site for a practice whose listing is unverified or pointing somewhere else, and finding that out after launch is finding it out too late.",
+    "pages": [
+      "faq",
+      "pricing",
+      "process"
+    ],
+    "order": 21
+  },
+  {
+    "id": "website-and-rankings",
+    "question": "If I buy a website, will patients find me on Google?",
+    "answer": "A website is only one part of local search. Your Google Business Profile, your reviews, your competition, your location and your website all influence whether patients find you. That is why every package includes a local-search foundation and an audit of your listing. We do not guarantee rankings, and nobody honestly can. What we do is make sure the website and the Google presence are properly structured, so your practice has the strongest foundation we can actually control. If you want that foundation maintained and improved after launch, that is what the monthly plan is for.",
+    "pages": [
+      "faq",
+      "pricing",
+      "home"
+    ],
+    "order": 22
   }
 ]

@@ -23,7 +23,7 @@ import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import { BUSINESS, whatsappWithMessage } from '@/config/site';
 import { href } from '@/lib/url';
-import { BUILDS, PLANS, STANDALONE_MONTHLY, rupees } from '@/config/pricing';
+import { BUILDS, PLANS, rupees } from '@/config/pricing';
 import { serviceAccent, ACCENTS, cycleAccent } from '@/lib/accents';
 import {
   graph,
@@ -64,19 +64,19 @@ const priceHeadlines = [
     name: 'A practice website',
     value: rupees(BUILDS[0]!.from),
     unit: '',
-    note: `Fixed in writing before we start. Most of that figure is the writing and the enquiry path rather than the building. An established clinic with a page per treatment starts at ${rupees(BUILDS[1]!.from)}.`,
+    note: `Fixed in writing before we start, and it includes an audit of your Google listing. Most of that figure is the writing and the enquiry path rather than the building.`,
   },
   {
-    name: 'Your Google listing',
-    value: rupees(STANDALONE_MONTHLY.gbp),
-    unit: '/ month',
-    note: 'Managed properly, month to month. Or a one-time rebuild, with nothing attached.',
+    name: 'Website + Google',
+    value: rupees(BUILDS[1]!.from),
+    unit: '',
+    note: 'The one most practices need: a page per treatment, and your Google listing rebuilt and matched to it. Ninety days of support after launch.',
   },
   {
-    name: 'Website + Google, together',
-    value: rupees(PLANS[1]!.monthly),
+    name: 'Local SEO & Google care',
+    value: rupees(PLANS[0]!.monthly),
     unit: '/ month',
-    note: 'Both places a patient looks, maintained as one job. Month to month. You stop it by sending a message.',
+    note: 'After launch: the listing managed, reviews answered, one new page a month, and a written report. Month to month, stopped by a message.',
   },
 ];
 

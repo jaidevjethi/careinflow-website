@@ -16,7 +16,7 @@ import DiagramFigure from '@/components/diagrams/DiagramFigure.astro';
 import MethodOrder from '@/components/diagrams/MethodOrder.astro';
 import { href } from '@/lib/url';
 import { cycleAccent } from '@/lib/accents';
-import { PLANS, STANDALONE_MONTHLY, rupees } from '@/config/pricing';
+import { PLANS, rupees } from '@/config/pricing';
 import {
   graph,
   organizationSchema,
@@ -280,10 +280,10 @@ const cadence = [
             lede="Launch begins the maintenance schedule: weekly monitoring, monthly upkeep, and a quarterly written review of what patients did and what to do next. The full schedule is on the ongoing care page."
           />
           <p class="mt-6 max-w-[620px] text-[16px] leading-[1.65] text-muted">
-            Care is {rupees(STANDALONE_MONTHLY.care)} a month, or
-            {' '}{rupees(PLANS[1]!.monthly)} with your Google Business Profile
-            managed alongside it. Month to month, no lock-in, and the website
-            stays yours either way, see the
+            Local SEO and Google care is {rupees(PLANS[0]!.monthly)} a month:
+            the listing managed, reviews answered, one new page a month and a
+            written report. Month to month, no lock-in, and the website stays
+            yours either way, see the
             {' '}<a href={href('/pricing')} class="font-semibold text-surgical underline underline-offset-4">full price list</a>.
           </p>
           <p class="mt-7">

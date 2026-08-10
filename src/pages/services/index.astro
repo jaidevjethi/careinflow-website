@@ -7,7 +7,7 @@ import deviceSuite from '@/assets/mockups/services-device-suite.webp';
 import SectionHead from '@/components/SectionHead.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import { href } from '@/lib/url';
-import { BUILDS, ONE_TIME_ITEMS, PLANS, STANDALONE_MONTHLY, rupees } from '@/config/pricing';
+import { BUILDS, PLANS, rupees } from '@/config/pricing';
 import { SERVICE_PRICES } from '@/lib/prices';
 import {
   graph,
@@ -24,15 +24,12 @@ const description =
 
 const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
 
-/**
- * Both counts on this page come from the collection, because a hand-written
- * one drifted: the stat said "Nine" — the homepage's count of capability
- * cards — above five priced services, on a page whose own H1 says four core
- * services plus support. Three numbers on one screen, two of them wrong for
- * the thing a reader was looking at.
+/*
+ * The service count in the hero stat comes from the collection. It was
+ * hand-written as "Nine" — the homepage's count of capability cards — above
+ * five priced services, on a page whose own H1 then said four. Three numbers
+ * on one screen, two of them wrong for the thing a reader was looking at.
  */
-const NUMBER_WORDS = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
-const spell = (n: number) => NUMBER_WORDS[n] ?? String(n);
 
 const schema = graph(
   organizationSchema(),
@@ -97,24 +94,24 @@ const maintenance = [
 const engagements = [
   {
     name: 'Start with the website',
-    price: `From ${rupees(BUILDS[0]!.from)}, one-time`,
-    scope: 'A complete practice website with a page per treatment, WhatsApp enquiry flow, and launch measurement.',
-    excludes: 'Excludes: ongoing GBP management and content beyond the agreed page list.',
-    suits: 'Suits practices whose listing is healthy but whose site is old, slow or generic.',
+    price: `${rupees(BUILDS[0]!.from)}, one-time`,
+    scope: 'A practice website up to five pages, with the local-search foundation under it and an audit of your Google listing.',
+    excludes: 'Excludes: month-to-month management of the listing, and a treatment-by-treatment content strategy.',
+    suits: 'Suits a solo doctor or small practice in a straightforward local market.',
   },
   {
-    name: 'Start with Google',
-    price: `${rupees(ONE_TIME_ITEMS[0]!.price)} once, or ${rupees(STANDALONE_MONTHLY.gbp)} a month`,
-    scope: 'Google Business Profile rebuilt and maintained, citations corrected, review flow set up.',
-    excludes: 'Excludes website changes. The audit will still say plainly if your site is the real problem.',
-    suits: 'Suits practices with a decent website that patients simply cannot find.',
+    name: 'Website and Google together',
+    price: `${rupees(BUILDS[1]!.from)}, one-time`,
+    scope: 'Up to ten pages with a page per treatment, plus your Google Business Profile rebuilt, aligned to the site and handed over working. Ninety days of support.',
+    excludes: 'Excludes ongoing management after the 90 days, Gujarati, and more than one location.',
+    suits: 'Suits the practice that wants a website and wants patients to find it. Most people start here.',
   },
   {
-    name: 'The full system',
-    price: `From ${rupees(BUILDS[1]!.from)}, then ${rupees(PLANS[2]!.monthly)} a month`,
-    scope: 'Website, Google Business Profile, local SEO groundwork and AI answer readiness, built as one system, then maintained.',
-    excludes: 'Excludes: nothing that affects how a patient finds and judges you online.',
-    suits: 'Suits practices that want the whole first impression handled by one accountable team.',
+    name: 'Then keep it working',
+    price: `${rupees(PLANS[0]!.monthly)} a month`,
+    scope: 'The listing managed, every review answered, local search monitored, one new treatment page a month, and a written report.',
+    excludes: 'Excludes any promise about rankings. What it promises is continuous improvement and maintenance.',
+    suits: 'Suits any practice that wants the work to continue after launch. Month to month, no lock-in.',
   },
 ];
 ---
@@ -122,7 +119,7 @@ const engagements = [
 <BaseLayout {title} {description} path="/services" {schema}>
   <PageHero
     label="What we do"
-    title="Four core services, plus the support work around them."
+    title="Five services for healthcare practices, and nothing else."
     lede="A small number of things, done for healthcare practices only, each held to a standard we publish. If a service is not on this page we do not sell it, and we will tell you so rather than take the work."
     stats={targets}
   >
@@ -140,14 +137,14 @@ const engagements = [
   </PageHero>
 
   <!-- SERVICE DETAILS : alternating rows -->
-  <section class="border-t border-hairline bg-surface" aria-label="The four core services">
+  <section class="border-t border-hairline bg-surface" aria-label="What we do for clinics">
     <div class="section shell flex flex-col gap-20">
       {services.map((service, i) => (
         <article class="grid items-start gap-10 lg:grid-cols-2 lg:gap-20">
           <div class:list={[i % 2 === 1 && 'lg:order-2']}>
             <p class="mb-4 flex flex-wrap items-center gap-2.5">
               {service.data.order > 4 && (
-                <span class="chip bg-hairline-soft text-muted">Support service</span>
+                <span class="chip bg-hairline-soft text-muted">Sold on its own too</span>
               )}
             </p>
             <h2 class="text-[clamp(26px,3vw,34px)] font-extrabold leading-[1.1] tracking-[-0.03em] text-ink">
@@ -206,8 +203,8 @@ const engagements = [
         id="engagements-title"
         dark
         label="Where to start"
-        title={`Most clinics need three of our ${spell(services.length)} services to begin. These are the usual starting points.`}
-        lede="Every engagement is one fixed price, agreed in writing after the free review. No hourly billing and no invoice you did not expect. What a package excludes is written as plainly as what it includes."
+        title="Where most practices actually start, and what comes after."
+        lede="The website packages are a ladder: each rung takes on more of the local-search problem than the one below it. Every engagement is one fixed price, agreed in writing after the free review, and what it excludes is written as plainly as what it includes."
       />
       <div class="reveal-group mt-12 grid gap-5 lg:grid-cols-3">
         {engagements.map((e) => (
