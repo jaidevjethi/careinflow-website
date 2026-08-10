@@ -11,7 +11,7 @@
  */
 
 import type { APIRoute } from 'astro';
-import { BUSINESS, BOOKING_URL, CANONICAL_HOST } from '@/config/site';
+import { BUSINESS, BOOKING_URL, CANONICAL_HOST, HOURS_LABEL } from '@/config/site';
 import {
   BUILDS,
   NEVER_CHARGED,
@@ -75,7 +75,7 @@ ${NEVER_CHARGED.map((n) => `- ${n}`).join('\n')}
 - [Work](${url('/work/')}): Real projects only, including a bilingual dental clinic website in ${BUSINESS.address.locality} (pramukhdentalclinic.com). One non-healthcare project is included and labelled as such.
 - [Resources](${url('/resources/')}): Plain-language guides for clinic owners on patient behaviour, Google Business Profile, local SEO, and website speed.
 - [FAQ](${url('/faq/')}): Costs, timelines, ownership, clients own everything, and what ${BUSINESS.name} will not do.
-- [Contact](${url('/contact/')}): One WhatsApp message gets a free written review within two working days. Phone answered ${BUSINESS.hours.opens}–${BUSINESS.hours.closes}, Monday to Saturday.
+- [Contact](${url('/contact/')}): One WhatsApp message gets a free written review within two working days. Phone answered ${HOURS_LABEL}.
 
 ## What ${BUSINESS.name} will not do
 

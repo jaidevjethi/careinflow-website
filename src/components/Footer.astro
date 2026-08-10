@@ -1,6 +1,7 @@
 ---
-import { BUSINESS, BOOKING_URL, FOOTER_GROUPS, WHATSAPP_URL } from '@/config/site';
+import { BUSINESS, BOOKING_URL, FOOTER_GROUPS, HOURS_LABEL, WHATSAPP_URL } from '@/config/site';
 import { href } from '@/lib/url';
+import MapPanel from '@/components/MapPanel.astro';
 
 const year = new Date().getFullYear();
 
@@ -32,7 +33,7 @@ const ROUTES = [
   {
     label: 'Phone',
     value: `Call ${BUSINESS.phoneDisplay}`,
-    note: `${BUSINESS.hours.opens}–${BUSINESS.hours.closes}, Monday to Saturday`,
+    note: HOURS_LABEL,
     url: `tel:${BUSINESS.phone}`,
     class: 'text-panel-text hover:text-surface',
   },
@@ -97,6 +98,11 @@ const ROUTES = [
         <p class="mt-2 text-[13px] leading-[1.5] text-panel-text-faint">
           One studio, and no branch offices anywhere.
         </p>
+
+        {/* Lazy, and several screens below the fold on every page, so a reader
+            who never reaches the footer never requests anything from Google.
+            A fixed aspect reserves the space, so it cannot shift the page. */}
+        <MapPanel class="mt-6" onPanel />
       </div>
 
       <nav

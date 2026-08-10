@@ -1,109 +1,84 @@
 ---
-import { BUSINESS, GBP_URL } from '@/config/site';
+import { BUSINESS, GBP_URL, HOURS_LABEL } from '@/config/site';
 
 /**
- * The studio on Google Maps, loaded only when someone asks for it.
+ * The studio on Google Maps.
  *
- * A Google Maps iframe is not a picture. It is roughly a megabyte of
- * third-party script and tiles, it sets Google cookies on load, and it is the
- * heaviest thing that would be on this site by an order of magnitude — on a
- * site whose whole argument is that it loads in about a second on a phone,
- * and whose /privacy page tells visitors it embeds no third-party trackers.
+ * Shown by default rather than behind a button, which is a deliberate trade
+ * and worth stating. A Maps iframe is third-party: it sets Google cookies and
+ * pulls script and tiles from Google when it loads. Two things keep the cost
+ * near zero anyway:
  *
- * Loading it on click keeps every one of those statements true. Nothing from
- * Google is requested until a visitor presses the button, which is also the
- * only point at which a map is worth a megabyte to them. Everything the panel
- * is actually for — the address, the pin, directions, the listing itself — is
- * a plain link that works with the map never loaded at all, and with
- * JavaScript switched off entirely.
+ * - `loading="lazy"`. This sits at the bottom of the footer, several screens
+ *   below the fold on every page. Nothing is requested until a visitor scrolls
+ *   near it, so a reader who never reaches the footer pays nothing at all.
+ * - A fixed aspect ratio rather than a fixed height, so the frame reserves its
+ *   space before it loads and cannot shift the page. CLS stays at 0.
  *
- * The embed URL is the `pb=` form Google's own share dialog produces. It is
- * pinned to the place feature id, so it survives the studio being re-pinned.
+ * Everything the map is for also exists as plain HTML beside it — the address,
+ * directions, the listing — so the panel still works with the frame blocked,
+ * failed, or never scrolled into view.
+ *
+ * The embed URL is the `pb=` form Google's own share dialog produces, pinned
+ * to the place feature id so it survives the studio being re-pinned.
  */
 const EMBED_SRC =
   'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3655.6348323816474!2d72.3491067!3d23.6174258!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395c43110e8cd923%3A0x435194ce449cea4b!2sCareinflow!5e0!3m2!1sen!2sin!4v1786336292268!5m2!1sen!2sin';
 
+/** Directions to the pin itself, not to a text search for the name. */
+const DIRECTIONS = `https://www.google.com/maps/dir/?api=1&destination=${BUSINESS.geo.latitude},${BUSINESS.geo.longitude}&destination_place_id=ChIJI9mMDhFDXDkRS-qcRM6UUUM`;
+
 interface Props {
   class?: string;
+  /** Dark surroundings (the footer) need the light link treatment. */
+  onPanel?: boolean;
 }
-const { class: className } = Astro.props;
-
-/** Directions, prefilled to the pin rather than to a text search. */
-const DIRECTIONS = `https://www.google.com/maps/dir/?api=1&destination=${BUSINESS.geo.latitude},${BUSINESS.geo.longitude}&destination_place_id=ChIJI9mMDhFDXDkRS-qcRM6UUUM`;
+const { class: className, onPanel = false } = Astro.props;
 ---
 
-<figure class:list={['m-0', className]} data-map data-map-src={EMBED_SRC}>
+<figure class:list={['m-0', className]}>
   <div
-    class="relative overflow-hidden rounded-3xl border border-line bg-canvas"
-    data-map-frame
+    class:list={[
+      'overflow-hidden rounded-2xl border',
+      onPanel ? 'border-panel-line bg-panel-card' : 'border-line bg-canvas',
+    ]}
   >
-    {/* The placeholder is the panel. It carries the same information the map
-        would, so nothing here depends on pressing the button. */}
-    <div class="grid gap-5 p-7 sm:p-8" data-map-placeholder>
-      <div>
-        <p class="label-mono mb-3 text-faint">The studio</p>
-        <address class="text-[16px] not-italic leading-[1.7] text-body">
-          {BUSINESS.address.street},<br />
-          {BUSINESS.address.locality}, {BUSINESS.address.region}
-          {' '}{BUSINESS.address.postalCode}
-        </address>
-        <p class="mt-2 font-mono text-[11px] uppercase tracking-[0.08em] text-surgical">
-          {BUSINESS.hours.opens}–{BUSINESS.hours.closes} · Monday to Saturday
-        </p>
-      </div>
-
-      <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
-        <a href={DIRECTIONS} rel="noopener" class="prose-link text-[15px]">Get directions →</a>
-        <a href={GBP_URL} rel="noopener" class="prose-link text-[15px]">See the listing →</a>
-        <button
-          type="button"
-          data-map-load
-          class="btn-secondary px-5 py-2.5 text-[15px]"
-          hidden
-        >
-          Show the map here
-        </button>
-      </div>
-
-      <p class="text-[13px] leading-[1.6] text-muted" data-map-note hidden>
-        The map is a Google embed. Nothing from Google loads on this page until
-        you press that button.
-      </p>
-    </div>
+    <iframe
+      src={EMBED_SRC}
+      title="Google Map showing the CareInflow studio on Radhanpur Road, Mehsana"
+      loading="lazy"
+      referrerpolicy="strict-origin-when-cross-origin"
+      allowfullscreen
+      class="block aspect-[4/3] w-full border-0 sm:aspect-[16/10]"
+    ></iframe>
   </div>
-  <figcaption class="mt-3 font-mono text-[11px] uppercase tracking-[0.08em] text-faint">
-    Radhanpur Road, Mehsana — the only studio we have
+
+  <figcaption
+    class:list={[
+      'mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-[13px] leading-[1.6]',
+      onPanel ? 'text-panel-text-faint' : 'text-muted',
+    ]}
+  >
+    <span>{BUSINESS.address.locality} {BUSINESS.address.postalCode} · {HOURS_LABEL}</span>
+    <a
+      href={DIRECTIONS}
+      rel="noopener"
+      class:list={[
+        'inline-flex min-h-[24px] items-center',
+        onPanel ? 'text-panel-text-dim hover:text-surface' : 'prose-link',
+      ]}
+    >
+      Get directions →
+    </a>
+    <a
+      href={GBP_URL}
+      rel="noopener"
+      class:list={[
+        'inline-flex min-h-[24px] items-center',
+        onPanel ? 'text-panel-text-dim hover:text-surface' : 'prose-link',
+      ]}
+    >
+      See the listing →
+    </a>
   </figcaption>
 </figure>
-
-<script>
-  /*
-   * The button is hidden in the markup and revealed here, so a visitor without
-   * JavaScript is never shown a control that cannot work. The address, the
-   * directions link and the listing link are all in the HTML and need none of
-   * this.
-   */
-  for (const panel of document.querySelectorAll<HTMLElement>('[data-map]')) {
-    const button = panel.querySelector<HTMLButtonElement>('[data-map-load]');
-    const frame = panel.querySelector<HTMLElement>('[data-map-frame]');
-    const note = panel.querySelector<HTMLElement>('[data-map-note]');
-    const src = panel.dataset.mapSrc;
-    if (!button || !frame || !src) continue;
-
-    button.hidden = false;
-    if (note) note.hidden = false;
-
-    button.addEventListener('click', () => {
-      const iframe = document.createElement('iframe');
-      iframe.src = src;
-      iframe.title = 'Google Map showing the CareInflow studio on Radhanpur Road, Mehsana';
-      iframe.loading = 'lazy';
-      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
-      iframe.setAttribute('allowfullscreen', '');
-      // A fixed aspect rather than a fixed height, so the frame cannot shift
-      // the page when it swaps in and cannot letterbox on a phone.
-      iframe.className = 'block aspect-[4/3] w-full border-0 sm:aspect-[16/9]';
-      frame.replaceChildren(iframe);
-    });
-  }
-</script>

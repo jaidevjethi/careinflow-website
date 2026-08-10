@@ -64,7 +64,11 @@ export const BUSINESS = {
    * local-search entity, and because a doctor deciding when to ring should
    * not have to guess.
    */
-  hours: { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], opens: '10:00', closes: '19:00' },
+  hours: {
+    days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+    opens: '11:00',
+    closes: '19:30',
+  },
   /** Areas served, Mehsana first (home base). */
   serviceAreas: [
     'Mehsana',
@@ -78,6 +82,36 @@ export const BUSINESS = {
     'Palanpur',
   ],
 } as const;
+
+/**
+ * Opening hours as a reader sees them, derived from `BUSINESS.hours` rather
+ * than written out again.
+ *
+ * The day range used to be the string "Monday to Saturday", typed by hand into
+ * the footer, /contact and llms.txt while the times came from config. So when
+ * the hours changed, three pages kept the old days and the schema had the new
+ * ones — the same drift the address had, and the reason a listing and a site
+ * stop agreeing. Both now come from one place.
+ *
+ * 24-hour values stay in `BUSINESS.hours` because that is what schema.org's
+ * `openingHoursSpecification` requires. These are for prose only.
+ */
+const clock = (t: string): string => {
+  const [h = '0', m = '00'] = t.split(':');
+  const hour = Number(h);
+  const suffix = hour < 12 ? 'am' : 'pm';
+  const twelve = hour % 12 === 0 ? 12 : hour % 12;
+  return `${twelve}${m === '00' ? '' : `:${m}`}${suffix}`;
+};
+
+/** "Monday to Friday" — first and last of the open days. */
+export const HOURS_DAYS = `${BUSINESS.hours.days[0]} to ${BUSINESS.hours.days.at(-1)}`;
+
+/** "11am to 7:30pm" */
+export const HOURS_TIMES = `${clock(BUSINESS.hours.opens)} to ${clock(BUSINESS.hours.closes)}`;
+
+/** "11am to 7:30pm, Monday to Friday" */
+export const HOURS_LABEL = `${HOURS_TIMES}, ${HOURS_DAYS}`;
 
 export const WHATSAPP_URL = `https://wa.me/${BUSINESS.phone.replace('+', '')}`;
 
