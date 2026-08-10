@@ -48,6 +48,7 @@ Full rules in the `careinflow-design` skill. The short version:
 | `careinflow-funnel` | CTA placement, WhatsApp prefills, new pages |
 | `careinflow-images` | generating, capturing and optimizing imagery |
 | `careinflow-review` | judging any change: who to judge as, how to rate honestly, and the loop to run before calling it done |
+| `gbp-optimize` | auditing or fixing a Google Business Profile, ours or a client's — order of work, console mechanics, what does nothing |
 
 ## SEO conventions
 
