@@ -10,7 +10,7 @@ import reportImage from '@/assets/mockups/review-report.webp';
 import studioExterior from '@/assets/editorial/studio-exterior.webp';
 import SectionHead from '@/components/SectionHead.astro';
 import FaqSection from '@/components/FaqSection.astro';
-import { BUSINESS, WHATSAPP_URL, whatsappFor } from '@/config/site';
+import { BUSINESS, BOOKING_URL, WHATSAPP_URL, whatsappFor } from '@/config/site';
 import { BUILDS, STANDALONE_MONTHLY, rupees } from '@/config/pricing';
 import { href } from '@/lib/url';
 import { cycleAccent, ACCENTS } from '@/lib/accents';
@@ -88,10 +88,18 @@ const outline = [
   { n: '05', line: 'What it would cost, fixed, in writing, only if work is worth doing' },
 ];
 
+/*
+ * Four steps, not three. The third used to jump straight from the review to a
+ * quote, which skipped the part that actually happens: we talk it through
+ * before anything is scoped. That conversation is week one of the method and
+ * it was documented there but nowhere near the enquiry, which made the site
+ * read as though a price arrived without anyone speaking.
+ */
 const steps = [
   { step: '01', text: 'Send your clinic\'s name, the pre-written message needs only that.' },
   { step: '02', text: 'Within two working days you get the written review, free.' },
-  { step: '03', text: 'If work is worth doing, the review becomes the plan we quote against, fixed, in writing.' },
+  { step: '03', text: 'We talk it through, about an hour, on WhatsApp or a call or a booked meeting, whichever suits you. You have already read the review by then, so it is a conversation rather than a pitch.' },
+  { step: '04', text: 'If work is worth doing, the review becomes the plan we quote against, fixed, in writing.' },
 ];
 ---
 
@@ -99,7 +107,7 @@ const steps = [
   <PageHero
     label="Contact"
     title="Send your clinic's name. We reply with what a patient sees."
-    lede={'No form, no discovery call, no slide deck. One WhatsApp message starts it, and if the honest answer is "change nothing", that is the answer you will get.'}
+    lede={'No form and no slide deck. One WhatsApp message starts it, the written review comes back before anyone asks for an hour of your time, and if the honest answer is "change nothing", that is the answer you will get.'}
   >
     <div class="mt-9 flex flex-wrap items-center gap-4">
       <a href={whatsappHref} rel="noopener" class="btn-whatsapp px-7 py-4 text-[17px]">
@@ -112,6 +120,8 @@ const steps = [
     <p class="mt-5 text-[15px] leading-[1.6] text-panel-text-dim">
       Usually answered the same day. Calls are answered between
       {' '}{BUSINESS.hours.opens} and {BUSINESS.hours.closes}, Monday to Saturday.
+      {' '}Or <a href={BOOKING_URL} rel="noopener" class="link-accent">book a time to talk</a>,
+      if a message is not how you would rather start.
     </p>
 
     {/* Uncropped at desktop. On a phone the band is wider than the source
@@ -235,9 +245,12 @@ const steps = [
         />
         <p class="mt-6 max-w-[620px] text-lg leading-[1.62] text-body">
           It is free because it is the fastest way to show you we see what
-          other studios miss, before you pay anything and before anyone asks
-          you to sit through a call. Some reviews end with "your presence is
-          healthy". Those practices remember us anyway.
+          other studios miss, before you pay anything and before you have given
+          us an hour of your day. We do talk it through afterwards, properly,
+          because nothing sensible gets scoped without that conversation. The
+          difference is the order: you read first, then we talk. Some reviews
+          end with "your presence is healthy". Those practices remember us
+          anyway.
         </p>
         <p class="mt-5 max-w-[620px] text-[16px] leading-[1.65] text-muted">
           You can see the scale before you message:
