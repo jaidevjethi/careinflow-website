@@ -15,6 +15,7 @@ import { BUSINESS, BOOKING_URL, CANONICAL_HOST, HOURS_LABEL } from '@/config/sit
 import {
   BUILDS,
   GBP_AUDIT,
+  matrixFor,
   NEVER_CHARGED,
   ONE_TIME_ITEMS,
   PLANS,
@@ -44,9 +45,13 @@ Published in full at ${url('/pricing/')}. Every figure below is a starting point
 There are four website packages, one ongoing plan, and a small number of things bought on their own. What separates the packages is how much of the local-search system CareInflow takes responsibility for, not page count.
 
 - ${build('practice-website').name}: ${rupees(build('practice-website').from)} one-time (${build('practice-website').pages.toLowerCase()}, ${build('practice-website').timeline}). ${build('practice-website').responsibility}
+  Includes: ${matrixFor(0).join('; ')}.
 - ${build('practice-website-google').name}: ${rupees(build('practice-website-google').from)} one-time (${build('practice-website-google').pages.toLowerCase()}, ${build('practice-website-google').timeline}). ${build('practice-website-google').responsibility} This is the package most practices need, and includes 90 days of post-launch support.
+  Includes: ${matrixFor(1).join('; ')}.
 - ${build('healthcare-seo').name}: ${rupees(build('healthcare-seo').from)} one-time (${build('healthcare-seo').pages.toLowerCase()}, ${build('healthcare-seo').timeline}). ${build('healthcare-seo').responsibility} Includes 90 days of post-launch support.
+  Includes: ${matrixFor(2).join('; ')}.
 - ${build('multi-specialty').name}: from ${rupees(build('multi-specialty').from)}, quoted rather than packaged. ${build('multi-specialty').responsibility} The figure depends on doctors, specialties, treatments, locations and content.
+  Includes: ${matrixFor(3).join('; ')}.
 - ${carePlan.name}: ${rupees(carePlan.monthly)} a month, month to month with no lock-in. ${carePlan.summary} It does not promise rankings; it promises continuous local-search improvement and maintenance.
 - Healthcare social media content: from ${rupees(STANDALONE_MONTHLY.social)} a month, sold on its own or alongside anything else. Strategy, up to 4 content pieces a week and 3 reel edits a month. Complex carousels, shoots and additional production are quoted separately, and advertising spend is always paid by the client directly.
 - One-time Google Business Profile rebuild: ${rupees(once('Google Business Profile rebuild').price)}

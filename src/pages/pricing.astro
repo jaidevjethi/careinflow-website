@@ -27,6 +27,7 @@ import {
   PRICE_NOTES,
   PRICE_PROMISE,
   STANDALONE_MONTHLY,
+  PACKAGE_MATRIX,
   SOCIAL_ADDONS,
   GBP_AUDIT,
   rupees,
@@ -143,7 +144,7 @@ const principles = [
   <PageHero
     label="Pricing"
     title="Our prices are on this page. You should not have to ask."
-    lede="Most studios make you sit through a call before they say a number. Here is what things cost, what moves the figure up, and what we never charge for. Your exact price is fixed in writing after the free review."
+    lede="Most studios make you sit through a call before they tell you a number. Here is what things cost, what makes the price go up, and what we never charge for. Your own figure is fixed in writing after the free review."
     stats={headline.map((h) => ({ value: h.value, caption: h.label }))}
   >
     <div class="mt-7 flex flex-wrap items-center gap-3.5">
@@ -208,8 +209,8 @@ const principles = [
       <SectionHead
         id="builds-title"
         label="Websites, one-time"
-        title="Four packages. Each one says how much we take on."
-        lede="What separates them is how much of the work we take responsibility for, not how many pages you get. The smallest builds the site and lays the search foundation under it. The largest takes on the whole search architecture of a complex practice. Every price is fixed in writing before anything begins."
+        title="Four packages. Each one says how much we do for you."
+        lede="The difference is how much of the work we take on, not how many pages you get. The smallest builds your website and sets it up to be found. The largest plans and builds the whole thing for a practice with several doctors or branches. Every price is agreed in writing before we start."
       />
 
       <div class="reveal-group mt-12 grid items-stretch gap-5 sm:grid-cols-2 xl:grid-cols-4">
@@ -279,45 +280,122 @@ const principles = [
       </div>
 
       <p class="mt-7 max-w-[680px] text-[16px] leading-[1.65] text-muted">
-        Not sure which rung your practice is on? That is exactly what the
+        Not sure which one is right for your practice? That is exactly what the
         <a href={href('/contact')} class="prose-link">free written review</a>
-        answers, and it often answers "less than you expected".
+        tells you, and the answer is often "less than you expected".
       </p>
     </div>
   </section>
 
   <!-- WHAT IS IN EACH PACKAGE -->
-  <!-- Four columns, read across. Every inclusion and every exclusion that used
-       to live inside the cards is still here, in full. -->
+  <!-- A table, because this is tabular data: one row per thing, one column per
+       package, read across. It was four parallel lists, which made a reader
+       hold ten lines in their head to work out what the next package added.
+       A real <table> is also the right semantics — a screen reader announces
+       the row and column headers with every cell, which four <ul>s cannot do.
+
+       It scrolls sideways under 900px rather than reflowing, because a
+       comparison you cannot see side by side is not a comparison. The region
+       is focusable and labelled so it can be reached by keyboard. -->
   <section class="band-powder" aria-labelledby="includes-title">
     <div class="section shell">
       <SectionHead
         id="includes-title"
-        label="In full"
-        title="What is in each package."
-        lede="Every package builds on the one before it. Exclusions are listed with the same weight as inclusions, because what a price does not cover is the part people get surprised by."
+        label="Side by side"
+        title="What you get in each one."
+        lede="Every package includes everything in the one before it. A tick means it is included; a dash means it is not, and we would rather show you that than leave it out."
       />
 
-      <div class="mt-11 grid gap-8 sm:grid-cols-2 xl:grid-cols-4 xl:gap-6">
-        {BUILDS.map((build, i) => (
-          <div>
-            <p class="flex flex-wrap items-baseline gap-x-2.5">
-              <span class="text-[17px] font-bold tracking-[-0.02em] text-ink">{build.name}</span>
-              <span class:list={['font-mono text-[12px]', cycleAccent(i).text]}>
-                {build.custom ? `from ${rupees(build.from)}` : rupees(build.from)}
-              </span>
-            </p>
-            <ul class="mt-4 border-t border-line pt-3.5 text-[14.5px] leading-[1.5] text-body">
-              {build.includes.map((line) => (
-                <li class="flex gap-2.5 py-1.5">
-                  <span class="mt-[8px] h-1.5 w-1.5 shrink-0 rounded-full bg-pass" aria-hidden="true"></span>
-                  <span>{line}</span>
-                </li>
+      <div
+        class="mt-11 overflow-x-auto rounded-3xl border border-line bg-surface"
+        tabindex="0"
+        role="region"
+        aria-label="Compare the four packages, scrollable"
+      >
+        <table class="w-full min-w-[860px] border-collapse text-left">
+          <caption class="sr-only">
+            What is included in each of the four website packages
+          </caption>
+          <thead>
+            <tr class="border-b border-line">
+              <th scope="col" class="w-[38%] px-6 py-5 align-bottom">
+                <span class="label-mono text-faint">What you get</span>
+              </th>
+              {BUILDS.map((build, i) => (
+                <th scope="col" class="px-4 py-5 align-bottom">
+                  <span class="block text-[15px] font-bold leading-[1.3] tracking-[-0.02em] text-ink">
+                    {build.name}
+                  </span>
+                  <span class:list={['mt-1.5 block font-mono text-[12px]', cycleAccent(i).text]}>
+                    {build.custom ? 'from ' : ''}{rupees(build.from)}
+                  </span>
+                </th>
               ))}
-            </ul>
-            <p class="mt-3.5 border-t border-hairline pt-3 text-[13.5px] leading-[1.55] text-muted">
-              {build.excludes}
-            </p>
+            </tr>
+          </thead>
+
+          {PACKAGE_MATRIX.map((group) => (
+            <tbody>
+              <tr>
+                <th
+                  scope="colgroup"
+                  colspan={BUILDS.length + 1}
+                  class="border-b border-line bg-canvas px-6 py-2.5"
+                >
+                  <span class="label-mono text-surgical">{group.group}</span>
+                </th>
+              </tr>
+              {group.rows.map((row) => (
+                <tr class="border-b border-hairline last:border-0">
+                  <th scope="row" class="px-6 py-3 text-[15px] font-normal leading-[1.45] text-body">
+                    {row.label}
+                  </th>
+                  {row.values.map((value) => (
+                    <td class="px-4 py-3 text-[14px] leading-[1.4]">
+                      {typeof value === 'string' ? (
+                        <span class="font-semibold text-body-deep">{value}</span>
+                      ) : value ? (
+                        <>
+                          {/* The tick carries the meaning, so it is not
+                              aria-hidden — it gets a text label instead. */}
+                          <svg
+                            width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            class="block text-pass" role="img" aria-label="Included"
+                          >
+                            <path
+                              d="M4.5 12.5l5 5 10-11"
+                              stroke="currentColor" stroke-width="2.4"
+                              stroke-linecap="round" stroke-linejoin="round"
+                            />
+                          </svg>
+                        </>
+                      ) : (
+                        <svg
+                          width="18" height="18" viewBox="0 0 24 24" fill="none"
+                          class="block text-line-strong" role="img" aria-label="Not included"
+                        >
+                          <path d="M6 12h12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" />
+                        </svg>
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          ))}
+        </table>
+      </div>
+
+      <p class="mt-4 text-[14px] leading-[1.6] text-muted sm:hidden">
+        The table scrolls sideways.
+      </p>
+
+      {/* What each price does not cover, in the same words the cards use. */}
+      <div class="mt-10 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+        {BUILDS.map((build) => (
+          <div class="border-t border-line pt-4">
+            <p class="text-[15px] font-bold tracking-[-0.02em] text-ink">{build.name}</p>
+            <p class="mt-2 text-[14px] leading-[1.55] text-muted">{build.excludes}</p>
           </div>
         ))}
       </div>
@@ -337,8 +415,8 @@ const principles = [
       <SectionHead
         id="plans-title"
         label="Monthly, after launch"
-        title="Launch is the start. One plan keeps it working, and keeps improving it."
-        lede="Month to month, no lock-in, cancel by sending a message. The website and every account stay in your name whatever you decide."
+        title="Going live is the start. One plan keeps it working."
+        lede="Month to month, no contract, stop it by sending a message. The website and every account stay in your name whatever you decide."
       />
 
       {PLANS.map((plan) => (
@@ -377,11 +455,11 @@ const principles = [
       <div class="mt-8 max-w-[820px] rounded-2xl border border-line bg-canvas px-6 py-5 sm:px-7">
         <p class="label-mono mb-3 text-faint" style="letter-spacing:0.12em">What it does not promise</p>
         <p class="text-[16px] leading-[1.65] text-body">
-          Rankings. What it promises is continuous local-search improvement and
-          maintenance: the listing kept right, the reviews answered, a new page
-          every month, and a written report saying what changed and what we did
-          about it. Where a practice ends up in the results is Google's
-          decision, and we would be careful with anyone who tells you otherwise.
+          A ranking. What it does promise is steady work every month: your
+          listing kept right, your reviews answered, a new page written, and a
+          report saying what we did and what changed. Where you end up in the
+          results is Google's decision, not ours, and we would be careful with
+          anyone who tells you otherwise.
         </p>
       </div>
     </div>
@@ -412,8 +490,8 @@ const principles = [
         <h3 class="label-mono mb-4 text-faint" style="letter-spacing:0.12em">What we are saying, plainly</h3>
         <p class="text-[16px] leading-[1.65] text-body-deep">{GBP_AUDIT.statement}</p>
         <p class="mt-5 border-t border-hairline pt-4 text-[15px] leading-[1.6] text-muted">
-          The audit is included in every package, and it costs nothing on its
-          own either — it is part of the
+          This check is part of every package, and it costs nothing on its own
+          either — it comes with the
           {' '}<a href={href('/contact')} class="prose-link">free written review</a>.
         </p>
       </aside>
@@ -425,8 +503,8 @@ const principles = [
     <SectionHead
       id="separate-title"
       label="Bought on its own"
-      title="Single pieces, for practices that only need one thing."
-      lede="You do not have to buy a website to work with us. Each of these stands alone, at a published price."
+      title="One thing at a time, if that is all you need."
+      lede="You do not have to buy a website to work with us. Each of these can be bought on its own, at the price shown."
     />
 
     <div class="mt-10 grid gap-10 lg:grid-cols-2 lg:gap-14">

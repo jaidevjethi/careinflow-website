@@ -58,10 +58,9 @@ export interface Build {
   custom?: boolean;
   timeline: string;
   pages: string;
-  /** One line naming what the studio takes responsibility for at this rung. */
+  /** One line naming what the studio takes on. Written for a doctor, not a marketer. */
   responsibility: string;
-  includes: string[];
-  /** Stated with the same weight as the inclusions. */
+  /** Stated with the same weight as what is included. */
   excludes: string;
   /** Our recommendation. Not a claim about what other practices chose. */
   recommended?: boolean;
@@ -71,105 +70,128 @@ export const BUILDS: Build[] = [
   {
     id: 'practice-website',
     name: 'Practice Website',
-    suits: 'A solo doctor or small practice in a straightforward local market.',
+    suits: 'One doctor, one place, and a market where you are not fighting ten others.',
     from: 24999,
     typicalTo: 34999,
     timeline: '3 weeks',
     pages: 'Up to 5 pages',
-    responsibility:
-      'We build the website correctly and lay the local-search foundation under it.',
-    includes: [
-      'Custom healthcare design, built mobile-first, never from a theme',
-      'Doctor and practice profile, services, contact and location',
-      'WhatsApp enquiry and tap-to-call from every page, with the map',
-      'Patient-focused copy written to what people arrive worried about',
-      'Speed and image optimisation, measured before launch',
-      'Local keyword research, and one service and location to target first',
-      'On-page SEO: titles, meta, clean URLs, internal links, sitemap',
-      'Healthcare and local-business schema, and Search Console set up',
-      'A Google Business Profile audit, with category and service advice',
-      'Your listing and your website made to say the same thing',
-    ],
+    responsibility: 'We build the website and set it up so Google can find it.',
     excludes:
-      'Excludes month-to-month management of your Google listing, a treatment-by-treatment content strategy, and any promise about rankings.',
+      'Does not include us looking after your Google listing every month, a page for every treatment, or any promise about where you rank.',
   },
   {
     id: 'practice-website-google',
     name: 'Practice Website + Google',
-    suits: 'The typical North Gujarat practice: a website, and patients who can find it.',
+    suits: 'Most practices here. You want a website, and you want patients to find it.',
     from: 39999,
     typicalTo: 54999,
     timeline: '4–5 weeks',
     pages: 'Up to 10 pages',
-    responsibility:
-      'We build the website and take responsibility for your Google presence alongside it.',
-    includes: [
-      'Everything in Practice Website',
-      'A page for each treatment that earns one, written to what patients search',
-      'FAQs, and an information architecture built around the treatments',
-      'Treatment and local keyword research, and a look at who ranks above you',
-      'Each treatment mapped to the page meant to answer it',
-      'Structured data, analytics, indexability checks, NAP consistency',
-      'Your Google Business Profile rebuilt: categories, description, services',
-      'Hours, business information and the website link, all corrected',
-      'Photo recommendations, and the listing aligned with the site',
-      'A framework for answering reviews, so replies do not have to be invented',
-      '90 days of support after launch',
-    ],
-    excludes:
-      'Excludes ongoing monthly management after the 90 days, Gujarati, and more than one location.',
+    responsibility: 'We build the website and fix your Google listing to match it.',
     recommended: true,
+    excludes:
+      'Does not include monthly work after the first 90 days, a Gujarati version, or more than one location.',
   },
   {
     id: 'healthcare-seo',
     name: 'Healthcare Website + Local SEO',
-    suits: 'An established practice that intends to compete for specific treatments.',
+    suits: 'An established practice that wants to be found for particular treatments.',
     from: 64999,
     typicalTo: 84999,
     timeline: '6–7 weeks',
-    pages: 'Up to 18 strategic pages',
-    responsibility:
-      'We work out what your practice should be discoverable for, then build the site around it.',
-    includes: [
-      'Everything in Practice Website + Google',
-      'Detailed keyword and treatment search-intent research',
-      'Competitor analysis, and where their content leaves a gap',
-      'Treatment opportunity mapping, so the page list is a decision not a guess',
-      'A page per treatment, per doctor, plus patient education',
-      'Treatment-level and technical SEO, with advanced internal linking',
-      'Local landing pages where a town genuinely justifies one',
-      'Google Business Profile optimisation and a Maps strategy',
-      'A review strategy that asks real patients at the right moment',
-      '90 days of support after launch',
-    ],
+    pages: 'Up to 18 pages',
+    responsibility: 'We work out what patients search for, then build the site to answer it.',
     excludes:
-      'Excludes paid advertising, app development and multiple locations. The first two we do not offer at all.',
+      'Does not include paid ads, apps or more than one location. We do not offer the first two at all.',
   },
   {
     id: 'multi-specialty',
     name: 'Multi-Specialty + Local SEO',
-    suits: 'Several doctors or departments, a diagnostic centre, or more than one location.',
+    suits: 'Several doctors or departments, a diagnostic centre, or more than one branch.',
     from: 89999,
     custom: true,
-    timeline: 'Quoted with the scope',
-    pages: 'Architecture, not a page count',
-    responsibility:
-      'We take on the whole search architecture of a complex practice.',
-    includes: [
-      'Specialty and department architecture, so a patient lands where they meant to',
-      'A profile page for each doctor, written to earn trust before the first visit',
-      'Treatment pages across every department',
-      'Location architecture, and a listing for each place you run',
-      'Advanced keyword research and competitor analysis',
-      'Technical SEO, local SEO and structured data across the whole site',
-      'A Google Business Profile strategy covering every location',
-      'Search-answer readiness, so the facts are quotable',
-      'Performance and conversion optimisation',
-    ],
+    timeline: 'Agreed with the scope',
+    pages: 'As many as it needs',
+    responsibility: 'We plan and build the whole thing, department by department.',
     excludes:
-      'The final figure depends on doctors, specialties, treatments, locations and how much content is needed. It is quoted, not packaged.',
+      'The price depends on how many doctors, departments, treatments and branches you have. We quote it after the free review.',
   },
 ];
+
+/* -------------------------------------------------------------------------
+ * What is in each package
+ *
+ * One table, not four lists. Four lists made a reader hold ten lines in their
+ * head to work out what the next package added; a row read across answers it
+ * at a glance, which is the whole job of this section.
+ *
+ * It is also the single source: `llms.txt` builds each package's inclusion
+ * list from these rows, so the page a person reads and the file an AI quotes
+ * cannot drift apart.
+ *
+ * A cell is `true` (included), `false` (not included) or a short string where
+ * the answer is a quantity rather than a yes.
+ * ---------------------------------------------------------------------- */
+
+export interface MatrixRow {
+  label: string;
+  /** One value per package, in BUILDS order. */
+  values: Array<boolean | string>;
+}
+
+export interface MatrixGroup {
+  group: string;
+  rows: MatrixRow[];
+}
+
+export const PACKAGE_MATRIX: MatrixGroup[] = [
+  {
+    group: 'The website',
+    rows: [
+      { label: 'Designed around your practice, never a template', values: [true, true, true, true] },
+      { label: 'How many pages', values: ['Up to 5', 'Up to 10', 'Up to 18', 'As many as it needs'] },
+      { label: 'Works properly on a phone', values: [true, true, true, true] },
+      { label: 'Words written for worried patients, not for us', values: [true, true, true, true] },
+      { label: 'WhatsApp, tap-to-call and directions on every page', values: [true, true, true, true] },
+      { label: 'A page for each treatment you offer', values: [false, true, true, true] },
+      { label: 'Answers to the questions patients keep asking', values: [false, true, true, true] },
+      { label: 'A page for each doctor', values: [false, false, true, true] },
+      { label: 'A section for each department', values: [false, false, false, true] },
+      { label: 'Pages for more than one branch', values: [false, false, false, true] },
+    ],
+  },
+  {
+    group: 'Being found on Google',
+    rows: [
+      { label: 'We check your Google listing before we start', values: [true, true, true, true] },
+      { label: 'We find the words patients type', values: ['Your town', 'Town and treatments', 'In depth', 'In depth'] },
+      { label: 'Your listing rebuilt: categories, services, hours, photos', values: [false, true, true, true] },
+      { label: 'Listing and website made to say the same thing', values: [true, true, true, true] },
+      { label: 'We look at the practices ranking above you', values: [false, true, true, true] },
+      { label: 'We choose which treatments you should compete for', values: [false, false, true, true] },
+      { label: 'A page for the towns you serve', values: [false, false, true, true] },
+      { label: 'A way to ask happy patients for reviews', values: [false, true, true, true] },
+      { label: 'Set up so Google can read and quote your pages', values: [true, true, true, true] },
+    ],
+  },
+  {
+    group: 'Speed, and after launch',
+    rows: [
+      { label: 'Timed on a mid-range Android before it goes live', values: [true, true, true, true] },
+      { label: 'Google Search Console set up and handed over', values: [true, true, true, true] },
+      { label: 'How long it takes', values: ['3 weeks', '4–5 weeks', '6–7 weeks', 'Agreed with you'] },
+      { label: 'Help after launch, included', values: [false, '90 days', '90 days', '90 days'] },
+    ],
+  },
+];
+
+/** Every row, flattened — for `llms.txt` and anything else that wants prose. */
+export const matrixFor = (index: number): string[] =>
+  PACKAGE_MATRIX.flatMap((g) =>
+    g.rows
+      .filter((r) => r.values[index])
+      .map((r) => (typeof r.values[index] === 'string' ? `${r.label}: ${r.values[index]}` : r.label)),
+  );
 
 /**
  * Why the build prices are what they are. The sites are hand-built and
@@ -178,9 +200,9 @@ export const BUILDS: Build[] = [
  * decides whether a clinic site earns anything, is the layer above the code.
  */
 export const WHERE_RETURN_COMES_FROM = {
-  headline: 'The build is the cheap part. The thinking is what earns.',
+  headline: 'Building the site is the easy part. Deciding what goes on it is not.',
   lede:
-    'A clinic website does not earn its money by being built well. It earns it by taking a worried patient from a search to a message without losing them. That is where our work actually goes, and it is why the build itself does not cost what agencies usually charge for it.',
+    'A clinic website does not pay for itself by being built well. It pays for itself by taking a worried patient from a search to a message without losing them on the way. That is where most of our time goes, and it is why our prices are lower than an agency charging for the same work.',
   points: [
     {
       title: 'The path from landing to enquiry',
@@ -191,8 +213,8 @@ export const WHERE_RETURN_COMES_FROM = {
       text: 'Most clinic websites describe the clinic. Yours has to answer what the patient arrived worrying about. What this costs. Whether it hurts. How long it takes. When to come in urgently. Writing that honestly is the bulk of the work, and it is included.',
     },
     {
-      title: 'Deciding what to be findable for',
-      text: 'A page exists because a patient is searching for what is on it. Working out which treatments that is, and which ones a competitor has already answered better, is research rather than design, and it is what separates the packages from each other.',
+      title: 'Deciding what to be found for',
+      text: 'A page exists because someone is searching for what is on it. Working out which treatments those are, and which ones a nearby practice already answers better, is research rather than design. It is the main thing that separates our packages.',
     },
     {
       title: 'What happens after they message',
@@ -204,7 +226,7 @@ export const WHERE_RETURN_COMES_FROM = {
     },
     {
       title: 'Build quality you can measure',
-      text: 'Hand-built, nearly zero JavaScript, and timed on a mid-range Android against a published reference rather than on our own laptops. You can check every claim on the site you are reading.',
+      text: 'Built by hand and timed on an ordinary Android phone, not on our own fast laptops. Every claim we make is one you can check on the site you are reading right now.',
     },
   ],
   closing:
@@ -221,9 +243,9 @@ export const WHERE_RETURN_COMES_FROM = {
  * ---------------------------------------------------------------------- */
 
 export const GBP_AUDIT = {
-  headline: 'Every project starts by looking at your Google listing.',
+  headline: 'Every project starts with a look at your Google listing.',
   lede:
-    'Before any design, we go through your Google Business Profile line by line. It is part of every package, including the smallest, because the website is not where most patients meet you first.',
+    'Before we design anything, we go through your Google listing line by line. It is part of every package, including the smallest, because for most patients your listing is the first thing they see, not your website.',
   checks: [
     'Is the profile verified?',
     'Is the business name exactly right?',
@@ -286,20 +308,18 @@ export const PLANS: Plan[] = [
     id: 'local-seo-google-care',
     name: 'Local SEO & Google Care',
     monthly: STANDALONE_MONTHLY.careGoogle,
-    summary: 'The presence kept healthy, and improved, every month after launch.',
+    summary: 'We look after your website and your Google listing every month, and keep improving them.',
     includes: [
-      'Google Business Profile managed: services, information, photos, updates',
-      'Every review answered, drafted for your approval and never posted blind',
-      'Local search monitored, and Search Console watched for what changed',
-      'The searches patients actually used, read and acted on',
-      'Website updates, and content changes as they come up',
-      'Existing pages improved where the data says they should be',
-      'One new treatment or service page every month, written and published',
-      'Internal linking and technical SEO maintained as the site grows',
-      'Performance monitored, so a slow month is caught rather than reported later',
-      'A written report every month, in plain language',
+      'Your Google listing kept correct: services, hours, photos, updates',
+      'Every review answered. We write the reply, you approve it before it goes',
+      'We watch what patients searched to find you, and act on it',
+      'Changes to your website whenever you need them',
+      'Pages that are not working improved, based on what the numbers show',
+      'One new treatment page written and published every month',
+      'The site kept fast, and checked so nothing quietly breaks',
+      'A report every month, in plain language, saying what we did',
     ],
-    suits: 'Suits any practice that wants the work to continue after launch.',
+    suits: 'For any practice that wants the work to carry on after the site goes live.',
     priceNote: 'Month to month, no lock-in',
     recommended: true,
   },
