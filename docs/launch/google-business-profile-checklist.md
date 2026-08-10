@@ -18,14 +18,19 @@ from that one file, so they cannot drift apart.
 | Locality | Mehsana, Gujarat 384005, India |
 | Phone | +91 97734 56668 |
 | Website | `https://www.careinflow.com/` |
-| Hours | Monday–Saturday, 10:00–19:00. Closed Sunday |
+| Hours | Monday–Friday, 11:00–19:30. Closed Saturday and Sunday |
 | Coordinates | 23.5985, 72.3693 |
 
-**Check the coordinates against the pin before you publish.** They were set when
-the postcode on file was 384002; the address is now 384005, and nobody has
-verified the latitude and longitude since. Whatever pin you drop on the Business
-Profile is the one `BUSINESS.geo` in `src/config/site.ts` should match, because
-that is what the `LocalBusiness` schema publishes.
+The coordinates come from the listing's own pin, read out of the embed URL, so
+the schema and the profile agree. They were 23.5985, 72.3693 until the listing
+existed to check against — 2.9km out, in a different part of Mehsana.
+
+**Everything in this table is what the site publishes.** The address is in
+`src/config/site.ts` with a build guard; the hours derive from the same file
+into every page that mentions them; the geo feeds `LocalBusiness`. If any of it
+changes on the profile, change it there and the site follows. NAP consistency
+is the fourth item on the ranking list below, and it is the one most often
+broken by editing one place and forgetting the other.
 
 Use the name exactly as written. Not "CareInflow — Healthcare Web Design", not
 "CareInflow Mehsana". Keyword-stuffing the business name is the single most
