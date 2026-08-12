@@ -127,6 +127,14 @@ export const HOURS_LABEL = `${HOURS_TIMES}, ${HOURS_DAYS}`;
 export const WHATSAPP_URL = `https://wa.me/${BUSINESS.phone.replace('+', '')}`;
 
 /**
+ * The studio's Instagram. A profile, not a contact route — it is deliberately
+ * kept out of the "Reach us" list, which states three ways to reach the studio
+ * and is quoted as a count elsewhere.
+ */
+export const INSTAGRAM_URL = 'https://www.instagram.com/careinflowindia/';
+export const INSTAGRAM_HANDLE = '@careinflowindia';
+
+/**
  * Scheduling link, for visitors who would rather book a time than send a
  * message. Linked, never embedded: an embed would load third-party scripts,
  * which the CSP forbids and which /privacy promises the site does not do.
@@ -165,9 +173,10 @@ export const PLUS_CODE = 'J88X+XJ Mehsana, Gujarat';
  * wa.me link once, which is a click-to-chat handoff rather than a page about
  * CareInflow, and asserted an identity that did not exist at that URL.
  *
- * Add the Instagram handle here the day it has real content on it.
+ * Instagram qualifies on that test — it is a page about the studio, not a
+ * handoff — and it was checked live (HTTP 200) before being added here.
  */
-export const PROFILES: string[] = [GBP_URL];
+export const PROFILES: string[] = [GBP_URL, INSTAGRAM_URL];
 
 export const whatsappWithMessage = (text: string): string =>
   `${WHATSAPP_URL}?text=${encodeURIComponent(text)}`;
@@ -231,6 +240,12 @@ export const FOOTER_GROUPS = [
   },
   {
     title: 'Where we work',
+    /*
+     * Three markets and the index, deliberately — not all nine. The "Towns we
+     * serve" band lower in the footer links every one of them, so repeating
+     * the full list here would say the same thing twice and leave this column
+     * twice the length of the four beside it.
+     */
     links: [
       { label: 'Mehsana', href: '/areas/mehsana' },
       { label: 'Ahmedabad', href: '/areas/ahmedabad' },

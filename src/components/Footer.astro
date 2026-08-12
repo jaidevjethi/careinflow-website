@@ -1,17 +1,27 @@
 ---
-import { BUSINESS, BOOKING_URL, FOOTER_GROUPS, HOURS_LABEL, WHATSAPP_URL } from '@/config/site';
+import {
+  BUSINESS,
+  BOOKING_URL,
+  FOOTER_GROUPS,
+  HOURS_LABEL,
+  WHATSAPP_URL,
+  INSTAGRAM_URL,
+  INSTAGRAM_HANDLE,
+} from '@/config/site';
 import { href } from '@/lib/url';
 import MapPanel from '@/components/MapPanel.astro';
 
 const year = new Date().getFullYear();
 
-/** Towns with a page of their own. The rest stay as plain text — a link that
-    goes nowhere reads worse than no link. */
-const AREA_PAGES: Record<string, string> = {
-  Mehsana: '/areas/mehsana',
-  Ahmedabad: '/areas/ahmedabad',
-  Gandhinagar: '/areas/gandhinagar',
-};
+/**
+ * Every town in `serviceAreas` has a page, so every town links.
+ *
+ * This was a hand-kept map of the three towns that had pages, with the rest
+ * falling through to plain text — correct when it was written, and silently
+ * wrong once the other six pages existed. Deriving the slug means the list
+ * cannot fall behind the content again.
+ */
+const areaHref = (city: string) => `/areas/${city.toLowerCase()}`;
 
 /**
  * The three ways to reach the studio, in the order they are meant to be used.
@@ -99,6 +109,34 @@ const ROUTES = [
           One studio, and no branch offices anywhere.
         </p>
 
+        {/*
+          A profile, kept out of "Reach us" above on purpose — that list is
+          three ways to reach the studio and the count is stated as a fact on
+          other pages. Instagram is somewhere to look at the work, not a way
+          to get an answer.
+
+          It takes the site's own `a-social` accent rather than Instagram's
+          brand colours, none of which survive this ground: their pink
+          measures 3.61 on midnight and their purple 3.07, both under AA, and
+          their orange clears it only by being warm, which this palette bans.
+        */}
+        <h2 class="label-mono mb-3 mt-9 text-panel-text-faint">Elsewhere</h2>
+        <a
+          href={INSTAGRAM_URL}
+          rel="noopener"
+          class="inline-flex min-h-[24px] w-fit items-center gap-2 text-[15px] font-semibold text-a-social-vivid hover:text-surface"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5" />
+            <circle cx="12" cy="12" r="4" />
+            <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" />
+          </svg>
+          {INSTAGRAM_HANDLE}
+        </a>
+        <span class="mt-0.5 block text-[13px] leading-[1.5] text-panel-text-faint">
+          Work in progress, and finished builds
+        </span>
+
         {/* Lazy, and several screens below the fold on every page, so a reader
             who never reaches the footer never requests anything from Google.
             A fixed aspect reserves the space, so it cannot shift the page. */}
@@ -148,16 +186,12 @@ const ROUTES = [
               {i > 0 && (
                 <span class="pr-1 text-panel-line-alt" aria-hidden="true">·</span>
               )}
-              {AREA_PAGES[city] ? (
-                <a
-                  href={href(AREA_PAGES[city]!)}
-                  class="inline-flex min-h-[24px] items-center text-panel-text-dim hover:text-surface"
-                >
-                  {city}
-                </a>
-              ) : (
-                <span class="inline-flex min-h-[24px] items-center">{city}</span>
-              )}
+              <a
+                href={href(areaHref(city))}
+                class="inline-flex min-h-[24px] items-center text-panel-text-dim hover:text-surface"
+              >
+                {city}
+              </a>
             </li>
           ))}
         </ul>
