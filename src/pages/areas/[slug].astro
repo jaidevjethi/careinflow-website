@@ -33,6 +33,16 @@ const title = `${data.title} | CareInflow`;
 const description = data.description;
 const faqs = resolveFaqs(data.faqs);
 
+/**
+ * The positioning line lives here rather than in nine frontmatter files, so it
+ * reads identically on every area page and cannot drift. The second chip is
+ * the town-specific one.
+ */
+const areaChips = [
+  "Gujarat's healthcare-only web studio",
+  data.isHomeBase ? 'Our studio is here' : 'A place we serve, not a place we staff',
+];
+
 const others = (await getCollection('areas'))
   .filter((a) => a.id !== area.id)
   .sort((a, b) => a.data.order - b.data.order);
@@ -71,7 +81,7 @@ const schema = graph(
       label={`Service area · ${data.city}`}
       title={data.title}
       lede={data.summary}
-      chips={[data.isHomeBase ? 'Our studio is here' : 'A place we serve, not a place we staff']}
+      chips={areaChips}
     >
       <Image
         slot="aside"

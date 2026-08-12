@@ -18,9 +18,9 @@ import {
   serviceSchema,
 } from '@/lib/schema';
 
-const title = 'Services for clinics: websites, local SEO, Google | CareInflow';
+const title = "Gujarat's best clinic websites & local SEO | CareInflow";
 const description =
-  'Healthcare website design, local SEO, Google Business Profile management, ongoing care and social media content, for clinics across North Gujarat.';
+  "Healthcare website design, local SEO, Google Business Profile management and ongoing care, from Gujarat's healthcare-only web studio. Clinics only.";
 
 const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
 
@@ -119,8 +119,8 @@ const engagements = [
 <BaseLayout {title} {description} path="/services" {schema}>
   <PageHero
     label="What we do"
-    title="Five services for healthcare practices, and nothing else."
-    lede="A small number of things, done for healthcare practices only, each held to a standard we publish. If a service is not on this page we do not sell it, and we will tell you so rather than take the work."
+    title="Five services, built for healthcare practices and nothing else."
+    lede="Five things, done for clinics only and each held to a standard we publish. Doing one kind of work again and again is how it gets genuinely good, and it is why practices across Gujarat come to a studio this specialised. If a service is not on this page we do not sell it, and we will say so rather than take the work."
     stats={targets}
   >
     {/* 340 rather than the 400 the other heroes use: this is the one portrait

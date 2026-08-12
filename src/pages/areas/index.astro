@@ -18,9 +18,9 @@ import {
   itemListSchema,
 } from '@/lib/schema';
 
-const title = 'Service areas across North Gujarat | CareInflow';
+const title = 'Clinic web design across Gujarat: 9 towns | CareInflow';
 const description =
-  'Where CareInflow works: Mehsana, where our studio is, plus Ahmedabad, Gandhinagar and North Gujarat. Places we serve, not places we staff.';
+  "Gujarat's healthcare-only web studio works with clinics in Mehsana, Ahmedabad, Gandhinagar, Patan, Palanpur and four more towns. Served, not staffed.";
 
 const areas = (await getCollection('areas')).sort((a, b) => a.data.order - b.data.order);
 const written = new Set(areas.map((a) => a.data.city));
@@ -45,7 +45,7 @@ const schema = graph(
 <BaseLayout {title} {description} path="/areas" {schema}>
   <PageHero
     label="Where we work"
-    title="One studio in Mehsana, and the towns it serves."
+    title="One studio in Mehsana, and the nine towns it serves."
     lede="Plenty of agencies list a dozen cities and staff exactly one of them. We have one studio, on Radhanpur Road in Mehsana, and no branches anywhere. These are places we work in: not places we sit."
     stats={[
       { value: '1', caption: 'studio, in Mehsana' },

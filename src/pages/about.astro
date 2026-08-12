@@ -23,9 +23,9 @@ import {
   faqSchema,
 } from '@/lib/schema';
 
-const title = 'About: a healthcare-only web studio in Mehsana | CareInflow';
+const title = "About Gujarat's healthcare-only web studio | CareInflow";
 const description =
-  'Who is behind CareInflow: founder Jaidev Jethi, and why a studio in Mehsana works with healthcare practices and nothing else.';
+  "Why Gujarat's best clinic websites come from a healthcare-only studio in Mehsana, and who builds them: founder Jaidev Jethi, ex-Microsoft.";
 
 const faqs = await getFaqsFor('about');
 
@@ -64,8 +64,8 @@ const notList = [
 <BaseLayout {title} {description} path="/about" {schema}>
   <PageHero
     label="About the studio"
-    title="A small studio in Mehsana that does one thing for one kind of client."
-    lede="CareInflow exists because good clinics are routinely represented by bad websites. We build the online presence a healthcare practice actually deserves, with the same professionalism patients experience inside it."
+    title="Gujarat's healthcare-only web studio, and the person who runs it."
+    lede="CareInflow exists because good clinics are routinely represented by bad websites. We build the online presence a healthcare practice deserves, with the same professionalism patients meet inside it — and because clinics are the only work this studio takes, every practice gets the benefit of the last one."
     stats={standards.map((s) => ({ value: s.value, caption: s.caption }))}
   >
     {/* A portrait source in a 260px landscape band keeps 52% of the frame at
