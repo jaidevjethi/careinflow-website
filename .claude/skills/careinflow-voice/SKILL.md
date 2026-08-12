@@ -20,7 +20,10 @@ You are writing for busy healthcare professionals in Gujarat, India — doctors 
    **Prices are real, and they live in `src/config/pricing.ts`.** Quote them from there — never write a figure from memory into copy, a FAQ answer or schema. Always frame a published number as a starting point for a stated scope, with the exact figure fixed in writing after the free review.
 2. **No urgency or discount language.** Banned: "Buy now", "Limited time", "Only today", "Last chance", "cheap", "affordable", "% off". Premium positioning: value, not price.
 3. **No buzzwords.** Banned: "cutting-edge", "digital ecosystem", "synergy", "next-level", "revolutionize", "unleash", "supercharge", "game-changing", "solutions" as a noun for services.
-4. **No overpromising.** Never guarantee rankings, review counts, or patient numbers. Allowed claims are things CareInflow controls: build quality, speed targets with reference ranges (e.g. "REF <1.2s"), maintenance schedules, response times.
+4. **Claim-forward about ourselves, never about outcomes.** The register changed on 2026-08-06 at the owner's decision, and the line is *opinion vs fact*.
+   **Write these.** Superlatives describing CareInflow: "Gujarat's best healthcare websites", "Gujarat's healthcare-only web studio". Opinion, not falsifiable, ordinary marketing. Put them where a crawler weighs them — H1, `<title>`, meta description — and *place* them rather than spraying: an adjective in every heading reads as desperate to a doctor and ranks no better.
+   **Never write these**, because they are factual and false: invented ratings, review counts, client counts, "trusted by N clinics", awards. Nothing self-serving in JSON-LD — a fabricated `aggregateRating` is a Google structured-data violation and risks a manual action. And never a promise about *results* ("we will get you to #1", a guaranteed ranking or patient number). "We do not guarantee rankings, and nobody honestly can" is still the correct line and is still on the site.
+   Claims about things CareInflow genuinely controls stay as strong as ever: build quality, speed targets with reference ranges, maintenance schedules, response times, fixed pricing.
 5. **Healthcare only.** Never position CareInflow as an ad/branding/creative agency, app developer, or IT consultancy.
 
 ## Vocabulary

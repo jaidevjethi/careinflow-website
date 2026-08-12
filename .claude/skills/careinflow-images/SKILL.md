@@ -21,11 +21,26 @@ Headless Chrome on Windows enforces a minimum window width, so `--window-size=39
 
 Load the `gemini-3-pro-image` skill; the key is `GEMINI_API_KEY` in the gitignored `.env`. Append this style lock to every prompt:
 
-> Minimal flat vector editorial illustration on a pure white background #FFFFFF. Cool clinical palette only: deep navy #0E2439 line work, cool ice #EDF3F9 and powder blue #DFE9F5 surfaces, one clinical teal #0FBFAE accent, muted blue-grey fills. Clean geometric shapes, thin confident strokes, generous whitespace. Absolutely no readable words, no letters, no numbers, no logos, no brand names — text is suggested only as abstract soft blue-grey placeholder bars. No gradients, no drop shadows, no 3D. No beige, cream, sand, tan or warm grey anywhere — every neutral must be cool.
+> Minimal flat vector editorial illustration on a pure white background #FFFFFF. Cool clinical palette only: deep navy #0E2439 line work, cool ice #EDF3F9 and powder blue #DFE9F5 surfaces, one periwinkle indigo #818CF8 accent, muted blue-grey fills. Clean geometric shapes, thin confident strokes, generous whitespace. Absolutely no readable words, no letters, no numbers, no logos, no brand names — text is suggested only as abstract soft blue-grey placeholder bars. No gradients, no drop shadows, no 3D. No beige, cream, sand, tan or warm grey anywhere — every neutral must be cool.
+
+The accent is `vivid #818CF8`, the live brand periwinkle. This lock said teal
+`#0FBFAE` until 2026-08-06, left over from the retired "Clinical Blue & Teal"
+palette — a generator given it produced art that matched nothing on the site.
 
 The warm half of that lock is not a preference, it is the one thing most likely to come back wrong. The palette moved to "Clinical Blue & Teal" and every neutral now measures b\* ≤ 0 in Lab; positive b\* is the yellow axis, which is beige, and it is banned. A generator asked for "off-white paper" will hand back cream every time, so name the hex and name the exclusions.
 
 For photography (about page, studio warmth) use: natural window light, muted warm neutrals, no people, no readable text, 50mm, shallow depth of field.
+
+**Area pages take photographs, not illustrations.** The nine `area-*.webp` are
+cool-graded architectural shots of each town's landmark — Rani ki Vav for Patan,
+the Bohra havelis for Siddhpur, Kirti Stambh for Palanpur, copper vessels for
+Visnagar, a pumpjack for Kalol. They sit in the midnight `PageHero` aside, where
+a flat white vector panel would read as a glaring hole. Match the register:
+
+> Photorealistic editorial architectural photograph. Cool blue-teal colour grade, muted and desaturated, soft diffused early-morning light, gentle haze in the distance. Wide establishing shot, natural perspective, deep focus, high detail. No people in the foreground, no readable text, no signage, no lettering, no logos, no watermarks. Every neutral must be cool blue-grey — absolutely no beige, cream, sand, tan, gold or warm grey anywhere.
+
+Check the landmark against a source before generating. Getting a town's
+landmark wrong is obvious to anyone local and undoes the point of the page.
 
 Always **Read the generated file** before wiring it in — check for text artifacts, stray brand marks, and palette drift.
 
