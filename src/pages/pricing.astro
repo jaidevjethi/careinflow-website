@@ -42,7 +42,7 @@ import {
   faqSchema,
 } from '@/lib/schema';
 
-const title = 'Pricing for clinic websites and local SEO | CareInflow';
+const title = 'Clinic Website Cost in Gujarat: Prices Published';
 /** Built from the config so the meta description can never drift from the page. */
 const description =
   `Clinic websites from ${rupees(BUILDS[0]!.from)}, and local SEO with Google Business Profile care from ${rupees(PLANS[0]!.monthly)} a month. Published prices, fixed in writing.`;
@@ -143,7 +143,7 @@ const principles = [
 <BaseLayout {title} {description} path="/pricing" {schema}>
   <PageHero
     label="Pricing"
-    title="Our prices are on this page. You should not have to ask."
+    title="Clinic website prices, published. You should not have to ask."
     lede="Most studios make you sit through a call before they tell you a number. Here is what things cost, what makes the price go up, and what we never charge for. Your own figure is fixed in writing after the free review."
     stats={headline.map((h) => ({ value: h.value, caption: h.label }))}
   >
@@ -302,7 +302,7 @@ const principles = [
       <SectionHead
         id="includes-title"
         label="Side by side"
-        title="What you get in each one."
+        title="What do you get in each one?"
         lede="Every package includes everything in the one before it. A tick means it is included; a dash means it is not, and we would rather show you that than leave it out."
       />
 
@@ -616,7 +616,7 @@ const principles = [
     <SectionHead
       id="movers-title"
       label="What moves the number"
-      title={`${spell(PRICE_MOVERS.length)} things decide where your price lands.`}
+      title={`What decides where your price lands? ${spell(PRICE_MOVERS.length)} things.`}
       lede="A quotation with no explanation is just a number to argue about. These are the factors we actually price against, in the order they matter."
     />
     <div class="mt-10 max-w-[900px] overflow-x-auto">

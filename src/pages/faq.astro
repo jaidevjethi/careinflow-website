@@ -14,7 +14,7 @@ import {
   faqSchema,
 } from '@/lib/schema';
 
-const title = 'Questions, answered plainly, FAQ | CareInflow';
+const title = 'Clinic Website FAQs: Cost, Timeline, Ownership';
 const description =
   'Straight answers on cost, timelines, ranking promises we will not make, what happens after launch, and who owns your website (you do).';
 
@@ -35,7 +35,7 @@ const schema = graph(
 <BaseLayout {title} {description} path="/faq" {schema}>
   <PageHero
     label="Common questions"
-    title="Every doubt we hear, answered before you have to ask it."
+    title="Clinic website questions, answered before you ask them."
     lede="These are real questions from real conversations with clinic owners. If yours is missing, one WhatsApp message gets it answered, and probably added here."
     stats={[
       { value: String(faqs.length), caption: 'questions answered in full' },

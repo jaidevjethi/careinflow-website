@@ -17,7 +17,7 @@ import {
   itemListSchema,
 } from '@/lib/schema';
 
-const title = 'Specialties, dental, physiotherapy, dermatology | CareInflow';
+const title = 'Websites by Specialty: Dental, Physio, Skin Clinics';
 const description =
   'What changes between a dental, physiotherapy and dermatology website: the searches patients type, and the pages that earn their place.';
 
@@ -62,7 +62,7 @@ const schema = graph(
 <BaseLayout {title} {description} path="/specialties" {schema}>
   <PageHero
     label="Who we write for"
-    title="The method is the same. What patients search is not."
+    title="Clinic websites by specialty. What patients search changes."
     lede="A dental patient in pain at midnight and someone pricing laser treatment for the third week running are not the same visitor, and a website that treats them the same loses both. These pages set out what actually changes between specialties, and what does not."
     stats={[
       { value: String(specialties.length), caption: 'specialties written in full' },

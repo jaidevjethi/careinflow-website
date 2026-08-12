@@ -15,7 +15,7 @@ import {
   itemListSchema,
 } from '@/lib/schema';
 
-const title = 'Resources for clinic owners | CareInflow';
+const title = 'Clinic Website & Local SEO Guides for Doctors';
 const description =
   'Plain-language guides: how patients choose clinics online, Google Business Profile, local SEO in North Gujarat, and website speed.';
 
@@ -50,7 +50,7 @@ const dateFmt = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short
 <BaseLayout {title} {description} path="/resources" {schema}>
   <PageHero
     label="Resources"
-    title="What we know, written down for clinic owners."
+    title="Guides for clinic owners: what we know, written down."
     lede="No gated PDFs, no email capture, just plain-language guides to how patients find and judge a practice online. Read them, apply them yourself, or ask us to. All three are fine outcomes."
     stats={[
       { value: String(resources.length), caption: 'guides, free to read' },

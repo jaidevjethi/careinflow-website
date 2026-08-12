@@ -30,7 +30,7 @@ const { resource } = Astro.props;
 const { Content } = await render(resource);
 
 const path = `/resources/${resource.id}`;
-const title = `${resource.data.title} | CareInflow`;
+const title = `${resource.data.seoTitle ?? resource.data.title} | CareInflow`;
 const description = resource.data.description;
 
 /**

@@ -40,7 +40,7 @@ const galleryTitle =
   `${galleryCount === 1 ? 'it looks' : 'they look'} like`;
 
 const path = `/work/${cs.id}`;
-const title = `${cs.data.client}, case study | CareInflow`;
+const title = `${cs.data.seoTitle ?? `${cs.data.client}, case study`} | CareInflow`;
 const description = cs.data.description;
 
 /**

@@ -71,6 +71,25 @@ async function compose(): Promise<string> {
     .map((s) => `- ${s.data.navLabel} — ${s.data.summary} ${url(`/specialties/${s.id}/`)}`)
     .join('\n');
 
+  /*
+   * Guides and case studies, generated like the two lists above rather than
+   * hand-written. Only two of the five guides were named here and none of the
+   * three case studies, so an assistant summarising this studio could not see
+   * most of what it publishes, or anything it has actually built.
+   */
+  const guideEntries = (await getCollection('resources'))
+    .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+    .map((r) => `- ${r.data.title} — ${r.data.description} ${url(`/resources/${r.id}/`)}`)
+    .join('\n');
+
+  const workEntries = (await getCollection('caseStudies'))
+    .sort((a, b) => a.data.order - b.data.order)
+    .map(
+      (c) =>
+        `- ${c.data.client}${c.data.demo ? ' (a sample, not a client)' : ''} — ${c.data.summary} ${url(`/work/${c.id}/`)}`,
+    )
+    .join('\n');
+
   return `# ${BUSINESS.name}
 
 > ${BUSINESS.name} is a healthcare-focused web design and digital growth studio in ${BUSINESS.address.locality}, ${BUSINESS.address.region}, India. It builds websites, does local SEO, and manages Google Business Profiles for doctors and clinics, healthcare practices only. Founded by ${BUSINESS.founder}. Contact: WhatsApp or phone on ${BUSINESS.phoneDisplay}, a scheduled meeting booked at ${BOOKING_URL}, or ${BUSINESS.email}.
@@ -154,6 +173,18 @@ ${NEVER_CHARGED.map((n) => `- ${n}`).join('\n')}
 - [Resources](${url('/resources/')}): Plain-language guides for clinic owners on patient behaviour, Google Business Profile, local SEO, and website speed.
 - [FAQ](${url('/faq/')}): Costs, timelines, ownership, clients own everything, and what ${BUSINESS.name} will not do.
 - [Contact](${url('/contact/')}): One WhatsApp message gets a free written review within two working days. Phone answered ${HOURS_LABEL}.
+
+## Guides published
+
+Written for clinic owners rather than for search engines. Each one answers a question a practice actually asks before it buys anything.
+
+${guideEntries}
+
+## Work
+
+Real projects, each with its own page. One is a sample built to show a clinic exactly what it receives, and it is labelled as a sample here and on its own page.
+
+${workEntries}
 
 ## Every website project starts with a Google Business Profile audit
 

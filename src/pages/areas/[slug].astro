@@ -29,7 +29,7 @@ const { Content } = await render(area);
 const { data } = area;
 
 const path = `/areas/${area.id}`;
-const title = `${data.title} | CareInflow`;
+const title = `${data.seoTitle ?? data.title} | CareInflow`;
 const description = data.description;
 const faqs = resolveFaqs(data.faqs);
 
@@ -104,7 +104,7 @@ const schema = graph(
           id="market-title"
           class="max-w-[700px] text-[clamp(26px,3.4vw,38px)] font-extrabold leading-[1.1] tracking-[-0.035em] text-ink"
         >
-          What is actually different about {data.city}
+          What is different about clinic search in {data.city}?
         </h2>
         <div class="mt-10 grid gap-4 sm:grid-cols-2">
           {data.marketNotes.map((m) => (

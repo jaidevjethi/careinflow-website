@@ -61,6 +61,14 @@ const specialties = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/specialties' }),
   schema: ({ image }) => z.object({
     title: z.string(),
+    /**
+     * Title for the <title> tag when it should differ from the H1.
+     *
+     * The H1 confirms the visitor is on the right page; the title has to win
+     * the click against nine other results, so it carries the hook. Falls back
+     * to `title` when absent.
+     */
+    seoTitle: z.string().optional(),
     navLabel: z.string(),
     description: z.string(),
     summary: z.string(),
@@ -89,6 +97,14 @@ const areas = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/areas' }),
   schema: ({ image }) => z.object({
     title: z.string(),
+    /**
+     * Title for the <title> tag when it should differ from the H1.
+     *
+     * The H1 confirms the visitor is on the right page; the title has to win
+     * the click against nine other results, so it carries the hook. Falls back
+     * to `title` when absent.
+     */
+    seoTitle: z.string().optional(),
     navLabel: z.string(),
     /** The town as it appears in BUSINESS.serviceAreas. */
     city: z.string(),
@@ -112,6 +128,14 @@ const caseStudies = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/case-studies' }),
   schema: ({ image }) => z.object({
     title: z.string(),
+    /**
+     * Title for the <title> tag when it should differ from the H1.
+     *
+     * The H1 confirms the visitor is on the right page; the title has to win
+     * the click against nine other results, so it carries the hook. Falls back
+     * to `title` when absent.
+     */
+    seoTitle: z.string().optional(),
     /** Real screenshot of the live site — captured by scripts/capture-work-shots.mjs. */
     cover: image(),
     coverAlt: z.string(),
@@ -176,6 +200,14 @@ const resources = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/resources' }),
   schema: ({ image }) => z.object({
     title: z.string(),
+    /**
+     * Title for the <title> tag when it should differ from the H1.
+     *
+     * The H1 confirms the visitor is on the right page; the title has to win
+     * the click against nine other results, so it carries the hook. Falls back
+     * to `title` when absent.
+     */
+    seoTitle: z.string().optional(),
     description: z.string(),
     publishDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
