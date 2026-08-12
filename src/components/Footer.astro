@@ -57,10 +57,29 @@ const ROUTES = [
 ];
 ---
 
+{/*
+  FOUR BANDS, each one holding things of comparable height.
+
+  This footer measured 1306px — 1.8 screens — for a reason worth recording.
+  One column stacked six blocks (brand, tagline, three routes, address,
+  Instagram, and a 300px map) to 890px, and the five nav columns stretched to
+  match it. Each of those held about 150px of links inside an 890px box, so
+  the widest part of the footer was roughly 740px of nothing, five times over.
+
+  The map was the cause. A tall element at the bottom of a stack sets the
+  height of every column beside it, so it now sits in a band with the address
+  and the contact routes — content of its own scale — and the navigation row
+  is free to be exactly as tall as its links.
+
+  `items-start` throughout, because stretching is what produced the dead space.
+*/}
 <footer class="panel-depth">
   <div class="section shell">
-    <div class="grid gap-14 lg:grid-cols-[minmax(0,300px)_1fr] lg:gap-20">
-      <div class="max-w-sm">
+
+    {/* BAND 1 — who we are, and everything you can navigate to. Both halves
+        are short, so this row is now set by the tallest nav column. */}
+    <div class="grid items-start gap-10 lg:grid-cols-[minmax(0,260px)_1fr] lg:gap-20">
+      <div>
         <div class="mb-4 flex items-center gap-2.5">
           <img
             src={href('/logo-light.svg')}
@@ -77,75 +96,11 @@ const ROUTES = [
           Websites, local SEO, and Google Business Profile management, for
           healthcare practices and nothing else.
         </p>
-
-        {/* Each route carries what a reader actually wants to know before
-            using it: how fast it is answered, when someone picks up, what
-            happens after. A bare list of three links answers none of that. */}
-        <h2 class="label-mono mb-3 mt-9 text-panel-text-faint">Reach us</h2>
-        <ul class="grid gap-3.5">
-          {ROUTES.map((route) => (
-            <li class="grid gap-0.5">
-              <a
-                href={route.url}
-                rel="noopener"
-                class:list={[
-                  'inline-flex min-h-[24px] w-fit items-center text-[15px] font-semibold',
-                  route.class,
-                ]}
-              >
-                {route.value}
-              </a>
-              <span class="text-[13px] leading-[1.5] text-panel-text-faint">{route.note}</span>
-            </li>
-          ))}
-        </ul>
-
-        <h2 class="label-mono mb-3 mt-9 text-panel-text-faint">The studio</h2>
-        <address class="text-sm not-italic leading-[1.7] text-panel-text-faint">
-          {BUSINESS.address.street},<br />
-          {BUSINESS.address.locality}, {BUSINESS.address.region} {BUSINESS.address.postalCode}, India
-        </address>
-        <p class="mt-2 text-[13px] leading-[1.5] text-panel-text-faint">
-          One studio, and no branch offices anywhere.
-        </p>
-
-        {/*
-          A profile, kept out of "Reach us" above on purpose — that list is
-          three ways to reach the studio and the count is stated as a fact on
-          other pages. Instagram is somewhere to look at the work, not a way
-          to get an answer.
-
-          It takes the site's own `a-social` accent rather than Instagram's
-          brand colours, none of which survive this ground: their pink
-          measures 3.61 on midnight and their purple 3.07, both under AA, and
-          their orange clears it only by being warm, which this palette bans.
-        */}
-        <h2 class="label-mono mb-3 mt-9 text-panel-text-faint">Elsewhere</h2>
-        <a
-          href={INSTAGRAM_URL}
-          rel="noopener"
-          class="inline-flex min-h-[24px] w-fit items-center gap-2 text-[15px] font-semibold text-a-social-vivid hover:text-surface"
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <rect x="2" y="2" width="20" height="20" rx="5" />
-            <circle cx="12" cy="12" r="4" />
-            <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" />
-          </svg>
-          {INSTAGRAM_HANDLE}
-        </a>
-        <span class="mt-0.5 block text-[13px] leading-[1.5] text-panel-text-faint">
-          Work in progress, and finished builds
-        </span>
-
-        {/* Lazy, and several screens below the fold on every page, so a reader
-            who never reaches the footer never requests anything from Google.
-            A fixed aspect reserves the space, so it cannot shift the page. */}
-        <MapPanel class="mt-6" onPanel />
       </div>
 
       <nav
         aria-label="Footer"
-        class="grid grid-cols-2 gap-x-10 gap-y-11 sm:grid-cols-3 sm:gap-x-14 xl:grid-cols-5 xl:gap-x-10"
+        class="grid grid-cols-2 items-start gap-x-10 gap-y-11 sm:grid-cols-3 sm:gap-x-14 xl:grid-cols-5 xl:gap-x-10"
       >
         {FOOTER_GROUPS.map((group) => (
           <div>
@@ -167,10 +122,85 @@ const ROUTES = [
       </nav>
     </div>
 
+    {/* BAND 2 — how to reach the studio, where it is, and the map, side by
+        side. Three things of similar height, which is why the map belongs
+        here rather than at the foot of a column. */}
+    {/* Two columns from sm, three from lg. Left at one column the three blocks
+        stack, and on a 768 tablet that alone added 235px of footer. */}
+    <div class="mt-10 grid items-start gap-x-10 gap-y-9 border-t border-panel-divider pt-8 sm:grid-cols-2 lg:mt-14 lg:grid-cols-[minmax(0,260px)_minmax(0,1fr)_minmax(0,380px)] lg:gap-x-20 lg:pt-10">
+      <div>
+        {/* Each route carries what a reader actually wants to know before
+            using it: how fast it is answered, when someone picks up, what
+            happens after. A bare list of three links answers none of that. */}
+        <h2 class="label-mono mb-3.5 text-panel-text-faint">Reach us</h2>
+        <ul class="grid gap-3.5">
+          {ROUTES.map((route) => (
+            <li class="grid gap-0.5">
+              <a
+                href={route.url}
+                rel="noopener"
+                class:list={[
+                  'inline-flex min-h-[24px] w-fit items-center text-[15px] font-semibold',
+                  route.class,
+                ]}
+              >
+                {route.value}
+              </a>
+              <span class="text-[13px] leading-[1.5] text-panel-text-faint">{route.note}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="label-mono mb-3.5 text-panel-text-faint">The studio</h2>
+        <address class="text-sm not-italic leading-[1.7] text-panel-text-faint">
+          {BUSINESS.address.street},<br />
+          {BUSINESS.address.locality}, {BUSINESS.address.region} {BUSINESS.address.postalCode}, India
+        </address>
+        <p class="mt-2 text-[13px] leading-[1.5] text-panel-text-faint">
+          One studio, and no branch offices anywhere.
+        </p>
+
+        {/*
+          A profile, kept out of "Reach us" beside it on purpose — that list is
+          three ways to reach the studio and the count is stated as a fact on
+          other pages. Instagram is somewhere to look at the work, not a way to
+          get an answer.
+
+          It takes the site's own `a-social` accent rather than Instagram's
+          brand colours, none of which survive this ground: their pink measures
+          3.61 on midnight and their purple 3.07, both under AA, and their
+          orange clears it only by being warm, which this palette bans.
+        */}
+        <h2 class="label-mono mb-3 mt-8 text-panel-text-faint">Elsewhere</h2>
+        <a
+          href={INSTAGRAM_URL}
+          rel="noopener"
+          class="inline-flex min-h-[24px] w-fit items-center gap-2 text-[15px] font-semibold text-a-social-vivid hover:text-surface"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5" />
+            <circle cx="12" cy="12" r="4" />
+            <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" />
+          </svg>
+          {INSTAGRAM_HANDLE}
+        </a>
+        <span class="mt-0.5 block text-[13px] leading-[1.5] text-panel-text-faint">
+          Work in progress, and finished builds
+        </span>
+      </div>
+
+      {/* Lazy, and several screens below the fold on every page, so a reader
+          who never reaches the footer never requests anything from Google.
+          A fixed aspect reserves the space, so it cannot shift the page. */}
+      <MapPanel class="sm:col-span-2 lg:col-span-1" onPanel />
+    </div>
+
     {/* The towns used to run as one unbroken mono line, which read as a list
         of keywords rather than a list of places. Labelled and given room, it
         reads as what it is: where the work happens. */}
-    <div class="mt-16 grid gap-6 border-t border-panel-divider pt-8 lg:grid-cols-[minmax(0,300px)_1fr] lg:gap-20">
+    <div class="mt-10 grid gap-5 border-t border-panel-divider pt-8 lg:mt-14 lg:grid-cols-[minmax(0,260px)_1fr] lg:gap-20 lg:pt-10">
       {/* Not "Where we work" — that is already a nav group heading above, and
           two identical headings in one landmark is a maze to anyone browsing
           by heading. */}
@@ -202,7 +232,7 @@ const ROUTES = [
       </div>
     </div>
 
-    <p class="mt-10 border-t border-panel-divider pt-7 text-[14px] leading-[1.7] text-panel-text-faint">
+    <p class="mt-9 border-t border-panel-divider pt-6 text-[14px] leading-[1.7] text-panel-text-faint">
       © {year} {BUSINESS.name}. Built by hand in Mehsana, and this site is our own best evidence.
     </p>
   </div>
