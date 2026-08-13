@@ -1,6 +1,7 @@
 # CareInflow — SEO audit and improvement programme
 
 **Audited:** 13 August 2026 · **Against:** `master` @ `d1599d9`, 38 built routes
+**Amended:** 13 August 2026 @ `5162b04`, after Rajkot shipped — 39 routes. Counts below are as-audited unless a row says otherwise.
 **Scope:** full crawl of the built site, schema graph, internal link graph, content uniqueness, live SERP checks
 **Not used:** Search Console data — none was available. Nothing in this document is inferred from data that does not exist.
 
@@ -37,11 +38,11 @@ A brand search for *CareInflow* returns `careflow.com`, `careflowhealth.com`, `g
 | Home | 1 | `/` |
 | Services | 6 | `/services/` + 5 detail |
 | Specialties | 4 | `/specialties/` + 3 detail |
-| Areas | 10 | `/areas/` + 9 towns |
+| Areas | 10 → **11** | `/areas/` + 9 towns, **+ Rajkot since** |
 | Resources | 6 | `/resources/` + 5 articles |
 | Work | 4 | `/work/` + 3 case studies |
 | Studio & legal | 6 | `/about/` `/contact/` `/faq/` `/pricing/` `/process/` `/privacy/` |
-| **Indexable total** | **37** | all in `sitemap-0.xml` |
+| **Indexable total** | **37** → **38** | all in `sitemap-0.xml` |
 | Non-indexable | 1 | `/404` — `noindex`, correctly excluded from the sitemap |
 
 ### 2.2 What is verified working
@@ -57,7 +58,7 @@ A brand search for *CareInflow* returns `careflow.com`, `careflowhealth.com`, `g
 |---|---|
 | Entity corroboration — 2 `sameAs`, 0 reviews, 0 referring domains | The Careflow conflation. This is the whole ballgame. |
 | **Treatment pages — zero exist** | The site sells "a page per treatment" as its core mechanism and does not have one. 18 treatments are named in specialty frontmatter; none is a URL. |
-| Rajkot | Named as a target market; absent from the codebase entirely. |
+| ~~Rajkot~~ | ~~Named as a target market; absent from the codebase entirely.~~ **Built and shipped 13 Aug 2026** — see §7. The remaining step is the GBP service area, which is a console action. |
 | Case studies with outcomes | Three exist; one is a labelled demo. None carries measured results, correctly, because none has been measured yet. |
 | Search Console history | Six days. Not yet a dataset. |
 
@@ -157,7 +158,7 @@ Built around what the studio genuinely does. Intent labels: **C** commercial, **
 **Two structural additions**, in priority order:
 
 1. **Treatment-page strategy** — currently the site's central argument with no page of its own. It belongs as a deep section on `/services/healthcare-websites/` plus a resource article, not a new top-level URL. (§11)
-2. **Rajkot** — `/areas/rajkot/`, on the existing pattern. (§7)
+2. ~~**Rajkot** — `/areas/rajkot/`, on the existing pattern.~~ **Done** — shipped 13 Aug 2026. (§7)
 
 ---
 
@@ -235,9 +236,23 @@ Rajkot appears **nowhere** in the codebase: not in `BUSINESS.serviceAreas`, not 
 | **GBP** | **Add Rajkot to the listing's service area in the same window.** Otherwise the schema claims a market the profile does not. |
 | Guard | `check-areas` now fails the build if `serviceAreas` names a town with no page — verified against exactly this scenario |
 
-**Two things require the owner's knowledge, not research:**
-1. Whether the referral thesis holds for the practice types CareInflow actually sells to. It is strong for cardiac, oncology and neuro; weak for dental, physiotherapy and dermatology. **This is the assumption most likely to be wrong**, and if it is, the page's centre of gravity must shift entirely onto the chain-hospital asymmetry.
-2. Whether Rajkot is genuinely being sold into. `/areas/` opens by criticising agencies that "list a dozen cities and staff exactly one of them." A tenth town 250km away survives that sentence only if its honesty about distance is the reason to trust it.
+### What was decided, and why the thesis changed
+
+**Shipped 13 August 2026.** The referral thesis above was researched and then **rejected**. Recording that here, because the reasoning matters more than the conclusion.
+
+The Saurashtra catchment is real, but it is strong for cardiac, oncology and neuro and weak for dental, physiotherapy and dermatology — which is what CareInflow actually sells to. It also duplicates Patan and Palanpur, which already own the travelling-patient argument.
+
+What checks out instead, and is genuinely unlike any of the nine North Gujarat pages:
+
+- **National hospital groups run multispecialty units in the city**, with dermatology and physiotherapy inside them as departments. An independent skin or physio clinic here competes with an organisation, not another independent.
+- **The larger dental practices operate as institutions**, with a brand and a message behind them.
+- **Booking and review directories carry deep Rajkot listings** with fees, ratings and appointment buttons. A large share of patients meet the practice as one row among five, in an interface it does not control, before seeing anything it wrote.
+
+So the page argues: you will not out-spend a marketing department, and it says so plainly. You can out-specify it, because a large organisation writes about a *department* and almost never writes the page about one condition naming the doctor who treats it. That same page answers the patient who arrived from a directory row and is choosing between three names.
+
+On the second question — whether Rajkot is genuinely being sold into — the page does not dodge it. It opens with *"Do you actually work in Rajkot?"*, answers 250km and no office, and makes that the reason to trust the rest.
+
+**Still outstanding, and it is a console action rather than a code one:** the GBP service area. `areaServed` on every page of the site now claims Rajkot; until the listing agrees, the site and the profile disagree about where the business works. Flagged at the top of `docs/launch/google-business-profile-checklist.md`.
 
 ---
 
@@ -527,7 +542,7 @@ Audited across every commercial page. The funnel is in good shape.
 | 10 | Write the treatment-page resource article | Content |
 | 11 | Deepen `/services/healthcare-websites/` with treatment architecture | Content |
 | 12 | Add local-SEO and GBP depth to the 9 area pages — one per commit, each genuinely town-specific | Content |
-| 13 | Build `/areas/rajkot/` + config + image + **GBP service area** | Dev + Founder |
+| ~~13~~ | ~~Build `/areas/rajkot/` + config + image~~ **Done 13 Aug.** Remaining: **add Rajkot to the GBP service area** | Founder |
 | 14 | One real Mehsana case study with evidence | Founder + Content |
 | 15 | Client footer attribution, with permission | Founder |
 | 16 | First outreach: trade bodies, local publications | Founder |
@@ -563,7 +578,8 @@ Audited across every commercial page. The funnel is in good shape.
 | Treatment article | `/resources/` | New | Content | P1 | | Fill the central gap |
 | Treatment depth | `/services/healthcare-websites/` | Expand | Content | P1 | | Convert the core argument |
 | Area depth | 9 pages | Local-SEO + GBP intent | Content | P2 | | 3 intents, one page per town |
-| Rajkot | `/areas/rajkot/` | New + config + GBP | Dev + Founder | P2 | | New market |
+| Rajkot page | `/areas/rajkot/` | New + config + image | Dev | P2 | ✅ Done | New market |
+| Rajkot on GBP | — | Add to listing service area | Founder | **P1** | | Stop the schema claiming a market the profile does not |
 | Case study | `/work/` | One real, measured | Founder | P2 | | Proof + links |
 | Client links | — | Footer attribution | Founder | P2 | | First referring domains |
 | Anchor variety | sitewide | Vary repeated anchors | Content | P2 | | Anchor diversity |
