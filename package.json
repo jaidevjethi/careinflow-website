@@ -11,7 +11,8 @@
     "check": "astro check && node scripts/check-prices.mjs",
     "check:prices": "node scripts/check-prices.mjs",
     "check:meta": "node scripts/check-meta.mjs",
-    "verify": "npm run check:prices && npm run check:meta",
+    "check:areas": "node scripts/check-areas.mjs",
+    "verify": "npm run check:areas && npm run check:prices && npm run check:meta",
     "astro": "astro"
   },
   "dependencies": {
