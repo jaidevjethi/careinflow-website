@@ -6,8 +6,8 @@ Handed or sent to a practice once their project goes live. Open it and use
 **Print or save as PDF**; the screen chrome hides itself when printing and the
 sheet lays out at exactly 210 × 297 mm.
 
-It is a single self-contained file. Manrope, JetBrains Mono and Noto Sans
-Gujarati are inlined as base64, the logo is the real traced mark from
+It is a single self-contained file. Manrope, JetBrains Mono and Rasa
+are inlined as base64, the logo is the real traced mark from
 `public/logo-light.svg`, and the QR is vector, so it renders identically on a
 machine that has none of those installed and prints crisply at any size.
 
@@ -27,17 +27,15 @@ The wording is deliberate and should stay that way if it is edited:
 
 ### Rebuilding it
 
-The committed file is already assembled. To rebuild after editing the copy,
-restore the placeholders (`__MANROPE__`, `__JBMONO__`, `__GUJ400__`,
-`__GUJ700__`, `__LOGO__`, `__QR_SVG__`) and re-inline:
+Gujarati is **Rasa** (Ek Type, OFL), taken from the copy already installed on
+the studio machine and subset to only the 45 Gujarati characters this sheet
+uses, at two weights. That is 33 KB a weight instead of 471 KB for the full
+variable font.
 
-```bash
-npm install --no-save @fontsource/noto-sans-gujarati
-```
-
-`--no-save` matters: the Gujarati face is only needed for this sheet and has no
-business in the website's dependency tree. Manrope and JetBrains Mono are
-already project dependencies.
+To rebuild after editing the copy, restore the placeholders (,
+, , , , ), re-subset
+Rasa against the new text, and re-inline. Manrope and JetBrains Mono come from
+the project's own dependencies.
 
 ### The QR code
 
