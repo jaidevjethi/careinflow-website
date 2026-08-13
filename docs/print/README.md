@@ -32,8 +32,8 @@ the studio machine and subset to only the 45 Gujarati characters this sheet
 uses, at two weights. That is 33 KB a weight instead of 471 KB for the full
 variable font.
 
-To rebuild after editing the copy, restore the placeholders (,
-, , , , ), re-subset
+To rebuild after editing the copy, restore the six placeholders — `__MANROPE__`,
+`__JBMONO__`, `__GUJ400__`, `__GUJ700__`, `__LOGO__`, `__QR_SVG__` — re-subset
 Rasa against the new text, and re-inline. Manrope and JetBrains Mono come from
 the project's own dependencies.
 
