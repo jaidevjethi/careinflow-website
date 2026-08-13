@@ -23,9 +23,9 @@ Avoid keyword stuffing. Avoid repeating the same phrases unnaturally. Use natura
 
 ## Local SEO Strategy
 
-Optimize the website primarily for **North Gujarat**. Primary service areas:
+Optimize the website primarily for **North Gujarat**, with Rajkot as the single market outside it. Primary service areas:
 
-Mehsana · Ahmedabad · Gandhinagar · Visnagar · Unjha · Patan · Kalol · Siddhpur · Palanpur · North Gujarat region
+Mehsana · Ahmedabad · Gandhinagar · Visnagar · Unjha · Patan · Kalol · Siddhpur · Palanpur · Rajkot (Saurashtra) · North Gujarat region
 
 Service pages should naturally reference relevant service areas where appropriate. Location relevance should come from valuable content, not repetitive location stuffing.
 

@@ -263,6 +263,21 @@ const DROP = [
    * The text is large and crisp, so unlike the other mockups here it cannot be
    * made illegible by rendering it small.
    */
+
+  // ── Fourth drop ──────────────────────────────────────────────────────────
+  /*
+   * Rajkot, the tenth area page and the first outside North Gujarat. The nine
+   * existing area photographs are each that town's own landmark — Rani ki Vav
+   * for Patan, the Bohra havelis for Siddhpur, a pumpjack for Kalol — so this
+   * is the Watson Museum in Jubilee Garden, Indo-Saracenic, 1888, and the
+   * oldest museum in Saurashtra. Checked against a source before generating,
+   * because a town's landmark got wrong is obvious to anyone who lives there
+   * and undoes the point of writing the page at all.
+   *
+   * 1000px to match the nine it sits beside in the /areas grid, not the 1200
+   * default: both slots crop it into a fixed-height band.
+   */
+  { n: '57', src: '57-area-rajkot.png', out: 'editorial/area-rajkot.webp', ratio: 'wide', width: 1000, grade: 3.0 },
 ];
 
 /** No committed asset should exceed this; the whole point is a fast site. */

@@ -18,13 +18,17 @@ import {
   itemListSchema,
 } from '@/lib/schema';
 
-const title = 'Clinic web design across Gujarat: 9 towns | CareInflow';
+const title = 'Clinic web design across Gujarat: 10 towns | CareInflow';
 const description =
-  "Gujarat's healthcare-only web studio works with clinics in Mehsana, Ahmedabad, Gandhinagar, Patan, Palanpur and four more towns. Served, not staffed.";
+  "Gujarat's healthcare-only web studio works with clinics in Mehsana, Ahmedabad, Gandhinagar, Rajkot, Patan and five more towns. Served, not staffed.";
 
 const areas = (await getCollection('areas')).sort((a, b) => a.data.order - b.data.order);
 const written = new Set(areas.map((a) => a.data.city));
 const alsoServed = BUSINESS.serviceAreas.filter((city) => !written.has(city));
+
+/** The studio's town leads on its own; the rest divide evenly into three. */
+const home = areas.find((a) => a.data.isHomeBase);
+const rest = areas.filter((a) => !a.data.isHomeBase);
 
 const schema = graph(
   organizationSchema(),
@@ -70,10 +74,47 @@ const schema = graph(
     />
   </PageHero>
 
+  {/* The studio's own town, lifted out of the grid. Two reasons, and the
+      second is the honest one: ten cards leave one stranded in a three-column
+      grid, and Mehsana was sitting as one of ten identical tiles on a page
+      whose opening argument is that we have exactly one studio and it is
+      there. Lifting it fixes the arithmetic and says the right thing. */}
   <section class="band-powder" aria-label="Areas with a full page">
     <div class="section shell">
+      {home && (
+        <a
+          href={href(`/areas/${home.id}`)}
+          class:list={[
+            'card-hover mb-5 grid overflow-hidden rounded-3xl border border-line hover:no-underline lg:grid-cols-[minmax(0,420px)_1fr]',
+            ACCENTS[home.data.accent].tint,
+          ]}
+        >
+          <Image
+            src={home.data.image}
+            alt={home.data.imageAlt ?? ''}
+            widths={[420, 840]}
+            sizes="(min-width: 1024px) 420px, 92vw"
+            loading="lazy"
+            class="h-[190px] w-full border-b border-line object-cover lg:h-full lg:border-b-0 lg:border-r"
+          />
+          <div class="flex flex-col justify-center p-8 lg:p-10">
+            <p class="mb-3">
+              <span class="chip bg-surface/70 text-muted">Our studio is here</span>
+            </p>
+            <h2 class="text-[clamp(24px,3vw,32px)] font-extrabold leading-[1.12] tracking-[-0.035em] text-ink">
+              {home.data.city}
+            </h2>
+            <p class="mt-3 max-w-[54ch] text-[16px] leading-[1.6] text-body">{home.data.summary}</p>
+            <span
+              class:list={['prose-link mt-6 inline-block text-[16px]', ACCENTS[home.data.accent].text]}
+            >
+              Working in {home.data.city} →
+            </span>
+          </div>
+        </a>
+      )}
       <div class="reveal-group grid gap-5 lg:grid-cols-3">
-        {areas.map((a) => (
+        {rest.map((a) => (
           <a
             href={href(`/areas/${a.id}`)}
             class:list={[

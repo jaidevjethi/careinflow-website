@@ -43,9 +43,22 @@ const areaChips = [
   data.isHomeBase ? 'Our studio is here' : 'A place we serve, not a place we staff',
 ];
 
+/*
+ * Six, not every other town. With ten areas this block listed nine on every
+ * area page — four and a half rows of near-identical cards between the body
+ * and the closing ask, and an odd one stranded in a two-column grid. Six
+ * divides evenly at two columns and at three, and `/areas` is one link away
+ * for anyone who wants the rest.
+ *
+ * Ordered by `order`, so the studio town and the largest markets are the ones
+ * that always appear.
+ */
+const OTHERS_SHOWN = 6;
+
 const others = (await getCollection('areas'))
   .filter((a) => a.id !== area.id)
-  .sort((a, b) => a.data.order - b.data.order);
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, OTHERS_SHOWN);
 
 /**
  * `Service` with `areaServed`, never a second `LocalBusiness`. There is one
@@ -159,6 +172,9 @@ const schema = graph(
             </a>
           ))}
         </div>
+        <p class="mt-6 text-[16px] leading-[1.62] text-body">
+          <a href={href('/areas')} class="prose-link">Every town we work in →</a>
+        </p>
       </section>
     )}
   </article>

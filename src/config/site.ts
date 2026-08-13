@@ -80,7 +80,18 @@ export const BUSINESS = {
     opens: '11:00',
     closes: '19:30',
   },
-  /** Areas served, Mehsana first (home base). */
+  /**
+   * Areas served, Mehsana first (home base), then roughly outward.
+   *
+   * Rajkot is last and deliberately so: it is Saurashtra rather than North
+   * Gujarat and around 250km out, which makes it the one name here a reader
+   * might reasonably query. Its page says so in the opening line.
+   *
+   * Every name in this list must have a page at `/areas/<lowercased>` — the
+   * footer links all of them unconditionally, so a name added here before its
+   * page exists is a dead link on every page of the site. `check-areas.mjs`
+   * fails the build on exactly that.
+   */
   serviceAreas: [
     'Mehsana',
     'Ahmedabad',
@@ -91,6 +102,7 @@ export const BUSINESS = {
     'Kalol',
     'Siddhpur',
     'Palanpur',
+    'Rajkot',
   ],
 } as const;
 
@@ -241,15 +253,21 @@ export const FOOTER_GROUPS = [
   {
     title: 'Where we work',
     /*
-     * Three markets and the index, deliberately — not all nine. The "Towns we
+     * Four markets and the index, deliberately — not all ten. The "Towns we
      * serve" band lower in the footer links every one of them, so repeating
      * the full list here would say the same thing twice and leave this column
-     * twice the length of the four beside it.
+     * more than twice the length of the four beside it.
+     *
+     * Rajkot joins the three because it is the newest market and the one with
+     * the least internal linking pointing at it; a nav slot is worth more to
+     * it than to Patan, which the band and the neighbouring area pages already
+     * carry. Five links matches the Services and Answers columns either side.
      */
     links: [
       { label: 'Mehsana', href: '/areas/mehsana' },
       { label: 'Ahmedabad', href: '/areas/ahmedabad' },
       { label: 'Gandhinagar', href: '/areas/gandhinagar' },
+      { label: 'Rajkot', href: '/areas/rajkot' },
       { label: 'All service areas', href: '/areas' },
     ],
   },

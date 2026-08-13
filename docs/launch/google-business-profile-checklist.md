@@ -19,11 +19,13 @@ from that one file, so they cannot drift apart.
 | Phone | +91 97734 56668 |
 | Website | `https://www.careinflow.com/` |
 | Hours | Monday–Friday, 11:00–19:30. Closed Saturday and Sunday |
-| Coordinates | 23.5985, 72.3693 |
+| Coordinates | 23.6174258, 72.3491067 |
 
 The coordinates come from the listing's own pin, read out of the embed URL, so
 the schema and the profile agree. They were 23.5985, 72.3693 until the listing
-existed to check against — 2.9km out, in a different part of Mehsana.
+existed to check against — 2.9km out, in a different part of Mehsana. This table
+still carried the old pair after `src/config/site.ts` was corrected, which is
+the exact drift the page below warns about, in the page that warns about it.
 
 **Everything in this table is what the site publishes.** The address is in
 `src/config/site.ts` with a build guard; the hours derive from the same file
@@ -167,13 +169,19 @@ fake one costs the listing.
 ## Service area
 
 Mehsana is where the studio is. Ahmedabad, Gandhinagar, Visnagar, Unjha, Patan,
-Kalol, Siddhpur and Palanpur are places served.
+Kalol, Siddhpur, Palanpur and Rajkot are places served.
 
 This is a business with a real address, so keep the address visible rather than
-converting it to a service-area business. Add the eight towns as service areas
+converting it to a service-area business. Add the nine towns as service areas
 alongside it. Do not create a second listing for any of them: there is one
 studio and no branch offices, the site says so on every area page, and duplicate
 listings are a suspension risk as well as a lie.
+
+**Rajkot is the one that needs doing now.** It went into `BUSINESS.serviceAreas`
+on 13 Aug 2026, which means the `areaServed` in the Organization schema on every
+page of the site already claims it. Until the listing's service area says the
+same thing, the site and the profile disagree about where the business works,
+which is the one inconsistency local search is least forgiving of.
 
 ## After it is live
 
@@ -222,7 +230,7 @@ In the order they are worth doing:
 The website half of this is finished and verified:
 
 - `LocalBusiness`/`ProfessionalService` schema with address, geo taken from the
-  listing pin, opening hours, `areaServed` for all nine towns, and `priceRange`
+  listing pin, opening hours, `areaServed` for all ten towns, and `priceRange`
 - `sameAs` and `hasMap` both pointing at the listing's CID, which is what ties
   the site and the profile together as one entity
 - One canonical host, every page indexable, a valid sitemap, and the whole site
