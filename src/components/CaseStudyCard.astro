@@ -39,13 +39,38 @@ interface Props {
    */
   heading?: 'title' | 'client';
   loading?: 'lazy' | 'eager';
+  /**
+   * The homepage thumbnail: cover, labels, name, link, and nothing else.
+   *
+   * The full card ran on the homepage too, and the band it made was 1903px —
+   * 2.11 screens, 17% of the page, and the tallest section on it by 800px.
+   * That is the /work page's job being done twice. On /work a visitor has
+   * arrived to compare projects and wants the summary and the measurements;
+   * on the homepage they are scrolling past and need one thing only, which is
+   * evidence that real clinic sites exist behind the claim. Four thumbnails in
+   * a single row say that in one glance, and the summary they no longer read
+   * here is one click away where they were always going to read it properly.
+   *
+   * Everything cut is duplicated downstream: summary, measurements and
+   * location are all on the case study. The chips are NOT cut, because the
+   * band tells the reader two of the four are samples and four unlabelled
+   * covers would leave that sentence unsupported.
+   */
+  compact?: boolean;
 }
 
-const { study, headingLevel = 'h2', heading = 'title', loading = 'lazy' } = Astro.props;
+const {
+  study,
+  headingLevel = 'h2',
+  heading = 'title',
+  loading = 'lazy',
+  compact = false,
+} = Astro.props;
 const d = study.data;
 const Heading = headingLevel;
 const headline = heading === 'client' ? d.client : d.title;
 const subline = heading === 'client' ? d.location : `${d.client} · ${d.location}`;
+
 ---
 
 <a
@@ -70,47 +95,91 @@ const subline = heading === 'client' ? d.location : `${d.client} · ${d.location
     620px while the card rendered it at 1263px, so the browser fetched a 620px
     variant and stretched it 2.04x — the portfolio's most important screenshot
     served at half resolution. It then said 400px against that same 620px box
-    for exactly the same reason: the grid moved and this did not. The 1440
-    clause is the shell's own arithmetic — (1440 - 160 margins - 24 gap) / 2 —
-    so it cannot drift with the viewport, and 1260 exists in `widths` because
-    630 CSS px on a 2x phone or laptop is 1260 real ones.
+    for exactly the same reason: the grid moved and this did not. Each clause
+    below is its grid's own arithmetic, so neither can drift with the viewport:
+    two columns is (1440 - 160 margins - 24 gap) / 2, four columns is
+    (1440 - 160 - 72) / 4. `widths` runs to 1260 and 620 respectively because a
+    2x screen wants twice the CSS pixels.
   */}
   <Image
     src={d.cover}
     alt={d.coverAlt}
-    widths={[420, 640, 900, 1260]}
-    sizes="(min-width: 1440px) 628px, (min-width: 640px) 46vw, 92vw"
+    widths={compact ? [320, 460, 620] : [420, 640, 900, 1260]}
+    sizes={
+      compact
+        ? '(min-width: 1440px) 302px, (min-width: 1280px) 23vw, (min-width: 640px) 46vw, 92vw'
+        : '(min-width: 1440px) 628px, (min-width: 640px) 46vw, 92vw'
+    }
     {loading}
     class="aspect-[2/1] w-full border-b border-line bg-surface object-cover object-top"
   />
-  <div class="flex flex-1 flex-col p-5 sm:p-6">
-    <p class="mb-4 flex flex-wrap items-center gap-2">
-      <span class="chip border border-line bg-surface text-body-deep">{d.sector}</span>
-      {d.demo && (
-        <span class="chip border border-surgical/40 bg-surgical-tint text-surgical">Sample</span>
-      )}
-      {/* No separate "Non-healthcare" chip: the sector chip beside it already
-          reads "Travel services (non-healthcare)", so the row said it twice
-          and wrapped to two lines, dropping that card's headline 36px below
-          the other two. Measured, not guessed. */}
-      <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{d.year}</span>
-    </p>
-    <Heading class="text-[clamp(20px,1.7vw,23px)] font-extrabold leading-[1.18] tracking-[-0.03em] text-ink">
-      {headline}
-    </Heading>
-    <p class="mt-2 text-[14px] font-semibold text-muted">{subline}</p>
-    <p class="mt-3 line-clamp-3 text-[15px] leading-[1.6] text-body">{d.summary}</p>
-    <dl class="mt-auto hidden grid-cols-2 gap-x-5 border-t border-line pt-5 sm:grid">
-      {d.highlights.slice(0, 2).map((h) => (
-        <div>
-          <dt class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{h.label}</dt>
-          <dd class="mt-1 text-[17px] font-extrabold leading-[1.2] tracking-[-0.03em] text-ink">{h.value}</dd>
-          {h.ref && (
-            <dd class="mt-0.5 font-mono text-[11px] uppercase leading-[1.5] tracking-[0.06em] text-muted">{h.ref}</dd>
-          )}
-        </div>
-      ))}
-    </dl>
-    <p class="prose-link mt-5 text-[16px]">Read the case study →</p>
-  </div>
+  {compact ? (
+    <div class="flex flex-1 flex-col p-4 sm:p-5">
+      {/*
+        DISCLOSURES ONLY. The sector chip and the year both go.
+
+        The sector went because this variant leads with the practice name, and
+        the name already carries it: "DENTAL CLINIC" over "Pramukh
+        Multispeciality Dental Clinic", "PHYSIOTHERAPY" over "Gati
+        Physiotherapy & Rehabilitation". Three of the four tiles said their
+        sector twice. The full card keeps the chip because it leads with the
+        project headline instead, and there the sector is the only place the
+        specialty appears above the fold.
+
+        What is left is the two things a name cannot say, and both are
+        disclosures the page depends on: the lede promises "two are samples",
+        and the studio takes healthcare only. Alone in the row they are louder
+        than they were competing with a sector, and the row can no longer wrap
+        — "Travel services (non-healthcare)" needed 270px of a 257px row and
+        truncated mid-word at "NON-HEALTHCAR…", `.chip` being nowrap and
+        ellipsised on purpose to stop long chips bleeding out at 320px.
+
+        min-h reserves the row on the one tile that carries no chip, so all
+        four names sit on a shared baseline.
+      */}
+      <p class="mb-2.5 flex min-h-[30px] flex-wrap items-center gap-1.5">
+        {d.demo && (
+          <span class="chip border border-surgical/40 bg-surgical-tint text-surgical">Sample</span>
+        )}
+        {!d.healthcare && (
+          <span class="chip border border-line bg-surface text-muted">Non-healthcare</span>
+        )}
+      </p>
+      <Heading class="text-[16px] font-extrabold leading-[1.25] tracking-[-0.02em] text-ink">
+        {headline}
+      </Heading>
+      <p class="prose-link mt-auto pt-3 text-[14px]">See the case study →</p>
+    </div>
+  ) : (
+    <div class="flex flex-1 flex-col p-5 sm:p-6">
+      <p class="mb-4 flex flex-wrap items-center gap-2">
+        <span class="chip border border-line bg-surface text-body-deep">{d.sector}</span>
+        {d.demo && (
+          <span class="chip border border-surgical/40 bg-surgical-tint text-surgical">Sample</span>
+        )}
+        {/* No separate "Non-healthcare" chip: the sector chip beside it already
+            reads "Travel services (non-healthcare)", so the row said it twice
+            and wrapped to two lines, dropping that card's headline 36px below
+            the other two. Measured, not guessed. */}
+        <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{d.year}</span>
+      </p>
+      <Heading class="text-[clamp(20px,1.7vw,23px)] font-extrabold leading-[1.18] tracking-[-0.03em] text-ink">
+        {headline}
+      </Heading>
+      <p class="mt-2 text-[14px] font-semibold text-muted">{subline}</p>
+      <p class="mt-3 line-clamp-3 text-[15px] leading-[1.6] text-body">{d.summary}</p>
+      <dl class="mt-auto hidden grid-cols-2 gap-x-5 border-t border-line pt-5 sm:grid">
+        {d.highlights.slice(0, 2).map((h) => (
+          <div>
+            <dt class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{h.label}</dt>
+            <dd class="mt-1 text-[17px] font-extrabold leading-[1.2] tracking-[-0.03em] text-ink">{h.value}</dd>
+            {h.ref && (
+              <dd class="mt-0.5 font-mono text-[11px] uppercase leading-[1.5] tracking-[0.06em] text-muted">{h.ref}</dd>
+            )}
+          </div>
+        ))}
+      </dl>
+      <p class="prose-link mt-5 text-[16px]">Read the case study →</p>
+    </div>
+  )}
 </a>

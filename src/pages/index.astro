@@ -690,31 +690,51 @@ Four things change for your practice, and every one of them is
   <!-- 04 · FINDINGS : REAL BUILDS -->
   <section class="border-t border-hairline bg-surface" aria-labelledby="featured-title">
     <div class="section shell">
-      <div class="mb-12 flex flex-wrap items-end justify-between gap-6">
+      <div class="mb-10 flex flex-wrap items-end justify-between gap-6">
         <SectionHead
           id="featured-title"
           label="Our portfolio"
           title="Websites we have actually built"
-          lede="Four live sites you can open right now. Time how fast they appear, tap the enquiry button, and see where the message lands."
+          lede="Four live sites you can open right now. Time how fast they appear, tap the enquiry button, and see where the message lands. Two were built for practices; two are samples, and each page says so."
         />
         <a href={href('/work')} class="prose-link whitespace-nowrap text-base">See the portfolio →</a>
       </div>
 
-      {/* Every project, in the same two-up grid the portfolio page uses, so
-          the two pages agree with each other. The samples keep their chip here
-          too — that label is what lets the whole portfolio be shown without
-          the section contradicting the sentence above it. */}
-      <div class="reveal-group grid items-stretch gap-6 sm:grid-cols-2">
+      {/*
+        FOUR ACROSS, ONE ROW, AND DELIBERATELY NOT THE /work GRID.
+
+        The two pages want different things from the same four projects. On
+        /work a visitor has arrived to compare them and the full card earns its
+        height. Here they are scrolling past on the way to something else, and
+        the full card built a 1903px band — 2.11 screens, 17% of the homepage,
+        the tallest section on the page by 800px — to say a thing that lands in
+        one glance: real clinic sites exist behind the claim, and here are four
+        of them. A single row is that glance. Everything the tile drops is one
+        click away on the case study, which is where it was always read.
+
+        Four into four divides evenly, the same rule /work follows at two. A
+        fifth project makes this 5 columns at ~238px, which is under what a
+        screenshot survives — at that point this becomes the three or four most
+        recent, with the count in the lede corrected to match.
+
+        Four columns starts at xl, not lg. Tailwind's lg IS 1024, which is the
+        width where four columns measures 214px and "Pramukh Multispeciality
+        Dental Clinic" wraps to three lines while the covers shrink to 106px
+        tall. 1280 gives 262px, which holds the name at two lines.
+
+        One column below sm, and this is the place the shortest layout is the
+        wrong one. Two columns on a phone is tempting — it halves the band —
+        but at 375 it makes the cover 158x79 and at 320 it makes it 130x65 and
+        truncates the "Non-healthcare" chip mid-word. The cover IS the argument
+        here; a thumbnail too small to read is not shorter proof, it is no
+        proof, and a truncated disclosure is worse than either. One column
+        gives 335px and a 167px cover on the phone most patients hold.
+      */}
+      <div class="reveal-group grid items-stretch gap-4 sm:grid-cols-2 sm:gap-6 xl:grid-cols-4">
         {allCaseStudies.map((cs) => (
-          <CaseStudyCard study={cs} headingLevel="h3" heading="client" />
+          <CaseStudyCard study={cs} headingLevel="h3" heading="client" compact />
         ))}
       </div>
-
-      <p class="mt-8 max-w-[720px] text-[16px] leading-[1.65] text-muted">
-        Every one of these is live. Open them on your phone, time how long they
-        take to appear, and tap the enquiry button to see where it goes. Two
-        were built for practices; two are samples, and each page says so.
-      </p>
     </div>
   </section>
 
