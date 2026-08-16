@@ -53,18 +53,35 @@ const subline = heading === 'client' ? d.location : `${d.client} · ${d.location
   class="card-hover flex flex-col overflow-hidden rounded-3xl border border-line bg-canvas hover:no-underline"
 >
   {/*
+    A RATIO, NOT A PIXEL HEIGHT. This was `h-[150px] sm:h-[168px]`, which read
+    as a considered number and was really a ratio in disguise: at the 352px
+    column the card had then, 168px tall is 2.1:1. When the grid went from
+    three columns to two the column grew to 620px, the height did not, and the
+    same rule produced a 3.7:1 letterbox showing 43% of the screenshot — a
+    decorative banner rather than a picture of a website.
+
+    2:1 is that original composition, expressed so it survives the next grid
+    change. It holds across the range (335px phone, 540px laptop, 620px
+    desktop), keeps the image at roughly 40% of the card, and shows the top
+    80% of a 1440x900 capture: the whole header and hero, which is the part
+    that identifies the site.
+
     `sizes` has to describe the box the image actually fills. It once said
     620px while the card rendered it at 1263px, so the browser fetched a 620px
     variant and stretched it 2.04x — the portfolio's most important screenshot
-    served at half resolution. One card means one honest `sizes` for all three.
+    served at half resolution. It then said 400px against that same 620px box
+    for exactly the same reason: the grid moved and this did not. The 1440
+    clause is the shell's own arithmetic — (1440 - 160 margins - 24 gap) / 2 —
+    so it cannot drift with the viewport, and 1260 exists in `widths` because
+    630 CSS px on a 2x phone or laptop is 1260 real ones.
   */}
   <Image
     src={d.cover}
     alt={d.coverAlt}
-    widths={[420, 640, 840]}
-    sizes="(min-width: 1280px) 400px, (min-width: 640px) 46vw, 92vw"
+    widths={[420, 640, 900, 1260]}
+    sizes="(min-width: 1440px) 628px, (min-width: 640px) 46vw, 92vw"
     {loading}
-    class="h-[150px] w-full border-b border-line bg-surface object-cover object-top sm:h-[168px]"
+    class="aspect-[2/1] w-full border-b border-line bg-surface object-cover object-top"
   />
   <div class="flex flex-1 flex-col p-5 sm:p-6">
     <p class="mb-4 flex flex-wrap items-center gap-2">
