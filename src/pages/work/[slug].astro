@@ -61,7 +61,7 @@ const schema = graph(
   webPageSchema({ path, title, description }),
   breadcrumbSchema([
     { name: 'Home', path: '/' },
-    { name: 'Work', path: '/work' },
+    { name: 'Portfolio', path: '/work' },
     { name: cs.data.client, path },
   ]),
   caseStudySchema({
@@ -89,7 +89,7 @@ const schema = graph(
 >
   <article>
     <PageHero
-      breadcrumb={{ label: 'All work', href: href('/work') }}
+      breadcrumb={{ label: 'Back to portfolio', href: href('/work') }}
       label={`${cs.data.sector} · ${cs.data.year}`}
       title={cs.data.title}
       lede={cs.data.summary}
@@ -113,7 +113,7 @@ const schema = graph(
         Demos only. The non-healthcare project carried a matching chip, but
         its lede already opens "Not a clinic. Included honestly…" and at this
         size the note restated that line almost verbatim, three lines below
-        it. The card on /work still labels it.
+        it. The card on the portfolio page still labels it.
       */}
       {cs.data.demo && (
         <p class="mt-5 max-w-[520px] rounded-xl border border-panel-accent/45 bg-panel-chip px-4 py-3 font-mono text-[11px] uppercase leading-[1.65] tracking-[0.06em] text-panel-accent">

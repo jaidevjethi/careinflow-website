@@ -14,9 +14,9 @@ import {
   itemListSchema,
 } from '@/lib/schema';
 
-const title = 'Clinic Website Examples: 3 Live Sites You Can Open';
+const title = 'Clinic Website Examples: 4 Sites You Can Open | CareInflow';
 const description =
-  'Healthcare websites built by CareInflow: a bilingual dental clinic in Mehsana, a dermatology sample, and a services site. Open each one and time it yourself.';
+  'Healthcare websites built by CareInflow: a bilingual dental clinic in Mehsana, dermatology and physiotherapy samples, and a services site. Open each one.';
 
 const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.order - b.data.order);
 
@@ -26,7 +26,7 @@ const schema = graph(
   webPageSchema({ path: '/work', title, description, type: 'CollectionPage' }),
   breadcrumbSchema([
     { name: 'Home', path: '/' },
-    { name: 'Work', path: '/work' },
+    { name: 'Portfolio', path: '/work' },
   ]),
   itemListSchema({
     path: '/work',
@@ -38,9 +38,9 @@ const schema = graph(
 
 <BaseLayout {title} {description} path="/work" {schema}>
   <PageHero
-    label="Our work"
+    label="Our portfolio"
     title="Clinic websites we have built. Do not take our word for it."
-    lede="Every site on this page is live right now. Open one on your phone, time how long it takes to appear, tap the WhatsApp button and watch where the message goes. Two were built for real practices. The third is a sample, built to show a clinic exactly what it receives, and it says so on its own page."
+    lede="Every site on this page is live right now. Open one on your phone, time how long it takes to appear, tap the WhatsApp button and watch where the message goes. Two were built for real practices. Two are samples, built to show a clinic exactly what it receives, and each says so on its own page."
     stats={[
       { value: 'Live', caption: 'open every one on your own phone' },
       { value: 'Healthcare', caption: 'the only work this studio takes' },
@@ -49,19 +49,26 @@ const schema = graph(
   />
 
   {/*
-    Three identical cards in three columns.
+    Identical cards, two to a row.
 
     Two earlier arrangements were wrong in the same way. Giving the flagship
     full width and the others `max-w-[760px]` left ~500px of dead ground down
     the page; pairing two under a full-width lead fixed the ragged edge but
     still sized the cards by how important we consider each project, which is
     a judgement a visitor has not asked for. Equal cards let the work argue
-    for itself, and the eye can compare three things at one size.
+    for itself, and the eye can compare them at one size.
 
-    Three into three columns divides evenly, which is the grid rule here — the
-    alternative of two columns would strand the third on its own row and read
-    as a page that ran out. Below lg they stack; three columns at tablet width
-    leaves ~210px per card, which is narrower than this content can survive.
+    THE COLUMN COUNT HAS TO DIVIDE THE PROJECT COUNT, which is the grid rule
+    here. At three projects that meant three columns; the fourth arrived and
+    three columns would have stranded it alone on a second row, reading as a
+    page that ran out. Four into two divides evenly, so `xl:grid-cols-3` came
+    off and the grid stops at two. It is also the roomier answer — a card at
+    xl went from a 352px column to ~660px — and it keeps a fifth project from
+    breaking the page again, since 2x2 becomes 3x2 without a decision.
+
+    Below sm they stack. Three columns at tablet width left ~210px per card,
+    which is narrower than this content survives, and two columns there is
+    already the shape the page settles into.
 
     Card heights match because the grid stretches every item in a row and each
     card is a flex column with `mt-auto` on the measurements, so the numbers
@@ -75,7 +82,7 @@ const schema = graph(
     study, which is where it was always going to be read properly.
   */}
   <section class="band-powder" aria-label="Case studies">
-    <div class="section shell grid items-stretch gap-6 sm:grid-cols-2 xl:grid-cols-3">
+    <div class="section shell grid items-stretch gap-6 sm:grid-cols-2">
       {caseStudies.map((cs) => <CaseStudyCard study={cs} />)}
     </div>
   </section>

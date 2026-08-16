@@ -221,9 +221,15 @@ export type PrefillKey = keyof typeof PREFILLS;
 export const whatsappFor = (key: PrefillKey = 'default'): string =>
   whatsappWithMessage(PREFILLS[key]);
 
+/*
+ * The portfolio is labelled "Portfolio" and lives at /work/. The mismatch is
+ * deliberate: those URLs are indexed and carry Search Console history, and a
+ * path rename would make each of them re-earn its position through a 301 for
+ * something no visitor reads. Change the label here, never the href.
+ */
 export const NAV_ITEMS = [
   { label: 'Services', href: '/services' },
-  { label: 'Work', href: '/work' },
+  { label: 'Portfolio', href: '/work' },
   { label: 'Method', href: '/process' },
   { label: 'Pricing', href: '/pricing' },
   { label: 'Resources', href: '/resources' },
@@ -276,7 +282,7 @@ export const FOOTER_GROUPS = [
     links: [
       { label: 'About', href: '/about' },
       { label: 'Method', href: '/process' },
-      { label: 'Work', href: '/work' },
+      { label: 'Portfolio', href: '/work' },
       { label: 'Pricing', href: '/pricing' },
     ],
   },

@@ -43,6 +43,8 @@ Full rules in the `careinflow-design` skill. The short version:
 - No ranking guarantees, no bought reviews, no templates resold as bespoke.
 - One studio, in Mehsana — no branches or other offices. Service areas are places served, not places staffed. **Every name in `serviceAreas` must have a page** at `/areas/<lowercased>`: the footer links all ten unconditionally, so a name added to the config before its page exists is a dead link sitewide. `npm run verify` fails the build on it. Rajkot is the one market outside North Gujarat (Saurashtra, ~250km) and its page opens by saying so.
 - **One enquiry page: `/contact`.** It carries the free written review in full. `/free-review` was a second route competing for the same conversion and now redirects — the redirect target is built from `BASE_PATH`, because Astro applies `base` to links it renders but *not* to redirect targets.
+- **The portfolio is labelled "Portfolio" and lives at `/work/`.** The divergence is deliberate: those URLs are indexed and carry Search Console history, and renaming the path would make each of them re-earn its position through a 301 for something no visitor reads. Change the label in `NAV_ITEMS`/`FOOTER_GROUPS`, never the `href`. Screenshots stay in `src/assets/work/`, captured by `scripts/capture-work-shots.mjs` (which takes output filenames as arguments to re-shoot a subset).
+- **The portfolio grid's column count must divide the project count.** Four projects, so `sm:grid-cols-2` and nothing above it, on `/work` *and* the homepage band. Three columns would strand the fourth card alone on a row. Adding a fifth means revisiting both grids, and the copy on both pages that counts the projects aloud.
 
 ## Repo skills (load the matching one before working)
 

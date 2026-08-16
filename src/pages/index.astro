@@ -418,7 +418,7 @@ const whatsappHref = whatsappWithMessage(
               href={href('/work')}
               class="py-1 text-panel-accent underline underline-offset-4 hover:text-surface"
             >
-              See real work
+              See the portfolio
             </a>
           </figcaption>
         </figure>
@@ -693,18 +693,18 @@ Four things change for your practice, and every one of them is
       <div class="mb-12 flex flex-wrap items-end justify-between gap-6">
         <SectionHead
           id="featured-title"
-          label="Our work"
+          label="Our portfolio"
           title="Websites we have actually built"
-          lede="Three live sites you can open right now. Time how fast they appear, tap the enquiry button, and see where the message lands."
+          lede="Four live sites you can open right now. Time how fast they appear, tap the enquiry button, and see where the message lands."
         />
-        <a href={href('/work')} class="prose-link whitespace-nowrap text-base">See the work →</a>
+        <a href={href('/work')} class="prose-link whitespace-nowrap text-base">See the portfolio →</a>
       </div>
 
-      {/* All three projects, in the same three-up grid /work uses, so the two
-          pages agree with each other. The sample keeps its chip here too —
-          that label is what lets the whole portfolio be shown without the
-          section contradicting the sentence above it. */}
-      <div class="reveal-group grid items-stretch gap-6 sm:grid-cols-2 xl:grid-cols-3">
+      {/* Every project, in the same two-up grid the portfolio page uses, so
+          the two pages agree with each other. The samples keep their chip here
+          too — that label is what lets the whole portfolio be shown without
+          the section contradicting the sentence above it. */}
+      <div class="reveal-group grid items-stretch gap-6 sm:grid-cols-2">
         {allCaseStudies.map((cs) => (
           <CaseStudyCard study={cs} headingLevel="h3" heading="client" />
         ))}
@@ -713,7 +713,7 @@ Four things change for your practice, and every one of them is
       <p class="mt-8 max-w-[720px] text-[16px] leading-[1.65] text-muted">
         Every one of these is live. Open them on your phone, time how long they
         take to appear, and tap the enquiry button to see where it goes. Two
-        were built for practices; the third is a sample, and its page says so.
+        were built for practices; two are samples, and each page says so.
       </p>
     </div>
   </section>

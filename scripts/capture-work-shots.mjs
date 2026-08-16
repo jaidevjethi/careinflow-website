@@ -39,11 +39,36 @@ const SHOTS = [
   { url: 'https://jaidevjethi.github.io/lavanya-skin-clinic/treatments', out: 'lavanya-treatments.webp', width: 1440, height: 1000 },
   { url: 'https://jaidevjethi.github.io/lavanya-skin-clinic/treatments', out: 'lavanya-treatments-mobile.webp', width: 500, height: 1000 },
   { url: 'https://jaidevjethi.github.io/lavanya-skin-clinic/contact', out: 'lavanya-contact.webp', width: 1440, height: 1000 },
+  // The physiotherapy demo. Same treatment as Lavanya above: a real deployed
+  // site, captured like one. Six shots rather than five because what this
+  // sample demonstrates is an information architecture — the conditions index
+  // and a single condition page have to be seen together for the structure to
+  // read at all.
+  { url: 'https://jaidevjethi.github.io/stride-physio-demo/', out: 'gati-desktop.webp', width: 1440, height: 900 },
+  { url: 'https://jaidevjethi.github.io/stride-physio-demo/', out: 'gati-mobile.webp', width: 500, height: 900 },
+  { url: 'https://jaidevjethi.github.io/stride-physio-demo/conditions', out: 'gati-conditions.webp', width: 1440, height: 1000 },
+  { url: 'https://jaidevjethi.github.io/stride-physio-demo/conditions/tech-neck', out: 'gati-condition.webp', width: 1440, height: 1000 },
+  { url: 'https://jaidevjethi.github.io/stride-physio-demo/treatments/sports-injury-rehab', out: 'gati-treatment.webp', width: 1440, height: 1000 },
+  { url: 'https://jaidevjethi.github.io/stride-physio-demo/clinic', out: 'gati-clinic.webp', width: 1440, height: 1000 },
+  { url: 'https://jaidevjethi.github.io/stride-physio-demo/faq', out: 'gati-faq.webp', width: 1440, height: 1000 },
+  /*
+   * 800 tall, not 1000, and the reason is the gallery's crop rather than the
+   * page. A phone shot renders in a 260px column and is capped at
+   * `max-h-[420px] object-cover object-top`, so a 500x1000 capture displays at
+   * 260x520 and loses its bottom 100px — which is precisely where a fixed
+   * enquiry bar lives, and precisely what this shot exists to show. At 500x800
+   * it displays at 260x416, under the cap, uncropped, bar intact.
+   */
+  { url: 'https://jaidevjethi.github.io/stride-physio-demo/', out: 'gati-home-mobile.webp', width: 500, height: 800 },
 ];
+
+/** Capture only these outputs when names are passed on the command line. */
+const only = new Set(process.argv.slice(2));
+const shots = only.size ? SHOTS.filter((s) => only.has(s.out)) : SHOTS;
 
 await mkdir(root('src/assets/work'), { recursive: true });
 
-for (const shot of SHOTS) {
+for (const shot of shots) {
   if (shot.width < MIN_WINDOW_WIDTH) {
     throw new Error(
       `${shot.out}: width ${shot.width} is below Chrome's ${MIN_WINDOW_WIDTH}px floor and would capture a clipped page.`,
