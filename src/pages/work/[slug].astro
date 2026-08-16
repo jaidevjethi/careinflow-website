@@ -110,14 +110,19 @@ const schema = graph(
         truncated, so on a phone the disclaimer trailed off before reaching
         the word "invented". A note that wraps cannot lose its own ending.
 
-        Demos only. The non-healthcare project carried a matching chip, but
-        its lede already opens "Not a clinic. Included honestly…" and at this
-        size the note restated that line almost verbatim, three lines below
-        it. The card on the portfolio page still labels it.
+        The wording follows `healthcare`, because "the practice, the doctor"
+        is the concrete version and it is nonsense on a taxi company. Three of
+        the four projects are samples now, and the non-healthcare one is among
+        them — it used to be exempt from this note on the grounds that its
+        lede already said "Not a clinic", but that lede was about the sector.
+        It was never a disclosure that no business exists behind the site,
+        which is the thing this note is for.
       */}
       {cs.data.demo && (
         <p class="mt-5 max-w-[520px] rounded-xl border border-panel-accent/45 bg-panel-chip px-4 py-3 font-mono text-[11px] uppercase leading-[1.65] tracking-[0.06em] text-panel-accent">
-          A sample site. The practice, the doctor and every number in it are invented.
+          {cs.data.healthcare
+            ? 'A sample site. The practice, the doctor and every number in it are invented.'
+            : 'A sample site. The company and every number in it are invented.'}
         </p>
       )}
       {cs.data.url && (

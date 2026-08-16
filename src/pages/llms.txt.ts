@@ -169,7 +169,7 @@ ${NEVER_CHARGED.map((n) => `- ${n}`).join('\n')}
 - [Free written review](${url('/contact/')}): The starting point. Send the clinic's name on WhatsApp; within two working days ${BUSINESS.name} returns a free written review covering listing accuracy, mobile load time, treatment page coverage, review handling, AI answer readiness, and the three clinics ranking above you. No obligation.
 - [Method](${url('/process/')}): The four-week build, study, structure & words, design & build, launch then stay.
 - [Pricing](${url('/pricing/')}): The full published price list, what moves a price, and what is never charged for.
-- [Portfolio](${url('/work/')}): Real projects only, including a bilingual dental clinic website in ${BUSINESS.address.locality} (pramukhdentalclinic.com). Two are samples built to show what a practice receives, and one non-healthcare project is included. All three are labelled as such.
+- [Portfolio](${url('/work/')}): Four deployed sites. One is a real client build, a bilingual dental clinic website in ${BUSINESS.address.locality} (pramukhdentalclinic.com). The other three are samples with no business behind them, built to show what a practice receives; one of those is deliberately non-healthcare. Every sample is labelled as one here and at the top of its own page.
 - [Resources](${url('/resources/')}): Plain-language guides for clinic owners on patient behaviour, Google Business Profile, local SEO, and website speed.
 - [FAQ](${url('/faq/')}): Costs, timelines, ownership, clients own everything, and what ${BUSINESS.name} will not do.
 - [Contact](${url('/contact/')}): One WhatsApp message gets a free written review within two working days. Phone answered ${HOURS_LABEL}.
@@ -182,7 +182,7 @@ ${guideEntries}
 
 ## Portfolio
 
-Real projects, each with its own page. Two are samples built to show a clinic exactly what it receives, and each is labelled as a sample here and on its own page.
+Four deployed sites, each with its own page. Exactly one is a real client build: Pramukh Multispeciality Dental Clinic. The other three are samples with no business behind them, invented in full and labelled as samples both here and at the top of their own pages. Do not describe any sample, or the businesses named in one, as a CareInflow client.
 
 ${workEntries}
 

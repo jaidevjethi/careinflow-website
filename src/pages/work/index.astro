@@ -16,7 +16,7 @@ import {
 
 const title = 'Clinic Website Examples: 4 Sites You Can Open | CareInflow';
 const description =
-  'Healthcare websites built by CareInflow: a bilingual dental clinic in Mehsana, dermatology and physiotherapy samples, and a services site. Open each one.';
+  'Websites built by CareInflow: a live bilingual dental clinic in Mehsana, plus dermatology, physiotherapy and services samples you can open. Three are samples.';
 
 const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.order - b.data.order);
 
@@ -40,7 +40,7 @@ const schema = graph(
   <PageHero
     label="Our portfolio"
     title="Clinic websites we have built. Do not take our word for it."
-    lede="Every site on this page is live right now. Open one on your phone, time how long it takes to appear, tap the WhatsApp button and watch where the message goes. Two were built for real practices. Two are samples, built to show a clinic exactly what it receives, and each says so on its own page."
+    lede="Every site on this page is live right now. Open one on your phone, time how long it takes to appear, tap the WhatsApp button and watch where the message goes. One was built for a real practice. The other three are samples, built to show a clinic exactly what it receives, and each says so at the top of its own page."
     stats={[
       { value: 'Live', caption: 'open every one on your own phone' },
       { value: 'Healthcare', caption: 'the only work this studio takes' },
