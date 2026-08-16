@@ -1,6 +1,6 @@
 ---
 title: 'A dental clinic patients can find, read and book in one tap'
-seoTitle: 'Dental Clinic Website Case Study, Mehsana'
+seoTitle: 'Dental Clinic Website Design: A Real Build'
 cover: '../../assets/work/pramukh-dental-desktop.webp'
 coverAlt: 'The Pramukh Dental treatments page on desktop, showing filterable treatment cards with photographs and plain-language descriptions.'
 coverMobile: '../../assets/work/pramukh-dental-mobile.webp'
@@ -11,7 +11,7 @@ sector: 'Dental clinic'
 healthcare: true
 year: 2026
 url: 'https://pramukhdentalclinic.com'
-description: 'A bilingual dental website for Pramukh Multispeciality Dental Clinic, Mehsana: a page for each of 11 treatments, built static so it loads on any phone.'
+description: 'How CareInflow built a bilingual dental clinic website: a page for each of 11 treatments in English and Gujarati, static, and fast on a mid-range phone.'
 summary: 'Eleven treatments, each with its own page, in English and Gujarati. Built to open in about a second on a mid-range Android over 4G, and to put a call or a WhatsApp message one tap from every line of it.'
 order: 1
 highlights:
@@ -20,8 +20,8 @@ highlights:
   - { label: 'Opens in', value: 'about a second', ref: 'on 4G, measured' }
   - { label: 'Enquiry', value: 'Two taps', ref: 'call or WhatsApp, from any page' }
 problem:
-  heading: 'A good clinic that nobody could find online'
-  body: 'Dr. Chinmay Patel is an MDS root canal specialist with more than ten years and five thousand procedures behind him. Patients who walked through the door understood that within a minute. Patients searching "root canal cost in Mehsana" at eleven at night never got that far, because there was nothing to find and nothing to read. The reputation was real and entirely offline.'
+  heading: 'Building for the patient who has not chosen yet'
+  body: 'The brief was a website for a practice whose reputation was real and entirely offline. Everything a patient understood within a minute of walking in, they had no way of learning at eleven at night while searching "root canal cost in Mehsana" on a phone. So the site had to do the introducing: answer the search in the words it was typed, explain the treatment before naming it, and make the enquiry reachable from any line of any page. That decision set the structure of all eleven treatment pages.'
 gallery:
   - src: '../../assets/work/pramukh-treatment.webp'
     alt: 'The root canal treatment page, headed Painless Root Canals, with a plain-language explanation and a Who is this for box describing symptoms.'
@@ -44,16 +44,24 @@ gallery:
 
 import KeyPoints from '@/components/KeyPoints.astro';
 
-## What did the clinic need?
+## What were we asked to build?
 
-Pramukh Multispeciality Dental Clinic serves patients at Radhanpur Circle in
-Mehsana. Like most good clinics, its reputation was built in person, one
-treatment at a time. The job was to make the website carry the same
-impression to somebody who has not met the doctor yet, and who is deciding
-between three clinics on a phone.
+A website that could carry a first impression the practice had never had to
+make in writing before.
 
-That framing decided everything else. This is not a brochure for people who
-already chose the practice. It is written for the patient who has not.
+The framing we settled on decided everything after it: this is not a
+brochure for people who already chose the clinic, it is built for the
+patient who has not, who is deciding between three options on a phone and
+knows none of them. Every structural choice below follows from that one
+sentence.
+
+It also set what we did *not* build. No welcome message, no mission
+statement, no photograph of the building on the homepage, because none of
+those answer the question the visitor arrived with. Dr. Chinmay Patel's
+credentials, an MDS root canal specialist with more than ten years and some
+five thousand procedures behind him, are on the site where a patient
+weighing competence will look for them, rather than at the top of a page
+somebody is reading in pain.
 
 ## Which four decisions shaped the build?
 
