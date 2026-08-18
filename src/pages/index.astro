@@ -443,6 +443,17 @@ const whatsappHref = whatsappWithMessage(
                 </li>
               ))}
             </ul>
+            {/*
+              Doctors comparing suppliers here are advised to ask for clients in
+              a similar specialty and city tier, then check the claims
+              themselves. Pramukh is dental, in Mehsana, and the site is live —
+              so the honest move is to hand over the instructions rather than
+              wait to be asked for them.
+            */}
+            <p class="mt-3.5 border-t border-panel-divider pt-3 text-[13px] leading-[1.55] text-panel-text-faint">
+              Open it on your phone. Time how long it takes to appear, tap the
+              WhatsApp button, and watch where the message lands.
+            </p>
           </figcaption>
         </figure>
       </div>
@@ -803,10 +814,30 @@ const whatsappHref = whatsappWithMessage(
             lede="A studio that builds for a restaurant one month and a clinic the next never learns either properly. Patients arriving at your website are worried, comparing you to two other practices, and reading on a phone at an odd hour. That is the only visitor we have learned to write for."
           />
 
-          <div class="mt-8 flex flex-wrap gap-2.5">
-            <span class="chip border border-line text-muted">No ranking guarantees</span>
-            <span class="chip border border-line text-muted">No bought reviews</span>
-            <span class="chip border border-line text-muted">No templates resold as bespoke</span>
+          {/*
+            These were three bare chips reading as a disclaimer. They are not a
+            disclaimer: a doctor advertising in India works under rules that do
+            not permit guaranteed outcomes, comparative claims or patients' words
+            used as adverts, and the registration at risk is theirs. Working
+            inside those limits is competence, not modesty. Same three facts,
+            given a heading that says why they are here, and a link to the full
+            list on the pricing page.
+          */}
+          <div class="mt-9 rounded-2xl border border-line bg-surface p-5 sm:p-6">
+            <p class="label-mono text-faint" style="letter-spacing:0.12em">
+              We work inside the rules you are held to
+            </p>
+            <div class="mt-3.5 flex flex-wrap gap-2.5">
+              <span class="chip border border-line text-body-deep">No ranking guarantees</span>
+              <span class="chip border border-line text-body-deep">No bought reviews</span>
+              <span class="chip border border-line text-body-deep">No patient words as adverts</span>
+              <span class="chip border border-line text-body-deep">No access to patient records</span>
+            </div>
+            <p class="mt-4 text-[15px] leading-[1.6] text-muted">
+              You hold the licence, not us. If something you ask for would put your
+              registration at risk, we will say so before you have to find out.
+              {' '}<a href={href('/pricing') + '#what-we-will-not-do'} class="prose-link">What we will not do →</a>
+            </p>
           </div>
 
           <div class="mt-9 flex flex-col gap-6 border-t border-hairline pt-8 sm:flex-row sm:items-center sm:gap-7">

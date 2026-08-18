@@ -186,6 +186,7 @@ const principles = [
         { label: 'The four packages', href: '#packages' },
         { label: 'Monthly, after launch', href: '#monthly' },
         { label: 'The Google audit', href: '#google-audit' },
+        { label: 'What we will not do', href: '#what-we-will-not-do' },
         { label: 'Bought on its own', href: '#add-ons' },
         { label: 'Work out your number', href: '#estimate' },
       ].map((item) => (
@@ -581,6 +582,68 @@ const principles = [
           {' '}<a href={href('/contact')} class="prose-link">free written review</a>.
         </p>
       </aside>
+    </div>
+  </section>
+
+  <!-- WHAT WE WILL NOT DO
+       The site already contained every fact in this section, scattered across
+       three pages and framed as humility: we do not guarantee rankings, we do
+       not buy reviews, we do not resell templates. Framed that way it reads as
+       a studio managing expectations downward.
+
+       It is the opposite. A doctor advertising in India works under rules that
+       do not permit guaranteed outcomes, claims that one practice is better
+       than another, or patient testimonials used as adverts — and the licence
+       at risk is theirs, not ours. A supplier who already works inside those
+       limits is not being modest, they are being competent, and that is a
+       reason to hire rather than a caveat to forgive. Same facts, correct frame. -->
+  <section id="what-we-will-not-do" class="band-powder" aria-labelledby="limits-title">
+    <div class="section shell">
+      <div class="max-w-[760px]">
+        <SectionHead
+          id="limits-title"
+          label="How we work"
+          title="We work inside the rules you are held to."
+          lede="You hold the licence, not us. The rules doctors advertise under here do not allow guaranteed outcomes, claims that one practice is better than another, or patients' words turned into adverts. We do not do those things, and we will say no if you ask us to."
+        />
+      </div>
+
+      <ul class="reveal-group mt-12 grid gap-5 sm:grid-cols-2">
+        {[
+          {
+            title: 'We do not promise a ranking',
+            text: 'Nobody honestly can. What we promise is the work, and a written report every month showing what it changed.',
+          },
+          {
+            title: 'We do not buy or reward reviews',
+            text: 'We set up a way to ask patients who are already happy. We never write one, buy one, or offer anything in return for one.',
+          },
+          {
+            title: 'We do not turn patients into adverts',
+            text: 'A review a patient chose to leave stays where they left it. We answer it. We do not lift it onto a poster.',
+          },
+          {
+            title: 'We do not touch patient records',
+            text: 'We never ask for access, and nothing we build or run stores them. We do not need them for any of this.',
+          },
+        ].map((r, i) => (
+          <li class="flex gap-4 rounded-2xl border border-line bg-surface p-6">
+            <span class:list={['numeral shrink-0 text-[26px] leading-none', cycleAccent(i).text]}>
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <div class="min-w-0">
+              <h3 class="text-[17px] font-bold tracking-[-0.02em] text-ink">{r.title}</h3>
+              <p class="mt-1.5 text-[15px] leading-[1.6] text-body">{r.text}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <p class="mt-9 max-w-[760px] text-[16px] leading-[1.65] text-body-deep">
+        If something you ask us for would put your registration at risk, we will
+        tell you before you have to find out. That is part of what you are paying
+        a healthcare-only studio for.
+      </p>
     </div>
   </section>
 
