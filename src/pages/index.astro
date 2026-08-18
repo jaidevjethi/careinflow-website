@@ -112,6 +112,12 @@ const clients = [
     name: 'Akshar Wellness',
     place: 'Mehsana',
     work: 'Social media content',
+    // The share-sheet URL carried utm_source and igsh tracking parameters.
+    // Those identify the session that copied the link, not the profile, and
+    // publishing them would send every visitor through someone else's
+    // analytics. The bare profile URL is the same destination.
+    url: 'https://www.instagram.com/akshar_360_wellness',
+    linkText: 'See the Instagram',
   },
 ];
 
