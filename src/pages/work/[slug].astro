@@ -5,6 +5,8 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHero from '@/components/PageHero.astro';
 import SectionHead from '@/components/SectionHead.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
+import FaqSection from '@/components/FaqSection.astro';
+import { resolveFaqs } from '@/lib/faqs';
 import { getImage } from 'astro:assets';
 import { CANONICAL_HOST } from '@/config/site';
 import { href } from '@/lib/url';
@@ -15,6 +17,7 @@ import {
   webPageSchema,
   breadcrumbSchema,
   caseStudySchema,
+  faqSchema,
 } from '@/lib/schema';
 
 /** Small counts read better as words in a heading than as digits. */
@@ -55,6 +58,8 @@ const shareImage = {
   alt: cs.data.coverAlt,
 };
 
+const faqs = cs.data.faqs ? resolveFaqs(cs.data.faqs) : [];
+
 const schema = graph(
   organizationSchema(),
   webSiteSchema(),
@@ -64,6 +69,7 @@ const schema = graph(
     { name: 'Portfolio', path: '/work' },
     { name: cs.data.client, path },
   ]),
+  ...(faqs.length ? [faqSchema(faqs)] : []),
   caseStudySchema({
     path,
     title: cs.data.title,
@@ -264,6 +270,14 @@ const schema = graph(
       </section>
     )}
   </article>
+
+  {faqs.length > 0 && (
+    <FaqSection
+      {faqs}
+      label="Questions"
+      title="What practices ask about this build"
+    />
+  )}
 
   <CtaPanel prefill="work" nextStep={{ label: 'See what it costs', href: '/pricing' }} />
 </BaseLayout>

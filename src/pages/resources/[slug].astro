@@ -5,11 +5,14 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHero from '@/components/PageHero.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import CtaStrip from '@/components/CtaStrip.astro';
+import FaqSection from '@/components/FaqSection.astro';
+import { resolveFaqs } from '@/lib/faqs';
 import { CANONICAL_HOST } from '@/config/site';
 import { topicAccent } from '@/lib/accents';
 import { href } from '@/lib/url';
 import {
   graph,
+  faqSchema,
   organizationSchema,
   founderSchema,
   webSiteSchema,
@@ -50,6 +53,8 @@ const shareImage = cover
     }
   : { url: `${CANONICAL_HOST}/og-default.png`, width: 2500, height: 1313, alt: undefined };
 
+const faqs = resource.data.faqs ? resolveFaqs(resource.data.faqs) : [];
+
 const schema = graph(
   organizationSchema(),
   founderSchema(),
@@ -69,6 +74,9 @@ const schema = graph(
     // Google treats Article.image as required for a rich result.
     image: shareImage,
   }),
+  // Only when the article actually carries questions. An empty FAQPage node
+  // is a structured-data error, not a neutral no-op.
+  ...(faqs.length ? [faqSchema(faqs)] : []),
 );
 
 const dateFmt = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -132,6 +140,14 @@ const dateFmt = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long'
   </article>
 
   <CtaStrip text="Want this applied to your practice? The free review shows exactly where you stand." />
+
+  {faqs.length > 0 && (
+    <FaqSection
+      {faqs}
+      label="Questions"
+      title="Questions this raises"
+    />
+  )}
 
   <CtaPanel nextStep={{ label: 'See what we do', href: '/services' }} />
 </BaseLayout>

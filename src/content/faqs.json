@@ -6,7 +6,9 @@
     "pages": [
       "faq",
       "home",
-      "about"
+      "about",
+      "services",
+      "specialties"
     ],
     "order": 1
   },
@@ -29,7 +31,8 @@
     "pages": [
       "faq",
       "pricing",
-      "contact"
+      "contact",
+      "services"
     ],
     "order": 3
   },
@@ -39,7 +42,8 @@
     "answer": "You can, and for some practices that is genuinely enough. What you are paying us for is a different thing from the building. A freelancer will build you pages; we plan the path a worried patient takes from a search to a message, write every page to answer what they actually came with, and match the site to how your practice already looks and sounds. That layer is what decides whether a website earns anything, and it is why our sites cost more than a template and less than an agency charges for the same work.",
     "pages": [
       "faq",
-      "pricing"
+      "pricing",
+      "services"
     ],
     "order": 4
   },
@@ -50,7 +54,8 @@
     "pages": [
       "faq",
       "process",
-      "home"
+      "home",
+      "services"
     ],
     "order": 5
   },
@@ -60,7 +65,8 @@
     "answer": "Whatever you choose. Local SEO and Google Care is {{careGoogle}} a month: your Google listing managed, every review answered, local search and Search Console watched, one new treatment page written and published each month, and a written report. The two larger website packages include 90 days of support after launch before any of that starts. Without a plan you still own everything. Domain, hosting, code and accounts are in your name from day one, and that is written into every agreement.",
     "pages": [
       "faq",
-      "process"
+      "process",
+      "services"
     ],
     "order": 6
   },
@@ -226,5 +232,45 @@
       "home"
     ],
     "order": 22
+  },
+  {
+    "id": "which-service-first",
+    "question": "Which of these services does my practice need first?",
+    "answer": "Almost always the Google Business Profile, because for most patients it is the first thing they see and it can be corrected in days rather than weeks. The website comes next, because the listing gets you seen and the website is where the patient decides. Ongoing work only makes sense once both exist. The free written review says which of the three you actually need, and if the answer is that you need less than you thought, it says that.",
+    "pages": [
+      "services",
+      "faq"
+    ],
+    "order": 23
+  },
+  {
+    "id": "services-bought-separately",
+    "question": "Can I buy just one of these instead of a package?",
+    "answer": "Yes. A Google Business Profile rebuilt on its own is {{gbpRebuild}}, an audit of a site somebody else built is {{takeoverAudit}}, and social media content is {{social}} a month. You do not have to buy a website to work with us. Where a combined package costs less than the parts, the pricing page states the overlap that makes it true.",
+    "pages": [
+      "services",
+      "faq"
+    ],
+    "order": 24
+  },
+  {
+    "id": "specialty-not-listed",
+    "question": "My specialty is not on your list. Can you still build for us?",
+    "answer": "Almost certainly yes. The listed specialties are the ones we have written a page about, not the limit of what we take on. What matters is that the practice is healthcare, because that is the only kind of work we do. The method does not change between specialties; what changes is which treatments deserve their own page and what a patient is worried about when they arrive.",
+    "pages": [
+      "specialties",
+      "faq"
+    ],
+    "order": 25
+  },
+  {
+    "id": "specialty-differences",
+    "question": "Does the website really differ between specialties?",
+    "answer": "The structure does. Dental searches are often urgent and cost-led, so prices and an immediate way to message matter most. Physiotherapy patients search a body part rather than a treatment, so the site is organised around where it hurts. Dermatology carries more comparison shopping, so the treatment pages have to do more explaining. The build quality and the method stay the same throughout.",
+    "pages": [
+      "specialties",
+      "faq"
+    ],
+    "order": 26
   }
 ]

@@ -142,6 +142,16 @@ const caseStudies = defineCollection({
     /** Optional second shot (e.g. the mobile view). */
     coverMobile: image().optional(),
     coverMobileAlt: z.string().optional(),
+    /**
+     * Page-specific questions, feeding both the visible FAQ block and
+     * FAQPage schema.
+     *
+     * Optional, unlike on services/specialties/areas, because not every entry
+     * has genuine questions attached to it and a padded FAQ is worse than
+     * none: answer engines quote these verbatim, so an answer written to fill
+     * a slot is an answer that gets quoted.
+     */
+    faqs: z.array(z.object({ q: z.string(), a: z.string() })).optional(),
     client: z.string(),
     location: z.string(),
     sector: z.string(),
@@ -219,6 +229,16 @@ const resources = defineCollection({
      * device render where the subject is the thing we build. These are the
      * longest reads on the site and they used to open on nothing at all.
      */
+    /**
+     * Page-specific questions, feeding both the visible FAQ block and
+     * FAQPage schema.
+     *
+     * Optional, unlike on services/specialties/areas, because not every entry
+     * has genuine questions attached to it and a padded FAQ is worse than
+     * none: answer engines quote these verbatim, so an answer written to fill
+     * a slot is an answer that gets quoted.
+     */
+    faqs: z.array(z.object({ q: z.string(), a: z.string() })).optional(),
     image: image().optional(),
     imageAlt: z.string().optional(),
   }),

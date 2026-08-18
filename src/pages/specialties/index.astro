@@ -6,10 +6,13 @@ import PageHero from '@/components/PageHero.astro';
 import IllustrationPanel from '@/components/IllustrationPanel.astro';
 import specialtyRange from '@/assets/mockups/specialty-range.webp';
 import CtaPanel from '@/components/CtaPanel.astro';
+import FaqSection from '@/components/FaqSection.astro';
+import { getFaqsFor } from '@/lib/faqs';
 import { ACCENTS } from '@/lib/accents';
 import { href } from '@/lib/url';
 import {
   graph,
+  faqSchema,
   organizationSchema,
   webSiteSchema,
   webPageSchema,
@@ -43,6 +46,8 @@ const alsoWorkWith = [
   'Multi-specialty',
 ];
 
+const faqs = await getFaqsFor('specialties');
+
 const schema = graph(
   organizationSchema(),
   webSiteSchema(),
@@ -56,6 +61,7 @@ const schema = graph(
     name: 'Healthcare specialties CareInflow writes for',
     items: specialties.map((s) => ({ name: s.data.title, path: `/specialties/${s.id}` })),
   }),
+  faqSchema(faqs),
 );
 ---
 
@@ -166,6 +172,12 @@ const schema = graph(
       </div>
     </div>
   </section>
+
+  <FaqSection
+    {faqs}
+    label="Questions"
+    title="Asked before a practice picks a specialty page"
+  />
 
   <CtaPanel nextStep={{ label: 'See what it costs', href: '/pricing' }} />
 </BaseLayout>
