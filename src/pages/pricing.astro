@@ -158,6 +158,15 @@ const principles = [
       </a>
     </div>
 
+    {/* The three fears a buyer arrives with, answered before the first figure.
+        A single line rather than the chip row it started as: the chips wrapped
+        to two rows and cost 110px in a hero that is already over the design
+        system's viewport cap. */}
+    <p class="mt-4 text-[15px] leading-[1.55] text-panel-text-dim">
+      Month to month, no lock-in. No deadline is ever attached to a quote, and
+      the written review costs nothing.
+    </p>
+
     {/* A photograph, so it takes the plain image treatment the /contact and
         /about heroes use rather than IllustrationPanel, which exists for
         device renders. A 3:2 source in this 260px band keeps 97% of the
@@ -170,7 +179,7 @@ const principles = [
       sizes="(min-width: 1024px) 400px, 92vw"
       loading="eager"
       fetchpriority="high"
-      class="h-[340px] w-full rounded-3xl border border-panel-line object-cover"
+      class="aspect-[3/2] w-full rounded-3xl border border-panel-line object-cover"
     />
   </PageHero>
 
@@ -353,6 +362,15 @@ const principles = [
         Not sure which one is right for your practice? That is exactly what the
         <a href={href('/contact')} class="prose-link">free written review</a>
         tells you, and the answer is often "less than you expected".
+      </p>
+      <p class="mt-3.5 max-w-[680px] text-[16px] leading-[1.65] text-muted">
+        What a practice needs also depends on where it is. We build from Mehsana,
+        for practices in
+        {' '}<a href={href('/areas/mehsana')} class="prose-link">Mehsana</a>,
+        {' '}<a href={href('/areas/ahmedabad')} class="prose-link">Ahmedabad</a>,
+        {' '}<a href={href('/areas/gandhinagar')} class="prose-link">Gandhinagar</a> and
+        {' '}<a href={href('/areas')} class="prose-link">eight other towns</a>. Each of
+        those pages says what actually moves in that market.
       </p>
     </div>
   </section>
