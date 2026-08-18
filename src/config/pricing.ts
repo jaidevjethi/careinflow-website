@@ -20,6 +20,17 @@ const inr = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 });
 /** ₹1,10,000. Indian digit grouping, which is how clients here read money. */
 export const rupees = (amount: number): string => `₹${inr.format(amount)}`;
 
+/**
+ * The words that go above every published figure on the site.
+ *
+ * A bare "FROM" reads as a footnote. Every number here is a floor for a stated
+ * scope, fixed in writing only after the free review, and a reader who takes
+ * ₹18,999 for the whole price and later hears another number has been
+ * ambushed — which is exactly where trust is lost. One constant, so the seven
+ * places that display a price cannot drift apart.
+ */
+export const PRICE_PREFIX = 'Starting from';
+
 export const CURRENCY = 'INR';
 
 export type PriceUnit = 'project' | 'month' | 'page' | 'once';
@@ -60,61 +71,146 @@ export interface Build {
   pages: string;
   /** One line naming what the studio takes on. Written for a doctor, not a marketer. */
   responsibility: string;
+  /**
+   * The four or five things a buyer most wants to see on the card itself.
+   * The full answer is the comparison table below; a card that makes someone
+   * scroll to a table to learn what they are buying has not done its job.
+   */
+  highlights: string[];
+  /**
+   * What this rung's search work actually buys, in one plain sentence.
+   *
+   * "SEO" against "Full SEO" means nothing to a clinic owner reading in their
+   * second language, and an unanswered question is not asked, it is abandoned.
+   * Every card decodes its own level here.
+   */
+  seoLine: string;
+  /**
+   * The three components every package is built from, for the icon row.
+   *
+   * A value string means included and says how much; `null` means not in this
+   * package. Rendering the absent one dimmed rather than hiding it is what
+   * makes the next rung read as something gained instead of something charged.
+   */
+  stack: {
+    website: string;
+    listing: string;
+    seo: string | null;
+  };
   /** Stated with the same weight as what is included. */
   excludes: string;
   /** Our recommendation. Not a claim about what other practices chose. */
   recommended?: boolean;
 }
 
+/**
+ * The ladder, repriced 2026-08-19.
+ *
+ * The entry package now starts at ₹18,999 and carries the Google listing
+ * setup and the SEO foundations, which the old ₹24,999 entry explicitly
+ * excluded. That is deliberately more for less: a practice cannot judge a
+ * website in isolation, and sending one out of the door without its listing
+ * set up produced exactly the outcome this studio says it exists to prevent.
+ *
+ * The steps are 18,999 / 34,999 / 59,999, which works out at roughly ₹3,800,
+ * ₹3,500 and ₹3,333 a page. Cost per page falls as the ladder climbs, so the
+ * middle rung is the best value on its own arithmetic rather than because a
+ * badge says so. It still carries the badge, because it is also the one most
+ * practices actually need.
+ */
 export const BUILDS: Build[] = [
   {
     id: 'practice-website',
-    name: 'Practice Website',
+    name: 'Website (5 pages) + Google Business Optimisation',
     suits: 'One doctor, one place, and a market where you are not fighting ten others.',
-    from: 24999,
-    typicalTo: 34999,
+    from: 18999,
+    typicalTo: 24999,
     timeline: '3 weeks',
     pages: 'Up to 5 pages',
-    responsibility: 'We build the website and set it up so Google can find it.',
+    responsibility:
+      'We build the website, set your Google listing up properly, and make the two say the same thing.',
+    highlights: [
+      'Up to 5 pages, designed around your practice, never a template',
+      'Google Business Profile claimed, verified and set up',
+      'The words patients in your town actually type, researched first',
+      'WhatsApp, tap-to-call and directions on every page',
+      'Search Console set up and handed over, in your name',
+    ],
     excludes:
-      'Does not include us looking after your Google listing every month, a page for every treatment, or any promise about where you rank.',
+      'Does not include us looking after your listing every month, a page for every treatment, or any promise about where you rank.',
+    seoLine:
+      'Found when someone searches your clinic by name, or looks for a clinic in your town.',
+    stack: { website: '5 pages', listing: 'Set up and verified', seo: null },
   },
   {
     id: 'practice-website-google',
-    name: 'Practice Website + Google',
+    name: 'Website (10 pages) + Local SEO + Google Business Optimisation',
     suits: 'Most practices here. You want a website, and you want patients to find it.',
-    from: 39999,
-    typicalTo: 54999,
+    from: 34999,
+    typicalTo: 44999,
     timeline: '4–5 weeks',
     pages: 'Up to 10 pages',
-    responsibility: 'We build the website and fix your Google listing to match it.',
+    responsibility:
+      'We build the website and rebuild your Google listing in full, so the two work as one.',
     recommended: true,
+    highlights: [
+      'Everything in the 5-page package',
+      'Up to 10 pages, including a page for each treatment you offer',
+      'Google listing rebuilt: categories, services, hours, photos, questions',
+      'A way to ask happy patients for reviews, set up and explained',
+      'We look at the practices ranking above you, and tell you what we find',
+      '90 days of support after launch',
+    ],
     excludes:
       'Does not include monthly work after the first 90 days, a Gujarati version, or more than one location.',
+    seoLine:
+      'Local SEO: found when someone searches a treatment you offer, in your town.',
+    stack: { website: '10 pages', listing: 'Rebuilt in full', seo: 'Local SEO' },
   },
   {
     id: 'healthcare-seo',
-    name: 'Healthcare Website + Local SEO',
+    name: 'Website (18 pages) + Complete SEO + Google Business Optimisation',
     suits: 'An established practice that wants to be found for particular treatments.',
-    from: 64999,
-    typicalTo: 84999,
+    from: 59999,
+    typicalTo: 74999,
     timeline: '6–7 weeks',
     pages: 'Up to 18 pages',
-    responsibility: 'We work out what patients search for, then build the site to answer it.',
+    responsibility:
+      'We work out what patients search for, then build the site to answer it.',
+    highlights: [
+      'Everything in the 10-page package',
+      'Up to 18 pages, including a page for each doctor',
+      'We choose which treatments you should compete for, and why',
+      'A page for each town you serve',
+      'Keyword and competitor research in depth, written up for you',
+      '90 days of support after launch',
+    ],
     excludes:
       'Does not include paid ads, apps or more than one location. We do not offer the first two at all.',
+    seoLine:
+      'Complete SEO: found for every treatment you offer, in every town you serve.',
+    stack: { website: '18 pages', listing: 'Rebuilt in full', seo: 'Complete SEO' },
   },
   {
     id: 'multi-specialty',
-    name: 'Multi-Specialty + Local SEO',
+    name: 'Multi-Doctor Website + Complete SEO + Google Business Optimisation',
     suits: 'Several doctors or departments, a diagnostic centre, or more than one branch.',
     from: 89999,
     custom: true,
     timeline: 'Agreed with the scope',
     pages: 'As many as it needs',
     responsibility: 'We plan and build the whole thing, department by department.',
+    highlights: [
+      'Everything in the 18-page package',
+      'A section for each department',
+      'Pages for more than one branch, each with its own local groundwork',
+      'As many treatment and doctor pages as the practice needs',
+      'Scope, timeline and price agreed in writing before anything starts',
+    ],
     excludes:
       'The price depends on how many doctors, departments, treatments and branches you have. We quote it after the free review.',
+    seoLine: 'Complete SEO, across every department and every branch you run.',
+    stack: { website: 'As many as needed', listing: 'Rebuilt in full', seo: 'Complete SEO' },
   },
 ];
 
@@ -165,6 +261,7 @@ export const PACKAGE_MATRIX: MatrixGroup[] = [
     rows: [
       { label: 'We check your Google listing before we start', values: [true, true, true, true] },
       { label: 'We find the words patients type', values: ['Your town', 'Town and treatments', 'In depth', 'In depth'] },
+      { label: 'Your listing claimed, verified and set up', values: [true, true, true, true] },
       { label: 'Your listing rebuilt: categories, services, hours, photos', values: [false, true, true, true] },
       { label: 'Listing and website made to say the same thing', values: [true, true, true, true] },
       { label: 'We look at the practices ranking above you', values: [false, true, true, true] },
@@ -449,7 +546,7 @@ export const SOCIAL_ADDONS: Array<{ item: string; price: string; note: string }>
   },
   {
     item: 'Meta Ads management',
-    price: 'From ₹5,000 a month',
+    price: `${PRICE_PREFIX} ₹5,000 a month`,
     note: 'Management only. Your ad spend is always paid by you, directly, and is never marked up.',
   },
   {

@@ -17,7 +17,7 @@
  *    still render and the published price list is directly below, so nobody
  *    loses access to a number.
  */
-import { BUILDS, ONE_TIME_ITEMS, PLANS, STANDALONE_MONTHLY, rupees } from '@/config/pricing';
+import { BUILDS, ONE_TIME_ITEMS, PLANS, PRICE_PREFIX, STANDALONE_MONTHLY, rupees } from '@/config/pricing';
 import { WHATSAPP_URL } from '@/config/site';
 
 const extraPage = ONE_TIME_ITEMS.find((i) => i.item.startsWith('Extra treatment'))!;
@@ -83,7 +83,7 @@ const planOptions = [
           </legend>
           <div class="mt-4 grid gap-2.5">
             {buildOptions.map((o, i) => (
-              <label class="card-hover flex cursor-pointer items-start gap-3.5 rounded-2xl border border-line bg-canvas p-4">
+              <label class="card-hover flex cursor-pointer flex-wrap items-start gap-x-3.5 gap-y-1.5 rounded-2xl border border-line bg-canvas p-4">
                 <input
                   type="radio"
                   name="build"
@@ -99,8 +99,8 @@ const planOptions = [
                   </span>
                   <span class="mt-0.5 block text-[14px] leading-[1.5] text-muted">{o.note}</span>
                 </span>
-                <span class="ml-auto shrink-0 whitespace-nowrap font-mono text-[12px] text-surgical">
-                  {o.price ? `from ${rupees(o.price)}` : 'no build'}
+                <span class="w-full shrink-0 whitespace-nowrap pl-[30px] font-mono text-[12px] text-surgical sm:ml-auto sm:w-auto sm:pl-0">
+                  {o.price ? `${PRICE_PREFIX} ${rupees(o.price)}` : 'no build'}
                 </span>
               </label>
             ))}
@@ -167,7 +167,7 @@ const planOptions = [
           </legend>
           <div class="mt-4 grid gap-2.5">
             {planOptions.map((o) => (
-              <label class="card-hover flex cursor-pointer items-start gap-3.5 rounded-2xl border border-line bg-canvas p-4">
+              <label class="card-hover flex cursor-pointer flex-wrap items-start gap-x-3.5 gap-y-1.5 rounded-2xl border border-line bg-canvas p-4">
                 <input
                   type="radio"
                   name="plan"
@@ -183,7 +183,7 @@ const planOptions = [
                   </span>
                   <span class="mt-0.5 block text-[14px] leading-[1.5] text-muted">{o.note}</span>
                 </span>
-                <span class="ml-auto shrink-0 whitespace-nowrap font-mono text-[12px] text-surgical">
+                <span class="w-full shrink-0 whitespace-nowrap pl-[30px] font-mono text-[12px] text-surgical sm:ml-auto sm:w-auto sm:pl-0">
                   {o.price ? `${rupees(o.price)}/mo` : 'nothing'}
                 </span>
               </label>

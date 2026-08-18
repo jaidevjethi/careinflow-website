@@ -199,10 +199,14 @@ const cadence = [
               <div class:list={[!last && 'pb-6']}>
                 <article class="card-hover overflow-hidden rounded-3xl border border-line bg-canvas">
                   <span class:list={['accent-bar block h-1 w-full', a.bar]} aria-hidden="true"></span>
-                  {/* These band into 210px from a 3:2 source, which keeps only
-                      39% of the frame. Centred, that took the top of every head
-                      in three of the four, so each week sets where its own crop
-                      sits — the homepage cards already work this way. */}
+                  {/* A ratio, never a fixed height. h-[210px] was a letterbox
+                      that got worse as the card grew: the card is 830px wide at
+                      lg, where a 3:2 source is 553px tall, so 210px kept 38% of
+                      the frame and cut the top off every head. aspect-[2/1]
+                      scales with the column and keeps about three quarters of
+                      it — the same ratio, and the same reasoning, as
+                      CaseStudyCard's cover. Each week still sets its own crop
+                      position. */}
                   {w.image && (
                     <Image
                       src={w.image}
@@ -211,7 +215,7 @@ const cadence = [
                       sizes="(min-width: 1024px) 830px, 92vw"
                       loading="lazy"
                       class:list={[
-                        'h-[210px] w-full border-b border-line object-cover',
+                        'aspect-[2/1] w-full border-b border-line object-cover',
                         w.imagePos,
                       ]}
                     />

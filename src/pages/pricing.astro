@@ -5,6 +5,7 @@ import { Image } from 'astro:assets';
 import PageHero from '@/components/PageHero.astro';
 import PriceEstimator from '@/components/PriceEstimator.astro';
 import SectionHead from '@/components/SectionHead.astro';
+import ServiceIcon from '@/components/ServiceIcon.astro';
 import Figure from '@/components/Figure.astro';
 import pricingConsult from '@/assets/editorial/pricing-consult.webp';
 import promiseSeal from '@/assets/mockups/pricing-promise.webp';
@@ -17,6 +18,7 @@ import { href } from '@/lib/url';
 import { whatsappFor, whatsappWithMessage } from '@/config/site';
 import { cycleAccent } from '@/lib/accents';
 import {
+  PRICE_PREFIX,
   BUILDS,
   PLANS,
   STANDALONE_ITEMS,
@@ -45,7 +47,7 @@ import {
 const title = 'Clinic Website Cost in Gujarat: Prices Published';
 /** Built from the config so the meta description can never drift from the page. */
 const description =
-  `Clinic websites from ${rupees(BUILDS[0]!.from)}, and local SEO with Google Business Profile care from ${rupees(PLANS[0]!.monthly)} a month. Published prices, fixed in writing.`;
+  `Clinic websites starting from ${rupees(BUILDS[0]!.from)}, with local SEO and Google Business Profile care from ${rupees(PLANS[0]!.monthly)} a month. Prices published, fixed in writing.`;
 
 /** Counts in prose come from the array, so they cannot drift when it grows. */
 const NUMBER_WORDS = ['No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight'];
@@ -213,7 +215,7 @@ const principles = [
         lede="The difference is how much of the work we take on, not how many pages you get. The smallest builds your website and sets it up to be found. The largest plans and builds the whole thing for a practice with several doctors or branches. Every price is agreed in writing before we start."
       />
 
-      <div class="reveal-group mt-12 grid items-stretch gap-5 sm:grid-cols-2 xl:grid-cols-4">
+      <div class="reveal-group mt-12 grid items-stretch gap-5 sm:grid-cols-2">
         {BUILDS.map((build, i) => (
           <article
             class:list={[
@@ -222,13 +224,13 @@ const principles = [
             ]}
           >
             <span class:list={['accent-bar block h-1 w-full', cycleAccent(i).bar]} aria-hidden="true"></span>
-            <div class="flex h-full flex-col p-6">
+            <div class="flex h-full flex-col p-5 sm:p-6">
               {/* The chip band is reserved only once the cards sit side by
                   side. Stacked on a phone there is nothing to align with, and
                   an empty 26px band above the name just reads as a gap. */}
               <div class="sm:min-h-[26px]">
                 {build.recommended && (
-                  <span class="chip bg-surgical-tint text-surgical">Most practices start here</span>
+                  <span class="chip bg-surgical-tint text-surgical">Our recommendation</span>
                 )}
                 {build.custom && (
                   <span class="chip border border-line bg-surface text-body-deep">Quoted</span>
@@ -244,22 +246,89 @@ const principles = [
                 across. Reserving the space costs a little air on the short
                 cards and buys an aligned grid.
               */}
-              <h3 class="mt-2.5 text-[19px] font-bold leading-[1.3] tracking-[-0.025em] text-ink sm:min-h-[50px]">
+              <h3 class="mt-2.5 text-[18px] font-bold leading-[1.35] tracking-[-0.025em] text-ink sm:min-h-[74px]">
                 {build.name}
               </h3>
 
               <p class="mt-3 flex items-baseline gap-2">
-                <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">from</span>
+                <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{PRICE_PREFIX}</span>
                 <span class="settle numeral text-[clamp(28px,2.6vw,36px)] text-ink">{rupees(build.from)}</span>
               </p>
               <p class="mt-1.5 font-mono text-[11px] uppercase leading-[1.45] tracking-[0.08em] text-faint sm:min-h-[32px]">
                 {build.pages} · {build.timeline}
               </p>
 
+              {/*
+                The three components every package is built from, always all
+                three. The one a package does not include is dimmed and dashed
+                rather than removed, because a visible gap is what makes the
+                next rung read as something gained instead of something charged.
+                Nothing is hidden and nothing is implied.
+              */}
+              <ul class="mt-3.5 grid gap-1.5 border-t border-hairline pt-3.5">
+                {[
+                  { icon: 'website' as const, label: build.stack.website },
+                  { icon: 'listing' as const, label: build.stack.listing },
+                  { icon: 'search' as const, label: build.stack.seo },
+                ].map((part) => (
+                  <li class="flex items-center gap-2.5">
+                    <span
+                      class:list={[
+                        'inline-flex size-6 shrink-0 items-center justify-center rounded-md',
+                        part.label ? [cycleAccent(i).tint, cycleAccent(i).text] : 'bg-canvas text-faint',
+                      ]}
+                    >
+                      <ServiceIcon name={part.icon} />
+                    </span>
+                    <span
+                      class:list={[
+                        'text-[14px] leading-[1.35]',
+                        part.label ? 'font-semibold text-ink' : 'text-faint',
+                      ]}
+                    >
+                      {part.label ?? 'Local SEO — not in this package'}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+
+              <p class="mt-3 rounded-xl bg-canvas px-3 py-2.5 text-[14px] leading-[1.45] text-body">
+                {build.seoLine}
+              </p>
+
               <p class="mt-4 border-t border-hairline pt-4 text-[15px] font-semibold leading-[1.5] text-body-deep">
                 {build.responsibility}
               </p>
-              <p class="mt-2.5 grow text-[14px] leading-[1.55] text-muted">{build.suits}</p>
+              
+
+              {/*
+                What you actually get, on the card. The cards used to carry a
+                responsibility line and a "suits" line and nothing else, so the
+                only way to learn what was inside a package was to scroll to the
+                comparison table two screens down and read across a row. A buyer
+                deciding between four numbers should not have to do that.
+
+                The first row of every package above the smallest says
+                "Everything in the ... package", which is what makes the ladder
+                read as one ladder rather than four unrelated products.
+              */}
+              <ul class="mt-4 grow border-t border-hairline pt-4">
+                {build.highlights.slice(0, 3).map((h) => (
+                  <li class="flex gap-2.5 py-1 text-[14px] leading-[1.45] text-body">
+                    <svg
+                      class:list={['mt-[3px] size-4 shrink-0', cycleAccent(i).text]}
+                      viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M3 8.5l3.5 3.5L13 4.5" />
+                    </svg>
+                    <span>{h}</span>
+                  </li>
+                ))}
+              </ul>
+
+
 
               {/* A CTA in every card, so the ask is never more than a screen
                   away on a page this long, and the message names the package
@@ -287,6 +356,19 @@ const principles = [
     </div>
   </section>
 
+  {/*
+    The estimator sat seventh of thirteen sections, roughly twelve screens
+    down a thirty-four-screen page. It is the strongest thing here: it turns
+    four published starting points into one number for the practice actually
+    reading, and it ends by attaching that number to a WhatsApp message.
+
+    It belongs immediately after the four packages, which is the moment a
+    reader has just asked "which of these is me". Everything below it — the
+    inclusion table, the monthly plan, the audit — is detail for someone who
+    has already found their shape.
+  */}
+  <PriceEstimator />
+
   <!-- WHAT IS IN EACH PACKAGE -->
   <!-- A table, because this is tabular data: one row per thing, one column per
        package, read across. It was four parallel lists, which made a reader
@@ -294,20 +376,24 @@ const principles = [
        A real <table> is also the right semantics — a screen reader announces
        the row and column headers with every cell, which four <ul>s cannot do.
 
-       It scrolls sideways under 900px rather than reflowing, because a
-       comparison you cannot see side by side is not a comparison. The region
-       is focusable and labelled so it can be reached by keyboard. -->
+       It needs 860px to be a comparison at all, so below lg it used to be a
+       sideways-scrolling table — 3.3 screens of a phone spent on something a
+       reader had to drag left and right to use, which is where phone readers
+       stop. Every package card above now lists what it includes, so on a phone
+       the table is duplication and the cards are the answer. From lg up, where
+       the columns actually fit side by side, the table is the better tool and
+       it returns. The region is focusable and labelled for keyboard use. -->
   <section class="band-powder" aria-labelledby="includes-title">
     <div class="section shell">
       <SectionHead
         id="includes-title"
         label="Side by side"
         title="What do you get in each one?"
-        lede="Every package includes everything in the one before it. A tick means it is included; a dash means it is not, and we would rather show you that than leave it out."
+        lede="Every package includes everything in the one before it, and each card above says what it adds. A tick means included, a dash means not, and we would rather show you that than leave it out."
       />
 
       <div
-        class="mt-11 overflow-x-auto rounded-3xl border border-line bg-surface"
+        class="mt-11 hidden overflow-x-auto rounded-3xl border border-line bg-surface lg:block"
         tabindex="0"
         role="region"
         aria-label="Compare the four packages, scrollable"
@@ -327,7 +413,7 @@ const principles = [
                     {build.name}
                   </span>
                   <span class:list={['mt-1.5 block font-mono text-[12px]', cycleAccent(i).text]}>
-                    {build.custom ? 'from ' : ''}{rupees(build.from)}
+                    {build.custom ? `${PRICE_PREFIX} ` : ''}{rupees(build.from)}
                   </span>
                 </th>
               ))}
@@ -477,10 +563,10 @@ const principles = [
     />
 
     <div class="mt-11 grid gap-10 lg:grid-cols-[1fr_minmax(0,420px)] lg:gap-16">
-      <ul class="grid gap-x-10 border-t border-line pt-5 text-[15px] leading-[1.55] text-body sm:grid-cols-2">
+      <ul class="grid grid-cols-2 gap-x-5 border-t border-line pt-4 text-[14px] leading-[1.45] text-body sm:gap-x-10 sm:text-[15px]">
         {GBP_AUDIT.checks.map((check) => (
-          <li class="flex gap-3 py-1.5">
-            <span class="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-a-gbp" aria-hidden="true"></span>
+          <li class="flex gap-2.5 py-1">
+            <span class="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-a-gbp" aria-hidden="true"></span>
             <span>{check}</span>
           </li>
         ))}
@@ -507,17 +593,17 @@ const principles = [
       lede="You do not have to buy a website to work with us. Each of these can be bought on its own, at the price shown."
     />
 
-    <div class="mt-10 grid gap-10 lg:grid-cols-2 lg:gap-14">
+    <div class="mt-9 grid gap-8 lg:grid-cols-2 lg:gap-14">
       <div>
         <h3 class="label-mono mb-4 text-surgical">Monthly</h3>
         <dl class="border-t border-line">
           {STANDALONE_ITEMS.map((item) => (
-            <div class="flex flex-wrap items-baseline justify-between gap-x-6 border-b border-hairline py-4.5">
+            <div class="flex flex-wrap items-baseline justify-between gap-x-6 border-b border-hairline py-3">
               <dt class="text-[16px] font-semibold leading-[1.45] text-ink">{item.item}</dt>
               <dd class="whitespace-nowrap font-mono text-[15px] font-semibold text-pass">
                 {rupees(item.price)}/mo
               </dd>
-              <dd class="mt-1.5 w-full text-[15px] leading-[1.55] text-muted">{item.note}</dd>
+              <dd class="mt-1 w-full text-[14px] leading-[1.5] text-muted">{item.note}</dd>
             </div>
           ))}
         </dl>
@@ -527,12 +613,12 @@ const principles = [
         <h3 class="label-mono mb-4 text-surgical">One-time</h3>
         <dl class="border-t border-line">
           {ONE_TIME_ITEMS.map((item) => (
-            <div class="flex flex-wrap items-baseline justify-between gap-x-6 border-b border-hairline py-4.5">
+            <div class="flex flex-wrap items-baseline justify-between gap-x-6 border-b border-hairline py-3">
               <dt class="text-[16px] font-semibold leading-[1.45] text-ink">{item.item}</dt>
               <dd class="whitespace-nowrap font-mono text-[15px] font-semibold text-pass">
-                {item.from ? 'from ' : ''}{rupees(item.price)}{item.unit === 'page' ? '/page' : ''}
+                {item.from ? `${PRICE_PREFIX} ` : ''}{rupees(item.price)}{item.unit === 'page' ? '/page' : ''}
               </dd>
-              <dd class="mt-1.5 w-full text-[15px] leading-[1.55] text-muted">{item.note}</dd>
+              <dd class="mt-1 w-full text-[14px] leading-[1.5] text-muted">{item.note}</dd>
             </div>
           ))}
         </dl>
@@ -543,14 +629,14 @@ const principles = [
         seven-slide researched carousel and a static post are not the same
         production, and pricing them the same is how a content plan quietly
         stops being profitable. */}
-    <div class="mt-12">
+    <div class="mt-10">
       <h3 class="label-mono mb-4 text-surgical">Social media, quoted on top</h3>
       <dl class="border-t border-line">
         {SOCIAL_ADDONS.map((item) => (
-          <div class="flex flex-wrap items-baseline justify-between gap-x-6 border-b border-hairline py-4.5">
+          <div class="flex flex-wrap items-baseline justify-between gap-x-6 border-b border-hairline py-3">
             <dt class="text-[16px] font-semibold leading-[1.45] text-ink">{item.item}</dt>
             <dd class="whitespace-nowrap font-mono text-[15px] font-semibold text-pass">{item.price}</dd>
-            <dd class="mt-1.5 w-full text-[15px] leading-[1.55] text-muted">{item.note}</dd>
+            <dd class="mt-1 w-full text-[14px] leading-[1.5] text-muted">{item.note}</dd>
           </div>
         ))}
       </dl>
@@ -561,11 +647,11 @@ const principles = [
       </p>
     </div>
 
-    <div class="mt-12 max-w-[820px] rounded-3xl border border-line bg-surface p-7 sm:p-8">
+    <div class="mt-10 max-w-[820px] rounded-3xl border border-line bg-surface p-6 sm:p-7">
       <h3 class="text-[19px] font-bold tracking-[-0.02em] text-ink">What we never charge for</h3>
-      <ul class="mt-4 text-[16px] leading-[1.6] text-body">
+      <ul class="mt-4 text-[15px] leading-[1.55] text-body">
         {NEVER_CHARGED.map((line) => (
-          <li class="flex gap-3 border-b border-hairline py-3 last:border-0">
+          <li class="flex gap-3 border-b border-hairline py-2.5 last:border-0">
             <span class="mt-[10px] h-1.5 w-1.5 shrink-0 rounded-full bg-pass" aria-hidden="true"></span>
             <span>{line}</span>
           </li>
@@ -574,7 +660,6 @@ const principles = [
     </div>
   </section>
 
-  <PriceEstimator />
 
   <!-- WHERE THE RETURN COMES FROM -->
   <!-- The longest page on the site ran eight sections without a single image.
@@ -595,17 +680,26 @@ const principles = [
         class="mx-auto lg:ml-auto lg:mr-0"
       />
     </div>
-    <div class="reveal-group mt-11 grid gap-4 sm:grid-cols-2">
+    {/*
+      Six padded cards ran 3.4 screens on a phone, eighteen screens down a page
+      whose decision is made in the first five. The content earns its place;
+      the packaging did not. A ruled list carries the same six points in
+      roughly half the height, and it reads differently from the card grids
+      above it, which is worth having on a page this long.
+    */}
+    <ul class="reveal-group mt-11 grid gap-x-12 border-t border-line sm:grid-cols-2">
       {WHERE_RETURN_COMES_FROM.points.map((p, i) => (
-        <article class="card-hover overflow-hidden rounded-3xl border border-line bg-surface">
-          <span class:list={['accent-bar block h-1 w-full', cycleAccent(i).bar]} aria-hidden="true"></span>
-          <div class="p-7">
-            <h3 class="text-[19px] font-bold tracking-[-0.02em] text-ink">{p.title}</h3>
-            <p class="mt-2.5 text-[16px] leading-[1.62] text-body">{p.text}</p>
+        <li class="flex gap-4 border-b border-hairline py-5">
+          <span class:list={['numeral shrink-0 text-[26px] leading-none', cycleAccent(i).text]}>
+            {String(i + 1).padStart(2, '0')}
+          </span>
+          <div class="min-w-0">
+            <h3 class="text-[17px] font-bold tracking-[-0.02em] text-ink">{p.title}</h3>
+            <p class="mt-1.5 text-[15px] leading-[1.6] text-body">{p.text}</p>
           </div>
-        </article>
+        </li>
       ))}
-    </div>
+    </ul>
     <p class="mt-8 max-w-[760px] rounded-2xl border border-line bg-surface px-6 py-5 text-[16px] leading-[1.65] text-body sm:px-7">
       {WHERE_RETURN_COMES_FROM.closing}
     </p>
@@ -639,6 +733,40 @@ const principles = [
           ))}
         </tbody>
       </table>
+    </div>
+
+    {/*
+      "How our pricing behaves" was its own section two screens further down,
+      answering the same question this one does: why is the number what it is.
+      Folded in here, and the four cards are a ruled list rather than four
+      padded boxes — same four principles, about a third of the height.
+    */}
+    <div class="mt-14 border-t border-line pt-10">
+      <h3 class="text-[clamp(22px,2.4vw,28px)] font-extrabold leading-[1.15] tracking-[-0.035em] text-ink">
+        How our pricing behaves
+      </h3>
+      <ul class="mt-7 grid max-w-[980px] gap-x-12 sm:grid-cols-2">
+        {principles.map((pr, i) => (
+          <li class="flex gap-4 border-b border-hairline py-5">
+            <span class:list={['numeral shrink-0 text-[28px] leading-none', cycleAccent(i).text]}>
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <div class="min-w-0">
+              <h4 class="text-[16px] font-bold tracking-[-0.02em] text-ink">{pr.title}</h4>
+              <p class="mt-1.5 text-[15px] leading-[1.6] text-body">{pr.text}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <div class="mt-8 max-w-[980px] rounded-2xl border border-line bg-surface px-6 py-5 sm:px-7">
+        <p class="label-mono mb-3 text-faint" style="letter-spacing:0.12em">The small print, in full</p>
+        <ul class="text-[15px] leading-[1.6] text-muted">
+          {PRICE_NOTES.map((note) => (
+            <li class="border-b border-hairline py-2.5 last:border-0 last:pb-0">{note}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -697,35 +825,6 @@ const principles = [
           class="lg:col-start-2"
         />
       </div>
-    </div>
-  </section>
-
-  <!-- HOW PRICING BEHAVES -->
-  <section class="section shell" aria-labelledby="principles-title">
-    <SectionHead
-      id="principles-title"
-      label="How pricing works"
-      title="How our pricing behaves"
-    />
-    <div class="mt-11 grid max-w-[920px] gap-4">
-      {principles.map((p, i) => (
-        <article class="grid gap-4 rounded-2xl border border-line bg-surface p-7 sm:grid-cols-[86px_1fr]">
-          <p class:list={['numeral text-[clamp(36px,4vw,52px)]', cycleAccent(i).text]}>{String(i + 1).padStart(2, '0')}</p>
-          <div>
-            <h3 class="text-[19px] font-bold tracking-[-0.02em] text-ink">{p.title}</h3>
-            <p class="mt-2 text-[16px] leading-[1.65] text-body">{p.text}</p>
-          </div>
-        </article>
-      ))}
-    </div>
-
-    <div class="mt-10 max-w-[920px] rounded-2xl border border-line bg-surface px-6 py-5 sm:px-7">
-      <p class="label-mono mb-3 text-faint" style="letter-spacing:0.12em">The small print, in full</p>
-      <ul class="text-[15px] leading-[1.6] text-muted">
-        {PRICE_NOTES.map((note) => (
-          <li class="border-b border-hairline py-2.5 last:border-0 last:pb-0">{note}</li>
-        ))}
-      </ul>
     </div>
   </section>
 

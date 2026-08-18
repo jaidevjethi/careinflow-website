@@ -85,7 +85,7 @@ const {
     />
     {schema && <JsonLd data={schema} />}
   </head>
-  <body class="pb-[60px] sm:pb-0">
+  <body class="pb-[60px]">
     <a
       href="#main"
       class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-100 focus:rounded-[10px] focus:bg-vivid focus:px-4 focus:py-3 focus:text-sm focus:font-semibold focus:text-ink"
@@ -97,21 +97,33 @@ const {
       <slot />
     </main>
     <Footer />
-    <!-- Mobile-only sticky CTA bar. A labelled landmark, not a bare div, so it
-         is reachable and named rather than floating outside the page structure. -->
+    <!-- Sticky CTA bar, every width. A labelled landmark, not a bare div, so it
+         is reachable and named rather than floating outside the page structure.
+
+         It used to be `sm:hidden`, which left desktop with no persistent way to
+         act: above 640px the only always-visible control was the header button,
+         and between the hero and the CTA panel the homepage ran eighteen
+         screens without one. Desktop is 42% of impressions. The bar now runs at
+         every width, with its content constrained to the shell so it reads as
+         part of the page rather than a banner stuck across it. -->
     <nav
       aria-label="Quick contact"
-      class="fixed inset-x-0 bottom-0 z-40 flex h-[60px] items-center justify-between gap-3 border-t border-panel-line bg-panel px-4 sm:hidden"
+      class="fixed inset-x-0 bottom-0 z-40 border-t border-panel-line bg-panel"
     >
-      <a
-        href={href('/contact')}
-        class="flex min-h-[24px] min-w-0 items-center truncate text-[14px] font-semibold text-surface"
-      >
-        Free written review · 2 days
-      </a>
-      <a href={whatsappFor('default')} rel="noopener" class="btn-whatsapp shrink-0 px-4.5 py-2.5 text-[14px]">
-        WhatsApp us
-      </a>
+      <div class="shell flex h-[60px] items-center justify-between gap-3">
+        <a
+          href={href('/contact')}
+          class="flex min-h-[24px] min-w-0 items-center truncate text-[14px] font-semibold text-surface"
+        >
+          Free written review · 2 days
+          <span class="hidden text-panel-text-dim md:inline">
+            &nbsp;· no call, no sales deck
+          </span>
+        </a>
+        <a href={whatsappFor('default')} rel="noopener" class="btn-whatsapp shrink-0 px-4.5 py-2.5 text-[14px]">
+          WhatsApp us
+        </a>
+      </div>
     </nav>
   </body>
 </html>

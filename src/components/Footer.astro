@@ -193,8 +193,14 @@ const ROUTES = [
 
       {/* Lazy, and several screens below the fold on every page, so a reader
           who never reaches the footer never requests anything from Google.
-          A fixed aspect reserves the space, so it cannot shift the page. */}
-      <MapPanel class="sm:col-span-2 lg:col-span-1" onPanel />
+          A fixed aspect reserves the space, so it cannot shift the page.
+
+          Hidden on a phone. It cost about 280px at the bottom of every page on
+          the site, and a map a reader has to pinch is worse than the address
+          and the directions link sitting right above it, both of which open the
+          reader's own maps app on a tap. It returns at sm, where it sits beside
+          the studio details instead of under them. */}
+      <MapPanel class="hidden sm:col-span-2 sm:block lg:col-span-1" onPanel />
     </div>
 
     {/* The towns used to run as one unbroken mono line, which read as a list
