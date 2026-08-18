@@ -331,8 +331,10 @@ const SPECIALTIES: Array<{ label: string; href?: string }> = [
   { label: 'Dental', href: '/specialties/dental-clinics' },
   { label: 'Dermatology', href: '/specialties/dermatology-clinics' },
   { label: 'Physiotherapy', href: '/specialties/physiotherapy-clinics' },
-  { label: 'Ophthalmology' }, { label: 'Orthopaedics' },
-  { label: 'Paediatrics' }, { label: 'Gynaecology' }, { label: 'Cosmetic' },
+  { label: 'Ophthalmology', href: '/specialties/ophthalmology-clinics' },
+  { label: 'Orthopaedics', href: '/specialties/orthopaedic-clinics' },
+  { label: 'Paediatrics', href: '/specialties/paediatric-clinics' },
+  { label: 'Gynaecology' }, { label: 'Cosmetic' },
   { label: 'Mental health' }, { label: 'ENT' }, { label: 'Cardiology' },
   { label: 'Diagnostic centres' }, { label: 'Multi-specialty' },
 ];
@@ -895,7 +897,7 @@ const whatsappHref = whatsappWithMessage(
             ))}
           </ul>
           <p class="mt-5 border-t border-hairline pt-4 text-[15px] leading-[1.6] text-muted">
-            The three linked above have a page on what changes for that specialty.
+            The six linked above have a page on what changes for that specialty.
             {' '}<a href={href('/specialties')} class="prose-link">See all specialties</a>. If yours
             is not listed, it almost certainly still fits, so ask.
           </p>
