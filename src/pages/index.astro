@@ -335,7 +335,11 @@ const SPECIALTIES: Array<{ label: string; href?: string }> = [
   { label: 'Orthopaedics', href: '/specialties/orthopaedic-clinics' },
   { label: 'Paediatrics', href: '/specialties/paediatric-clinics' },
   { label: 'Gynaecology', href: '/specialties/gynaecology-clinics' },
-  { label: 'Cosmetic' },
+  // Cosmetic points at the dermatology page rather than getting one of its
+  // own. A separate page would compete with it for the same searches and cost
+  // both; the dermatology page already argues the medical-versus-cosmetic
+  // split and now carries the label to match.
+  { label: 'Cosmetic', href: '/specialties/dermatology-clinics' },
   { label: 'Mental health', href: '/specialties/mental-health-clinics' },
   { label: 'ENT', href: '/specialties/ent-clinics' },
   { label: 'Cardiology', href: '/specialties/cardiology-clinics' },
