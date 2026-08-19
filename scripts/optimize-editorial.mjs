@@ -124,6 +124,18 @@ const DROP = [
   { n: '10', src: '10-specialty-paediatrics.jpg',   out: 'editorial/specialty-paediatrics.webp',   ratio: 'wide', grade: 6.0, width: 900 },
   { n: '11', src: '11-specialty-orthopaedics.jpg',  out: 'editorial/specialty-orthopaedics.webp',  ratio: 'wide', grade: 4.5, width: 900 },
 
+  // ── Wave 2 specialty heroes ──────────────────────────────────────────────
+  // Grades follow the same rule as above: 4.5 where the frame is mostly room
+  // and equipment, 6.0 where it is mostly skin. Driving a portrait to the
+  // lower target makes it look embalmed, which is why paediatrics sat at 6.0
+  // and why gynaecology and mental health do too.
+  { n: '58', src: '58-specialty-multispecialty.jpg', out: 'editorial/specialty-multispecialty.webp', ratio: 'wide', grade: 4.5, width: 900 },
+  { n: '59', src: '59-specialty-gynaecology.jpg',    out: 'editorial/specialty-gynaecology.webp',    ratio: 'wide', grade: 6.0, width: 900 },
+  { n: '60', src: '60-specialty-ent.jpg',            out: 'editorial/specialty-ent.webp',            ratio: 'wide', grade: 4.5, width: 900 },
+  { n: '61', src: '61-specialty-cardiology.jpg',     out: 'editorial/specialty-cardiology.webp',     ratio: 'wide', grade: 4.5, width: 900 },
+  { n: '62', src: '62-specialty-mental-health.jpg',  out: 'editorial/specialty-mental-health.webp',  ratio: 'wide', grade: 6.0, width: 900 },
+  { n: '63', src: '63-specialty-diagnostics.jpg',    out: 'editorial/specialty-diagnostics.webp',    ratio: 'wide', grade: 4.0, width: 900 },
+
   // ── /services hero aside ─────────────────────────────────────────────────
   {
     n: '12', src: '12-services-hub-hero.jpg',

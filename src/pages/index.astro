@@ -334,9 +334,13 @@ const SPECIALTIES: Array<{ label: string; href?: string }> = [
   { label: 'Ophthalmology', href: '/specialties/ophthalmology-clinics' },
   { label: 'Orthopaedics', href: '/specialties/orthopaedic-clinics' },
   { label: 'Paediatrics', href: '/specialties/paediatric-clinics' },
-  { label: 'Gynaecology' }, { label: 'Cosmetic' },
-  { label: 'Mental health' }, { label: 'ENT' }, { label: 'Cardiology' },
-  { label: 'Diagnostic centres' }, { label: 'Multi-specialty' },
+  { label: 'Gynaecology', href: '/specialties/gynaecology-clinics' },
+  { label: 'Cosmetic' },
+  { label: 'Mental health', href: '/specialties/mental-health-clinics' },
+  { label: 'ENT', href: '/specialties/ent-clinics' },
+  { label: 'Cardiology', href: '/specialties/cardiology-clinics' },
+  { label: 'Diagnostic centres', href: '/specialties/diagnostic-centres' },
+  { label: 'Multi-specialty', href: '/specialties/multi-specialty-hospitals' },
 ];
 
 const whatsappHref = whatsappWithMessage(
@@ -897,7 +901,7 @@ const whatsappHref = whatsappWithMessage(
             ))}
           </ul>
           <p class="mt-5 border-t border-hairline pt-4 text-[15px] leading-[1.6] text-muted">
-            The six linked above have a page on what changes for that specialty.
+            Every specialty linked above has a page on what changes for it.
             {' '}<a href={href('/specialties')} class="prose-link">See all specialties</a>. If yours
             is not listed, it almost certainly still fits, so ask.
           </p>

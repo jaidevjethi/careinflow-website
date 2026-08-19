@@ -20,9 +20,14 @@ import {
   itemListSchema,
 } from '@/lib/schema';
 
-const title = 'Websites by Specialty: Dental, Physio, Skin Clinics';
+const title = 'Clinic Websites by Specialty: 12 Written Guides';
+/**
+ * Named three specialties until the collection held twelve, which made the
+ * title a promise the page no longer kept and the description a list that
+ * excluded nine of its own entries.
+ */
 const description =
-  'What changes between a dental, physiotherapy and dermatology website: the searches patients type, and the pages that earn their place.';
+  'Twelve specialties, each with what actually changes: dental, physiotherapy, skin, eye, orthopaedic, paediatric, gynaecology, ENT, cardiology and more.';
 
 const specialties = (await getCollection('specialties')).sort(
   (a, b) => a.data.order - b.data.order,
@@ -123,7 +128,10 @@ const schema = graph(
               </span>
             </p>
             <span class:list={['prose-link mt-5 inline-block text-[16px]', ACCENTS[s.data.accent].text]}>
-              Read the {s.data.navLabel.toLowerCase()} page →
+              {/* Lowercased so the label reads inside a sentence, except where
+                  the label is an acronym: "Read the ent page" is wrong in a way
+                  a reader notices immediately. */}
+              Read the {s.data.navLabel === s.data.navLabel.toUpperCase() ? s.data.navLabel : s.data.navLabel.toLowerCase()} page →
             </span>
             </div>
           </a>
