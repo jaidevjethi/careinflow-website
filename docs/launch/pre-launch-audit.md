@@ -181,8 +181,12 @@ against production rather than assuming either way.
 
 ### NOT APPLICABLE
 
-- Form handling, validation and error states — there are no forms. WhatsApp and
-  the phone are the only two routes, by design.
+- ~~Form handling, validation and error states — there are no forms. WhatsApp
+  and the phone are the only two routes, by design.~~ **Superseded 2026-08-26**:
+  the Calendly calendar is embedded at `/contact#book` behind a button, which
+  makes booking a third route and puts one form on the site. Its fields,
+  validation and error states are Calendly's, inside Calendly's frame, so there
+  is still nothing here for us to handle — but the count is no longer two.
 - ~~Cookie or consent banners — no cookies, no analytics, no third-party
   scripts.~~ **No longer true as of 2026-08-26**: Clarity sets `_clck` and
   `_clsk` and is a third-party script. Still no banner, which is a judgement

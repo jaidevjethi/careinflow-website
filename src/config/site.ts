@@ -39,12 +39,19 @@ export const BUSINESS = {
     'Healthcare-focused web design and digital growth studio in Mehsana, Gujarat',
   founder: 'Jaidev Jethi',
   /**
-   * WhatsApp and the phone are the two routes the site actually pushes — they
-   * are how clinic owners here reach a supplier, and a message on WhatsApp
-   * gets answered faster than an inbox ever does. BOOKING_URL below is the
-   * third and quietest: a time in the diary for anyone who would rather talk
-   * than type. If you add another route, search for "two" first — several
-   * pages state the count as a fact.
+   * WhatsApp is the route the site pushes first — it is how clinic owners here
+   * reach a supplier, and a message gets answered faster than an inbox ever
+   * does. The phone is the same number.
+   *
+   * BOOKING_URL below is no longer the quiet third option it was. Since
+   * 2026-08-26 the calendar is embedded on /contact behind a button, and the
+   * funnel treats booking as a genuine second route rather than a footer link
+   * (see the careinflow-funnel skill).
+   *
+   * If you add another route, search for "two" first — several pages state the
+   * count as a fact. Promoting this one already meant correcting /contact's own
+   * lede, which opened "No form and no slide deck", and two paragraphs of
+   * /privacy.
    */
   /** E.164, displayed as +91 97734 56668 */
   phone: '+919773456668',
@@ -153,10 +160,24 @@ export const INSTAGRAM_HANDLE = '@careinflowindia';
 
 /**
  * Scheduling link, for visitors who would rather book a time than send a
- * message. Linked, never embedded: an embed would load third-party scripts,
- * which the CSP forbids and which /privacy promises the site does not do.
+ * message.
+ *
+ * The event itself, not the profile page that lists every event type. The
+ * embedded calendar on /contact has to name one event, and a footer link that
+ * landed somewhere else would make the two controls behave differently for no
+ * reason a visitor could see.
+ *
+ * This used to read "Linked, never embedded: an embed would load third-party
+ * scripts, which the CSP forbids and which /privacy promises the site does not
+ * do." All three clauses have changed. It is embedded on /contact, though only
+ * after a visitor presses a button; public/_headers now admits
+ * assets.calendly.com and calendly.com deliberately; and /privacy says so.
+ *
+ * The ?hide_gdpr_banner=1 parameter belongs to the embed and lives in
+ * BookingPanel.astro, not here — the footer and hero links should still get the
+ * ordinary page, banner and all.
  */
-export const BOOKING_URL = 'https://calendly.com/careinflow';
+export const BOOKING_URL = 'https://calendly.com/careinflow/1-on-1-meeting';
 
 /**
  * The Google Business Profile listing.

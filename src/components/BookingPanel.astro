@@ -1,0 +1,101 @@
+---
+import { BOOKING_URL } from '@/config/site';
+import { ACCENTS } from '@/lib/accents';
+
+/**
+ * The Calendly booking calendar, loaded only when a visitor presses the button.
+ *
+ * - **A facade, not an embed.** Nothing is requested from Calendly until the
+ *   button is used, so a reader who never wants a meeting never loads one.
+ * - **The control is a real link that JS intercepts**, so it still works with
+ *   scripts blocked, which a `<button>` would not.
+ * - **The loader is a bundled script, never inline** — `script-src` is 'self'
+ *   with no 'unsafe-inline' (public/_headers), same constraint as
+ *   Analytics.astro. _headers names assets.calendly.com and calendly.com.
+ * - **No `min-width`.** Calendly's own snippet sets 320px, which overflows a
+ *   320px viewport inside .shell's gutters. The widget is fluid without it.
+ *
+ * What this costs a visitor is written on /privacy.
+ */
+
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+
+/**
+ * hide_gdpr_banner suppresses Calendly's own cookie notice inside the frame.
+ * It lives here rather than in BOOKING_URL because it is an embed concern —
+ * the footer link and the hero link should still get the ordinary page. The
+ * choice is disclosed in full on /privacy rather than made quietly.
+ */
+const EMBED_URL = `${BOOKING_URL}?hide_gdpr_banner=1`;
+---
+
+<div class:list={[className]} data-booking data-booking-url={EMBED_URL}>
+  <div
+    class:list={['rounded-3xl border border-line p-8 sm:p-10', ACCENTS.gbp.tint]}
+    data-booking-facade
+  >
+    <a href={EMBED_URL} rel="noopener" class="btn-accent px-7 py-4 text-[17px]" data-booking-load>
+      Show available times
+    </a>
+  </div>
+</div>
+
+<script>
+  const WIDGET_SRC = 'https://assets.calendly.com/assets/external/widget.js';
+
+  document.querySelectorAll<HTMLElement>('[data-booking]').forEach((root) => {
+    const trigger = root.querySelector<HTMLAnchorElement>('[data-booking-load]');
+    const facade = root.querySelector<HTMLElement>('[data-booking-facade]');
+    const url = root.dataset.bookingUrl;
+    if (!trigger || !facade || !url) return;
+
+    /* Not { once: true }. A modifier-click is deliberately left alone below,
+       and `once` would spend the listener on it — leaving the next ordinary
+       click to navigate away from a page that was ready to show the calendar
+       in place. The listener removes itself only once it has actually mounted. */
+    const mount = (event: MouseEvent) => {
+      /* Only take over an ordinary left click. A middle click, or one held
+         with a modifier, means the visitor wants the booking page in a tab of
+         their own, and swallowing that would be rude. */
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+        return;
+      }
+      event.preventDefault();
+      trigger.removeEventListener('click', mount);
+
+      const widget = document.createElement('div');
+      widget.className = 'calendly-inline-widget';
+      widget.dataset.url = url;
+      /* Height only, no min-width — see the note above. Calendly replaces this
+         the moment the frame reports its own height back. */
+      widget.style.height = '700px';
+
+      /* Name the region and make it focusable before the facade goes, so a
+         keyboard visitor lands on the calendar rather than at the top of the
+         page with the control they just used no longer there. */
+      root.setAttribute('role', 'region');
+      root.setAttribute('aria-label', 'Booking calendar');
+      root.setAttribute('tabindex', '-1');
+
+      facade.remove();
+      root.appendChild(widget);
+      root.focus();
+
+      const calendly = (window as any).Calendly;
+      if (calendly) {
+        calendly.initInlineWidget({ url, parentElement: widget });
+        return;
+      }
+
+      const tag = document.createElement('script');
+      tag.src = WIDGET_SRC;
+      tag.async = true;
+      document.head.appendChild(tag);
+    };
+
+    trigger.addEventListener('click', mount);
+  });
+</script>

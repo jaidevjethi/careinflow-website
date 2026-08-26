@@ -270,9 +270,20 @@ Google listing needs work, the page says to fix those first.
 
 The site sells one thing: a **free written review** of a practice's online
 presence, requested with a single WhatsApp message and returned within two
-working days. `/free-review` explains it; every page routes there or to
-WhatsApp. No forms, no discovery calls, no gated downloads. Every ask carries
-the honest escape hatch — if the answer is "change nothing", we say so.
+working days. `/contact` explains it in full; every page routes there or to
+WhatsApp. (`/free-review` was a second page competing for the same conversion
+and now redirects.) No gated downloads, and no discovery call *before* the
+review — the review comes first, and the conversation happens once there is
+something in the reader's hand to talk about.
+
+Since 2026-08-26 there is a second way in. The Calendly calendar is embedded at
+`/contact#book`, behind a button, for visitors who would rather talk before
+reading anything. It does not replace the review and is never placed above it.
+"No forms" is therefore no longer true as a blanket claim: the booking calendar
+is a form, it is Calendly's rather than ours, and `/privacy` says so plainly.
+
+Every ask carries the honest escape hatch — if the answer is "change nothing",
+we say so.
 
 ## Business Facts (from the design doc, confirmed for use)
 

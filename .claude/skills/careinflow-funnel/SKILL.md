@@ -7,14 +7,18 @@ description: CareInflow's conversion funnel — how every page earns and asks fo
 
 The whole site funnels to **one low-friction offer**: a free written review of the visitor's online presence, delivered on WhatsApp in two working days. Nothing else is sold on the site.
 
+There are **two ways to start it, not one**. WhatsApp is pushed first everywhere. Booking has been a genuine second route since 2026-08-26 rather than a link in the footer — see **Booking** below.
+
 ## The path
 
 ```
 Any entry page
-   → /contact  (the offer, explained)
-      → WhatsApp message with the clinic's name
-         → written review in 2 working days
-            → fixed-price scope in writing (only if work is worth doing)
+   → /contact  (both routes, explained)
+      ├→ WhatsApp message with the clinic's name        ← pushed first
+      │     → written review in 2 working days
+      │        → fixed-price scope in writing (only if work is worth doing)
+      └→ booked meeting, calendar embedded at /contact#book
+            → the same conversation, taken before the review instead of after
 ```
 
 Trust is earned before it is asked for. A page may only ask once it has demonstrated something.
@@ -28,6 +32,7 @@ Trust is earned before it is asked for. A page may only ask once it has demonstr
 | Mid-page, after body content | `CtaStrip` | One calm line. Service pages, resource articles. |
 | Page close (every page) | `CtaPanel` | Same card everywhere, word for word, plus `nextStep` for readers not ready yet. |
 | Mobile, always | Sticky bar in `BaseLayout` | Two targets: `/contact` and WhatsApp. |
+| `/contact`, below the review | `BookingPanel` | The calendar itself, behind a button. Never above the review — offer the free, faster thing twice before asking for an hour. |
 
 ## `nextStep` chaining
 
@@ -41,6 +46,14 @@ There is exactly one, `/contact`, and it carries the free written review in
 full. There used to be a second, `/free-review`, which split the same
 conversion across two URLs and two sets of FAQs; it now redirects here. When
 adding a CTA, the destination is `/contact` — never invent a parallel route.
+
+## Booking
+
+The Calendly calendar lives at `/contact#book` and nowhere else. Three rules:
+
+- **It loads on press, never on view.** `BookingPanel` renders a facade and injects Calendly's script only when the control is used, so a reader who never wants a meeting never requests one. That is also what keeps `/privacy` honest, and what keeps a third-party script off the page for everyone who came to read.
+- **It sits below the review, always.** Booking is a second route, not a competing one. A page that asks for an hour of a reader's time before it has offered them something free has asked too early.
+- **`BOOKING_URL` is the event, not the profile**, so the footer link, the hero link and the embed all land in the same place. `?hide_gdpr_banner=1` belongs to the embed only and is disclosed on `/privacy`.
 
 ## WhatsApp prefills
 

@@ -10,6 +10,7 @@ import reportImage from '@/assets/mockups/review-report.webp';
 import studioExterior from '@/assets/editorial/studio-exterior.webp';
 import SectionHead from '@/components/SectionHead.astro';
 import FaqSection from '@/components/FaqSection.astro';
+import BookingPanel from '@/components/BookingPanel.astro';
 import { BUSINESS, BOOKING_URL, HOURS_LABEL, WHATSAPP_URL, whatsappFor } from '@/config/site';
 import { BUILDS, PLANS, rupees } from '@/config/pricing';
 import { href } from '@/lib/url';
@@ -270,6 +271,20 @@ const steps = [
         caption="What arrives, before anyone has paid anything"
         maxWidth={460}
       />
+    </div>
+  </section>
+
+  {/* Booking sits below the review, so the free, faster route is offered
+      first. Calendly loads only on press — see BookingPanel. */}
+  <section id="book" class="border-t border-hairline bg-surface" aria-labelledby="book-title">
+    <div class="section shell">
+      <SectionHead
+        id="book-title"
+        label="Book a time"
+        title="Would you rather just talk?"
+        lede="If a conversation is how you would rather start, pick a time that suits you."
+      />
+      <BookingPanel class="mt-11 lg:max-w-[880px]" />
     </div>
   </section>
 
