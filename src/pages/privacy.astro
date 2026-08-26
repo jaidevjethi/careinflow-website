@@ -54,14 +54,14 @@ const schema = graph(
           well as us, and holds it under their privacy statement.
         </p>
         <p>
-          What it does not collect is you. The one form on this site is the
-          booking calendar on our contact page, and it runs inside a frame that
-          belongs to Calendly, which Clarity cannot see into — so the name, the
-          email address and the time you give it to book a meeting never reach
-          our recordings. Everywhere else there is simply nothing typed for it
-          to capture. It gives us no way to tell whose session we are watching.
-          It sets two cookies on this domain, named _clck and _clsk, whose only
-          job is to tell one visit apart from the next.
+          What it does not collect is you. There are no forms anywhere on this
+          site — WhatsApp, the phone and a booking link are the three ways to
+          reach us, and the booking link opens someone else's page in a tab of
+          its own — so there is nothing typed here for it to capture. It records
+          no name, no email address and no phone number, and gives us no way to
+          tell whose session we are watching. It sets two cookies on this
+          domain, named _clck and _clsk, whose only job is to tell one visit
+          apart from the next.
         </p>
         <p>
           If you would rather not be recorded, most content blockers and any
@@ -70,8 +70,7 @@ const schema = graph(
         </p>
         <p>
           Two other things on this site are not ours, and both are described
-          below: the Google Map in the footer, and the booking calendar on the
-          contact page.
+          below: the Google Map in the footer, and the booking link.
         </p>
         <h2>What happens when you contact us?</h2>
         <p>
@@ -95,25 +94,14 @@ const schema = graph(
         <p>
           The third contact route is worth being clear about, because it is the
           other place a third party is involved. The
-          {' '}<a href={BOOKING_URL} rel="noopener">booking calendar</a> is
-          Calendly's, a scheduling service we do not run. Whatever you give it —
-          usually a name, an email address and a time — is held by Calendly
-          under their privacy policy as well as reaching us.
-        </p>
-        <p>
-          Since August 2026 it sits on our contact page rather than only behind
-          a link. It does not load until you press the button that asks for it,
-          and until you press it nothing of Calendly's runs on this site at all.
-          That is the entire reason it is behind a button rather than simply
-          placed on the page.
-        </p>
-        <p>
-          One detail we would rather name than leave for you to notice: we pass
-          a setting that hides Calendly's own cookie notice inside the frame. It
-          means Calendly sets its cookies without asking you separately, on the
-          basis that you had already pressed a button here saying the calendar
-          was theirs. If you would rather not use it at all, WhatsApp reaches
-          the same person.
+          {' '}<a href={BOOKING_URL} rel="noopener">booking link</a> opens
+          Calendly, a scheduling service we do not run, in a tab of its own.
+          Whatever you give it — usually a name, an email address and a time —
+          is held by Calendly under their privacy policy as well as reaching us.
+          It is a link, not an embed: nothing from Calendly loads on this site
+          unless you choose to go there, and nothing of theirs runs on the page
+          you are reading. If you would rather not use it, WhatsApp reaches the
+          same person.
         </p>
         <p>
           If you would like your contact history deleted, message us and we

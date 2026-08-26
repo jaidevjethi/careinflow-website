@@ -17,7 +17,7 @@ Any entry page
       ├→ WhatsApp message with the clinic's name        ← pushed first
       │     → written review in 2 working days
       │        → fixed-price scope in writing (only if work is worth doing)
-      └→ booked meeting, calendar embedded at /contact#book
+      └→ booked meeting, Calendly opened in a new tab from /contact
             → the same conversation, taken before the review instead of after
 ```
 
@@ -29,11 +29,11 @@ Trust is earned before it is asked for. A page may only ask once it has demonstr
 |---|---|---|
 | Header (every page) | "Contact us" → `/contact` | Low-commitment entry for cold visitors. Never a raw WhatsApp link — that asks too early. Uses `.btn-cta`, not `.btn-accent`: white text needs the darker `--color-cta` fill to pass on the midnight header. |
 | Hero (home) | Primary WhatsApp button + secondary `/contact` | Only pages where the visitor already arrived with intent. |
-| Hero (contact) | WhatsApp + `Book a meeting` + `Or call` | Three routes at three weights: green fill, periwinkle fill, outline. The middle one jumps to `#book` and opens the calendar in the same click. |
+| Hero (contact) | WhatsApp + `Book a meeting` + `Or call` | Three routes at three weights: green fill, periwinkle fill, outline. The meeting opens Calendly in a new tab. |
 | Mid-page, after body content | `CtaStrip` | One calm line. Service pages, resource articles. |
 | Page close (every page) | `CtaPanel` | Same card everywhere, word for word, plus `nextStep` for readers not ready yet. |
 | Mobile, always | Sticky bar in `BaseLayout` | Two targets: `/contact` and WhatsApp. |
-| `/contact`, below the review | `BookingPanel` | The calendar itself, behind a button. Never above the review — offer the free, faster thing twice before asking for an hour. |
+| `/contact`, below the review | `BookingPanel` | The link out to Calendly. Never above the review — offer the free, faster thing twice before asking for an hour. |
 
 ## `nextStep` chaining
 
@@ -50,11 +50,11 @@ adding a CTA, the destination is `/contact` — never invent a parallel route.
 
 ## Booking
 
-The Calendly calendar lives at `/contact#book` and nowhere else. Three rules:
+Booking lives in the `/contact` hero and in its own section at `#book`. Three rules:
 
-- **It loads on press, never on view.** `BookingPanel` renders a facade and injects Calendly's script only when the control is used, so a reader who never wants a meeting never requests one. That is also what keeps `/privacy` honest, and what keeps a third-party script off the page for everyone who came to read.
+- **Never embedded.** It was, briefly. In a frame at the width that section allows it measured 880×700 and never sent the resize message its own widget listens for, so the booking UI scrolled inside its own box. Calendly's page is responsive and gets the whole viewport. A link also costs the CSP nothing — no script host, no frame host — which is why `/privacy` can still say no third-party script but Clarity runs here.
 - **It sits below the review, always.** Booking is a second route, not a competing one. A page that asks for an hour of a reader's time before it has offered them something free has asked too early.
-- **`BOOKING_URL` is the event, not the profile**, so the footer link, the hero link and the embed all land in the same place. `?hide_gdpr_banner=1` belongs to the embed only and is disclosed on `/privacy`.
+- **`BOOKING_URL` is the event, not the profile**, so the hero button, the footer link and the section all land in the same place. Every link to it opens in a new tab.
 
 ## WhatsApp prefills
 

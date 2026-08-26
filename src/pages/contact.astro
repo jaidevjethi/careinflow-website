@@ -11,7 +11,7 @@ import studioExterior from '@/assets/editorial/studio-exterior.webp';
 import SectionHead from '@/components/SectionHead.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import BookingPanel from '@/components/BookingPanel.astro';
-import { BUSINESS, HOURS_LABEL, WHATSAPP_URL, whatsappFor } from '@/config/site';
+import { BUSINESS, BOOKING_URL, HOURS_LABEL, WHATSAPP_URL, whatsappFor } from '@/config/site';
 import { BUILDS, PLANS, rupees } from '@/config/pricing';
 import { href } from '@/lib/url';
 import { cycleAccent, ACCENTS } from '@/lib/accents';
@@ -113,13 +113,18 @@ const steps = [
     {/* Three routes at three weights: the green fill is the one we push, the
         periwinkle fill is the meeting, the outline is the phone. Booking used
         to be a link in the fine print below, which is not where a route
-        belongs once the calendar is on the page. The middle button both
-        scrolls to #book and opens the calendar, so it costs one click. */}
+        belongs. The meeting opens on Calendly's own page, in a new tab, where
+        it gets the whole viewport — see BookingPanel. */}
     <div class="mt-9 flex flex-wrap items-center gap-4">
       <a href={whatsappHref} rel="noopener" class="btn-whatsapp px-7 py-4 text-[17px]">
         WhatsApp {BUSINESS.phoneDisplay}
       </a>
-      <a href="#book" class="btn-accent px-7 py-4 text-[17px]">
+      <a
+        href={BOOKING_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-accent px-7 py-4 text-[17px]"
+      >
         Book a meeting
       </a>
       <a href={`tel:${BUSINESS.phone}`} class="btn-on-dark px-6 py-[15px] text-base">
@@ -263,17 +268,18 @@ const steps = [
   </section>
 
   {/* Booking sits below the review, so the free, faster route is offered
-      first to anyone reading down the page. The hero button jumps here.
-      Calendly loads only on press — see BookingPanel. */}
+      first to anyone reading down the page. Nothing of Calendly's loads here;
+      the control opens their page in a new tab — see BookingPanel. Tight
+      padding because this section is a heading and a button, not a widget. */}
   <section id="book" class="border-t border-hairline bg-surface" aria-labelledby="book-title">
-    <div class="section shell">
+    <div class="section-tight shell">
       <SectionHead
         id="book-title"
         label="Book a time"
         title="Would you rather just talk?"
         lede="If a conversation is how you would rather start, pick a time that suits you."
       />
-      <BookingPanel class="mt-11 lg:max-w-[880px]" />
+      <BookingPanel class="mt-10 lg:max-w-[620px]" />
     </div>
   </section>
 

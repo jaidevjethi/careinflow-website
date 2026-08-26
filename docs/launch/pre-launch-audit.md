@@ -181,12 +181,12 @@ against production rather than assuming either way.
 
 ### NOT APPLICABLE
 
-- ~~Form handling, validation and error states — there are no forms. WhatsApp
-  and the phone are the only two routes, by design.~~ **Superseded 2026-08-26**:
-  the Calendly calendar is embedded at `/contact#book` behind a button, which
-  makes booking a third route and puts one form on the site. Its fields,
-  validation and error states are Calendly's, inside Calendly's frame, so there
-  is still nothing here for us to handle — but the count is no longer two.
+- Form handling, validation and error states — there are still no forms.
+  WhatsApp, the phone and a booking link are the three routes, and the booking
+  link opens Calendly's own page in a new tab, so its fields and validation are
+  theirs. (Amended 2026-08-26: the count is three, not two. The calendar was
+  embedded for a day and is not any more — in a frame it measured 880×700 and
+  never resized itself.)
 - ~~Cookie or consent banners — no cookies, no analytics, no third-party
   scripts.~~ **No longer true as of 2026-08-26**: Clarity sets `_clck` and
   `_clsk` and is a third-party script. Still no banner, which is a judgement

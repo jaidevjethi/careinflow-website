@@ -276,11 +276,11 @@ and now redirects.) No gated downloads, and no discovery call *before* the
 review — the review comes first, and the conversation happens once there is
 something in the reader's hand to talk about.
 
-Since 2026-08-26 there is a second way in. The Calendly calendar is embedded at
-`/contact#book`, behind a button, for visitors who would rather talk before
-reading anything. It does not replace the review and is never placed above it.
-"No forms" is therefore no longer true as a blanket claim: the booking calendar
-is a form, it is Calendly's rather than ours, and `/privacy` says so plainly.
+Since 2026-08-26 there is a second way in. Booking is a button in the `/contact`
+hero and a section of its own, opening Calendly in a new tab for visitors who
+would rather talk before reading anything. It does not replace the review and is
+never placed above it. Nothing of Calendly's loads on this site, so "no forms"
+still holds here — the form is on their page, not ours.
 
 Every ask carries the honest escape hatch — if the answer is "change nothing",
 we say so.

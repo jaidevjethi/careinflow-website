@@ -44,14 +44,13 @@ export const BUSINESS = {
    * does. The phone is the same number.
    *
    * BOOKING_URL below is no longer the quiet third option it was. Since
-   * 2026-08-26 the calendar is embedded on /contact behind a button, and the
-   * funnel treats booking as a genuine second route rather than a footer link
-   * (see the careinflow-funnel skill).
+   * 2026-08-26 it is a button in the /contact hero and a section of its own,
+   * and the funnel treats booking as a genuine second route rather than a
+   * footer link (see the careinflow-funnel skill).
    *
    * If you add another route, search for "two" first — several pages state the
    * count as a fact. Promoting this one already meant correcting /contact's own
-   * lede, which opened "No form and no slide deck", and two paragraphs of
-   * /privacy.
+   * lede, which opened "No form and no slide deck".
    */
   /** E.164, displayed as +91 97734 56668 */
   phone: '+919773456668',
@@ -167,15 +166,14 @@ export const INSTAGRAM_HANDLE = '@careinflowindia';
  * landed somewhere else would make the two controls behave differently for no
  * reason a visitor could see.
  *
- * This used to read "Linked, never embedded: an embed would load third-party
- * scripts, which the CSP forbids and which /privacy promises the site does not
- * do." All three clauses have changed. It is embedded on /contact, though only
- * after a visitor presses a button; public/_headers now admits
- * assets.calendly.com and calendly.com deliberately; and /privacy says so.
+ * Linked, never embedded, and that was tested rather than assumed. The
+ * calendar was put in a frame on /contact and at the width that section allows
+ * it measured 880x700 and never resized itself, so the booking UI scrolled
+ * inside its own box. Their page is responsive and gets the whole viewport.
  *
- * The ?hide_gdpr_banner=1 parameter belongs to the embed and lives in
- * BookingPanel.astro, not here — the footer and hero links should still get the
- * ordinary page, banner and all.
+ * Every link to it opens in a new tab, and because nothing of Calendly's loads
+ * here, public/_headers needs no script or frame host for them and /privacy can
+ * go on saying the site runs no third-party scripts but Clarity.
  */
 export const BOOKING_URL = 'https://calendly.com/careinflow/1-on-1-meeting';
 

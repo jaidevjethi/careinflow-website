@@ -53,6 +53,11 @@ const ROUTES = [
     note: 'Online, at a time you pick',
     url: BOOKING_URL,
     class: 'text-panel-accent hover:text-surface',
+    /* Calendly is somebody else's page and is never framed on ours, so every
+       link to it leaves in a tab of its own — same as the two controls on
+       /contact. WhatsApp and tel: are handed to an app, not a tab, so they do
+       not take this. */
+    newTab: true,
   },
 ];
 ---
@@ -138,7 +143,8 @@ const ROUTES = [
             <li class="grid gap-0.5">
               <a
                 href={route.url}
-                rel="noopener"
+                target={route.newTab ? '_blank' : undefined}
+                rel={route.newTab ? 'noopener noreferrer' : 'noopener'}
                 class:list={[
                   'inline-flex min-h-[24px] w-fit items-center text-[15px] font-semibold',
                   route.class,

@@ -15,12 +15,12 @@
   # style-src keeps it: Astro inlines critical CSS and Tailwind emits a few
   # arbitrary-value styles as attributes, neither of which can be hashed from
   # a static build.
-  # frame-src names the two frames this site will embed, and neither of them
-  # loads eagerly. The Google Map is lazy — loading="lazy" at the bottom of the
-  # footer, several screens below the fold, see MapPanel.astro — and the
-  # Calendly calendar sits behind a button on /contact, see BookingPanel.astro.
-  # (This comment used to say the map was on /contact and gated behind a button.
-  # It is in the footer of every page, and it is not gated.)
+  # frame-src is the one frame this site embeds: the Google Map at the bottom
+  # of the footer. It is lazy — loading="lazy", several screens below the fold,
+  # see MapPanel.astro — so nothing is requested from Google until a visitor
+  # scrolls near it. (This comment used to say the map was on /contact and only
+  # loaded after a button press. It is in the footer of every page, and it is
+  # not gated.)
   # Nothing else is framed, and frame-ancestors 'none' still means nothing may
   # frame us.
   #
@@ -33,20 +33,18 @@
   # decision: the Cloudflare beacon was refused rather than admitted for the
   # same reason (docs/launch/pre-launch-audit.md), so /privacy now says so.
   #
-  # assets.calendly.com and calendly.com are the booking calendar. Calendly's
-  # own community threads say the widget needs 'unsafe-eval' and 'unsafe-inline'
-  # in script-src. It does not, and that was worth checking rather than
-  # believing: widget.js is under 12KB, calls neither eval() nor new Function(),
-  # injects no stylesheet, and only ever sets inline style ATTRIBUTES, which the
-  # 'unsafe-inline' already in style-src covers. One script host and one frame
-  # host is the whole cost. Whatever the booking frame loads inside itself is
-  # governed by calendly.com's policy rather than ours, so img-src is untouched.
+  # Calendly is deliberately absent. The booking calendar was embedded on
+  # /contact for a day and is now a link that opens their own page in a new
+  # tab: in a frame at the width that section allows it measured 880x700 and
+  # never resized itself, so the booking UI scrolled inside its own box. A link
+  # costs this policy nothing — no script host, no frame host — and it is why
+  # /privacy can still say nothing of Calendly's runs on this site.
   #
   # If Clarity ever logs a violation the console names a directive: replay
   # fonts arrive as data: URIs on some builds (font-src), and some versions
   # spawn a blob: worker (worker-src). Neither is admitted here until it is
   # actually seen, because a policy widened on speculation stops being one.
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://*.clarity.ms https://assets.calendly.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.clarity.ms https://c.bing.com; font-src 'self'; connect-src 'self' https://*.clarity.ms https://c.bing.com; frame-src https://www.google.com https://calendly.com; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://*.clarity.ms; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.clarity.ms https://c.bing.com; font-src 'self'; connect-src 'self' https://*.clarity.ms https://c.bing.com; frame-src https://www.google.com; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
 
 # Hashed filenames, so these can never go stale.
 /_astro/*
