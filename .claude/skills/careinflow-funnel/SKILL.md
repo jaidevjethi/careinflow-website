@@ -28,7 +28,8 @@ Trust is earned before it is asked for. A page may only ask once it has demonstr
 | Placement | Component | Rule |
 |---|---|---|
 | Header (every page) | "Contact us" → `/contact` | Low-commitment entry for cold visitors. Never a raw WhatsApp link — that asks too early. Uses `.btn-cta`, not `.btn-accent`: white text needs the darker `--color-cta` fill to pass on the midnight header. |
-| Hero (home, contact) | Primary WhatsApp button + secondary `/contact` | Only pages where the visitor already arrived with intent. |
+| Hero (home) | Primary WhatsApp button + secondary `/contact` | Only pages where the visitor already arrived with intent. |
+| Hero (contact) | WhatsApp + `Book a meeting` + `Or call` | Three routes at three weights: green fill, periwinkle fill, outline. The middle one jumps to `#book` and opens the calendar in the same click. |
 | Mid-page, after body content | `CtaStrip` | One calm line. Service pages, resource articles. |
 | Page close (every page) | `CtaPanel` | Same card everywhere, word for word, plus `nextStep` for readers not ready yet. |
 | Mobile, always | Sticky bar in `BaseLayout` | Two targets: `/contact` and WhatsApp. |

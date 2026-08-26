@@ -52,25 +52,19 @@ const EMBED_URL = `${BOOKING_URL}?hide_gdpr_banner=1`;
     const url = root.dataset.bookingUrl;
     if (!trigger || !facade || !url) return;
 
-    /* Not { once: true }. A modifier-click is deliberately left alone below,
-       and `once` would spend the listener on it — leaving the next ordinary
-       click to navigate away from a page that was ready to show the calendar
-       in place. The listener removes itself only once it has actually mounted. */
-    const mount = (event: MouseEvent) => {
-      /* Only take over an ordinary left click. A middle click, or one held
-         with a modifier, means the visitor wants the booking page in a tab of
-         their own, and swallowing that would be rude. */
-      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
-        return;
-      }
-      event.preventDefault();
-      trigger.removeEventListener('click', mount);
+    let opened = false;
+
+    /** Swap the facade for the real widget. Safe to call more than once. */
+    const open = (focus: boolean) => {
+      if (opened) return;
+      opened = true;
 
       const widget = document.createElement('div');
       widget.className = 'calendly-inline-widget';
       widget.dataset.url = url;
-      /* Height only, no min-width — see the note above. Calendly replaces this
-         the moment the frame reports its own height back. */
+      /* Height only, no min-width: Calendly's own snippet sets 320px, which
+         overflows a 320px viewport inside .shell's gutters. Calendly replaces
+         this the moment the frame reports its own height back. */
       widget.style.height = '700px';
 
       /* Name the region and make it focusable before the facade goes, so a
@@ -82,7 +76,7 @@ const EMBED_URL = `${BOOKING_URL}?hide_gdpr_banner=1`;
 
       facade.remove();
       root.appendChild(widget);
-      root.focus();
+      if (focus) root.focus();
 
       const calendly = (window as any).Calendly;
       if (calendly) {
@@ -96,6 +90,28 @@ const EMBED_URL = `${BOOKING_URL}?hide_gdpr_banner=1`;
       document.head.appendChild(tag);
     };
 
-    trigger.addEventListener('click', mount);
+    trigger.addEventListener('click', (event) => {
+      /* Only take over an ordinary left click. A middle click, or one held
+         with a modifier, means the visitor wants the booking page in a tab of
+         their own, and swallowing that would be rude. */
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+        return;
+      }
+      event.preventDefault();
+      open(true);
+    });
+
+    /* Anything on the page pointing at this section — the hero's "Book a
+       meeting" button — opens the calendar as well as scrolling to it, so the
+       route costs one click from the top of the page rather than two. The
+       browser still does the scrolling: no preventDefault, and no stealing
+       focus from the anchor jump. */
+    const id = root.closest('section')?.id;
+    if (id) {
+      document
+        .querySelectorAll<HTMLAnchorElement>('a[href="#' + id + '"]')
+        .forEach((link) => link.addEventListener('click', () => open(false)));
+      if (window.location.hash === '#' + id) open(false);
+    }
   });
 </script>
