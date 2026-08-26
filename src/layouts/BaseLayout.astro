@@ -2,6 +2,7 @@
 import '@/styles/global.css';
 import SEO from '@/components/SEO.astro';
 import JsonLd from '@/components/JsonLd.astro';
+import Analytics from '@/components/Analytics.astro';
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
 import { whatsappFor } from '@/config/site';
@@ -84,6 +85,7 @@ const {
       {noindex}
     />
     {schema && <JsonLd data={schema} />}
+    <Analytics />
   </head>
   <body class="pb-[60px]">
     <a

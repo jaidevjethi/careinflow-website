@@ -145,6 +145,30 @@ production moving **best practices 93 → 100** and performance 97 → 98, with
 accessibility and SEO already at 100 and the `errors-in-console` audit now
 passing with no errors at all.
 
+#### SUPERSEDED 2026-08-26 — Microsoft Clarity was added deliberately
+
+The reasoning above still describes why the Cloudflare beacon went, and it is
+still the right reasoning: a tracker that the CSP silently refuses collects
+nothing and costs a best-practices point for the privilege. What changed is the
+answer to the second half of it. Heatmaps and session replay were judged worth
+having on a site that sells page design, so Clarity was admitted **on purpose**,
+with all three things the beacon never got:
+
+- a loader that the CSP actually permits — a bundled file under `/_astro`
+  covered by `script-src 'self'`, not the inline snippet Microsoft hands out
+  (`src/components/Analytics.astro`);
+- `*.clarity.ms` and `c.bing.com` named in `public/_headers` as script,
+  connect and image origins, so nothing is refused;
+- `/privacy` rewritten to say so, because it had claimed in its own meta
+  description that the site ran no analytics.
+
+It loads only when the origin is the canonical host, which keeps it out of
+`astro dev`, the GitHub Pages mirror and `*.pages.dev` previews.
+
+The two numbers above are now stale in one direction: expect best practices to
+stay at 100 but a third-party script to cost something on performance. Re-measure
+against production rather than assuming either way.
+
 ### MONITOR AFTER LAUNCH
 
 - Index coverage settling toward 37 pages.
@@ -159,7 +183,11 @@ passing with no errors at all.
 
 - Form handling, validation and error states — there are no forms. WhatsApp and
   the phone are the only two routes, by design.
-- Cookie or consent banners — no cookies, no analytics, no third-party scripts.
+- ~~Cookie or consent banners — no cookies, no analytics, no third-party
+  scripts.~~ **No longer true as of 2026-08-26**: Clarity sets `_clck` and
+  `_clsk` and is a third-party script. Still no banner, which is a judgement
+  call rather than an absence of anything to disclose — the disclosure lives on
+  `/privacy` instead. Revisit if the audience stops being one Indian state.
 - Login or gated content.
 
 ---

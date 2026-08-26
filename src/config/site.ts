@@ -10,7 +10,12 @@
  * sitemap, robots.txt, llms.txt and every JSON-LD `@id` move with it.
  */
 
-export const CANONICAL_HOST = 'https://www.careinflow.com';
+// Declared in a leaf module so a browser script can import the host on its
+// own without pulling this file’s computed exports in behind it. See the
+// note in config/canonical-host.ts. This stays the place to import it from.
+import { CANONICAL_HOST } from './canonical-host';
+
+export { CANONICAL_HOST };
 
 /**
  * True only for the build that is actually served on CANONICAL_HOST.

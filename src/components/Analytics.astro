@@ -1,0 +1,50 @@
+---
+/**
+ * Microsoft Clarity — heatmaps and session replay, project y8ayw5wcxw.
+ *
+ * Two things here are load-bearing and should not be tidied back toward the
+ * snippet Microsoft hands you.
+ *
+ * 1. **It is a bundled script, not an inline one.** `script-src` is 'self'
+ *    with no 'unsafe-inline' (public/_headers), and astro.config.mjs sets
+ *    `assetsInlineLimit: 0` precisely so bundled scripts are emitted as files
+ *    under /_astro and covered by 'self'. Pasted in inline, Clarity would be
+ *    refused by the browser and would collect nothing at all — which is
+ *    exactly how the Cloudflare beacon failed for weeks before it was removed
+ *    (docs/launch/pre-launch-audit.md). The tag this script *fetches* is
+ *    Microsoft's, so public/_headers still has to name *.clarity.ms as a
+ *    script and connect origin.
+ *
+ * 2. **It runs on the real site only.** `import.meta.env.PROD` keeps it out of
+ *    `astro dev`. The origin check keeps it out of the two other places a
+ *    production build gets served — the GitHub Pages mirror and Cloudflare's
+ *    *.pages.dev preview deployments — both of which build with the same
+ *    environment and would otherwise mix sessions on URLs nobody is selling
+ *    into the heatmaps for the ones we are.
+ *
+ * What this costs a visitor is written down on /privacy, in the section that
+ * used to say the site ran no analytics. Change one and change the other.
+ */
+---
+
+<script>
+  import { CANONICAL_HOST } from '@/config/canonical-host';
+
+  if (import.meta.env.PROD && window.location.origin === CANONICAL_HOST) {
+    /* Microsoft's snippet, unminified. The queue has to exist before the tag
+       lands so a clarity() call made in between is replayed rather than
+       dropped; `arguments` is kept over rest args because it is Clarity's own
+       code that reads these entries back. */
+    const w = window as any;
+    w.clarity =
+      w.clarity ||
+      function () {
+        (w.clarity.q = w.clarity.q || []).push(arguments);
+      };
+
+    const tag = document.createElement('script');
+    tag.async = true;
+    tag.src = 'https://www.clarity.ms/tag/y8ayw5wcxw';
+    document.head.appendChild(tag);
+  }
+</script>

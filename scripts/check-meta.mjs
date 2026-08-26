@@ -50,11 +50,19 @@ if (!existsSync(DIST)) {
 
 /* ---- what this build is -------------------------------------------------- */
 
-/** Read CANONICAL_HOST from its one source rather than restating it here. */
+/**
+ * Read CANONICAL_HOST from its one source rather than restating it here.
+ *
+ * It is declared in config/canonical-host.ts and re-exported by config/site.ts.
+ * The split exists so a browser script can import the host without dragging
+ * site.ts's computed exports in behind it; the string literal lives in the leaf,
+ * so that is the file to read.
+ */
 const siteConfig = readFileSync(join(ROOT, 'src', 'config', 'site.ts'), 'utf8');
-const CANONICAL_HOST = siteConfig.match(/CANONICAL_HOST\s*=\s*'([^']+)'/)?.[1];
+const hostConfig = readFileSync(join(ROOT, 'src', 'config', 'canonical-host.ts'), 'utf8');
+const CANONICAL_HOST = hostConfig.match(/CANONICAL_HOST\s*=\s*'([^']+)'/)?.[1];
 if (!CANONICAL_HOST) {
-  console.error('\n✗ could not read CANONICAL_HOST from src/config/site.ts\n');
+  console.error('\n✗ could not read CANONICAL_HOST from src/config/canonical-host.ts\n');
   process.exit(1);
 }
 
