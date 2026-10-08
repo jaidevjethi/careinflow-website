@@ -217,16 +217,25 @@ const check = 'M3 8.5l3.5 3.5L13 4.5';
 ---
 
 <BaseLayout {title} {description} path="/pricing" {schema}>
-  <!-- HERO : the picture is the written quote itself, beside the text only.
-       On a phone the prices below are the picture, and they come sooner. -->
+  <!-- HERO : a designer and a doctor going through an estimate together, the
+       photograph this page has always opened on. Heroes take photographs; the
+       drawn written quote explains the promise, so it sits in the promise
+       panel lower down ("Pictures: what goes where", design skill). -->
   <PageHero
     label="Pricing"
     title="Every price, published. You should not have to ask."
     lede="Websites, healthcare content, your Google listing and the care after launch: what each one costs, what it includes and what it does not. Your own figure is fixed in writing before anything starts."
-    asideWide
-    asideClass="hidden lg:block"
   >
-    <QuoteVisual slot="aside" />
+    <Image
+      slot="aside"
+      src={pricingConsult}
+      alt="A web designer and a doctor either side of a desk, going through a price estimate on a tablet held between them."
+      widths={[400, 600, 800]}
+      sizes="(min-width: 1024px) 400px, 92vw"
+      loading="eager"
+      fetchpriority="high"
+      class="aspect-[3/2] w-full rounded-3xl border border-panel-line object-cover"
+    />
     <div class="mt-8 flex flex-wrap items-center gap-3.5">
       <a href={whatsappFor('pricing')} rel="noopener" class="btn-whatsapp px-6 py-3.5 text-[16px]">
         Get a quote in writing
@@ -738,13 +747,15 @@ const check = 'M3 8.5l3.5 3.5L13 4.5';
     </div>
   </section>
 
-  <!-- 8 · THE PRICE PROMISE — the page's one dark panel. The photograph is a
-       doctor and a designer going through an estimate together: the moment
-       the panel describes, not a seal standing in for it. The four fixed
-       things run along the bottom, under both. -->
+  <!-- 8 · THE PRICE PROMISE — the page's one dark panel. Its picture is the
+       written quote itself, drawn: one package, what it includes and what it
+       does not with equal weight, one fixed figure and no deadline. That is
+       the promise, shown rather than certified by a seal. It was drawn for
+       midnight, so this is where it belongs. The four fixed things run along
+       the bottom, under both. -->
   <section class="section shell" aria-labelledby="promise-title">
     <div class="panel-depth panel-box">
-      <div class="grid items-center gap-12 lg:grid-cols-[1fr_420px] lg:gap-16">
+      <div class="grid items-center gap-12 lg:grid-cols-[1fr_460px] lg:gap-16">
         <div>
           <SectionHead
             dark
@@ -768,14 +779,7 @@ const check = 'M3 8.5l3.5 3.5L13 4.5';
           </p>
         </div>
 
-        <Image
-          src={pricingConsult}
-          alt="A web designer and a doctor either side of a desk, going through a price estimate on a tablet held between them."
-          widths={[420, 630, 840]}
-          sizes="(min-width: 1024px) 420px, 92vw"
-          loading="lazy"
-          class="aspect-[3/2] w-full rounded-3xl border border-panel-line object-cover"
-        />
+        <QuoteVisual class="mx-auto max-w-[460px]" />
       </div>
 
       <div class="mt-12 border-t border-panel-line pt-8">

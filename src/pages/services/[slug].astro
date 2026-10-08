@@ -136,7 +136,10 @@ const schema = graph(
 
 <BaseLayout {title} {description} {path} {schema} prefill={ask.prefill} offer={isContent ? 'content' : 'review'}>
   <article>
-    <!-- 1 · HERO : what it is, what it costs, one ask, and a picture of the work -->
+    <!-- 1 · HERO : what it is, what it costs, one ask, and a photograph of the
+         moment the service exists for. A photograph, not the drawn visual:
+         heroes take photographs, and the drawing that explains the work sits
+         beside the price below ("Pictures: what goes where", design skill). -->
     <PageHero
       breadcrumb={parent
         ? { label: parent.data.navLabel, href: href(`/services/${parent.id}`) }
@@ -144,7 +147,6 @@ const schema = graph(
       label={`CareInflow · ${d.navLabel}`}
       title={d.title}
       lede={d.summary}
-      asideWide
     >
       <div class="mt-7 flex flex-wrap items-end gap-x-8 gap-y-4">
         {price && (
@@ -164,7 +166,16 @@ const schema = graph(
         </a>
         <a href="#pricing" class="btn-on-dark px-6 py-[13px] text-[16px]">See what it costs</a>
       </div>
-      <ServiceVisual slot="aside" slug={service.id} class="mx-auto max-w-[500px]" />
+      <Image
+        slot="aside"
+        src={d.heroImage}
+        alt={d.heroImageAlt}
+        widths={[400, 600, 800]}
+        sizes="(min-width: 1024px) 400px, 92vw"
+        loading="eager"
+        fetchpriority="high"
+        class="aspect-[3/2] w-full rounded-3xl border border-panel-line object-cover"
+      />
     </PageHero>
 
     <!-- 2 · AT A GLANCE : who it is for, what it solves, what you receive -->
@@ -196,7 +207,7 @@ const schema = graph(
                   ]}
                 >
                   <dt class="text-muted">{item.item}</dt>
-                  <dd class="shrink-0 text-right font-semibold text-pass">{item.status}</dd>
+                  <dd class="shrink-0 text-right font-semibold text-surgical">{item.status}</dd>
                 </div>
               ))}
             </dl>
@@ -208,12 +219,17 @@ const schema = graph(
     <!-- 3 · WHAT IT COSTS -->
     <section id="pricing" class="band-powder" aria-labelledby="pricing-title">
       <div class="section shell">
-        <SectionHead
-          id="pricing-title"
-          label="What it costs"
-          title={isContent ? 'Published prices, counted in finished pieces.' : 'Published prices, with the scope beside them.'}
-          lede={priceNote}
-        />
+        {/* The drawn picture of the work beside its price: what you get, next
+            to what it costs. The same visual /pricing uses for this service. */}
+        <div class="grid items-center gap-10 lg:grid-cols-[1fr_440px] lg:gap-16">
+          <SectionHead
+            id="pricing-title"
+            label="What it costs"
+            title={isContent ? 'Published prices, counted in finished pieces.' : 'Published prices, with the scope beside them.'}
+            lede={priceNote}
+          />
+          <ServiceVisual slug={service.id} class="mx-auto max-w-[440px]" />
+        </div>
         <div class="mt-11">
           <ServicePricing slug={service.id} />
         </div>

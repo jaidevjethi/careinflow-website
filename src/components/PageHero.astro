@@ -31,19 +31,15 @@ interface Props extends HTMLAttributes<'section'> {
   breadcrumb?: { label: string; href: string };
   /** Tighter top padding for pages that follow with a dense section. */
   compact?: boolean;
-  /**
-   * A 500px aside instead of 400px, for the service pages, whose aside is the
-   * service's illustration rather than a photograph: it carries the page's
-   * argument in a picture, and at 400px its labels were too small to read.
-   */
-  asideWide?: boolean;
-  /**
-   * Classes for the aside's wrapper, e.g. `hidden lg:block` for a picture that
-   * only earns its place beside the text. Hiding the picture alone would leave
-   * an empty grid row, and the grid gap above it, under the hero on a phone.
-   */
-  asideClass?: string;
 }
+/*
+ * The `aside` slot takes the page's hero photograph (or photo-real render),
+ * 400px wide at 3:2, and it shows on a phone too. Never a drawn illustration:
+ * the drawn visuals explain the work and live in the body. There was a 500px
+ * "asideWide" variant for illustrations, and a way to hide the aside on a
+ * phone; both went when the photographs came back (2026-10-08), so neither is
+ * there to reach for. See "Pictures: what goes where" in the design skill.
+ */
 
 const {
   label,
@@ -53,8 +49,6 @@ const {
   chips,
   breadcrumb,
   compact = false,
-  asideWide = false,
-  asideClass,
   ...attrs
 } = Astro.props;
 const hasAside = Astro.slots.has('aside');
@@ -65,7 +59,7 @@ const hasAside = Astro.slots.has('aside');
     <div
       class:list={[
         'grid gap-12',
-        hasAside && (asideWide ? 'lg:grid-cols-[1fr_500px] lg:items-center lg:gap-14' : 'lg:grid-cols-[1fr_400px] lg:items-start lg:gap-16'),
+        hasAside && 'lg:grid-cols-[1fr_400px] lg:items-start lg:gap-16',
       ]}
     >
       <div class="animate-rise">
@@ -105,7 +99,7 @@ const hasAside = Astro.slots.has('aside');
       </div>
 
       {hasAside && (
-        <div class:list={['animate-fade lg:pt-2', asideClass]}>
+        <div class="animate-fade lg:pt-2">
           <slot name="aside" />
         </div>
       )}

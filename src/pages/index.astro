@@ -10,7 +10,8 @@ import CaseStudyCard from '@/components/CaseStudyCard.astro';
 import HeroVisual from '@/components/visuals/HeroVisual.astro';
 import ServiceVisual from '@/components/visuals/ServiceVisual.astro';
 import founderImage from '@/assets/jaidev-jethi.jpg';
-import consultImage from '@/assets/editorial/hero-founder-consult.webp';
+import heroPhoto from '@/assets/editorial/hero-founder-consult.webp';
+import receptionPhoneImage from '@/assets/editorial/hero-clinic-owner.webp';
 import doctorMobileImage from '@/assets/editorial/hero-doctor-mobile.webp';
 import surfaceGoogleListing from '@/assets/mockups/surface-google-listing.webp';
 import surfacePracticeWebsite from '@/assets/mockups/surface-practice-website.webp';
@@ -67,6 +68,11 @@ const schema = graph(
  *
  * The services come straight after the hero, each with a picture of the work
  * and its price, and everything after them is evidence.
+ *
+ * PICTURES, BY KIND (design skill, "Pictures: what goes where"): the hero
+ * takes a photograph, a doctor and a designer at a desk; the drawn visuals
+ * explain the work in the body (the five service cards, the three-pillar
+ * drawing that opens "Where patients look"); screenshots are the real work.
  *
  * KEEP THE PICTURES. The first version of this rebuild cut the portfolio row,
  * the four patient surfaces and two photographs, and the owner asked for them
@@ -276,11 +282,22 @@ const topicLabels: Record<string, string> = {
 
 <BaseLayout {title} {description} path="/" {schema}>
   <!-- HERO : the site's first midnight moment. It is allowed to be the
-       tallest hero on the site, never taller than the viewport. -->
+       tallest hero on the site, never taller than the viewport.
+       Its picture is the photograph it has always had: a doctor and a
+       designer going through a clinic's site together. Heroes take
+       photographs ("Pictures: what goes where", design skill); the drawing
+       of the three pillars that stood here for an afternoon now opens "Where
+       patients look", where it explains rather than greets. -->
   <section class="panel-depth hero-pad">
     <div class="shell">
-      <div class="grid items-center gap-10 lg:grid-cols-[1fr_520px] lg:gap-14">
-        <div class="animate-rise">
+      <!-- Three children, ordered differently by width. On a phone the
+           photograph belongs directly under the two buttons, where the visitor
+           is deciding, and the three facts follow it. On a wide screen the
+           photograph takes the right column and the facts sit under the copy. -->
+      <div
+        class="flex flex-col gap-10 lg:grid lg:grid-cols-[1fr_560px] lg:grid-rows-[auto_auto] lg:items-center lg:gap-x-16 lg:gap-y-7"
+      >
+        <div class="animate-rise lg:col-start-1 lg:row-start-1">
           <p class="inline-flex max-w-full items-center gap-2.5 rounded-full border border-panel-line bg-panel-card px-3.5 py-2">
             <span class="inline-block size-[7px] shrink-0 animate-live rounded-full bg-panel-accent" aria-hidden="true"></span>
             <span class="min-w-0 font-mono text-[11px] uppercase tracking-[0.08em] text-panel-text sm:tracking-[0.1em]">
@@ -311,29 +328,31 @@ const topicLabels: Record<string, string> = {
               Explore services
             </a>
           </div>
-          <dl class="mt-9 grid max-w-[620px] gap-x-8 gap-y-5 border-t border-panel-line pt-5 sm:grid-cols-3">
-            {credibility.map((c) => (
-              <div>
-                <dt class="sr-only">{c.caption}</dt>
-                <dd class="numeral whitespace-nowrap text-[clamp(20px,2vw,26px)] text-surface">{c.value}</dd>
-                <dd class="mt-1.5 font-mono text-[11px] uppercase leading-[1.5] tracking-[0.08em] text-panel-text-dim">
-                  {c.caption}
-                </dd>
-              </div>
-            ))}
-          </dl>
         </div>
 
-        {/*
-          Hidden on a phone, on purpose. The five service cards directly below
-          carry a picture each, so on a 375px screen this would be the same
-          pictures twice, pushing the services a full screen down. From sm up
-          there is room for both, and this is the one image that shows all
-          three pillars at once.
-        */}
-        <div class="hidden animate-fade sm:block">
-          <HeroVisual class="mx-auto max-w-[520px]" />
-        </div>
+        <dl class="order-last grid max-w-[620px] gap-x-8 gap-y-5 border-t border-panel-line pt-5 sm:grid-cols-3 lg:order-none lg:col-start-1 lg:row-start-2">
+          {credibility.map((c) => (
+            <div>
+              <dt class="sr-only">{c.caption}</dt>
+              <dd class="numeral whitespace-nowrap text-[clamp(20px,2vw,26px)] text-surface">{c.value}</dd>
+              <dd class="mt-1.5 font-mono text-[11px] uppercase leading-[1.5] tracking-[0.08em] text-panel-text-dim">
+                {c.caption}
+              </dd>
+            </div>
+          ))}
+        </dl>
+
+        <figure class="m-0 animate-fade lg:col-start-2 lg:row-span-2 lg:row-start-1">
+          <Image
+            src={heroPhoto}
+            alt="A doctor in a white coat and a web designer sitting together at a desk, looking at a clinic website on a laptop while the designer points at the screen."
+            widths={[560, 700, 840, 1120]}
+            sizes="(min-width: 1024px) 560px, 92vw"
+            loading="eager"
+            fetchpriority="high"
+            class="aspect-[3/2] w-full rounded-3xl border border-panel-line object-cover"
+          />
+        </figure>
       </div>
     </div>
   </section>
@@ -531,14 +550,25 @@ const topicLabels: Record<string, string> = {
        A picture of each place, because the argument is visual: these are four
        different screens, and a patient sees all of them. -->
   <section class="section shell" aria-labelledby="surfaces-title">
-    <div class="mb-11 flex flex-wrap items-end justify-between gap-6">
-      <SectionHead
-        id="surfaces-title"
-        label="Where patients look"
-        title="Patients check more than one place before they call."
-        lede="Your Google listing, your website, your Instagram, and now the answer Google writes above the results. A patient often sees more than one, so they all have to say the same thing, and all of it has to be right."
-      />
-      <a href={href('/services')} class="prose-link whitespace-nowrap text-base">See all services →</a>
+    {/* The drawing of the three surfaces together, beside the heading that
+        names them: the website behind, the listing in front, the reel in the
+        hand, three different practices, in Gujarati. The photographs of each
+        follow. It moved here from the hero, which takes a photograph. */}
+    <div class="mb-12 grid items-center gap-10 lg:grid-cols-[1fr_520px] lg:gap-16">
+      <div>
+        <SectionHead
+          id="surfaces-title"
+          label="Where patients look"
+          title="Patients check more than one place before they call."
+          lede="Your Google listing, your website, your Instagram, and now the answer Google writes above the results. A patient often sees more than one, so they all have to say the same thing, and all of it has to be right."
+        />
+        <p class="mt-6">
+          <a href={href('/services')} class="prose-link text-base">See all services →</a>
+        </p>
+      </div>
+      <div class="rounded-3xl bg-surgical-tint p-5 sm:p-7">
+        <HeroVisual tone="light" class="mx-auto max-w-[480px]" />
+      </div>
     </div>
     {/* Four surfaces, two to a row from sm up: a 2x2 keeps each picture large
         enough to read the screen in it. One band height across all four, so
@@ -574,9 +604,9 @@ const topicLabels: Record<string, string> = {
 
   <!-- 06 · HOW IT WORKS : the page's one dark section
        Dark because it is the section that asks, and the design rule is to
-       spend the dark weight on what you want clicked. The photograph is the
-       middle of the process, a doctor and a designer going through a site
-       together; it carried the old hero and was kept for this. -->
+       spend the dark weight on what you want clicked. The photograph is
+       where the four steps end: a practice's site in a patient's hand, in the
+       clinic's own reception. It sat in this page's old "Why now" band. -->
   <section class="band-panel" aria-labelledby="how-title">
     <div class="section shell">
       <div class="grid items-center gap-10 lg:grid-cols-[1fr_440px] lg:gap-16">
@@ -588,8 +618,8 @@ const topicLabels: Record<string, string> = {
           lede="The same for every service. Nothing is built, edited or charged before the price and the scope are in writing."
         />
         <Image
-          src={consultImage}
-          alt="A doctor in a white coat and a web designer sitting together at a desk, looking at a clinic website on a laptop while the designer points at the screen."
+          src={receptionPhoneImage}
+          alt="A phone held up in a clinic reception, showing a dental practice website with the clinic's name, opening hours, a booking button, and a call and WhatsApp bar along the bottom."
           widths={[440, 660, 880]}
           sizes="(min-width: 1024px) 440px, 92vw"
           loading="lazy"

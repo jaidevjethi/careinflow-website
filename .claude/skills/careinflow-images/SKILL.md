@@ -42,6 +42,24 @@ a flat white vector panel would read as a glaring hole. Match the register:
 Check the landmark against a source before generating. Getting a town's
 landmark wrong is obvious to anyone local and undoes the point of the page.
 
+**Hero photographs take people in their own clinic.** Every hero carries a
+photograph (the table is in `careinflow-design`, "Pictures: what goes where").
+The six service heroes (`src/assets/editorial/service-*.webp`, plus
+`websites-wireframe.webp`) were generated on 2026-10-08 with
+`models/gemini-3-pro-image`, `imageConfig: { aspectRatio: '3:2', imageSize: '2K' }`,
+then cover-cropped to 1200x800 webp q82 (41–69 KB). Each prompt names one
+moment the service exists for — a doctor recording herself, a reel being cut,
+a doctor checking his clinic on a map, a patient searching at night, a
+receptionist editing the site — and appends this lock:
+
+> Photorealistic editorial photograph, part of one consistent series for a healthcare studio's website. Candid and unposed, people absorbed in what they are doing, never looking at the camera. Full-frame camera, 35mm lens, eye level, shallow depth of field. Natural light true to the scene. Clean and slightly cool colour: true whites, cool blue-grey neutrals, light wood, a few green plants; no beige, cream, yellow or orange colour cast. The people and places are in Gujarat, India. ABSOLUTELY NO READABLE TEXT ANYWHERE: every phone, laptop, screen, paper and wall shows only soft abstract shapes, blank blocks and placeholder bars; no letters, no words, no numbers, no star ratings, no logos, no brand names, no signage, no certificates with writing, no watermarks. At most two people in the frame.
+
+What came back wrong, so the next prompt says it up front: papers on a desk
+get pixelated rather than left blank (say "no papers on the desk" and "do not
+pixelate or censor anything"); a phone's screen becomes a card floating in
+mid-air beside it (say "no floating graphics or overlays"); a printed sheet
+picks up a readable heading. Read every image at full size before it ships.
+
 Always **Read the generated file** before wiring it in — check for text artifacts, stray brand marks, and palette drift.
 
 ## Optimization pipeline

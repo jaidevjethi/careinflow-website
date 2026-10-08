@@ -17,9 +17,14 @@ const services = defineCollection({
      * Falls back to `title` when absent.
      */
     seoTitle: z.string().optional(),
-    /** Explainer illustration. See the careinflow-images skill for the style lock. */
-    illustration: image(),
-    illustrationAlt: z.string(),
+    /**
+     * The hero photograph: the moment this service exists for, in the page's
+     * PageHero aside. A photograph, never a drawn illustration — the drawn
+     * visual for each service lives in the body, beside the price (see
+     * "Pictures: what goes where" in the careinflow-design skill).
+     */
+    heroImage: image(),
+    heroImageAlt: z.string(),
     /** Short label used in navigation and cards. */
     navLabel: z.string(),
     /** Meta description, unique per page. */

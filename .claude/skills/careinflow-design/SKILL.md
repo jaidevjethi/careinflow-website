@@ -233,13 +233,63 @@ the client's own logo.
 whether CareInflow is itself a clinic. Any sample interface carries an
 `ILLUSTRATIVE` label and, where possible, a link to real work.
 
+### Pictures: what goes where (owner's decision, 2026-10-08)
+
+Every page carries pictures all the way down; a run of text cards reads as dull
+however good the words are. Four kinds of picture, one job each:
+
+1. **The hero takes a photograph** (or a photo-real render), never a drawn
+   illustration. The first thing a doctor sees is a moment from their world: a
+   consultation, a clinic, a patient on a phone, the work on a real device. It
+   sits in the `PageHero` aside at 3:2, `rounded-3xl border-panel-line`,
+   `loading="eager"` + `fetchpriority="high"`, and it shows on a phone too,
+   under the buttons. (The drawn illustrations went into the heroes for an
+   afternoon and the owner asked for the photographs back: on midnight, a
+   drawing reads as a diagram, a photograph reads as somewhere real.)
+2. **Drawn illustrations explain the work, in the body.** The SVG visuals in
+   `src/components/visuals/` show what a deliverable looks like: Gujarati where
+   a patient would read Gujarati, a range of specialties and never only dental,
+   "Your Practice" for any name, always `ILLUSTRATIVE`. Each sits beside the
+   section that sells its work.
+3. **Screenshots are for real work only**: case studies and portfolio cards,
+   chipped "Client work" or "Sample".
+4. **Diagrams for sequences**: `ServiceDiagram`, the method page.
+
+| Page | Hero photograph | Pictures in the body |
+|---|---|---|
+| Home | `hero-founder-consult` — a doctor and a designer at a laptop | five service illustrations; the four-website row; "Where patients look": the three-pillar `HeroVisual` beside the heading, then four surface photographs; a photograph in How it works and in Why CareInflow; twelve specialty photographs; guide covers |
+| Services index | `services-device-suite` render | each service's illustration in its row |
+| A service | its own `heroImage` (frontmatter): the moment the service exists for | its illustration beside the price section; its diagram; real work |
+| Pricing | `pricing-consult` — a designer and a doctor over an estimate | the content, website and Google illustrations at their sections; the written-quote `QuoteVisual` in the promise panel |
+| Portfolio (`/work`) | none: the first section is all screenshots | screenshots |
+| Case study | its cover screenshot | its screenshots |
+| Specialty / area / article | its own photograph | — |
+| Specialties, areas index | render / map | photographs in the grids |
+| About, contact | the founder at work / a consultation | — |
+| Method, FAQ | render | process photographs |
+| Privacy, 404 | none | — |
+
+A new page picks its row before it is built. A redesign moves a picture, it
+never trades one for text, and removing an image from the homepage needs the
+owner's say-so.
+
+**Never in any new picture**, generated, rendered or chosen from the library: a
+seal or badge that certifies nothing; a real organisation's site or name shown
+as if it were our work (a library shot of a laptop showing "Apollo Hospitals
+India" sat in the websites hero until 2026-10-08); a number or star rating,
+which reads as a promised result; an office full of staff, because this is one
+studio with one founder; an invented clinic or company name where "Your
+Practice" would do. The platform a service is about may appear as itself (a
+Google listing can look like Google). Two older homepage mockups predate this
+and name invented clinics ("Smile Dental Clinic", "Medica"); they stay until
+they are regenerated, because removing a homepage picture needs the owner's
+say-so.
+
 Real client screenshots live in `src/assets/work/`, generated editorial
 photography in `src/assets/editorial/`, device renders in `src/assets/mockups/`
-behind `IllustrationPanel`. Choose by what the page does: renders where you are
-showing the work, diagrams where you are explaining a sequence, photography only
-where a real place or person is the point. All images go through `astro:assets`
-`<Image>` with `widths`, `sizes` and real alt text; hero images `loading="eager"`
-+ `fetchpriority="high"`, everything else lazy.
+behind `IllustrationPanel`. All images go through `astro:assets` `<Image>` with
+`widths`, `sizes` and real alt text; hero images `loading="eager"` +
+`fetchpriority="high"`, everything else lazy.
 
 Chrome on Windows will not open a window under about 500px, so phone captures
 must be taken at 500 or the right edge is silently cropped. See
