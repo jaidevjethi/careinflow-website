@@ -1,9 +1,13 @@
 ---
-import { NAV_ITEMS } from '@/config/site';
+import { NAV_ITEMS, SERVICE_MENU } from '@/config/site';
 import { href } from '@/lib/url';
 
 const currentPath = Astro.url.pathname.replace(import.meta.env.BASE_URL.replace(/\/$/, ''), '') || '/';
 const isActive = (itemHref: string) => currentPath === itemHref || currentPath.startsWith(`${itemHref}/`);
+
+/** The phone menu lists the services flat, in the same order as the panel. */
+type ServiceLink = { label: string; href: string; note: string };
+const serviceLinks: ServiceLink[] = SERVICE_MENU.flatMap((g): ServiceLink[] => [...g.items]);
 ---
 
 <header class="sticky top-0 z-50 border-b border-panel-line bg-panel">
@@ -25,19 +29,84 @@ const isActive = (itemHref: string) => currentPath === itemHref || currentPath.s
       <span class="text-[19px] font-extrabold tracking-[-0.03em] text-surface">CareInflow</span>
     </a>
 
-    <nav aria-label="Main" class="hidden items-center gap-1.5 lg:flex">
-      {NAV_ITEMS.map((item) => (
-        <a
-          href={href(item.href)}
-          aria-current={isActive(item.href) ? 'page' : undefined}
-          class:list={[
-            'rounded-[10px] px-3.5 py-2 text-[15px] font-semibold transition-colors duration-200 hover:bg-panel-card hover:text-surface hover:no-underline',
-            isActive(item.href) ? 'text-panel-accent' : 'text-panel-text',
-          ]}
-        >
-          {item.label}
-        </a>
-      ))}
+    <nav aria-label="Main" class="relative hidden items-center gap-1.5 lg:flex">
+      {NAV_ITEMS.map((item) =>
+        item.href === '/services' ? (
+          /*
+            The one disclosure menu on the site. A button, not a link: it opens
+            on click or Enter and never on hover, because a menu that appears
+            under a passing cursor covers the page by accident and a phone has
+            no hover at all. The last row links to /services itself, so the
+            index is still one click away.
+
+            The panel hangs from the right edge of the whole nav rather than
+            from the button, so at the narrowest desktop width it still ends at
+            the content edge instead of past the window.
+          */
+          <div data-services>
+            <button
+              type="button"
+              id="services-toggle"
+              aria-expanded="false"
+              aria-controls="services-menu"
+              class:list={[
+                'group inline-flex items-center gap-1.5 rounded-[10px] px-3.5 py-2 text-[15px] font-semibold transition-colors duration-200 hover:bg-panel-card hover:text-surface aria-expanded:bg-panel-card aria-expanded:text-surface',
+                isActive(item.href) ? 'text-panel-accent' : 'text-panel-text',
+              ]}
+            >
+              {item.label}
+              <svg width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true" class="transition-transform duration-200 ease-instrument group-aria-expanded:rotate-180">
+                <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+            <div
+              id="services-menu"
+              hidden
+              class="absolute right-0 top-[calc(100%+24px)] w-[720px] animate-rise rounded-2xl border border-panel-line bg-panel p-3 shadow-card-lg"
+            >
+              <div class="grid grid-cols-3 gap-2">
+                {SERVICE_MENU.map((g) => (
+                  <div>
+                    <p class="label-mono px-3.5 pb-1.5 pt-2.5 text-panel-text-faint">{g.group}</p>
+                    <ul>
+                      {g.items.map((s) => (
+                        <li>
+                          <a
+                            href={href(s.href)}
+                            aria-current={isActive(s.href) ? 'page' : undefined}
+                            class="block rounded-xl px-3.5 py-2.5 transition-colors duration-200 hover:bg-panel-card hover:no-underline aria-[current=page]:bg-panel-card"
+                          >
+                            <span class="block text-[15px] font-semibold leading-[1.35] text-surface">{s.label}</span>
+                            <span class="mt-0.5 block text-[13.5px] leading-[1.45] text-panel-text-dim">{s.note}</span>
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+              <a
+                href={href('/services')}
+                class="mt-2 flex items-center justify-between gap-4 rounded-xl border-t border-panel-divider px-3.5 py-3 text-[14px] font-semibold text-panel-accent hover:bg-panel-card hover:no-underline"
+              >
+                All services, and where to start
+                <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+        ) : (
+          <a
+            href={href(item.href)}
+            aria-current={isActive(item.href) ? 'page' : undefined}
+            class:list={[
+              'rounded-[10px] px-3.5 py-2 text-[15px] font-semibold transition-colors duration-200 hover:bg-panel-card hover:text-surface hover:no-underline',
+              isActive(item.href) ? 'text-panel-accent' : 'text-panel-text',
+            ]}
+          >
+            {item.label}
+          </a>
+        ),
+      )}
       <a href={href('/contact')} class="btn-cta ml-2.5 px-5 py-[11px] text-sm">
         Contact us
       </a>
@@ -78,7 +147,10 @@ const isActive = (itemHref: string) => currentPath === itemHref || currentPath.s
     </button>
   </div>
 
-  <nav id="mobile-nav" aria-label="Main menu" class="hidden border-t border-panel-line bg-panel px-5 pb-6 pt-3 lg:hidden!">
+  {/* Scrolls inside itself: with the services listed it is taller than a
+      small phone's screen, and the header it hangs from is sticky, so without
+      this the last links could never be scrolled into view. */}
+  <nav id="mobile-nav" aria-label="Main menu" class="hidden max-h-[calc(100dvh-72px)] overflow-y-auto overscroll-contain border-t border-panel-line bg-panel px-5 pb-6 pt-3 lg:hidden!">
     <ul class="flex flex-col">
       {NAV_ITEMS.map((item) => (
         <li>
@@ -89,6 +161,23 @@ const isActive = (itemHref: string) => currentPath === itemHref || currentPath.s
           >
             {item.label}
           </a>
+          {/* On a phone the services sit open under their heading, indented,
+              rather than behind a second toggle inside the first. */}
+          {item.href === '/services' && (
+            <ul class="mb-2 ml-3 border-l border-panel-line pl-2">
+              {serviceLinks.map((s) => (
+                <li>
+                  <a
+                    href={href(s.href)}
+                    aria-current={isActive(s.href) ? 'page' : undefined}
+                    class="block rounded-[10px] px-3 py-2.5 text-[15px] font-medium text-panel-text hover:bg-panel-card hover:text-surface hover:no-underline aria-[current=page]:text-panel-accent"
+                  >
+                    {s.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
         </li>
       ))}
       <li class="mt-3">
@@ -137,6 +226,40 @@ const isActive = (itemHref: string) => currentPath === itemHref || currentPath.s
   // it, because nothing navigates. Close on activation rather than on unload.
   menu?.addEventListener('click', (event) => {
     if ((event.target as Element | null)?.closest('a')) setOpen(false);
+  });
+
+  /**
+   * The Services menu. A disclosure, so it needs exactly what the mobile menu
+   * above needs: a visible state, Escape to leave with focus returned to the
+   * button, and closing when the visitor's attention goes elsewhere: a click
+   * outside it, or focus moving past its last link.
+   */
+  const servicesWrap = document.querySelector<HTMLElement>('[data-services]');
+  const servicesToggle = document.getElementById('services-toggle');
+  const servicesMenu = document.getElementById('services-menu');
+
+  const setServices = (open: boolean) => {
+    if (!servicesToggle || !servicesMenu) return;
+    servicesToggle.setAttribute('aria-expanded', String(open));
+    servicesMenu.hidden = !open;
+  };
+  const servicesOpen = () => servicesToggle?.getAttribute('aria-expanded') === 'true';
+
+  servicesToggle?.addEventListener('click', () => setServices(!servicesOpen()));
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape' || !servicesOpen()) return;
+    setServices(false);
+    servicesToggle?.focus();
+  });
+
+  document.addEventListener('click', (event) => {
+    if (servicesOpen() && !servicesWrap?.contains(event.target as Node)) setServices(false);
+  });
+
+  servicesWrap?.addEventListener('focusout', (event) => {
+    const next = event.relatedTarget as Node | null;
+    if (next && !servicesWrap.contains(next)) setServices(false);
   });
 
   /**

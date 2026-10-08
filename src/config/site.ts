@@ -257,14 +257,47 @@ export const whatsappFor = (key: PrefillKey = 'default'): string =>
  * deliberate: those URLs are indexed and carry Search Console history, and a
  * path rename would make each of them re-earn its position through a 301 for
  * something no visitor reads. Change the label here, never the href.
+ *
+ * Services opens the menu below instead of linking straight to /services.
+ * Method left the header when the menu arrived: five services had become one
+ * word in the bar, and the bar still needed room for them. It lives in the
+ * footer's Studio column, which is where a visitor looks for how a studio works.
  */
 export const NAV_ITEMS = [
   { label: 'Services', href: '/services' },
   { label: 'Portfolio', href: '/work' },
-  { label: 'Method', href: '/process' },
   { label: 'Pricing', href: '/pricing' },
   { label: 'Resources', href: '/resources' },
   { label: 'About', href: '/about' },
+] as const;
+
+/**
+ * The Services menu: every service page, grouped by the three things the
+ * studio does, in the homepage's order. Each note says what the service is in
+ * a phrase, so a doctor can choose without opening six pages.
+ */
+export const SERVICE_MENU = [
+  {
+    group: 'Content',
+    items: [
+      { label: 'Healthcare content', href: '/services/healthcare-content', note: 'Reels, posts and carousels from your footage' },
+      { label: 'Reel editing', href: '/services/reel-editing', note: 'One reel at a time, in Gujarati or English' },
+    ],
+  },
+  {
+    group: 'Websites',
+    items: [
+      { label: 'Healthcare websites', href: '/services/healthcare-websites', note: 'Designed around your practice, in four packages' },
+      { label: 'Website care', href: '/services/website-care', note: 'Updates and upkeep after launch' },
+    ],
+  },
+  {
+    group: 'Google & local search',
+    items: [
+      { label: 'Google Business Profile', href: '/services/google-business-profile', note: 'Your listing, rebuilt and kept right' },
+      { label: 'Local SEO', href: '/services/local-seo', note: 'Found for each treatment, in your town' },
+    ],
+  },
 ] as const;
 
 export const FOOTER_GROUPS = [

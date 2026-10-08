@@ -48,7 +48,7 @@ Trust is earned before it is asked for. A page may only ask once it has demonstr
 
 ## Navigation
 
-Services ▾ · Portfolio · Pricing · Resources · About, plus "Contact us". The Services menu is a disclosure built from `SERVICE_MENU` in `src/config/site.ts`: the five services, with reel editing indented under healthcare content, and "All services". Method lives in the footer's Studio column. Towns live in the footer; there is no Areas menu.
+Services ▾ · Portfolio · Pricing · Resources · About, plus "Contact us". The Services menu is a disclosure built from `SERVICE_MENU` in `src/config/site.ts`: the six service pages in the three groups the studio sells (Content · Websites · Google & local search), each with a one-phrase note, and "All services, and where to start" linking the index. On a phone the same six sit open and indented under Services. Method lives in the footer's Studio column. Towns live in the footer; there is no Areas menu.
 
 ## `nextStep` chaining
 
