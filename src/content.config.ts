@@ -61,6 +61,19 @@ const services = defineCollection({
      * the breadcrumb, so the site still reads as five services rather than six.
      */
     parent: z.string().optional(),
+    /**
+     * The service page's "at a glance" band, in a doctor's words: who this is
+     * for, and the problem it solves. One or two sentences each — the long
+     * answer is the page body.
+     */
+    audience: z.string(),
+    solves: z.string(),
+    /**
+     * What the service does not include, stated as plainly as what it does.
+     * Healthcare content and Website Care read theirs from pricing.ts instead,
+     * where the same list already lives for /pricing.
+     */
+    notIncluded: z.array(z.string()).default([]),
     faqs: z.array(z.object({ q: z.string(), a: z.string() })),
     related: z.array(z.string()).default([]),
   }),

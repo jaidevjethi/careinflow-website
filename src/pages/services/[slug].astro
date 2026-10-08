@@ -1,16 +1,20 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection, getEntry, render } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHero from '@/components/PageHero.astro';
-import IllustrationPanel from '@/components/IllustrationPanel.astro';
+import SectionHead from '@/components/SectionHead.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
-import CtaStrip from '@/components/CtaStrip.astro';
-import type { PrefillKey } from '@/config/site';
-import { rupees, unitLabel } from '@/config/pricing';
+import ServicePricing from '@/components/ServicePricing.astro';
+import ServiceVisual from '@/components/visuals/ServiceVisual.astro';
+import ServiceDiagram from '@/components/diagrams/ServiceDiagram.astro';
+import { whatsappFor, type PrefillKey } from '@/config/site';
+import { CONTENT_CLIENTS } from '@/config/clients';
+import { CONTENT_EXCLUDES, WEBSITE_CARE, rupees, unitLabel } from '@/config/pricing';
 import { SERVICE_PRICES, resolvePrices } from '@/lib/prices';
 import { resolveFaqs } from '@/lib/faqs';
-import ServiceDiagram from '@/components/diagrams/ServiceDiagram.astro';
+import { ACCENTS, serviceAccent } from '@/lib/accents';
 import { href } from '@/lib/url';
 import {
   graph,
@@ -30,54 +34,82 @@ export async function getStaticPaths() {
   }));
 }
 
+/*
+ * ONE FRAMEWORK FOR EVERY SERVICE PAGE (2026-10-08).
+ *
+ *   hero (what it is, its price, one ask, its picture)
+ *   → at a glance (who it is for, what it solves, what you receive)
+ *   → what it costs → what is not included → how it works
+ *   → in detail (the page's own prose) → real work → questions → the ask
+ *
+ * Five pages that each looked different made five things to learn. The
+ * content changes by service; the order a doctor reads them in does not, so a
+ * visitor who has read one service page knows where everything is on the
+ * next. The price sits in the hero and again with its scope three sections
+ * down, because "what does it cost" is the question most visitors arrive with.
+ */
+
 const { service } = Astro.props;
 const { Content } = await render(service);
+const d = service.data;
 
 const allServices = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
-const related = allServices.filter((s) => service.data.related.includes(s.id));
+const related = allServices.filter((s) => d.related.includes(s.id));
 
 /**
  * Reel editing sits under healthcare content. It keeps a page of its own,
  * because "reel editing for doctors" is a different search from "social media
- * for doctors", but its breadcrumb runs through its parent so the site still
- * reads as five services with one way into the first.
+ * for doctors", but its breadcrumb runs through its parent.
  */
-const parent = service.data.parent
-  ? allServices.find((s) => s.id === service.data.parent)
-  : undefined;
+const parent = d.parent ? allServices.find((s) => s.id === d.parent) : undefined;
 
 const path = `/services/${service.id}`;
-const title = `${service.data.seoTitle ?? service.data.title} | CareInflow`;
+const title = `${d.seoTitle ?? d.title} | CareInflow`;
 /** Tokens resolved, so a description can quote a price without carrying one. */
-const description = resolvePrices(service.data.description);
+const description = resolvePrices(d.description);
+const accent = serviceAccent(service.id);
 
-const prefillByService: Record<string, PrefillKey> = {
-  'healthcare-websites': 'website',
-  'local-seo': 'seo',
-  'google-business-profile': 'gbp',
-  'website-care': 'care',
-  'healthcare-content': 'content',
-  'reel-editing': 'reel',
+/** The ask each page closes on, and the WhatsApp opening that goes with it. */
+const OFFERS: Record<string, { offer: 'website' | 'gbp' | 'seo' | 'care' | 'content'; prefill: PrefillKey; cta: string }> = {
+  'healthcare-websites': { offer: 'website', prefill: 'website', cta: 'Get a free website review' },
+  'google-business-profile': { offer: 'gbp', prefill: 'gbp', cta: 'Request a listing review' },
+  'local-seo': { offer: 'seo', prefill: 'seo', cta: 'Ask about your local search' },
+  'website-care': { offer: 'care', prefill: 'care', cta: 'Ask about Website Care' },
+  'healthcare-content': { offer: 'content', prefill: 'reel', cta: 'Send one sample video' },
+  'reel-editing': { offer: 'content', prefill: 'reel', cta: 'Send one sample video' },
 };
-const prefill = prefillByService[service.id] ?? 'default';
-
-/**
- * The two content pages close on the sample-video offer rather than the free
- * written review. A doctor who arrived to have a reel edited does not want a
- * five-page audit of their website; they want to know what their video would
- * become and what it costs. Every other service keeps the review.
- */
-const isContent = service.id === 'healthcare-content' || service.data.parent === 'healthcare-content';
+const ask = OFFERS[service.id] ?? { offer: 'website' as const, prefill: 'default' as PrefillKey, cta: 'Get a free digital review' };
+const isContent = ask.offer === 'content';
 
 /** Resolved from `pricing.ts` via the frontmatter key — never from the MDX. */
-const pricing = service.data.pricing;
+const pricing = d.pricing;
 const price = pricing?.ref ? SERVICE_PRICES[pricing.ref] : undefined;
 const priceNote = pricing ? resolvePrices(pricing.note) : undefined;
-const faqs = resolveFaqs(service.data.faqs);
+const faqs = resolveFaqs(d.faqs);
+
+/** Two lists already live in pricing.ts for /pricing; read them, do not copy. */
+const notIncluded =
+  service.id === 'healthcare-content'
+    ? CONTENT_EXCLUDES
+    : service.id === 'website-care'
+      ? [WEBSITE_CARE.excludes]
+      : d.notIncluded;
+
+/**
+ * Real work for this service, never a sample. The website pages show the one
+ * live build; the content pages the two practices whose reels and posts we
+ * make. Website care has no client to show yet, so it shows nothing.
+ */
+const proof: 'website' | 'content' | null = ['healthcare-websites', 'google-business-profile', 'local-seo'].includes(service.id)
+  ? 'website'
+  : isContent
+    ? 'content'
+    : null;
+const caseStudy = proof === 'website' ? (await getEntry('caseStudies', 'pramukh-dental'))! : undefined;
 
 const nextStep = isContent
   ? service.id === 'reel-editing'
-    ? { label: 'See the monthly content packages', href: '/pricing#content' }
+    ? { label: 'See the monthly content packages', href: '/services/healthcare-content#pricing' }
     : { label: 'See what one reel includes', href: '/services/reel-editing' }
   : { label: 'See the portfolio first', href: '/work' };
 
@@ -89,11 +121,11 @@ const schema = graph(
     { name: 'Home', path: '/' },
     { name: 'Services', path: '/services' },
     ...(parent ? [{ name: parent.data.navLabel, path: `/services/${parent.id}` }] : []),
-    { name: service.data.navLabel, path },
+    { name: d.navLabel, path },
   ]),
   serviceSchema({
     id: service.id,
-    name: service.data.navLabel,
+    name: d.navLabel,
     description,
     path,
     ...(price ? { offer: price } : {}),
@@ -102,98 +134,202 @@ const schema = graph(
 );
 ---
 
-<BaseLayout {title} {description} {path} {schema} {prefill} offer={isContent ? 'content' : 'review'}>
+<BaseLayout {title} {description} {path} {schema} prefill={ask.prefill} offer={isContent ? 'content' : 'review'}>
   <article>
+    <!-- 1 · HERO : what it is, what it costs, one ask, and a picture of the work -->
     <PageHero
       breadcrumb={parent
         ? { label: parent.data.navLabel, href: href(`/services/${parent.id}`) }
         : { label: 'All services', href: href('/services') }}
-      label={service.data.navLabel}
-      title={service.data.title}
-      lede={service.data.summary}
+      label={`CareInflow · ${d.navLabel}`}
+      title={d.title}
+      lede={d.summary}
+      asideWide
     >
-      <IllustrationPanel
-        slot="aside"
-        src={service.data.illustration}
-        alt={service.data.illustrationAlt}
-        eager
-        maxWidth={400}
-      />
+      <div class="mt-7 flex flex-wrap items-end gap-x-8 gap-y-4">
+        {price && (
+          <p class="flex items-baseline gap-2">
+            <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-panel-text-faint">From</span>
+            <span class="numeral text-[clamp(30px,3.2vw,40px)] text-surface">{rupees(price.from)}</span>
+            <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-panel-text-dim">{unitLabel(price.unit)}</span>
+          </p>
+        )}
+        {pricing?.custom && (
+          <p class="text-[clamp(22px,2.4vw,28px)] font-extrabold tracking-[-0.03em] text-surface">Custom monthly plan</p>
+        )}
+      </div>
+      <div class="mt-6 flex flex-wrap items-center gap-3.5">
+        <a href={whatsappFor(ask.prefill)} rel="noopener" class="btn-whatsapp px-6 py-3.5 text-[16px]">
+          {ask.cta}
+        </a>
+        <a href="#pricing" class="btn-on-dark px-6 py-[13px] text-[16px]">See what it costs</a>
+      </div>
+      <ServiceVisual slot="aside" slug={service.id} class="mx-auto max-w-[500px]" />
     </PageHero>
 
-    <!-- BODY + DELIVERABLES -->
-    <div class="band-mist">
-      <div class="section shell grid items-start gap-14 lg:grid-cols-[1fr_400px] lg:gap-20">
-        <div>
-          <div class="prose-ci">
-            <Content />
+    <!-- 2 · AT A GLANCE : who it is for, what it solves, what you receive -->
+    <section class="bg-surface" aria-labelledby="glance-title">
+      <div class="section-tight shell">
+        <h2 id="glance-title" class="sr-only">At a glance</h2>
+        {/* Two short answers stacked beside the longer list, so neither column
+            stretches into empty space: three equal columns left the first
+            two cards half blank next to a seven-row receipt. */}
+        <div class="grid gap-5 lg:grid-cols-2">
+          <div class="grid content-start gap-5">
+            <div class="rounded-3xl border border-line bg-canvas p-6 sm:p-7">
+              <p class:list={['label-mono', accent.text]}>Who it is for</p>
+              <p class="mt-3 text-[16px] leading-[1.62] text-body-deep">{d.audience}</p>
+            </div>
+            <div class="rounded-3xl border border-line bg-canvas p-6 sm:p-7">
+              <p class:list={['label-mono', accent.text]}>What it solves</p>
+              <p class="mt-3 text-[16px] leading-[1.62] text-body-deep">{d.solves}</p>
+            </div>
           </div>
-          <ServiceDiagram slug={service.id} class="reveal mt-12" />
+          <div class="rounded-3xl border border-line bg-canvas p-6 sm:p-7">
+            <p class:list={['label-mono', accent.text]}>What you receive</p>
+            <dl class="mt-2">
+              {d.deliverables.map((item, j) => (
+                <div
+                  class:list={[
+                    'flex items-baseline justify-between gap-5 py-2 text-[15px]',
+                    j < d.deliverables.length - 1 && 'border-b border-hairline',
+                  ]}
+                >
+                  <dt class="text-muted">{item.item}</dt>
+                  <dd class="shrink-0 text-right font-semibold text-pass">{item.status}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
         </div>
-
-        <aside class="top-24 rounded-3xl border border-line bg-canvas p-7 lg:sticky">
-          <h2 class="label-mono mb-4 text-faint" style="letter-spacing:0.12em">What you receive</h2>
-          <dl>
-            {service.data.deliverables.map((d, j) => (
-              <div
-                class:list={[
-                  'flex items-baseline justify-between gap-6 py-2.5 text-[15px]',
-                  j < service.data.deliverables.length - 1 && 'border-b border-hairline',
-                ]}
-              >
-                <dt class="text-muted">{d.item}</dt>
-                <dd class="whitespace-nowrap font-semibold text-pass">{d.status}</dd>
-              </div>
-            ))}
-          </dl>
-          {price && (
-            <div class="mt-6 border-t border-line pt-5">
-              <p class="label-mono mb-3 text-faint" style="letter-spacing:0.12em">Starts at</p>
-              <p class="flex items-baseline gap-2">
-                <span class="text-[32px] font-extrabold leading-none tracking-[-0.045em] text-ink">
-                  {rupees(price.from)}
-                </span>
-                <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">
-                  {unitLabel(price.unit)}
-                </span>
-              </p>
-              <p class="mt-3 text-[14px] leading-[1.6] text-muted">{priceNote}</p>
-              <a href={href(isContent ? '/pricing#content' : '/pricing')} class="prose-link mt-3 inline-block text-[15px]">
-                See the full price list →
-              </a>
-            </div>
-          )}
-          {pricing?.custom && (
-            <div class="mt-6 border-t border-line pt-5">
-              <p class="label-mono mb-3 text-faint" style="letter-spacing:0.12em">Priced to your site</p>
-              <p class="text-[22px] font-extrabold leading-[1.15] tracking-[-0.03em] text-ink">
-                A custom monthly plan
-              </p>
-              <p class="mt-3 text-[14px] leading-[1.6] text-muted">{priceNote}</p>
-              <a href={href('/pricing#monthly')} class="prose-link mt-3 inline-block text-[15px]">
-                See both monthly plans →
-              </a>
-            </div>
-          )}
-          <p class="mt-5 border-t border-line pt-4 text-[14px] leading-[1.6] text-muted">
-            {isContent ? (
-              <>
-                Send one sample video and we confirm what it involves and what it
-                costs before we start.
-              </>
-            ) : (
-              <>
-                Your exact figure is fixed in writing after the
-                <a href={href('/contact')} class="prose-link">free review</a>.
-              </>
-            )}
-          </p>
-        </aside>
       </div>
-    </div>
+    </section>
+
+    <!-- 3 · WHAT IT COSTS -->
+    <section id="pricing" class="band-powder" aria-labelledby="pricing-title">
+      <div class="section shell">
+        <SectionHead
+          id="pricing-title"
+          label="What it costs"
+          title={isContent ? 'Published prices, counted in finished pieces.' : 'Published prices, with the scope beside them.'}
+          lede={priceNote}
+        />
+        <div class="mt-11">
+          <ServicePricing slug={service.id} />
+        </div>
+        <p class="mt-8 max-w-[760px] text-[15px] leading-[1.6] text-muted">
+          {isContent
+            ? 'Send one sample video and we confirm what it involves and what it costs before we start.'
+            : 'Your exact figure is fixed in writing after the free review, and it does not move unless the scope does.'}
+          {' '}<a href={href(isContent ? '/pricing#content' : '/pricing')} class="prose-link">See the full price list →</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- 4 · WHAT IS NOT INCLUDED, stated with the same weight as what is -->
+    {notIncluded.length > 0 && (
+      <section class="bg-surface" aria-labelledby="excludes-title">
+        <div class="section-tight shell grid gap-8 lg:grid-cols-[minmax(0,360px)_1fr] lg:gap-16">
+          <SectionHead
+            id="excludes-title"
+            label="Not included"
+            title="What this does not include."
+            lede="Written as plainly as what it does, so nothing turns up later as a surprise."
+          />
+          <ul class="grid content-start gap-x-10 border-t border-line text-[16px] leading-[1.55] text-body sm:grid-cols-2">
+            {notIncluded.map((line) => (
+              <li class="flex gap-3 border-b border-hairline py-3">
+                <span class="mt-[10px] h-1.5 w-1.5 shrink-0 rounded-full bg-line-strong" aria-hidden="true"></span>
+                <span>{line}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )}
+
+    <!-- 5 · HOW IT WORKS : the service's own diagram -->
+    <section class="bg-canvas" aria-labelledby="process-title">
+      <div class="section shell">
+        <h2 id="process-title" class="sr-only">How it works</h2>
+        <ServiceDiagram slug={service.id} class="reveal" />
+      </div>
+    </section>
+
+    <!-- 6 · IN DETAIL : the page's own argument, for the reader who wants it -->
+    <section class="band-mist" aria-label="In detail">
+      <div class="section shell">
+        <div class="prose-ci">
+          <Content />
+        </div>
+      </div>
+    </section>
+
+    <!-- 7 · REAL WORK : never a sample -->
+    {proof === 'website' && caseStudy && (
+      <section class="bg-surface" aria-labelledby="proof-title">
+        <div class="section shell grid items-center gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
+          <Image
+            src={caseStudy.data.cover}
+            alt={caseStudy.data.coverAlt}
+            widths={[480, 720, 960, 1280]}
+            sizes="(min-width: 1440px) 620px, (min-width: 1024px) 46vw, 92vw"
+            loading="lazy"
+            class="aspect-[16/10] w-full rounded-2xl border border-line bg-surface object-cover object-top shadow-card"
+          />
+          <div>
+            <p class="flex flex-wrap gap-1.5">
+              <span class="chip bg-ink text-surface">Real client project</span>
+              <span class="chip border border-line bg-surface text-body-deep">Website + Google · Mehsana</span>
+            </p>
+            <h2 id="proof-title" class="mt-5 text-[clamp(24px,2.8vw,34px)] font-extrabold leading-[1.12] tracking-[-0.035em] text-ink">
+              {caseStudy.data.client}
+            </h2>
+            <p class="mt-4 max-w-[560px] text-[17px] leading-[1.62] text-body">{caseStudy.data.summary}</p>
+            <p class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <a href={href('/work/pramukh-dental')} class="btn-primary px-6 py-3.5 text-[16px]">Read the case study</a>
+              {caseStudy.data.url && (
+                <a href={caseStudy.data.url} rel="noopener" class="prose-link text-[16px]">Open the live site →</a>
+              )}
+            </p>
+          </div>
+        </div>
+      </section>
+    )}
+    {proof === 'content' && (
+      <section class="bg-surface" aria-labelledby="proof-title">
+        <div class="section-tight shell">
+          <SectionHead
+            id="proof-title"
+            label="Real work"
+            title="Practices in Mehsana we make content for."
+            lede="Their reels and posts are on their own Instagram, exactly as they were published."
+          />
+          <ul class="mt-9 grid gap-4 sm:grid-cols-2">
+            {CONTENT_CLIENTS.map((c) => (
+              <li class="flex flex-col overflow-hidden rounded-3xl border border-line bg-canvas">
+                <span class:list={['accent-bar block h-1 w-full', ACCENTS[c.accent].bar]} aria-hidden="true"></span>
+                <div class="flex flex-1 flex-col p-6 sm:p-7">
+                  <p class="flex flex-wrap gap-1.5">
+                    <span class="chip bg-ink text-surface">Client work</span>
+                    <span class:list={['chip', ACCENTS[c.accent].chip]}>{c.pillar}</span>
+                  </p>
+                  <h3 class="mt-4 text-[20px] font-extrabold leading-[1.2] tracking-[-0.025em] text-ink">{c.name}</h3>
+                  <p class="mt-1.5 font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{c.place}</p>
+                  <p class="mt-3 text-[15px] leading-[1.6] text-body">{c.work}</p>
+                  <p class="mt-auto pt-5">
+                    <a href={c.url} rel="noopener" class="prose-link text-[15px]">{c.linkText} →</a>
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )}
 
     {related.length > 0 && (
-      <section class="section shell" aria-label="Related services">
+      <section class="section-tight shell" aria-label="Related services">
         <h2 class="label-mono mb-6 text-faint">Works best with</h2>
         <div class="grid gap-4 sm:grid-cols-2 lg:max-w-[880px]">
           {related.map((r) => (
@@ -207,21 +343,11 @@ const schema = graph(
     )}
   </article>
 
-  {isContent ? (
-    <CtaStrip
-      text="Have a video already recorded? Send the topic and one clip, and we will tell you what the reel would involve."
-      href="/contact#content"
-      linkText="Send one sample video"
-    />
-  ) : (
-    <CtaStrip />
-  )}
-
   <FaqSection
     {faqs}
     label="Questions"
     title="Asked about this service"
   />
 
-  <CtaPanel {prefill} offer={isContent ? 'content' : 'review'} {nextStep} />
+  <CtaPanel prefill={ask.prefill} offer={ask.offer} {nextStep} />
 </BaseLayout>

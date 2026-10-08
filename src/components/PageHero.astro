@@ -31,6 +31,12 @@ interface Props extends HTMLAttributes<'section'> {
   breadcrumb?: { label: string; href: string };
   /** Tighter top padding for pages that follow with a dense section. */
   compact?: boolean;
+  /**
+   * A 500px aside instead of 400px, for the service pages, whose aside is the
+   * service's illustration rather than a photograph: it carries the page's
+   * argument in a picture, and at 400px its labels were too small to read.
+   */
+  asideWide?: boolean;
 }
 
 const {
@@ -41,6 +47,7 @@ const {
   chips,
   breadcrumb,
   compact = false,
+  asideWide = false,
   ...attrs
 } = Astro.props;
 const hasAside = Astro.slots.has('aside');
@@ -51,7 +58,7 @@ const hasAside = Astro.slots.has('aside');
     <div
       class:list={[
         'grid gap-12',
-        hasAside && 'lg:grid-cols-[1fr_400px] lg:items-start lg:gap-16',
+        hasAside && (asideWide ? 'lg:grid-cols-[1fr_500px] lg:items-center lg:gap-14' : 'lg:grid-cols-[1fr_400px] lg:items-start lg:gap-16'),
       ]}
     >
       <div class="animate-rise">

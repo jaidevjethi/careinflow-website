@@ -5,7 +5,6 @@ import { Image } from 'astro:assets';
 import PageHero from '@/components/PageHero.astro';
 import PriceEstimator from '@/components/PriceEstimator.astro';
 import SectionHead from '@/components/SectionHead.astro';
-import ServiceIcon from '@/components/ServiceIcon.astro';
 import Figure from '@/components/Figure.astro';
 import pricingConsult from '@/assets/editorial/pricing-consult.webp';
 import promiseSeal from '@/assets/mockups/pricing-promise.webp';
@@ -15,9 +14,10 @@ import CtaStrip from '@/components/CtaStrip.astro';
 import IllustrationPanel from '@/components/IllustrationPanel.astro';
 import pricingMockup from '@/assets/mockups/hero.jpg';
 import { href } from '@/lib/url';
-import { whatsappFor, whatsappWithMessage } from '@/config/site';
+import { whatsappFor } from '@/config/site';
 import { cycleAccent } from '@/lib/accents';
 import ContentPackages from '@/components/ContentPackages.astro';
+import WebsitePackages from '@/components/WebsitePackages.astro';
 import {
   PRICE_PREFIX,
   BUILDS,
@@ -57,17 +57,6 @@ const description =
 /** Counts in prose come from the array, so they cannot drift when it grows. */
 const NUMBER_WORDS = ['No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight'];
 const spell = (n: number) => NUMBER_WORDS[n] ?? String(n);
-
-/**
- * A WhatsApp opening per package. The funnel keeps prefills in site.ts so the
- * message matches what the visitor was reading; here the thing they were
- * reading is one specific package, so it says which. Saves the studio a
- * round trip and saves the reader explaining themselves.
- */
-const askAbout = (name: string) =>
-  whatsappWithMessage(
-    `Hi CareInflow. I am looking at ${name} and would like a quote in writing, starting with the free review. Clinic name: `,
-  );
 
 const faqs = await getFaqsFor('pricing');
 
@@ -245,138 +234,7 @@ const principles = [
         lede="The difference is how much of the work we take on, not how many pages you get. The smallest builds your website and sets it up to be found. The largest plans and builds the whole thing for a practice with several doctors or branches. Every price is agreed in writing before we start."
       />
 
-      <div class="reveal-group mt-12 grid items-stretch gap-5 sm:grid-cols-2">
-        {BUILDS.map((build, i) => (
-          <article
-            class:list={[
-              'card-hover flex h-full flex-col overflow-hidden rounded-3xl border bg-canvas',
-              build.recommended ? 'border-surgical shadow-card' : 'border-line',
-            ]}
-          >
-            <span class:list={['accent-bar block h-1 w-full', cycleAccent(i).bar]} aria-hidden="true"></span>
-            <div class="flex h-full flex-col p-5 sm:p-6">
-              {/* The chip band is reserved only once the cards sit side by
-                  side. Stacked on a phone there is nothing to align with, and
-                  an empty 26px band above the name just reads as a gap. */}
-              <div class="sm:min-h-[26px]">
-                {build.recommended && (
-                  <span class="chip bg-surgical-tint text-surgical">Our recommendation</span>
-                )}
-                {build.custom && (
-                  <span class="chip border border-line bg-surface text-body-deep">Quoted</span>
-                )}
-              </div>
-
-              {/*
-                Two lines reserved for the name and two for the meta, from the
-                breakpoint the cards line up at. "Healthcare Website + Local
-                SEO" wraps where the other three do not, which pushed its price
-                29px below theirs and its body 45px below — and the price row is
-                the one row on a comparison grid that has to scan straight
-                across. Reserving the space costs a little air on the short
-                cards and buys an aligned grid.
-              */}
-              <h3 class="mt-2.5 text-[18px] font-bold leading-[1.35] tracking-[-0.025em] text-ink sm:min-h-[74px]">
-                {build.name}
-              </h3>
-
-              <p class="mt-3 flex items-baseline gap-2">
-                <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{PRICE_PREFIX}</span>
-                <span class="settle numeral text-[clamp(28px,2.6vw,36px)] text-ink">{rupees(build.from)}</span>
-              </p>
-              <p class="mt-1.5 font-mono text-[11px] uppercase leading-[1.45] tracking-[0.08em] text-faint sm:min-h-[32px]">
-                {build.pages} · {build.timeline}
-              </p>
-
-              {/*
-                The three components every package is built from, always all
-                three. The one a package does not include is dimmed and dashed
-                rather than removed, because a visible gap is what makes the
-                next rung read as something gained instead of something charged.
-                Nothing is hidden and nothing is implied.
-              */}
-              <ul class="mt-3.5 grid gap-1.5 border-t border-hairline pt-3.5">
-                {[
-                  { icon: 'website' as const, label: build.stack.website },
-                  { icon: 'listing' as const, label: build.stack.listing },
-                  { icon: 'search' as const, label: build.stack.seo },
-                ].map((part) => (
-                  <li class="flex items-center gap-2.5">
-                    <span
-                      class:list={[
-                        'inline-flex size-6 shrink-0 items-center justify-center rounded-md',
-                        part.label ? [cycleAccent(i).tint, cycleAccent(i).text] : 'bg-canvas text-faint',
-                      ]}
-                    >
-                      <ServiceIcon name={part.icon} />
-                    </span>
-                    <span
-                      class:list={[
-                        'text-[14px] leading-[1.35]',
-                        part.label ? 'font-semibold text-ink' : 'text-faint',
-                      ]}
-                    >
-                      {part.label ?? 'Local SEO — not in this package'}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-
-              <p class="mt-3 rounded-xl bg-canvas px-3 py-2.5 text-[14px] leading-[1.45] text-body">
-                {build.seoLine}
-              </p>
-
-              <p class="mt-4 border-t border-hairline pt-4 text-[15px] font-semibold leading-[1.5] text-body-deep">
-                {build.responsibility}
-              </p>
-              
-
-              {/*
-                What you actually get, on the card. The cards used to carry a
-                responsibility line and a "suits" line and nothing else, so the
-                only way to learn what was inside a package was to scroll to the
-                comparison table two screens down and read across a row. A buyer
-                deciding between four numbers should not have to do that.
-
-                The first row of every package above the smallest says
-                "Everything in the ... package", which is what makes the ladder
-                read as one ladder rather than four unrelated products.
-              */}
-              <ul class="mt-4 grow border-t border-hairline pt-4">
-                {build.highlights.slice(0, 3).map((h) => (
-                  <li class="flex gap-2.5 py-1 text-[14px] leading-[1.45] text-body">
-                    <svg
-                      class:list={['mt-[3px] size-4 shrink-0', cycleAccent(i).text]}
-                      viewBox="0 0 16 16" fill="none" stroke="currentColor"
-                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="M3 8.5l3.5 3.5L13 4.5" />
-                    </svg>
-                    <span>{h}</span>
-                  </li>
-                ))}
-              </ul>
-
-
-
-              {/* A CTA in every card, so the ask is never more than a screen
-                  away on a page this long, and the message names the package
-                  so nobody has to explain which one they meant. */}
-              <a
-                href={askAbout(build.name)}
-                rel="noopener"
-                class:list={[
-                  'mt-5 w-full justify-center px-5 py-3 text-[15px]',
-                  build.recommended ? 'btn-primary' : 'btn-secondary',
-                ]}
-              >
-                {build.custom ? 'Ask for a quote' : 'Start with this'}
-              </a>
-            </div>
-          </article>
-        ))}
-      </div>
+      <WebsitePackages class="mt-12" />
 
       <p class="mt-7 max-w-[680px] text-[16px] leading-[1.65] text-muted">
         Not sure which one is right for your practice? That is exactly what the
@@ -449,7 +307,7 @@ const principles = [
               {BUILDS.map((build, i) => (
                 <th scope="col" class="px-4 py-5 align-bottom">
                   <span class="block text-[15px] font-bold leading-[1.3] tracking-[-0.02em] text-ink">
-                    {build.name}
+                    {build.label}
                   </span>
                   <span class:list={['mt-1.5 block font-mono text-[12px]', cycleAccent(i).text]}>
                     {build.custom ? `${PRICE_PREFIX} ` : ''}{rupees(build.from)}
@@ -519,7 +377,7 @@ const principles = [
       <div class="mt-10 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
         {BUILDS.map((build) => (
           <div class="border-t border-line pt-4">
-            <p class="text-[15px] font-bold tracking-[-0.02em] text-ink">{build.name}</p>
+            <p class="text-[15px] font-bold tracking-[-0.02em] text-ink">{build.label}</p>
             <p class="mt-2 text-[14px] leading-[1.55] text-muted">{build.excludes}</p>
           </div>
         ))}

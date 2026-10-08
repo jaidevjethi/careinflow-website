@@ -2,27 +2,31 @@
 /**
  * The three monthly content packages, read straight from `pricing.ts`.
  *
- * Used twice — inside the healthcare content page's prose and in the #content
- * section of /pricing — so the figures, the counts and the introductory line
- * can only ever be written once. The counts are the product: so many reels, so
- * many posts, so many carousels. They get the site's one ornament, a large
- * tight numeral in the accent, because "8 reels" is the thing a doctor is
- * actually buying and should be the first thing their eye lands on.
+ * Used on the healthcare content page and in the #content section of
+ * /pricing, so the figures, the counts and the introductory rates can only
+ * ever be written once.
  *
- * The regular price is always the headline figure. The introductory rate sits
- * under it as a sentence with both numbers in it, never alone and never as a
- * saving — the one reduced figure the site publishes, stated as a rule.
+ * Each card's title is what the package literally contains — "8 Reels + 6
+ * Posts + 1 Carousel" — with its name above it as a label, because "Content
+ * Growth" on its own tells a doctor nothing about what they are buying. The
+ * counts then get the site's one ornament, a large tight numeral in the
+ * accent.
  *
- * Inside MDX this renders under `.prose-ci`, whose element rules (link colour,
- * heading and paragraph margins, list bullets) would otherwise restyle it.
- * Those rules live in the components layer and Tailwind's utilities layer
- * comes after it, so every element here sets the properties prose would touch
- * with a utility, and the cascade does the rest. No lists, for the same reason.
+ * The regular price is the card's figure. The introductory rate has a panel
+ * of its own underneath, the "3-Month Introductory Partnership", as the
+ * redesign brief asked: a low-risk way to start, stated as a rule with both
+ * figures in every row, never as a saving and never on its own.
+ *
+ * Inside MDX this would render under `.prose-ci`, whose element rules live in
+ * the components layer; every element here sets what prose would touch with a
+ * utility, which wins from the utilities layer, and there are no lists.
  */
 import {
   CONTENT_BATCH_REASON,
-  CONTENT_INTRO_RULE,
+  CONTENT_INTRO_LEDE,
+  CONTENT_INTRO_NAME,
   CONTENT_PACKAGES,
+  packageLabel,
   rupees,
   type ContentPackage,
 } from '@/config/pricing';
@@ -39,9 +43,9 @@ const Heading = headingLevel;
 const a = ACCENTS.social;
 
 /** The opening names the package, so nobody has to explain which one. */
-const askAbout = (name: string) =>
+const askAbout = (p: ContentPackage) =>
   whatsappWithMessage(
-    `Hi CareInflow. I am looking at ${name} for my practice and would like to talk it through. Clinic name: `,
+    `Hi CareInflow. I am looking at ${p.name} (${packageLabel(p)}) for my practice and would like to talk it through. Clinic name: `,
   );
 
 const counts = (p: ContentPackage) =>
@@ -56,8 +60,7 @@ const counts = (p: ContentPackage) =>
 
 <div class:list={['not-prose', className]}>
   {/* Three across from lg only. At tablet width two columns would strand the
-      third package alone on a row, and three columns there leave ~190px, which
-      the price line does not survive. Three into three divides evenly. */}
+      third package alone on a row. Three into three divides evenly. */}
   <div class="grid items-stretch gap-5 lg:grid-cols-3">
     {CONTENT_PACKAGES.map((p) => (
       <article
@@ -68,19 +71,19 @@ const counts = (p: ContentPackage) =>
       >
         <span class:list={['accent-bar block h-1 w-full', a.bar]} aria-hidden="true"></span>
         <div class="flex h-full flex-col p-6">
-          <div class="lg:min-h-[26px]">
+          <p class="mb-0 flex min-h-[26px] flex-wrap items-center gap-2">
+            <span class:list={['font-mono text-[11px] font-semibold uppercase tracking-[0.12em]', a.text]}>{p.name}</span>
             {p.recommended && (
               <span class="chip bg-surgical-tint text-surgical">Our recommendation</span>
             )}
-          </div>
-          <Heading class="mb-0 mt-2.5 text-[19px] font-bold leading-[1.3] tracking-[-0.025em] text-ink">
-            {p.name}
+          </p>
+          <Heading class="mb-0 mt-2 text-[20px] font-extrabold leading-[1.25] tracking-[-0.025em] text-ink lg:min-h-[50px]">
+            {packageLabel(p)}
           </Heading>
-          <p class="mb-0 mt-1.5 text-[14px] leading-[1.5] text-muted lg:min-h-[42px]">{p.suits}</p>
 
-          {/* The month, as counts. A grid of three cells on every card, so the
-              numbers line up across the row even where Starter has no carousel. */}
-          <div class="mt-5 grid grid-cols-3 gap-2 border-t border-hairline pt-4">
+          {/* The month, as counts, on a three-cell grid so the numbers line up
+              across the row even where a package has no carousel. */}
+          <div class="mt-4 grid grid-cols-3 gap-2 border-t border-hairline pt-4">
             {counts(p).map((c) => (
               <p class="mb-0">
                 <span class:list={['numeral block text-[34px] leading-none', a.text]}>{c.n}</span>
@@ -95,12 +98,10 @@ const counts = (p: ContentPackage) =>
             <span class="settle numeral text-[clamp(28px,2.6vw,34px)] text-ink">{rupees(p.monthly)}</span>
             <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">/ month</span>
           </p>
-          <p class="mb-0 mt-2 grow text-[14px] leading-[1.5] text-body">
-            {rupees(p.intro)} a month for your first three billed months, then {rupees(p.monthly)}.
-          </p>
+          <p class="mb-0 mt-2 grow text-[14px] leading-[1.55] text-muted">{p.suits}</p>
 
           <a
-            href={askAbout(p.name)}
+            href={askAbout(p)}
             rel="noopener"
             class:list={[
               'mt-5 w-full justify-center px-5 py-3 text-[15px] no-underline hover:no-underline',
@@ -113,7 +114,39 @@ const counts = (p: ContentPackage) =>
       </article>
     ))}
   </div>
-  <p class="mb-0 mt-6 max-w-[760px] text-[15px] leading-[1.6] text-muted">
-    {CONTENT_INTRO_RULE} {CONTENT_BATCH_REASON}
-  </p>
+
+  {/* THE INTRODUCTORY RATE, ON ITS OWN PANEL. Every row carries both figures,
+      so the reduced one can never be read as the price. No percentage, no
+      "save", no deadline: it applies to every new client, whenever they
+      start, and the panel says so. */}
+  <section
+    class="mt-6 grid gap-6 rounded-3xl border border-line bg-canvas p-6 sm:p-7 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)] lg:gap-10"
+    aria-label={CONTENT_INTRO_NAME}
+  >
+    <div>
+      <p class:list={['mb-0 font-mono text-[11px] font-semibold uppercase tracking-[0.12em]', a.text]}>
+        A low-risk way to start
+      </p>
+      <p class="mb-0 mt-2 text-[20px] font-extrabold leading-[1.25] tracking-[-0.025em] text-ink">{CONTENT_INTRO_NAME}</p>
+      <p class="mb-0 mt-2.5 text-[15px] leading-[1.6] text-body">{CONTENT_INTRO_LEDE}</p>
+    </div>
+    <div class="grid content-start">
+      {CONTENT_PACKAGES.map((p, i) => (
+        <div
+          class:list={[
+            'flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 py-3',
+            i > 0 && 'border-t border-hairline',
+          ]}
+        >
+          <span class="text-[15px] font-semibold text-ink">{packageLabel(p)}</span>
+          <span class="text-[14px] leading-[1.5] text-body">
+            <span class="font-mono font-semibold text-ink">{rupees(p.intro)}</span>/mo for months 1–3,
+            then <span class="font-mono font-semibold text-ink">{rupees(p.monthly)}</span>
+          </span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <p class="mb-0 mt-5 max-w-[760px] text-[15px] leading-[1.6] text-muted">{CONTENT_BATCH_REASON}</p>
 </div>

@@ -35,30 +35,14 @@ faqs:
   - q: 'Do you write the scripts?'
     a: 'We help you shape a topic into one clear question before you record, and we write the caption for every piece. Extensive scriptwriting is not part of a package. A doctor answering a patient question in their own words usually comes across better than a script read to camera.'
 related: ['reel-editing', 'healthcare-websites']
+audience: 'Doctors who already explain things well, in the chair or on camera, and have no time to edit, caption and design it into something worth posting.'
+solves: 'Videos that sit unused on your phone, posts that go out unedited, and an Instagram that does not show patients how clearly you explain things.'
 ---
 
-import ContentPackages from '@/components/ContentPackages.astro';
 import Figure from '@/components/Figure.astro';
 import socialPost from '@/assets/mockups/social-post.webp';
-import { CONTENT_CLIENTS } from '@/config/clients';
-import {
-  ADVANCED_REEL_WHEN,
-  CONTENT_EXCLUDES,
-  CONTENT_RULES,
-  STANDARD_REEL_INCLUDES,
-  rupees,
-} from '@/config/pricing';
+import { ADVANCED_REEL_WHEN, STANDARD_REEL_INCLUDES, rupees } from '@/config/pricing';
 import { PRICE_TOKENS } from '@/lib/prices';
-
-## Who is this for?
-
-Doctors who already explain things well, in the chair or on camera, and do not
-have the time or the tools to turn that into something worth posting. If your
-phone holds videos that never went out, or went out unedited, this is for you.
-
-It is healthcare content only. We make reels and posts for clinics and for
-nobody else, so the edit understands what a patient needs to hear, and what a
-doctor should not say.
 
 ## What do you send us?
 
@@ -103,22 +87,6 @@ An advanced reel, from {rupees(PRICE_TOKENS.reelAdvanced)}, is for an edit that
 involves {ADVANCED_REEL_WHEN.slice(0, -1).join(', ').toLowerCase()} or {ADVANCED_REEL_WHEN.at(-1)?.toLowerCase()}.
 We tell you which kind a video is when it arrives, before we start. Everything about a single reel, and
 how to send one, is on the [reel editing page](/services/reel-editing/).
-
-## What does each package include?
-
-Three monthly packages, each a fixed count of finished pieces, so you know at
-the start of the month exactly what you will get.
-
-<ContentPackages />
-
-The rules that keep a package what it says it is:
-
-<ul>
-  {CONTENT_RULES.map((line) => <li>{line}</li>)}
-</ul>
-
-Every single piece is priced on the [pricing page](/pricing/#content), from a
-{rupees(PRICE_TOKENS.post)} post to a research-heavy carousel.
 
 ## Gujarati or English captions?
 
@@ -207,28 +175,3 @@ footage arriving. A package is delivered across the month, on a schedule we
 agree with you at the start. Same-day or emergency turnaround is not part of a
 package.
 
-## What is not included?
-
-Stated plainly, because a content plan with no edges is one that disappoints
-someone:
-
-<ul>
-  {CONTENT_EXCLUDES.map((line) => <li>{line}</li>)}
-</ul>
-
-We do not chase follower counts, and we do not promise reach. If someone tells
-you reels will fill your appointment book, ask them how they will measure it.
-
-## Who makes it?
-
-We make this for practices in Mehsana now. The reels and posts we make for {CONTENT_CLIENTS.map((c, i) => <>{i > 0 && ' and '}<a href={c.url} rel="noopener">{c.name}</a></>)} are on their own Instagram, exactly as they were published.
-
-The person you message is the person who edits your reels. There is no account
-manager in between.
-
-## How do you start?
-
-Send one sample video. Record a question patients ask you, or send a clip you
-already have, with the topic. We reply with what the edit would involve, how
-long it takes and what it costs, usually the same day. We do not edit it for
-free, and there is no obligation. [Send one sample video](/contact/#content).

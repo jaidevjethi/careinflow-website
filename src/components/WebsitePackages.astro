@@ -1,0 +1,132 @@
+---
+/**
+ * The four website packages, as cards. One component for /pricing and the
+ * healthcare websites page, so the two can never describe a package two ways.
+ *
+ * The title is what the package literally is — "10-Page Practice Website" —
+ * with its name above it as a label. Then the price, the pages and timeline,
+ * the three-part stack (website, listing, search) with the missing part
+ * dimmed rather than hidden, the plain-language search line, what the studio
+ * takes on, three highlights, and an ask that names the package.
+ */
+import ServiceIcon from '@/components/ServiceIcon.astro';
+import { whatsappWithMessage } from '@/config/site';
+import { cycleAccent } from '@/lib/accents';
+import { BUILDS, PRICE_PREFIX, rupees, type Build } from '@/config/pricing';
+
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+
+/** A WhatsApp opening per package, so nobody has to explain which one. */
+const askAbout = (b: Build) =>
+  whatsappWithMessage(
+    `Hi CareInflow. I am looking at the ${b.label} (${b.name}) and would like a quote in writing, starting with the free review. Clinic name: `,
+  );
+---
+
+<div class:list={['reveal-group grid items-stretch gap-5 sm:grid-cols-2', className]}>
+  {BUILDS.map((build, i) => (
+    <article
+      class:list={[
+        'card-hover flex h-full flex-col overflow-hidden rounded-3xl border bg-canvas',
+        build.recommended ? 'border-surgical shadow-card' : 'border-line',
+      ]}
+    >
+      <span class:list={['accent-bar block h-1 w-full', cycleAccent(i).bar]} aria-hidden="true"></span>
+      <div class="flex h-full flex-col p-5 sm:p-6">
+        <p class="flex min-h-[26px] flex-wrap items-center gap-2">
+          <span class:list={['font-mono text-[11px] font-semibold uppercase tracking-[0.12em]', cycleAccent(i).text]}>
+            {build.name}
+          </span>
+          {build.recommended && (
+            <span class="chip bg-surgical-tint text-surgical">Our recommendation</span>
+          )}
+          {build.custom && (
+            <span class="chip border border-line bg-surface text-body-deep">Quoted</span>
+          )}
+        </p>
+
+        <h3 class="mt-2 text-[20px] font-extrabold leading-[1.25] tracking-[-0.025em] text-ink">
+          {build.label}
+        </h3>
+
+        <p class="mt-3 flex items-baseline gap-2">
+          <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{PRICE_PREFIX}</span>
+          <span class="settle numeral text-[clamp(28px,2.6vw,36px)] text-ink">{rupees(build.from)}</span>
+        </p>
+        <p class="mt-1.5 font-mono text-[11px] uppercase leading-[1.45] tracking-[0.08em] text-faint">
+          {build.pages} · {build.timeline}
+        </p>
+
+        {/*
+          The three components every package is built from, always all three.
+          The one a package does not include is dimmed rather than removed, so
+          the next rung reads as something gained instead of something charged.
+        */}
+        <ul class="mt-3.5 grid gap-1.5 border-t border-hairline pt-3.5">
+          {[
+            { icon: 'website' as const, label: build.stack.website },
+            { icon: 'listing' as const, label: build.stack.listing },
+            { icon: 'search' as const, label: build.stack.seo },
+          ].map((part) => (
+            <li class="flex items-center gap-2.5">
+              <span
+                class:list={[
+                  'inline-flex size-6 shrink-0 items-center justify-center rounded-md',
+                  part.label ? [cycleAccent(i).tint, cycleAccent(i).text] : 'bg-canvas text-faint',
+                ]}
+              >
+                <ServiceIcon name={part.icon} />
+              </span>
+              <span
+                class:list={[
+                  'text-[14px] leading-[1.35]',
+                  part.label ? 'font-semibold text-ink' : 'text-faint',
+                ]}
+              >
+                {part.label ?? 'Local SEO — not in this package'}
+              </span>
+            </li>
+          ))}
+        </ul>
+
+        <p class="mt-3 rounded-xl bg-surface px-3 py-2.5 text-[14px] leading-[1.45] text-body">
+          {build.seoLine}
+        </p>
+
+        <p class="mt-4 border-t border-hairline pt-4 text-[15px] font-semibold leading-[1.5] text-body-deep">
+          {build.responsibility}
+        </p>
+
+        <ul class="mt-4 grow border-t border-hairline pt-4">
+          {build.highlights.slice(0, 3).map((h) => (
+            <li class="flex gap-2.5 py-1 text-[14px] leading-[1.45] text-body">
+              <svg
+                class:list={['mt-[3px] size-4 shrink-0', cycleAccent(i).text]}
+                viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M3 8.5l3.5 3.5L13 4.5" />
+              </svg>
+              <span>{h}</span>
+            </li>
+          ))}
+        </ul>
+
+        <a
+          href={askAbout(build)}
+          rel="noopener"
+          class:list={[
+            'mt-5 w-full justify-center px-5 py-3 text-[15px]',
+            build.recommended ? 'btn-primary' : 'btn-secondary',
+          ]}
+        >
+          {build.custom ? 'Ask for a quote' : 'Start with this'}
+        </a>
+      </div>
+    </article>
+  ))}
+</div>

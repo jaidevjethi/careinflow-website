@@ -69,6 +69,12 @@ export const unitLabel = (unit: PriceUnit): string =>
 export interface Build {
   id: string;
   name: string;
+  /**
+   * What the package literally is, in the words a doctor would use to ask
+   * for it: "10-Page Practice Website". Shown as the card title, with `name`
+   * above it as a label — a name alone ("Growth") tells a buyer nothing.
+   */
+  label: string;
   /** Who this shape of practice actually is. */
   suits: string;
   from: number;
@@ -142,6 +148,7 @@ export const BUILDS: Build[] = [
   {
     id: 'practice-website',
     name: 'Foundation Website',
+    label: '5-Page Website',
     suits: 'A doctor or small clinic that needs a professional starting website.',
     from: 18999,
     typicalTo: 24999,
@@ -165,6 +172,7 @@ export const BUILDS: Build[] = [
   {
     id: 'practice-website-google',
     name: 'Practice Website',
+    label: '10-Page Practice Website',
     suits: 'Most practices here. You want a website, and you want patients to find it.',
     from: 34999,
     typicalTo: 44999,
@@ -193,6 +201,7 @@ export const BUILDS: Build[] = [
   {
     id: 'healthcare-seo',
     name: 'Growth Website',
+    label: '18-Page Growth Website',
     suits: 'An established practice that wants to be found for particular treatments.',
     from: 59999,
     typicalTo: 74999,
@@ -217,6 +226,7 @@ export const BUILDS: Build[] = [
   {
     id: 'multi-specialty',
     name: 'Multi-Doctor / Multi-Location Website',
+    label: 'Multi-Doctor / Multi-Location',
     suits: 'Several doctors or departments, a diagnostic centre, or more than one branch.',
     from: 89999,
     custom: true,
@@ -634,8 +644,27 @@ export const CONTENT_PACKAGES: ContentPackage[] = [
   },
 ];
 
+/**
+ * What a package literally contains, as its title: "8 Reels + 6 Posts + 1
+ * Carousel". The name ("Content Growth") rides above it as a label; on its
+ * own it would tell a doctor nothing about what they are buying.
+ */
+export const packageLabel = (p: ContentPackage): string =>
+  [
+    `${p.reels} Reels`,
+    `${p.posts} Posts`,
+    ...(p.carousels ? [`${p.carousels} Carousel${p.carousels > 1 ? 's' : ''}`] : []),
+  ].join(' + ');
+
 /** How many months the introductory rate runs. */
 export const CONTENT_INTRO_MONTHS = 3;
+
+/** The introductory rate's own name, as the content page and /pricing show it. */
+export const CONTENT_INTRO_NAME = '3-Month Introductory Partnership';
+
+/** The rule in one sentence, for the panel that lists the introductory figures. */
+export const CONTENT_INTRO_LEDE =
+  'New clients can use the introductory price during their first three billed months before moving to regular pricing. It is the same for every new client, whenever you start, and nothing else is ever taken off.';
 
 /** The introductory rule, as it is published. */
 export const CONTENT_INTRO_RULE =
@@ -699,6 +728,22 @@ export const CUSTOM_PROJECTS: Array<{ item: string; note: string }> = [
 /* -------------------------------------------------------------------------
  * Website and Google work, bought on its own
  * ---------------------------------------------------------------------- */
+
+/**
+ * What the one-time Google Business Profile rebuild covers, as a list. The
+ * same work as the ONE_TIME_ITEMS note below, in the shape a card needs.
+ */
+export const GBP_REBUILD_INCLUDES: string[] = [
+  'Profile set up, claimed or rebuilt',
+  'Business information made exact',
+  'Primary and secondary categories',
+  'Services, listed properly',
+  'Hours, including holidays',
+  'Photos and profile sections',
+  'Questions patients ask, answered',
+  'A review-reply workflow',
+  'Local-search groundwork',
+];
 
 export const ONE_TIME_ITEMS: LineItem[] = [
   {

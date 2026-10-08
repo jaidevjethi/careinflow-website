@@ -35,11 +35,16 @@ faqs:
   - q: 'Is a reel cheaper as part of a package?'
     a: 'Yes. A month planned and produced as one batch costs less than the same pieces bought one at a time. Content Starter is {{contentStarter}} a month for six reels and four posts, where a single reel on its own is {{reel}}.'
 related: ['healthcare-content', 'google-business-profile']
+audience: 'Doctors and clinics who record videos, or could, and want each one turned into a polished, captioned reel without learning to edit.'
+solves: 'Raw clips that never get posted, because editing, captions and a cover take hours a doctor does not have.'
+notIncluded:
+  - 'Filming at your clinic. An on-site shoot is quoted as a custom project'
+  - 'Posting on your account. You publish it'
+  - 'Extensive scriptwriting'
+  - 'Same-day or emergency turnaround'
+  - 'More than one revision without a quote first'
 ---
 
-import { CONTENT_CLIENTS } from '@/config/clients';
-import { ADVANCED_REEL_WHEN, STANDARD_REEL_INCLUDES, rupees } from '@/config/pricing';
-import { PRICE_TOKENS } from '@/lib/prices';
 
 ## What does a doctor send?
 
@@ -51,28 +56,6 @@ import { PRICE_TOKENS } from '@/lib/prices';
 
 One question per video. "Why do my gums bleed when I brush?" makes a better
 reel than "Everything about dental health", and it is easier to record.
-
-## What comes back?
-
-<ul>
-  {STANDARD_REEL_INCLUDES.map((line) => <li>{line}</li>)}
-</ul>
-
-It arrives ready to post from your own account. We do not post it for you.
-
-## What makes a reel advanced?
-
-A standard reel is {rupees(PRICE_TOKENS.reel)}. An advanced reel, from
-{rupees(PRICE_TOKENS.reelAdvanced)}, is for an edit that involves:
-
-<ul>
-  {ADVANCED_REEL_WHEN.map((line) => <li>{line}</li>)}
-</ul>
-
-A highly complex reel, from {rupees(PRICE_TOKENS.reelComplex)}, means heavy
-motion graphics, advanced animation, or a story rebuilt from a lot of material.
-We tell you which kind your video is when it arrives, before we start, and
-never after.
 
 ## Gujarati or English?
 
@@ -116,20 +99,3 @@ arriving. Same-day turnaround is not something we promise.
 - Post on your account. You publish it, once you have approved it
 - Use a patient's face, name or story without their written consent
 
-## One reel, or a month of them
-
-A single reel is {rupees(PRICE_TOKENS.reel)}. For a steady rhythm, the
-[monthly content packages](/services/healthcare-content/) start at
-{rupees(PRICE_TOKENS.contentStarter)} a month for six reels and four posts,
-with an introductory rate for your first three billed months.
-
-## See reels we have edited
-
-We edit reels for {CONTENT_CLIENTS.map((c, i) => <>{i > 0 && ' and '}<a href={c.url} rel="noopener">{c.name}</a></>)}, both in Mehsana. Their Instagram shows the work exactly as it was published.
-
-## Send one sample video
-
-Record a question patients ask you, or send a clip you already have, with the
-topic. We reply with what the edit would involve, how long it takes and what it
-costs. We do not edit it for free, and there is no obligation.
-[Send one sample video](/contact/#content).

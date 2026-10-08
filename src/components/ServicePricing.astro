@@ -1,0 +1,332 @@
+---
+/**
+ * "What it costs", per service page, from pricing.ts and nowhere else.
+ *
+ * The redesign brief asked that a doctor understand the price of any service
+ * in thirty seconds, so every block leads with the figure and what it buys in
+ * plain words, and states the limits beside it rather than in small print:
+ * the Google pages say there is no guaranteed ranking, the care page says why
+ * it has no published figure.
+ */
+import ContentPackages from '@/components/ContentPackages.astro';
+import WebsitePackages from '@/components/WebsitePackages.astro';
+import { whatsappFor } from '@/config/site';
+import { href } from '@/lib/url';
+import { ACCENTS } from '@/lib/accents';
+import {
+  ADVANCED_REEL_WHEN,
+  CONTENT_PIECES,
+  CONTENT_RULES,
+  GBP_REBUILD_INCLUDES,
+  GOOGLE_CARE,
+  PRICE_PREFIX,
+  STANDARD_REEL_INCLUDES,
+  WEBSITE_CARE,
+  rupees,
+} from '@/config/pricing';
+import { PRICE_TOKENS } from '@/lib/prices';
+
+interface Props {
+  slug: string;
+}
+const { slug } = Astro.props;
+
+const piece = (id: string) => CONTENT_PIECES.find((p) => p.id === id)!;
+
+/** The three kinds of reel, cheapest first, each saying when it applies. */
+const reelTiers = [
+  {
+    name: 'Standard healthcare reel',
+    price: rupees(piece('reel').price),
+    from: false,
+    text: 'Up to 3 minutes, edited and paced, captioned in Gujarati or English, with graphics, an end card, a cover and the caption written. One revision.',
+  },
+  {
+    name: 'Advanced reel',
+    price: rupees(piece('reelAdvanced').price),
+    from: true,
+    text: `When the edit involves ${ADVANCED_REEL_WHEN.slice(0, -1).join(', ').toLowerCase()} or ${ADVANCED_REEL_WHEN.at(-1)?.toLowerCase()}.`,
+  },
+  {
+    name: 'Highly complex reel',
+    price: rupees(piece('reelComplex').price),
+    from: true,
+    text: piece('reelComplex').note,
+  },
+];
+
+/**
+ * Local SEO's honest split, in the brief's words: the foundations we build,
+ * and the things nobody controls. The second list is the reason there is no
+ * ranking promise anywhere on this site.
+ */
+const weControl = [
+  'Treatment and area pages written for what patients search',
+  'Your Google Business Profile, complete and kept current',
+  'The same name, address and phone everywhere',
+  'Structured data and a fast site',
+  'Review replies, drafted for your approval',
+  'A monthly report on what we did and what changed',
+];
+const nobodyControls = [
+  'Where Google decides to rank you',
+  'How far each patient is from your clinic',
+  'How many practices compete near you',
+  'What patients write in their reviews',
+  'How long Google takes to respond',
+];
+
+const check = 'M3 8.5l3.5 3.5L13 4.5';
+---
+
+{(slug === 'healthcare-content') && (
+  <div>
+    <ContentPackages />
+    <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:gap-14">
+      <div>
+        <h3 class="label-mono mb-4 text-surgical">Single pieces</h3>
+        <dl class="border-t border-line">
+          {CONTENT_PIECES.map((item) => (
+            <div class="flex flex-wrap items-baseline justify-between gap-x-6 border-b border-hairline py-3">
+              <dt class="text-[16px] font-semibold leading-[1.45] text-ink">{item.item}</dt>
+              <dd class="whitespace-nowrap font-mono text-[15px] font-semibold text-pass">
+                {item.from ? `${PRICE_PREFIX} ` : ''}{rupees(item.price)}
+              </dd>
+              <dd class="mt-1 w-full text-[14px] leading-[1.5] text-muted">{item.note}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+      <div>
+        <h3 class="label-mono mb-4 text-surgical">How a package counts</h3>
+        <ul class="border-t border-line text-[15px] leading-[1.55] text-body">
+          {CONTENT_RULES.map((line) => (
+            <li class="flex gap-3 border-b border-hairline py-3">
+              <span class="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-a-social-vivid" aria-hidden="true"></span>
+              <span>{line}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+)}
+
+{slug === 'reel-editing' && (
+  <div>
+    <div class="grid gap-5 lg:grid-cols-3">
+      {reelTiers.map((t, i) => (
+        <article
+          class:list={[
+            'flex flex-col overflow-hidden rounded-3xl border bg-surface',
+            i === 0 ? 'border-surgical shadow-card' : 'border-line',
+          ]}
+        >
+          <span class:list={['accent-bar block h-1 w-full', ACCENTS.social.bar]} aria-hidden="true"></span>
+          <div class="flex flex-1 flex-col p-6">
+            <h3 class="text-[19px] font-extrabold leading-[1.25] tracking-[-0.025em] text-ink">{t.name}</h3>
+            <p class="mt-3 flex items-baseline gap-2">
+              {t.from && <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{PRICE_PREFIX}</span>}
+              <span class="settle numeral text-[clamp(28px,2.6vw,34px)] text-ink">{t.price}</span>
+              <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">/ reel</span>
+            </p>
+            <p class="mt-3 text-[15px] leading-[1.6] text-body">{t.text}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+    <div class="mt-8 grid gap-8 lg:grid-cols-[1fr_1fr] lg:gap-14">
+      <div>
+        <h3 class="label-mono mb-4 text-surgical">Every standard reel includes</h3>
+        <ul class="grid gap-x-8 border-t border-line pt-3 text-[15px] leading-[1.55] text-body sm:grid-cols-2">
+          {STANDARD_REEL_INCLUDES.map((line) => (
+            <li class="flex gap-2.5 py-1.5">
+              <svg class="mt-[3px] size-4 shrink-0 text-a-social" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={check} /></svg>
+              <span>{line}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="self-start rounded-3xl border border-line bg-canvas p-6 sm:p-7">
+        <p class="text-[17px] font-bold tracking-[-0.02em] text-ink">A month of reels costs less as a package.</p>
+        <p class="mt-2 text-[15px] leading-[1.6] text-body">
+          Six reels and four posts a month is {rupees(PRICE_TOKENS.contentStarter)}, with an
+          introductory rate for your first three billed months.
+        </p>
+        <a href={href('/services/healthcare-content#pricing')} class="prose-link mt-3 inline-block text-[15px]">
+          See the monthly packages →
+        </a>
+      </div>
+    </div>
+  </div>
+)}
+
+{slug === 'healthcare-websites' && (
+  <div>
+    <WebsitePackages />
+    <p class="mt-7 max-w-[760px] text-[16px] leading-[1.65] text-muted">
+      Every package is compared line by line on the
+      {' '}<a href={href('/pricing#packages')} class="prose-link">pricing page</a>, with the
+      add-ons: an extra treatment page is {rupees(PRICE_TOKENS.extraPage)}, and a Gujarati
+      version of an existing site starts at {rupees(PRICE_TOKENS.gujarati)}.
+    </p>
+  </div>
+)}
+
+{slug === 'google-business-profile' && (
+  <div>
+    <div class="grid items-stretch gap-5 lg:grid-cols-2">
+      <article class="flex flex-col overflow-hidden rounded-3xl border border-surgical bg-surface shadow-card">
+        <span class:list={['accent-bar block h-1 w-full', ACCENTS.gbp.bar]} aria-hidden="true"></span>
+        <div class="flex flex-1 flex-col p-6 sm:p-7">
+          <p class:list={['font-mono text-[11px] font-semibold uppercase tracking-[0.12em]', ACCENTS.gbp.text]}>One-time</p>
+          <h3 class="mt-2 text-[21px] font-extrabold tracking-[-0.025em] text-ink">Google Business Profile rebuild</h3>
+          <p class="mt-3 flex items-baseline gap-2">
+            <span class="settle numeral text-[clamp(30px,3vw,38px)] text-ink">{rupees(PRICE_TOKENS.gbpRebuild)}</span>
+            <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">one-time</span>
+          </p>
+          <ul class="mt-5 grid gap-x-6 border-t border-hairline pt-4 text-[15px] leading-[1.5] text-body sm:grid-cols-2">
+            {GBP_REBUILD_INCLUDES.map((line) => (
+              <li class="flex gap-2.5 py-1.5">
+                <svg class="mt-[3px] size-4 shrink-0 text-a-gbp" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={check} /></svg>
+                <span>{line}</span>
+              </li>
+            ))}
+          </ul>
+          <p class="mt-auto pt-5 text-[14px] leading-[1.6] text-muted">
+            The profile stays in your name. Nothing monthly is attached.
+          </p>
+          <a href={whatsappFor('gbp')} rel="noopener" class="btn-primary mt-5 w-full justify-center px-5 py-3 text-[15px]">
+            Start with the rebuild
+          </a>
+        </div>
+      </article>
+      <article class="flex flex-col overflow-hidden rounded-3xl border border-line bg-surface">
+        <span class:list={['accent-bar block h-1 w-full', ACCENTS.seo.bar]} aria-hidden="true"></span>
+        <div class="flex flex-1 flex-col p-6 sm:p-7">
+          <p class:list={['font-mono text-[11px] font-semibold uppercase tracking-[0.12em]', ACCENTS.seo.text]}>Every month after</p>
+          <h3 class="mt-2 text-[21px] font-extrabold tracking-[-0.025em] text-ink">{GOOGLE_CARE.name}</h3>
+          <p class="mt-3 flex items-baseline gap-2">
+            <span class="settle numeral text-[clamp(30px,3vw,38px)] text-ink">{rupees(GOOGLE_CARE.monthly)}</span>
+            <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">/ month</span>
+          </p>
+          <ul class="mt-5 border-t border-hairline pt-4 text-[15px] leading-[1.5] text-body">
+            {GOOGLE_CARE.includes.slice(0, 5).map((line) => (
+              <li class="flex gap-2.5 py-1.5">
+                <svg class="mt-[3px] size-4 shrink-0 text-a-seo" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={check} /></svg>
+                <span>{line}</span>
+              </li>
+            ))}
+          </ul>
+          <a href={href('/services/local-seo#pricing')} class="prose-link mt-auto inline-block pt-5 text-[15px]">
+            Everything in the monthly plan →
+          </a>
+        </div>
+      </article>
+    </div>
+    <p class="mt-6 rounded-2xl border border-line bg-surface px-6 py-5 text-[16px] font-semibold leading-[1.6] text-body-deep sm:px-7">
+      No guaranteed Google ranking. A listing that is complete, correct and
+      answered is what we can do; where Google places it is Google's decision.
+    </p>
+  </div>
+)}
+
+{slug === 'local-seo' && (
+  <div>
+    <article class="overflow-hidden rounded-3xl border border-surgical bg-surface shadow-card">
+      <span class:list={['accent-bar block h-1 w-full', ACCENTS.seo.bar]} aria-hidden="true"></span>
+      <div class="grid gap-8 p-6 sm:p-8 lg:grid-cols-[minmax(0,320px)_1fr] lg:gap-14">
+        <div>
+          <h3 class="text-[22px] font-extrabold tracking-[-0.025em] text-ink">{GOOGLE_CARE.name}</h3>
+          <p class="mt-2.5 text-[16px] leading-[1.6] text-muted">{GOOGLE_CARE.summary}</p>
+          <p class="mt-6 flex items-baseline gap-2">
+            <span class="settle numeral text-[clamp(34px,4vw,46px)] text-ink">{rupees(GOOGLE_CARE.monthly)}</span>
+            <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">/ month</span>
+          </p>
+          <p class="mt-3 font-mono text-[11px] uppercase leading-[1.5] tracking-[0.06em] text-surgical">{GOOGLE_CARE.priceNote}</p>
+          <a href={whatsappFor('seo')} rel="noopener" class="btn-primary mt-6 justify-center px-5 py-3 text-[15px]">
+            Ask about your local search
+          </a>
+        </div>
+        <ul class="grid content-start gap-x-10 border-t border-hairline pt-4 text-[15px] leading-[1.55] text-body sm:grid-cols-2 lg:border-t-0 lg:pt-0">
+          {GOOGLE_CARE.includes.map((line) => (
+            <li class="flex gap-3 py-1">
+              <span class="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-a-seo-vivid" aria-hidden="true"></span>
+              <span>{line}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </article>
+
+    {/* What we can control and what nobody can, side by side. */}
+    <div class="mt-8 grid gap-5 md:grid-cols-2">
+      <div class="rounded-3xl border border-line bg-surface p-6 sm:p-7">
+        <h3 class="text-[18px] font-bold tracking-[-0.02em] text-ink">What we build and control</h3>
+        <ul class="mt-4 text-[15px] leading-[1.55] text-body">
+          {weControl.map((line) => (
+            <li class="flex gap-2.5 py-1.5">
+              <svg class="mt-[3px] size-4 shrink-0 text-a-seo" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={check} /></svg>
+              <span>{line}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="rounded-3xl border border-line bg-canvas p-6 sm:p-7">
+        <h3 class="text-[18px] font-bold tracking-[-0.02em] text-ink">What nobody can promise you</h3>
+        <ul class="mt-4 text-[15px] leading-[1.55] text-body">
+          {nobodyControls.map((line) => (
+            <li class="flex gap-2.5 py-1.5">
+              <span class="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-line-strong" aria-hidden="true"></span>
+              <span>{line}</span>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-4 border-t border-hairline pt-4 text-[15px] leading-[1.6] text-muted">
+          We build the foundations that help your practice compete in local
+          search. {GOOGLE_CARE.excludes}
+        </p>
+      </div>
+    </div>
+    <p class="mt-6 max-w-[760px] text-[16px] leading-[1.65] text-muted">
+      The groundwork is also built into every website from the
+      {' '}<a href={href('/services/healthcare-websites#pricing')} class="prose-link">Practice Website</a> up.
+    </p>
+  </div>
+)}
+
+{slug === 'website-care' && (
+  <article class="overflow-hidden rounded-3xl border border-line bg-surface">
+    <span class:list={['accent-bar block h-1 w-full', ACCENTS.care.bar]} aria-hidden="true"></span>
+    <div class="grid gap-8 p-6 sm:p-8 lg:grid-cols-[minmax(0,340px)_1fr] lg:gap-14">
+      <div>
+        <h3 class="text-[22px] font-extrabold tracking-[-0.025em] text-ink">{WEBSITE_CARE.name}</h3>
+        <p class="mt-2.5 text-[16px] leading-[1.6] text-muted">{WEBSITE_CARE.summary}</p>
+        <p class="mt-6 text-[clamp(26px,3vw,32px)] font-extrabold leading-[1.1] tracking-[-0.035em] text-ink">
+          Custom monthly plan
+        </p>
+        <p class="mt-3 font-mono text-[11px] uppercase leading-[1.5] tracking-[0.06em] text-surgical">{WEBSITE_CARE.priceNote}</p>
+        <p class="mt-5 border-t border-hairline pt-4 text-[15px] leading-[1.6] text-muted">
+          Why no figure: a five-page site that changes twice a year and a
+          thirty-page site with a new doctor every season are not the same
+          month of work, and one published number for both would be invented.
+        </p>
+      </div>
+      <div>
+        <ul class="grid gap-x-10 border-t border-hairline pt-4 text-[15px] leading-[1.55] text-body sm:grid-cols-2 lg:border-t-0 lg:pt-0">
+          {WEBSITE_CARE.includes.map((line) => (
+            <li class="flex gap-3 py-1">
+              <span class="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-a-care-vivid" aria-hidden="true"></span>
+              <span>{line}</span>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-5 border-t border-hairline pt-4 text-[15px] leading-[1.6] text-muted">
+          {WEBSITE_CARE.excludes} On
+          {' '}<a href={href('/services/local-seo#pricing')} class="prose-link">Local SEO &amp; Google Care</a>,
+          website updates are already included.
+        </p>
+      </div>
+    </div>
+  </article>
+)}
