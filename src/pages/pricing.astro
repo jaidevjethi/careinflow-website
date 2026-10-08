@@ -4,7 +4,10 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHero from '@/components/PageHero.astro';
 import PriceEstimator from '@/components/PriceEstimator.astro';
 import SectionHead from '@/components/SectionHead.astro';
+import { Image } from 'astro:assets';
 import QuoteVisual from '@/components/visuals/QuoteVisual.astro';
+import ServiceVisual from '@/components/visuals/ServiceVisual.astro';
+import pricingConsult from '@/assets/editorial/pricing-consult.webp';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import ServicePricing from '@/components/ServicePricing.astro';
@@ -316,12 +319,18 @@ const check = 'M3 8.5l3.5 3.5L13 4.5';
   <!-- 2 · HEALTHCARE CONTENT -->
   <section id="content" class="band-powder" aria-labelledby="content-title">
     <div class="section shell">
-      <SectionHead
-        id="content-title"
-        label="Healthcare content"
-        title="Reels and posts, made from your own footage."
-        lede="Three monthly packages, each a fixed count of finished pieces, or any single piece on its own. You send the footage and the topics; the editing, captions, graphics and covers are ours."
-      />
+      {/* Each detail section opens on the picture of its work, the same one
+          its service page carries: on a page this long, the pictures are
+          what carry the reader from one price to the next. */}
+      <div class="grid items-center gap-10 lg:grid-cols-[1fr_440px] lg:gap-16">
+        <SectionHead
+          id="content-title"
+          label="Healthcare content"
+          title="Reels and posts, made from your own footage."
+          lede="Three monthly packages, each a fixed count of finished pieces, or any single piece on its own. You send the footage and the topics; the editing, captions, graphics and covers are ours."
+        />
+        <ServiceVisual slug="healthcare-content" class="mx-auto max-w-[440px]" />
+      </div>
       <div class="mt-11">
         <ServicePricing slug="healthcare-content" />
       </div>
@@ -348,12 +357,15 @@ const check = 'M3 8.5l3.5 3.5L13 4.5';
   <!-- 3 · WEBSITES : the four packages, then the detail behind disclosures -->
   <section id="packages" class="bg-surface" aria-labelledby="builds-title">
     <div class="section shell">
-      <SectionHead
-        id="builds-title"
-        label="Healthcare websites"
-        title="Four website packages. Each says how much we do for you."
-        lede="The difference is how much of the work we take on, not how many pages you get. Every package ships with your Google listing set up and starts with a look at it, and every price is agreed in writing before we start."
-      />
+      <div class="grid items-center gap-10 lg:grid-cols-[1fr_440px] lg:gap-16">
+        <SectionHead
+          id="builds-title"
+          label="Healthcare websites"
+          title="Four website packages. Each says how much we do for you."
+          lede="The difference is how much of the work we take on, not how many pages you get. Every package ships with your Google listing set up and starts with a look at it, and every price is agreed in writing before we start."
+        />
+        <ServiceVisual slug="healthcare-websites" class="mx-auto max-w-[440px]" />
+      </div>
 
       <WebsitePackages class="mt-11" />
 
@@ -484,12 +496,15 @@ const check = 'M3 8.5l3.5 3.5L13 4.5';
   <section id="google" class="band-mist" aria-labelledby="google-title">
     <span id="monthly" aria-hidden="true"></span>
     <div class="section shell">
-      <SectionHead
-        id="google-title"
-        label="Google, and after launch"
-        title="Your Google listing, and the work that keeps going."
-        lede="A one-time rebuild for the listing, and two monthly plans for after launch. Both plans run month to month, with no lock-in, and every account stays in your name."
-      />
+      <div class="grid items-center gap-10 lg:grid-cols-[1fr_440px] lg:gap-16">
+        <SectionHead
+          id="google-title"
+          label="Google, and after launch"
+          title="Your Google listing, and the work that keeps going."
+          lede="A one-time rebuild for the listing, and two monthly plans for after launch. Both plans run month to month, with no lock-in, and every account stays in your name."
+        />
+        <ServiceVisual slug="google-business-profile" class="mx-auto max-w-[440px]" />
+      </div>
       <div class="reveal-group mt-11 grid items-stretch gap-5 lg:grid-cols-3">
         <!-- The rebuild -->
         <article class="flex flex-col overflow-hidden rounded-3xl border border-line bg-surface">
@@ -723,10 +738,13 @@ const check = 'M3 8.5l3.5 3.5L13 4.5';
     </div>
   </section>
 
-  <!-- 8 · THE PRICE PROMISE — the page's one dark panel -->
+  <!-- 8 · THE PRICE PROMISE — the page's one dark panel. The photograph is a
+       doctor and a designer going through an estimate together: the moment
+       the panel describes, not a seal standing in for it. The four fixed
+       things run along the bottom, under both. -->
   <section class="section shell" aria-labelledby="promise-title">
     <div class="panel-depth panel-box">
-      <div class="grid items-start gap-12 lg:grid-cols-[1fr_360px] lg:gap-16">
+      <div class="grid items-center gap-12 lg:grid-cols-[1fr_420px] lg:gap-16">
         <div>
           <SectionHead
             dark
@@ -750,22 +768,31 @@ const check = 'M3 8.5l3.5 3.5L13 4.5';
           </p>
         </div>
 
-        <div class="rounded-3xl border border-panel-line bg-panel-card p-7">
-          <p class="label-mono text-panel-text-faint" style="letter-spacing:0.12em">What is fixed</p>
-          <dl class="mt-5">
-            {[
-              ['One number', 'agreed before work starts'],
-              ['Scope and exclusions', 'listed with equal weight'],
-              ['Monthly plans', 'month to month, no lock-in'],
-              ['Your accounts', 'in your name from day one'],
-            ].map(([term, detail], i, arr) => (
-              <div class:list={['py-3', i < arr.length - 1 && 'border-b border-panel-divider']}>
-                <dt class="text-[16px] font-bold text-surface">{term}</dt>
-                <dd class="mt-0.5 text-[15px] leading-[1.55] text-panel-text-dim">{detail}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
+        <Image
+          src={pricingConsult}
+          alt="A web designer and a doctor either side of a desk, going through a price estimate on a tablet held between them."
+          widths={[420, 630, 840]}
+          sizes="(min-width: 1024px) 420px, 92vw"
+          loading="lazy"
+          class="aspect-[3/2] w-full rounded-3xl border border-panel-line object-cover"
+        />
+      </div>
+
+      <div class="mt-12 border-t border-panel-line pt-8">
+        <p class="label-mono text-panel-text-faint" style="letter-spacing:0.12em">What is fixed</p>
+        <dl class="mt-5 grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            ['One number', 'agreed before work starts'],
+            ['Scope and exclusions', 'listed with equal weight'],
+            ['Monthly plans', 'month to month, no lock-in'],
+            ['Your accounts', 'in your name from day one'],
+          ].map(([term, detail]) => (
+            <div>
+              <dt class="text-[16px] font-bold text-surface">{term}</dt>
+              <dd class="mt-1 text-[15px] leading-[1.55] text-panel-text-dim">{detail}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
     </div>
   </section>
