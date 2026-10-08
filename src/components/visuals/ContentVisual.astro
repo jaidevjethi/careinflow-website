@@ -12,18 +12,17 @@
  * on this site always do.
  */
 import PhoneReel from './parts/PhoneReel.astro';
+import { GU, MONO } from './fonts';
 
 interface Props {
   title?: string;
   class?: string;
 }
 const {
-  title = "Illustration: a doctor's reel on a phone with Gujarati captions, beside the caption language, the edit timeline, the reel cover and a ready-to-post note.",
+  title = "Illustration: a physiotherapist's reel about lower back pain on a phone, captioned in Gujarati, beside the caption language, the edit timeline, a Gujarati reel cover and a ready-to-post note.",
   class: className,
 } = Astro.props;
 const id = 'visual-content';
-const GU = "'Noto Sans Gujarati', 'Nirmala UI', 'Shruti', sans-serif";
-const MONO = 'font-family: var(--font-mono)';
 
 /** Clip widths along the edit timeline, left to right. */
 const clips = [
@@ -67,12 +66,14 @@ const wave = [6, 10, 4, 12, 8, 14, 6, 9, 12, 5, 10, 7, 13, 6, 9, 11, 5, 8, 12, 6
   <rect x="384.75" y="72.75" width="146.5" height="206.5" rx="14" class="fill-surface stroke-line" stroke-width="1.5" />
   <text x="400" y="97" font-size="8.5" font-weight="700" letter-spacing="0.14em" class="fill-faint" style={MONO}>REEL COVER</text>
   <rect x="400" y="106" width="116" height="130" rx="10" class="fill-panel" />
-  <path
-    d="M447 130 C451 126 455 128 457 130 C459 128 463 126 467 130 C471 135 469 142 466 147 C464 151 464 156 461 156 C459 156 458 150 457 150 C456 150 455 156 453 156 C450 156 450 151 448 147 C445 142 443 135 447 130 Z"
-    class="fill-a-social-vivid"
-  />
-  <text x="458" y="190" text-anchor="middle" font-size="15" font-weight="800" class="fill-surface" font-family={GU}>પેઢાની</text>
-  <text x="458" y="211" text-anchor="middle" font-size="15" font-weight="800" class="fill-surface" font-family={GU}>સંભાળ</text>
+  <g class="fill-a-social-vivid">
+    <rect x="450" y="124" width="16" height="7" rx="2.5" />
+    <rect x="448.5" y="134" width="17" height="7" rx="2.5" />
+    <rect x="448" y="144" width="17" height="7" rx="2.5" />
+    <rect x="449" y="154" width="16" height="7" rx="2.5" />
+  </g>
+  <text x="458" y="191" text-anchor="middle" font-size="15" font-weight="700" class="fill-surface" font-family={GU}>કમરનો</text>
+  <text x="458" y="212" text-anchor="middle" font-size="15" font-weight="700" class="fill-surface" font-family={GU}>દુખાવો</text>
   <text x="400" y="261" font-size="11" font-weight="700" class="fill-body">Caption written</text>
   <circle cx="510" cy="257" r="8" class="fill-a-social" />
   <path d="M506 257 L508.8 259.8 L514 254.6" class="stroke-surface" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />

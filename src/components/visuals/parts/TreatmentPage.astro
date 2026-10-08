@@ -1,8 +1,11 @@
 ---
 /**
- * A treatment page: the page a search lands on. Cost, recovery and questions
- * answered, and the WhatsApp button under them.
+ * A treatment page: the page a search lands on. A children's vaccination page,
+ * in Gujarati, answering what a parent asks — which vaccine at which age,
+ * what it costs, the usual questions — with the WhatsApp button under it.
  */
+import { GU } from '../fonts';
+
 interface Props {
   x?: number;
   y?: number;
@@ -12,9 +15,9 @@ interface Props {
 const { x = 0, y = 0, width = 176, height = 206 } = Astro.props;
 
 const chips = [
-  { x: 14, w: 38, label: 'Cost' },
-  { x: 58, w: 58, label: 'Recovery' },
-  { x: 122, w: 38, label: 'FAQ' },
+  { x: 14, w: 52, label: 'ઉંમર મુજબ' },
+  { x: 72, w: 38, label: 'ખર્ચ' },
+  { x: 116, w: 46, label: 'પ્રશ્નો' },
 ];
 ---
 
@@ -24,12 +27,12 @@ const chips = [
   <circle cx="14" cy="11" r="3" class="fill-line-strong" />
   <circle cx="24" cy="11" r="3" class="fill-line-strong" />
   <circle cx="34" cy="11" r="3" class="fill-line-strong" />
-  <text x="14" y="42" font-size="7" font-weight="800" letter-spacing="0.14em" class="fill-faint">TREATMENT</text>
-  <text x="14" y="61" font-size="15" font-weight="800" letter-spacing="-0.02em" class="fill-ink">Root canal</text>
+  <text x="14" y="41" font-size="7" font-weight="800" letter-spacing="0.14em" class="fill-faint">CHILDREN · VACCINATION</text>
+  <text x="14" y="62" font-size="17" font-weight="800" class="fill-ink" font-family={GU}>રસીકરણ</text>
   {chips.map((c) => (
     <g>
-      <rect x={c.x} y="71" width={c.w} height="18" rx="9" class="fill-a-seo-tint" />
-      <text x={c.x + c.w / 2} y="83" text-anchor="middle" font-size="8" font-weight="800" class="fill-a-seo">{c.label}</text>
+      <rect x={c.x} y="71" width={c.w} height="19" rx="9.5" class="fill-a-seo-tint" />
+      <text x={c.x + c.w / 2} y="84" text-anchor="middle" font-size="8.5" font-weight="700" class="fill-a-seo" font-family={GU}>{c.label}</text>
     </g>
   ))}
   <rect x="14" y="102" width="148" height="4.5" rx="2" class="fill-line" />

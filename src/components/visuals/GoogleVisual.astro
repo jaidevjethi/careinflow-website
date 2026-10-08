@@ -6,13 +6,14 @@
  * brand.
  */
 import ListingCard from './parts/ListingCard.astro';
+import { GU } from './fonts';
 
 interface Props {
   title?: string;
   class?: string;
 }
 const {
-  title = "Illustration: a search for a dentist nearby, and a clinic's listing beneath it with photos, hours, call and directions buttons, services and a reply to a review.",
+  title = "Illustration: a search in Gujarati for a blood test in Mehsana, and a pathology lab's listing beneath it with photos, hours, call and directions buttons, services and a reply to a review, all in Gujarati.",
   class: className,
 } = Astro.props;
 const id = 'visual-google';
@@ -26,7 +27,7 @@ const id = 'visual-google';
   <rect x="60.75" y="44.75" width="438.5" height="38.5" rx="19.25" class="fill-surface stroke-line" stroke-width="1.5" />
   <circle cx="84" cy="62" r="7" class="stroke-faint" fill="none" stroke-width="1.8" />
   <line x1="89" y1="67" x2="93.5" y2="71.5" class="stroke-faint" stroke-width="1.8" stroke-linecap="round" />
-  <text x="104" y="68" font-size="13.5" font-weight="700" class="fill-ink">dentist near me</text>
+  <text x="104" y="68.5" font-size="14" font-weight="700" class="fill-ink" font-family={GU}>મહેસાણામાં બ્લડ ટેસ્ટ</text>
 
   <ListingCard x={60} y={100} width={440} height={300} />
 </svg>

@@ -1,9 +1,13 @@
 ---
 /**
  * A local map: Mehsana's grid, Radhanpur Road running across it, other
- * clinics as grey pins, and one practice marked with the area it can draw
- * patients from. Relevance, distance and prominence, drawn as a place.
+ * clinics as grey pins, and one children's clinic marked with the area it can
+ * draw patients from. Relevance, distance and prominence, drawn as a place.
+ * The town and the clinic are labelled in Gujarati, as a patient's phone set
+ * to Gujarati would show them.
  */
+import { GU } from '../fonts';
+
 interface Props {
   x?: number;
   y?: number;
@@ -55,8 +59,8 @@ const others = [
     transform="translate(52 286) rotate(-39.8)"
   >RADHANPUR RD</text>
 
-  <rect x="20" y="20" width="80" height="20" rx="10" class="fill-surface" />
-  <text x="31" y="33.5" font-size="8" font-weight="800" letter-spacing="0.14em" class="fill-muted">MEHSANA</text>
+  <rect x="20" y="20" width="72" height="22" rx="11" class="fill-surface" />
+  <text x="56" y="35.5" text-anchor="middle" font-size="11" font-weight="700" class="fill-muted" font-family={GU}>મહેસાણા</text>
 
   {others.map(([px, py]) => (
     <g>
@@ -69,6 +73,6 @@ const others = [
   <circle cx="170" cy="186" r="58" class="fill-a-seo-tint stroke-a-seo-vivid" stroke-width="1.5" stroke-dasharray="4 5" fill-opacity="0.75" />
   <path d="M170 202 C163 192 154 184 154 172 A16 16 0 1 1 186 172 C186 184 177 192 170 202 Z" class="fill-a-seo" />
   <circle cx="170" cy="172" r="6" class="fill-surface" />
-  <rect x="190" y="194" width="98" height="22" rx="11" class="fill-surface stroke-line" stroke-width="1" />
-  <text x="239" y="208.5" text-anchor="middle" font-size="9" font-weight="800" class="fill-ink">Your Practice</text>
+  <rect x="190" y="194" width="98" height="24" rx="12" class="fill-surface stroke-line" stroke-width="1" />
+  <text x="239" y="210.5" text-anchor="middle" font-size="10" font-weight="700" class="fill-ink" font-family={GU}>તમારું ક્લિનિક</text>
 </svg>

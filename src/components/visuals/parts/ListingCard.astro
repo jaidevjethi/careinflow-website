@@ -1,14 +1,17 @@
 ---
 /**
- * A clinic's listing as a patient sees it in local search: photographs, name,
- * category, hours, the call / directions / website buttons, services, and a
- * review with the clinic's reply under it.
+ * A pathology lab's listing as a patient sees it in local search, with the
+ * phone set to Gujarati: photographs, name, category, hours, the call /
+ * directions / website buttons, services, and a review with the lab's reply
+ * under it.
  *
  * Recognisable, deliberately not Google's: no logo, no Google colours, no
  * star rating. Stars would be a number, and a number on an illustration is
  * still an invented number. The reply bubble is the point instead — answering
  * reviews is part of the work.
  */
+import { GU } from '../fonts';
+
 interface Props {
   x?: number;
   y?: number;
@@ -24,16 +27,16 @@ const photos = [
 ];
 
 const actions = [
-  { cx: 36, label: 'Call' },
-  { cx: 98, label: 'Directions' },
-  { cx: 160, label: 'Website' },
+  { cx: 36, label: 'કૉલ' },
+  { cx: 98, label: 'દિશા' },
+  { cx: 160, label: 'વેબસાઇટ' },
 ];
 
 const services = [
-  { x: 232, y: 128, w: 80, label: 'Root canal' },
-  { x: 318, y: 128, w: 64, label: 'Implants' },
-  { x: 232, y: 156, w: 68, label: 'Cleaning' },
-  { x: 306, y: 156, w: 58, label: 'Braces' },
+  { x: 232, y: 128, w: 74, label: 'બ્લડ ટેસ્ટ' },
+  { x: 312, y: 128, w: 64, label: 'થાઇરોઇડ' },
+  { x: 232, y: 156, w: 70, label: 'ડાયાબિટીસ' },
+  { x: 308, y: 156, w: 92, label: 'ઘરેથી સેમ્પલ' },
 ];
 ---
 
@@ -55,9 +58,9 @@ const services = [
     </g>
   ))}
 
-  <text x="16" y="118" font-size="18" font-weight="800" letter-spacing="-0.02em" class="fill-ink">Your Practice</text>
-  <text x="16" y="137" font-size="11" class="fill-muted">Dental clinic · Mehsana</text>
-  <text x="16" y="158" font-size="11"><tspan font-weight="800" class="fill-a-gbp">Open</tspan><tspan class="fill-muted"> · Closes 8 pm</tspan></text>
+  <text x="16" y="118" font-size="18" font-weight="800" letter-spacing="-0.02em" class="fill-ink">Your Lab</text>
+  <text x="16" y="137" font-size="11" class="fill-muted" font-family={GU}>પેથોલોજી લેબ · મહેસાણા</text>
+  <text x="16" y="158" font-size="11" font-family={GU}><tspan font-weight="700" class="fill-a-gbp">ખુલ્લું</tspan><tspan class="fill-muted"> · સાંજે ૮ વાગ્યે બંધ</tspan></text>
 
   {actions.map((a, i) => (
     <g>
@@ -80,7 +83,7 @@ const services = [
           <line x1={a.cx - 8} y1="190" x2={a.cx + 8} y2="190" />
         </g>
       )}
-      <text x={a.cx} y="222" text-anchor="middle" font-size="9" font-weight="700" class="fill-muted">{a.label}</text>
+      <text x={a.cx} y="222" text-anchor="middle" font-size="9.5" font-weight="700" class="fill-muted" font-family={GU}>{a.label}</text>
     </g>
   ))}
 
@@ -92,20 +95,20 @@ const services = [
     </g>
   ))}
 
-  <text x="232" y="116" font-size="7.5" font-weight="800" letter-spacing="0.14em" class="fill-faint">SERVICES</text>
+  <text x="232" y="116" font-size="9.5" font-weight="700" class="fill-faint" font-family={GU}>સેવાઓ</text>
   {services.map((s) => (
     <g>
       <rect x={s.x} y={s.y} width={s.w} height="22" rx="11" class="fill-canvas stroke-line" stroke-width="1" />
-      <text x={s.x + s.w / 2} y={s.y + 14.5} text-anchor="middle" font-size="9" font-weight="700" class="fill-ink">{s.label}</text>
+      <text x={s.x + s.w / 2} y={s.y + 15} text-anchor="middle" font-size="9.5" font-weight="700" class="fill-ink" font-family={GU}>{s.label}</text>
     </g>
   ))}
 
-  <text x="232" y="200" font-size="7.5" font-weight="800" letter-spacing="0.14em" class="fill-faint">REVIEWS</text>
+  <text x="232" y="200" font-size="9.5" font-weight="700" class="fill-faint" font-family={GU}>રિવ્યૂ</text>
   <circle cx="242" cy="218" r="9" class="fill-line" />
   <rect x="258" y="212" width="120" height="5" rx="2.5" class="fill-line" />
   <rect x="258" y="222" width="88" height="5" rx="2.5" class="fill-line" />
   <rect x="232" y="236" width="192" height="48" rx="10" class="fill-a-gbp-tint" />
-  <text x="244" y="254" font-size="9" font-weight="800" class="fill-a-gbp">Reply from the clinic</text>
+  <text x="244" y="255" font-size="10" font-weight="700" class="fill-a-gbp" font-family={GU}>લેબ તરફથી જવાબ</text>
   <rect x="244" y="263" width="150" height="5" rx="2.5" class="fill-line-strong" />
   <rect x="244" y="272" width="108" height="5" rx="2.5" class="fill-line-strong" />
 </svg>

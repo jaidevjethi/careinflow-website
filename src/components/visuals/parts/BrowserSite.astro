@@ -1,12 +1,16 @@
 ---
 /**
- * A browser window showing a clinic website: the practice's name, a hero with
- * a WhatsApp and a call button, a doctor card and a row of treatment pages.
- * The structure a CareInflow site actually has, drawn as a fragment.
+ * A browser window showing a skin clinic's website, in its Gujarati version:
+ * the language switch, a Gujarati headline with the English beneath it, a
+ * WhatsApp and a call button, a doctor card and a page per treatment, each
+ * titled in Gujarati with the English under it. The structure a CareInflow
+ * site has, drawn as a fragment, and bilingual the way the real one is.
  *
  * "Your Practice", never an invented clinic name: a visitor must never wonder
  * whether a mockup is a real clinic (careinflow-images, the confusion rule).
  */
+import { GU } from '../fonts';
+
 interface Props {
   x?: number;
   y?: number;
@@ -15,7 +19,11 @@ interface Props {
 }
 const { x = 0, y = 0, width = 400, height = 300 } = Astro.props;
 
-const treatments = ['Root canal', 'Implants', 'Braces'];
+const treatments = [
+  { gu: 'ખીલ', en: 'Acne' },
+  { gu: 'વાળ ખરવા', en: 'Hair fall' },
+  { gu: 'ચહેરાના ડાઘ', en: 'Pigmentation' },
+];
 ---
 
 <svg {x} {y} {width} {height} viewBox="0 0 400 300">
@@ -26,44 +34,48 @@ const treatments = ['Root canal', 'Implants', 'Braces'];
   <circle cx="31" cy="15.5" r="4" class="fill-line-strong" />
   <circle cx="44" cy="15.5" r="4" class="fill-line-strong" />
   <rect x="66" y="7.5" width="210" height="16" rx="8" class="fill-surface stroke-hairline" stroke-width="1" />
-  <text x="78" y="19" font-size="9" class="fill-muted">yourpractice.in</text>
+  <text x="78" y="19" font-size="9" class="fill-muted">yourpractice.in/gu</text>
 
-  <!-- Navigation -->
+  <!-- Navigation, with the language switch set to Gujarati -->
   <text x="18" y="55" font-size="12.5" font-weight="800" letter-spacing="-0.02em" class="fill-ink">Your Practice</text>
-  <rect x="200" y="48" width="30" height="5" rx="2.5" class="fill-line" />
-  <rect x="238" y="48" width="30" height="5" rx="2.5" class="fill-line" />
-  <rect x="276" y="48" width="30" height="5" rx="2.5" class="fill-line" />
+  <rect x="200" y="48" width="28" height="5" rx="2.5" class="fill-line" />
+  <rect x="236" y="48" width="28" height="5" rx="2.5" class="fill-line" />
+  <rect x="270" y="42" width="50" height="17" rx="8.5" class="fill-canvas stroke-line" stroke-width="1" />
+  <text x="282" y="54" text-anchor="middle" font-size="7.5" font-weight="700" class="fill-faint">EN</text>
+  <rect x="293" y="44" width="25" height="13" rx="6.5" class="fill-a-web" />
+  <text x="305.5" y="53.8" text-anchor="middle" font-size="8" font-weight="700" class="fill-surface" font-family={GU}>ગુજ</text>
   <rect x="326" y="41" width="58" height="19" rx="9.5" class="fill-a-web" />
-  <text x="355" y="54" text-anchor="middle" font-size="8.5" font-weight="800" class="fill-surface">Book</text>
+  <text x="355" y="54" text-anchor="middle" font-size="8.5" font-weight="700" class="fill-surface" font-family={GU}>બુક કરો</text>
 
-  <!-- Hero, with the enquiry one tap away -->
+  <!-- Hero: the headline in Gujarati, the enquiry one tap away -->
   <rect x="14" y="70" width="372" height="106" rx="11" class="fill-a-web-tint" />
-  <rect x="28" y="86" width="176" height="11" rx="4" class="fill-ink" />
-  <rect x="28" y="103" width="128" height="11" rx="4" class="fill-ink" />
-  <rect x="28" y="125" width="180" height="5" rx="2.5" class="fill-line-strong" />
-  <rect x="28" y="135" width="146" height="5" rx="2.5" class="fill-line-strong" />
+  <text x="28" y="98" font-size="16" font-weight="800" class="fill-ink" font-family={GU}>ત્વચા અને વાળની સંભાળ</text>
+  <text x="28" y="116" font-size="9.5" font-weight="700" class="fill-muted">Skin and hair care, explained plainly</text>
+  <rect x="28" y="126" width="168" height="5" rx="2.5" class="fill-line-strong" />
+  <rect x="28" y="136" width="132" height="5" rx="2.5" class="fill-line-strong" />
   <rect x="28" y="149" width="80" height="19" rx="9.5" class="fill-whatsapp" />
   <text x="68" y="161.5" text-anchor="middle" font-size="8" font-weight="800" class="fill-ink">WhatsApp</text>
-  <rect x="114" y="149" width="52" height="19" rx="9.5" class="fill-surface stroke-line" stroke-width="1" />
-  <text x="140" y="161.5" text-anchor="middle" font-size="8" font-weight="800" class="fill-ink">Call</text>
+  <rect x="114" y="149" width="58" height="19" rx="9.5" class="fill-surface stroke-line" stroke-width="1" />
+  <text x="143" y="161.5" text-anchor="middle" font-size="8.5" font-weight="700" class="fill-ink" font-family={GU}>કૉલ કરો</text>
 
   <!-- A doctor card -->
   <rect x="258" y="80" width="114" height="86" rx="10" class="fill-surface" />
   <circle cx="284" cy="108" r="14" class="fill-line" />
   <rect x="304" y="101" width="54" height="6" rx="3" class="fill-ink" />
-  <rect x="304" y="112" width="38" height="5" rx="2.5" class="fill-line-strong" />
+  <text x="304" y="120" font-size="7.5" font-weight="700" class="fill-muted">MD, Dermatology</text>
   <rect x="270" y="134" width="88" height="5" rx="2.5" class="fill-line" />
   <rect x="270" y="145" width="70" height="5" rx="2.5" class="fill-line" />
 
-  <!-- A page for each treatment -->
-  <text x="18" y="198" font-size="7.5" font-weight="800" letter-spacing="0.14em" class="fill-faint">TREATMENTS</text>
+  <!-- A page for each treatment, titled in Gujarati -->
+  <text x="18" y="198" font-size="9" font-weight="800" class="fill-faint" font-family={GU}>સારવાર</text>
+  <text x="56" y="198" font-size="7" font-weight="800" letter-spacing="0.12em" class="fill-faint">· TREATMENTS</text>
   {treatments.map((t, i) => (
     <g>
       <rect x={14 + i * 125} y="206" width="117" height="80" rx="10" class="fill-canvas stroke-hairline" stroke-width="1" />
       <circle cx={34 + i * 125} cy="228" r="10" class="fill-a-web-tint" />
-      <text x={26 + i * 125} y="257" font-size="10" font-weight="800" class="fill-ink">{t}</text>
-      <rect x={26 + i * 125} y="265" width="84" height="4" rx="2" class="fill-line" />
-      <rect x={26 + i * 125} y="274" width="60" height="4" rx="2" class="fill-line" />
+      <text x={26 + i * 125} y="256" font-size="12" font-weight="700" class="fill-ink" font-family={GU}>{t.gu}</text>
+      <text x={26 + i * 125} y="270" font-size="8.5" font-weight="700" class="fill-muted">{t.en}</text>
+      <rect x={26 + i * 125} y="276" width="60" height="3.5" rx="1.75" class="fill-line" />
     </g>
   ))}
 </svg>

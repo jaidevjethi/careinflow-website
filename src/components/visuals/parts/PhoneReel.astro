@@ -1,13 +1,20 @@
 ---
 /**
- * A phone showing a doctor's reel: a speaker to camera, a medical overlay, a
- * Gujarati caption and the progress bar. A part, not a picture: it renders a
- * nested <svg> so the service visuals and the homepage hero can place it at
- * any position and size inside their own canvas.
+ * A phone showing a physiotherapist's reel: a speaker to camera, a spine
+ * overlay, a topic chip and a Gujarati caption — "what should you do for
+ * lower back pain?". A part, not a picture: it renders a nested <svg> so the
+ * service visuals and the homepage hero can place it at any position and size.
+ *
+ * Physiotherapy rather than dental on purpose. The portfolio's one real
+ * website is a dental clinic, so the illustrations show the other practices
+ * the studio works with — physiotherapy, skin, a pathology lab, paediatrics —
+ * and Gujarati, which is how most of their patients read.
  *
  * The speaker is two quiet shapes in the screen's own navy, not a cartoon
  * doctor. What the eye should land on is the caption, which is the product.
  */
+import { GU } from '../fonts';
+
 interface Props {
   x?: number;
   y?: number;
@@ -15,9 +22,6 @@ interface Props {
   height?: number;
 }
 const { x = 0, y = 0, width = 168, height = 348 } = Astro.props;
-
-/** Gujarati falls back to a system face: Manrope has no Gujarati glyphs. */
-const GU = "'Noto Sans Gujarati', 'Nirmala UI', 'Shruti', sans-serif";
 ---
 
 <svg {x} {y} {width} {height} viewBox="0 0 168 348">
@@ -30,19 +34,22 @@ const GU = "'Noto Sans Gujarati', 'Nirmala UI', 'Shruti', sans-serif";
   <circle cx="84" cy="152" r="32" class="fill-panel-line-alt" />
   <path d="M63 214 L84 250 L105 214" class="stroke-panel-text-faint" fill="none" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round" />
 
-  <!-- A topic chip and a medical overlay, as the edit adds them. -->
-  <rect x="18" y="34" width="68" height="22" rx="11" class="fill-a-social-vivid" />
-  <text x="52" y="49" text-anchor="middle" font-size="9.5" font-weight="800" letter-spacing="0.08em" class="fill-ink">3 SIGNS</text>
+  <!-- A topic chip, "3 exercises", and a spine overlay, as the edit adds them. -->
+  <rect x="18" y="34" width="64" height="22" rx="11" class="fill-a-social-vivid" />
+  <text x="50" y="49.5" text-anchor="middle" font-size="11" font-weight="700" class="fill-ink" font-family={GU}>૩ કસરત</text>
   <rect x="104" y="32" width="48" height="48" rx="11" class="fill-surface" />
-  <path
-    d="M118 45 C122 41 126 43 128 45 C130 43 134 41 138 45 C142 50 140 57 137 62 C135 66 135 71 132 71 C130 71 129 65 128 65 C127 65 126 71 124 71 C121 71 121 66 119 62 C116 57 114 50 118 45 Z"
-    class="fill-a-social"
-  />
+  <g class="fill-a-social">
+    <rect x="121" y="38" width="14" height="6.5" rx="2.5" />
+    <rect x="119.5" y="47" width="15" height="6.5" rx="2.5" />
+    <rect x="119" y="56" width="15" height="6.5" rx="2.5" />
+    <rect x="120" y="65" width="14" height="6.5" rx="2.5" />
+  </g>
+  <path d="M141 40 C144 50 144 62 141 72" class="stroke-a-social-vivid" fill="none" stroke-width="2" stroke-linecap="round" />
 
-  <!-- The caption: why do gums bleed? -->
+  <!-- The caption: what should you do for lower back pain? -->
   <rect x="14" y="240" width="140" height="52" rx="11" class="fill-surface" />
-  <text x="84" y="262" text-anchor="middle" font-size="14" font-weight="700" class="fill-ink" font-family={GU}>પેઢામાંથી લોહી</text>
-  <text x="84" y="282" text-anchor="middle" font-size="14" font-weight="700" class="fill-ink" font-family={GU}>કેમ આવે છે?</text>
+  <text x="84" y="262" text-anchor="middle" font-size="13.5" font-weight="700" class="fill-ink" font-family={GU}>કમરના દુખાવામાં</text>
+  <text x="84" y="282" text-anchor="middle" font-size="13.5" font-weight="700" class="fill-ink" font-family={GU}>શું કરવું?</text>
 
   <rect x="20" y="316" width="128" height="3" rx="1.5" class="fill-panel-line-alt" />
   <rect x="20" y="316" width="56" height="3" rx="1.5" class="fill-surface" />

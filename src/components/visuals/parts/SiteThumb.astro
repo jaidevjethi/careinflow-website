@@ -1,9 +1,11 @@
 ---
 /**
  * A clinic website with one small change being made to it: the doctor
- * timings. Website care is mostly this — the hours, the new doctor, the
- * festival closure — so that is what the picture shows.
+ * timings, in Gujarati. Website care is mostly this — the hours, the new
+ * doctor, the festival closure — so that is what the picture shows.
  */
+import { GU } from '../fonts';
+
 interface Props {
   x?: number;
   y?: number;
@@ -13,9 +15,9 @@ interface Props {
 const { x = 0, y = 0, width = 230, height = 300 } = Astro.props;
 
 const timings = [
-  { day: 'Mon – Sat', time: '10 am – 7 pm', edited: false },
-  { day: 'Sunday', time: 'By appointment', edited: true },
-  { day: 'Festivals', time: 'See notice', edited: false },
+  { day: 'સોમ – શનિ', time: 'સવારે ૧૦ – સાંજે ૭', edited: false },
+  { day: 'રવિવાર', time: 'એપોઇન્ટમેન્ટથી', edited: true },
+  { day: 'તહેવારો', time: 'નોટિસ જુઓ', edited: false },
 ];
 ---
 
@@ -32,7 +34,7 @@ const timings = [
   <rect x="24" y="79" width="88" height="8" rx="3" class="fill-ink" />
   <rect x="24" y="96" width="140" height="4" rx="2" class="fill-line-strong" />
 
-  <text x="16" y="138" font-size="7" font-weight="800" letter-spacing="0.14em" class="fill-faint">DOCTOR TIMINGS</text>
+  <text x="16" y="139" font-size="10" font-weight="700" class="fill-faint" font-family={GU}>ડૉક્ટરનો સમય</text>
   {timings.map((t, i) => (
     <g>
       <rect
@@ -44,11 +46,11 @@ const timings = [
         class:list={[t.edited ? 'fill-a-care-tint stroke-a-care-vivid' : 'fill-canvas stroke-hairline']}
         stroke-width="1"
       />
-      <text x="24" y={162 + i * 30} font-size="9" font-weight="800" class="fill-ink">{t.day}</text>
-      <text x={t.edited ? 172 : 204} y={162 + i * 30} text-anchor="end" font-size="9" class="fill-body">{t.time}</text>
+      <text x="24" y={162.5 + i * 30} font-size="9.5" font-weight="700" class="fill-ink" font-family={GU}>{t.day}</text>
+      <text x={t.edited ? 180 : 206} y={162.5 + i * 30} text-anchor="end" font-size="9" class="fill-body" font-family={GU}>{t.time}</text>
       {t.edited && (
         <path
-          d={`M188 ${168 + i * 30} L189.2 ${164 + i * 30} L195.5 ${157.7 + i * 30} L198.3 ${160.5 + i * 30} L192 ${166.8 + i * 30} Z`}
+          d={`M190 ${168 + i * 30} L191.2 ${164 + i * 30} L197.5 ${157.7 + i * 30} L200.3 ${160.5 + i * 30} L194 ${166.8 + i * 30} Z`}
           class="stroke-a-care"
           fill="none"
           stroke-width="1.6"
