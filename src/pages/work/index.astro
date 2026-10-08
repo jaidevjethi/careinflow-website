@@ -1,9 +1,12 @@
 ---
 import { getCollection } from 'astro:content';
 import CaseStudyCard from '@/components/CaseStudyCard.astro';
+import ClientCard from '@/components/ClientCard.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHero from '@/components/PageHero.astro';
+import SectionHead from '@/components/SectionHead.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
+import { CONTENT_CLIENTS } from '@/config/clients';
 import { href } from '@/lib/url';
 import {
   graph,
@@ -14,11 +17,13 @@ import {
   itemListSchema,
 } from '@/lib/schema';
 
-const title = 'Clinic Website Examples: 4 Sites You Can Open | CareInflow';
+const title = 'Clinic Website Examples and Healthcare Content | CareInflow';
 const description =
-  'Websites built by CareInflow: a live bilingual dental clinic in Mehsana, plus dermatology, physiotherapy and services samples you can open. Three are samples.';
+  'Work for three Mehsana practices: a live bilingual dental clinic website and Google listing, and reels and posts for two clinics. Plus three labelled samples.';
 
 const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.order - b.data.order);
+const realBuilds = caseStudies.filter((cs) => !cs.data.demo);
+const samples = caseStudies.filter((cs) => cs.data.demo);
 
 const schema = graph(
   organizationSchema(),
@@ -38,9 +43,9 @@ const schema = graph(
 
 <BaseLayout {title} {description} path="/work" {schema}>
   <PageHero
-    label="Our portfolio"
-    title="Clinic websites we have built. Do not take our word for it."
-    lede="Every site on this page is live right now. Open one on your phone, time how long it takes to appear, tap the WhatsApp button and watch where the message goes. One was built for a real practice. The other three are samples, built to show a clinic exactly what it receives, and each says so at the top of its own page. Our two content clients in Mehsana, Akshar Wellness and Sadbhav Physiotherapy Clinic, are reels and posts rather than builds, so they do not appear here."
+    label="Portfolio"
+    title="The work is live. Open it yourself."
+    lede="Three practices in Mehsana work with CareInflow: one website we built and keep up, with its Google listing, and two Instagram accounts we make reels and posts for. Below them are three sample websites, built to show a clinic what it receives. Each sample says so at the top of its own page."
     stats={[
       { value: 'Live', caption: 'open every one on your own phone' },
       { value: 'Healthcare', caption: 'the only work this studio takes' },
@@ -49,56 +54,72 @@ const schema = graph(
   />
 
   {/*
-    Identical cards, two to a row.
+    REAL WORK AND SAMPLES ARE NEVER MIXED. They were four equal cards in one
+    grid, one real and three samples, told apart only by a chip. Now each has
+    its own section: the real work first and larger, the samples after it,
+    smaller and introduced as what they are.
 
-    Two earlier arrangements were wrong in the same way. Giving the flagship
-    full width and the others `max-w-[760px]` left ~500px of dead ground down
-    the page; pairing two under a full-width lead fixed the ragged edge but
-    still sized the cards by how important we consider each project, which is
-    a judgement a visitor has not asked for. Equal cards let the work argue
-    for itself, and the eye can compare them at one size.
-
-    THE COLUMN COUNT HAS TO DIVIDE THE PROJECT COUNT, which is the grid rule
-    here. At three projects that meant three columns; the fourth arrived and
-    three columns would have stranded it alone on a second row, reading as a
-    page that ran out. Four into two divides evenly, so `xl:grid-cols-3` came
-    off and the grid stops at two. It is also the roomier answer — a card at
-    xl went from a 352px column to ~660px — and it keeps a fifth project from
-    breaking the page again, since 2x2 becomes 3x2 without a decision.
-
-    Below sm they stack. Three columns at tablet width left ~210px per card,
-    which is narrower than this content survives, and two columns there is
-    already the shape the page settles into.
-
-    Card heights match because the grid stretches every item in a row and each
-    card is a flex column with `mt-auto` on the measurements, so the numbers
-    and the link sit on a shared baseline however long a summary runs.
-
-    THE CARD IS COMPOSED PER SCREEN, not scaled. Stacked on a phone, the
-    desktop composition measured 807px — 116% of a 696px viewport — so one card
-    filled the screen and a visitor never saw that a second existed. On a phone
-    the card is a summary: shorter band, tighter padding, the summary clamped,
-    and two measurements instead of four. The rest is one tap away in the case
-    study, which is where it was always going to be read properly.
+    The real build's full card sits beside the two content clients' text
+    cards. Text, because a content client's work is their own Instagram, and a
+    screenshot of someone else's account is not ours to publish until they
+    say so (docs/context/proof-library.md).
   */}
-  <section class="band-powder" aria-label="Case studies">
-    <div class="section shell grid items-stretch gap-6 sm:grid-cols-2">
-      {caseStudies.map((cs) => <CaseStudyCard study={cs} />)}
+  <section class="band-powder" aria-labelledby="clients-title">
+    <div class="section shell">
+      <SectionHead
+        id="clients-title"
+        label="Client work"
+        title="Three practices in Mehsana, and what each trusted to us."
+        lede="A website and its Google listing for one. Reels and posts for the other two. Every card links to the work itself."
+      />
+      <div class="mt-10 grid items-stretch gap-6 lg:grid-cols-[1.35fr_1fr]">
+        {realBuilds.map((cs) => (
+          <CaseStudyCard study={cs} headingLevel="h3" layout="feature" />
+        ))}
+        <div class="grid gap-6 lg:grid-rows-2">
+          {CONTENT_CLIENTS.map((c) => <ClientCard client={c} />)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/*
+    THE SAMPLES, AS THUMBNAILS. Three columns from lg because there are three:
+    the column count has to divide the item count (CLAUDE.md), and a fourth
+    sample means revisiting it. Stacked below lg, where a third of the width is
+    narrower than a cover and a name survive. `layout="third"` is what tells
+    the cover its real width.
+  */}
+  <section class="bg-surface" aria-labelledby="samples-title">
+    <div class="section shell">
+      <SectionHead
+        id="samples-title"
+        label="Samples"
+        title="Three sample websites you can open."
+        lede="No business is behind any of them. Each was invented in full and built to show a clinic exactly what it receives, and each says so at the top of its own page. One is deliberately not healthcare."
+      />
+      <div class="reveal-group mt-10 grid items-stretch gap-6 lg:grid-cols-3">
+        {samples.map((cs) => (
+          <CaseStudyCard study={cs} compact heading="client" headingLevel="h3" layout="third" />
+        ))}
+      </div>
     </div>
   </section>
 
   <section class="section shell">
-    <div class="max-w-[680px] rounded-3xl border border-line bg-surface p-8">
+    <div class="max-w-[720px] rounded-3xl border border-line bg-canvas p-8">
       <h2 class="label-mono mb-4 text-faint">What would yours involve?</h2>
       <p class="text-[16px] leading-[1.65] text-body">
-        Every build runs the same way: one fixed price agreed in writing before
-        anything starts, the person building your site on the other end of
-        WhatsApp, and a written record when it launches. Four weeks, and the
-        study in the first week is free whether or not you go ahead.
-        The <a href={href('/about')} class="prose-link">about page</a>
-        explains who is behind the work, and the
+        Every website build runs the same way: one fixed price agreed in writing
+        before anything starts, the person building your site on the other end
+        of WhatsApp, and a written record when it launches. Content is simpler
+        still: send one sample video and we reply with what the edit involves,
+        how long it takes and what it costs. The
         <a href={href('/process')} class="prose-link">method page</a> shows how a
-        four-week build runs.
+        four-week build runs, the
+        <a href={href('/services/healthcare-content')} class="prose-link">healthcare content page</a>
+        how a month of reels does, and the
+        <a href={href('/about')} class="prose-link">about page</a> who is behind both.
       </p>
     </div>
   </section>

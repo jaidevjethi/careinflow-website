@@ -14,6 +14,7 @@ Astro 5 · TypeScript strict · Tailwind CSS v4 (`@tailwindcss/vite`, tokens in 
 
 - `npm run dev` / `npm run build` (→ `dist/`) / `npx astro check`
 - `site`/`base` come from env: production/Cloudflare = `https://www.careinflow.com` at root; GitHub Pages build sets `SITE=https://jaidevjethi.github.io BASE_PATH=/careinflow-website`. Canonical URLs ALWAYS point to `https://www.careinflow.com` (see `src/config/site.ts` — single source for URLs, NAP, WhatsApp). **www is canonical**: Cloudflare serves the site there and 301s the apex, so a canonical on the bare domain names a URL that redirects.
+- **Never write `as` in the frontmatter of a component that declares `interface Props`** — not `as const`, not a prop called `as` (use `tag`). Astro's compiler then stops reading `Props`, every prop silently becomes `any`, and `astro check` reports implicit-any errors far from the cause. Annotate the type instead.
 - `trailingSlash: 'always'`, so **every internal link must end in a slash**. `href()` and the `rehypeInternalLinks` plugin add it; a link without one costs a 308 on every click. Files (`.svg`, `.xml`, `.txt`) keep their exact path.
 - Deploys: GitHub Actions → GitHub Pages (mirror); Cloudflare Pages builds the same repo at root (production). `public/_headers` and `public/_redirects` are Cloudflare-only; GitHub Pages ignores both.
 - **Cloudflare Pages strips `.html` extensions**, 308ing `/file.html` → `/file`. Anything fetched by exact URL — the Search Console token in `public/google86e87b3d4788a10e.html` — needs a `200` rewrite in `_redirects`. Never delete that file or its rule; `npm run verify` fails the build if the file goes.
@@ -31,6 +32,7 @@ Full rules in the `careinflow-design` skill. The short version:
 - Type: Manrope variable only (display 800, tracking −0.045em; body 18px/1.62); JetBrains Mono for labels/chips. Large tight numbers in their accent colour are the only ornament.
 - Layout: 1440 max, 80px margins, 112/72px section rhythm, radius 12/16/24, exactly one shadow recipe. Nothing crosses the viewport at 320px or 1440px. Grids divide evenly.
 - Motion: single easing `cubic-bezier(.22,1,.36,1)`; 240ms entrance fade+8px rise (once), 200ms hover lift; **only `opacity`/`transform` animate, pure CSS, `prefers-reduced-motion` disables all.** No animation libraries. No gradients, no glass, no glow.
+- **Pages carry pictures all the way down** (owner's instruction, 2026-10-08). The homepage keeps its photographs, mockups, portfolio thumbnails and illustrations: they are what carry a visitor down the page, and a run of text cards reads as dull however good the words are. A redesign relocates a picture, it does not trade it for text, and removing an image from the homepage needs the owner's say-so. Integrity still wins: no seals or badges that certify nothing, no picture that implies a client who is not one.
 - Section labels are plain language above a tick-rule: "What we do", "Where patients look", "Questions". The record vocabulary (CHART, TRIAGE, PROTOCOL) and the `REF <1.2S` ranges were retired for reading cold. Never "solutions"/"why choose us".
 
 ## Voice & integrity (non-negotiable)

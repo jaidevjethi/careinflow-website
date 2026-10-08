@@ -5,9 +5,17 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import SectionHead from '@/components/SectionHead.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
+import ClientCard from '@/components/ClientCard.astro';
+import CaseStudyCard from '@/components/CaseStudyCard.astro';
 import HeroVisual from '@/components/visuals/HeroVisual.astro';
 import ServiceVisual from '@/components/visuals/ServiceVisual.astro';
 import founderImage from '@/assets/jaidev-jethi.jpg';
+import consultImage from '@/assets/editorial/hero-founder-consult.webp';
+import doctorMobileImage from '@/assets/editorial/hero-doctor-mobile.webp';
+import surfaceGoogleListing from '@/assets/mockups/surface-google-listing.webp';
+import surfacePracticeWebsite from '@/assets/mockups/surface-practice-website.webp';
+import surfaceAiAnswer from '@/assets/mockups/surface-ai-answer.webp';
+import surfaceInstagram from '@/assets/mockups/social-post.webp';
 import { getFaqsFor } from '@/lib/faqs';
 import { BUSINESS } from '@/config/site';
 import { CLIENTS } from '@/config/clients';
@@ -54,13 +62,19 @@ const schema = graph(
  * answer in ten seconds: what does this studio do for a practice like mine?
  *
  *   hero → the five services → the practices that already trust us → the one
- *   real website, in full → how it works → why us → guides → questions → ask
+ *   real website, in full → all four websites → where patients look → how it
+ *   works → why us → specialties → guides → questions → ask
  *
- * The page it replaced explained before it showed: three patient surfaces, nine
- * capability cards, a price strip, a cost-of-delay band and an outcomes grid,
- * all before a visitor could see the services as five things with five prices.
- * The services now come straight after the hero, each with a picture of the
- * work and its price, and everything after them is evidence.
+ * The services come straight after the hero, each with a picture of the work
+ * and its price, and everything after them is evidence.
+ *
+ * KEEP THE PICTURES. The first version of this rebuild cut the portfolio row,
+ * the four patient surfaces and two photographs, and the owner asked for them
+ * back the same day: the images are what carry a visitor down the page, and a
+ * homepage of text cards reads as dull however good the text is. Every section
+ * from the services down carries a picture except the client band, which waits
+ * on logos the practices have not supplied, and the questions. A change that
+ * removes an image from this page needs the owner's say-so.
  */
 
 /**
@@ -124,8 +138,58 @@ const credibility = [
   { value: 'Ex-Microsoft', caption: 'the person who does the work' },
 ];
 
-/** The one real website, shown in full rather than as one of four thumbnails. */
+/** The one real website, shown in full above the row of all four. */
 const caseStudy = (await getEntry('caseStudies', 'pramukh-dental'))!;
+
+/** Every website in the portfolio, real and sample, each card saying which. */
+const allCaseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.order - b.data.order);
+
+/**
+ * The four places a patient checks before calling, each a photograph of that
+ * screen and a door to the service that fixes it.
+ */
+const patientSurfaces = [
+  {
+    title: 'Your Google listing',
+    accent: ACCENTS.gbp,
+    image: surfaceGoogleListing,
+    imageAlt: 'A Google Business Profile for a clinic open on a phone, showing the practice name, photographs of the clinic, and call and directions buttons.',
+    imagePos: 'object-[50%_16%]',
+    text: 'For many patients this is the first thing they see: the map, a few nearby practices, and their hours, photos and reviews. We rebuild the profile, and keep it right every month on Google Care.',
+    link: '/services/google-business-profile',
+    linkText: 'Google Business Profile',
+  },
+  {
+    title: 'Your website',
+    accent: ACCENTS.web,
+    image: surfacePracticeWebsite,
+    imageAlt: 'A clinic website open on a phone, showing a welcome banner, a book-appointment button and a row of treatment cards.',
+    imagePos: 'object-[50%_16%]',
+    text: 'Built by hand, not from a theme. A page for each treatment, written in the words patients type: the symptom and the cost, not the clinical term.',
+    link: '/services/healthcare-websites',
+    linkText: 'Healthcare websites',
+  },
+  {
+    title: 'Your Instagram',
+    accent: ACCENTS.social,
+    image: surfaceInstagram,
+    imageAlt: 'A phone on a desk showing an educational clinic post: a numbered list of early warning signs, laid out with simple illustrations.',
+    imagePos: 'object-center',
+    text: 'Patients who found you elsewhere often check it before they call, to see whether the practice is active and explains things clearly. We turn the videos you record into reels that do that.',
+    link: '/services/healthcare-content',
+    linkText: 'Healthcare content',
+  },
+  {
+    title: 'The answer above the results',
+    accent: ACCENTS.seo,
+    image: surfaceAiAnswer,
+    imageAlt: 'A laptop on a desk showing a search results page where an AI-written summary box sits above the ordinary blue links.',
+    imagePos: 'object-center',
+    text: 'Search a treatment today and Google often writes the answer itself, above every link. It builds that answer from pages it can read and quote, so the facts about your practice have to be published where it can find them.',
+    link: '/services/local-seo',
+    linkText: 'Local SEO',
+  },
+];
 
 /**
  * Four steps, true for every service: the content route and the website route
@@ -182,24 +246,10 @@ const why = [
 ];
 
 /**
- * Specialties we build for. Every one links to the page on what changes for
- * it; cosmetic points at dermatology rather than competing with it.
+ * Every specialty page, in its own order, each with the photograph its page
+ * opens on. Cosmetic work lives on the dermatology page, which says so.
  */
-const SPECIALTIES: Array<{ label: string; href: string }> = [
-  { label: 'Dental', href: '/specialties/dental-clinics' },
-  { label: 'Dermatology', href: '/specialties/dermatology-clinics' },
-  { label: 'Physiotherapy', href: '/specialties/physiotherapy-clinics' },
-  { label: 'Ophthalmology', href: '/specialties/ophthalmology-clinics' },
-  { label: 'Orthopaedics', href: '/specialties/orthopaedic-clinics' },
-  { label: 'Paediatrics', href: '/specialties/paediatric-clinics' },
-  { label: 'Gynaecology', href: '/specialties/gynaecology-clinics' },
-  { label: 'Cosmetic', href: '/specialties/dermatology-clinics' },
-  { label: 'Mental health', href: '/specialties/mental-health-clinics' },
-  { label: 'ENT', href: '/specialties/ent-clinics' },
-  { label: 'Cardiology', href: '/specialties/cardiology-clinics' },
-  { label: 'Diagnostic centres', href: '/specialties/diagnostic-centres' },
-  { label: 'Multi-specialty', href: '/specialties/multi-specialty-hospitals' },
-];
+const specialties = (await getCollection('specialties')).sort((a, b) => a.data.order - b.data.order);
 
 /**
  * Three guides, one per thing a practice gets judged on: the patient's
@@ -379,36 +429,14 @@ const topicLabels: Record<string, string> = {
       {/* Three across from lg; stacked below it, where three columns would
           wrap "Pramukh Multispeciality Dental Clinic" to four lines. */}
       <ul class="reveal-group mt-10 grid gap-4 lg:grid-cols-3 lg:gap-6">
-        {CLIENTS.map((c) => (
-          <li class="flex flex-col overflow-hidden rounded-3xl border border-line bg-canvas">
-            <span class:list={['accent-bar block h-1 w-full', ACCENTS[c.accent].bar]} aria-hidden="true"></span>
-            <div class="flex flex-1 flex-col p-6 sm:p-7">
-              <p class="flex flex-wrap gap-1.5">
-                <span class="chip bg-ink text-surface">Client work</span>
-                <span class:list={['chip', ACCENTS[c.accent].chip]}>{c.pillar}</span>
-              </p>
-              <h3 class="mt-4 text-[clamp(19px,1.6vw,22px)] font-extrabold leading-[1.2] tracking-[-0.025em] text-ink">
-                {c.name}
-              </h3>
-              <p class="mt-1.5 font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{c.place}</p>
-              <p class="mt-4 text-[15px] leading-[1.6] text-body">{c.work}</p>
-              <p class="mt-auto flex flex-wrap gap-x-5 gap-y-1.5 pt-5">
-                <a href={c.url} rel="noopener" class="prose-link text-[15px]">{c.linkText} →</a>
-                {c.caseStudy && (
-                  <a href={href(c.caseStudy)} class="prose-link text-[15px]">Read the case study →</a>
-                )}
-              </p>
-            </div>
-          </li>
-        ))}
+        {CLIENTS.map((c) => <ClientCard client={c} tag="li" />)}
       </ul>
     </div>
   </section>
 
-  <!-- 03 · REAL WORK : the one live website built for a paying practice, in full
-       It used to be one of four equal thumbnails, three of them samples. The
-       samples are still on /work, labelled; here the real build gets the room,
-       and nothing beside it is a sample. -->
+  <!-- 03 · REAL WORK : the one live website built for a paying practice, in full.
+       The row of all four websites follows in its own section, so the real
+       build gets the room here and nothing beside it is a sample. -->
   <section class="band-powder" aria-labelledby="case-title">
     <div class="section shell">
       <div class="grid items-center gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
@@ -460,27 +488,114 @@ const topicLabels: Record<string, string> = {
               <a href={caseStudy.data.url} rel="noopener" class="prose-link text-[16px]">Open the live site →</a>
             )}
           </p>
-          <p class="mt-6 max-w-[560px] text-[15px] leading-[1.6] text-muted">
-            The portfolio also has three sample websites, each clearly labelled
-            as a sample. <a href={href('/work')} class="prose-link">See the portfolio →</a>
-          </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 04 · HOW IT WORKS : the page's one dark section
+  <!-- 04 · FOUR WEBSITES, LIVE : the whole portfolio as thumbnails.
+       Restored on the owner's instruction (2026-10-08): the homepage keeps its
+       pictures, because they are what carry a visitor down the page. The
+       feature above tells one build in full; this row shows that all four
+       exist and can be opened, each labelled "Client work" or "Sample" so the
+       two are never told apart by inference. -->
+  <section class="bg-surface" aria-labelledby="portfolio-title">
+    <div class="section shell">
+      <div class="mb-10 flex flex-wrap items-end justify-between gap-6">
+        <SectionHead
+          id="portfolio-title"
+          label="Our portfolio"
+          title="Four websites, live. Open any of them."
+          lede="Pramukh's, and three samples built to show a clinic exactly what it receives. Time how fast each one appears and tap its enquiry button. Every card says which is which."
+        />
+        <a href={href('/work')} class="prose-link whitespace-nowrap text-base">See the portfolio →</a>
+      </div>
+      {/*
+        Four across from xl, two from sm, one on a phone. Four into four
+        divides evenly. Not four at lg: Tailwind's lg is 1024, where a quarter
+        is 214px, the covers shrink to 106px tall and "Pramukh Multispeciality
+        Dental Clinic" wraps to three lines. Not two on a phone either: at 375
+        that makes the cover 158x79 and truncates the "Non-healthcare" chip,
+        and here the cover is the argument. `layout="quarter"` tells each cover
+        its real width.
+      */}
+      <div class="reveal-group grid items-stretch gap-4 sm:grid-cols-2 sm:gap-6 xl:grid-cols-4">
+        {allCaseStudies.map((cs) => (
+          <CaseStudyCard study={cs} headingLevel="h3" heading="client" compact layout="quarter" />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 · WHERE PATIENTS LOOK : the four places a patient checks before calling.
+       A picture of each place, because the argument is visual: these are four
+       different screens, and a patient sees all of them. -->
+  <section class="section shell" aria-labelledby="surfaces-title">
+    <div class="mb-11 flex flex-wrap items-end justify-between gap-6">
+      <SectionHead
+        id="surfaces-title"
+        label="Where patients look"
+        title="Patients check more than one place before they call."
+        lede="Your Google listing, your website, your Instagram, and now the answer Google writes above the results. A patient often sees more than one, so they all have to say the same thing, and all of it has to be right."
+      />
+      <a href={href('/services')} class="prose-link whitespace-nowrap text-base">See all services →</a>
+    </div>
+    {/* Four surfaces, two to a row from sm up: a 2x2 keeps each picture large
+        enough to read the screen in it. One band height across all four, so
+        the rows stay even though two sources are portrait phones and two are
+        landscape; the portraits are pulled up the frame so the band opens on
+        the phone's screen rather than the space above it. */}
+    <div class="reveal-group grid gap-6 sm:grid-cols-2">
+      {patientSurfaces.map((s) => (
+        <article class="group card-hover card-link flex flex-col overflow-hidden rounded-3xl border border-line bg-surface">
+          <span class:list={['accent-bar block h-1 w-full', s.accent.bar]} aria-hidden="true"></span>
+          <Image
+            src={s.image}
+            alt={s.imageAlt}
+            widths={[420, 640, 840, 1200]}
+            sizes="(min-width: 1440px) 628px, (min-width: 640px) 46vw, 92vw"
+            loading="lazy"
+            class:list={['h-[180px] w-full border-b border-line object-cover sm:h-[210px] lg:h-[250px]', s.imagePos]}
+          />
+          <div class="flex flex-1 flex-col p-6 sm:p-7">
+            <h3 class="text-[clamp(21px,1.9vw,24px)] font-extrabold leading-[1.2] tracking-[-0.03em] text-ink">{s.title}</h3>
+            <p class="mt-2.5 text-[16px] leading-[1.6] text-body">{s.text}</p>
+            <p class="mt-auto pt-5">
+              <a href={href(s.link)} class="prose-link inline-flex items-center gap-1.5 text-[16px]">
+                {s.linkText}
+                <span aria-hidden="true" class="inline-block transition-transform duration-200 ease-instrument group-hover:translate-x-1">→</span>
+              </a>
+            </p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- 06 · HOW IT WORKS : the page's one dark section
        Dark because it is the section that asks, and the design rule is to
-       spend the dark weight on what you want clicked. -->
+       spend the dark weight on what you want clicked. The photograph is the
+       middle of the process, a doctor and a designer going through a site
+       together; it carried the old hero and was kept for this. -->
   <section class="band-panel" aria-labelledby="how-title">
     <div class="section shell">
-      <SectionHead
-        id="how-title"
-        dark
-        label="How it works"
-        title="Four steps, and you always know which one you are on."
-        lede="The same for every service. Nothing is built, edited or charged before the price and the scope are in writing."
-      />
+      <div class="grid items-center gap-10 lg:grid-cols-[1fr_440px] lg:gap-16">
+        <SectionHead
+          id="how-title"
+          dark
+          label="How it works"
+          title="Four steps, and you always know which one you are on."
+          lede="The same for every service. Nothing is built, edited or charged before the price and the scope are in writing."
+        />
+        <Image
+          src={consultImage}
+          alt="A doctor in a white coat and a web designer sitting together at a desk, looking at a clinic website on a laptop while the designer points at the screen."
+          widths={[440, 660, 880]}
+          sizes="(min-width: 1024px) 440px, 92vw"
+          loading="lazy"
+          class="aspect-[3/2] w-full rounded-3xl border border-panel-line object-cover"
+        />
+      </div>
       <ol class="reveal-group mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {steps.map((s, i) => (
           <li class="flex flex-col gap-3 border-t-2 border-panel-line-alt pt-6">
@@ -501,14 +616,26 @@ const topicLabels: Record<string, string> = {
     </div>
   </section>
 
-  <!-- 05 · WHY CAREINFLOW : six things to hold us to, and who does the work -->
+  <!-- 07 · WHY CAREINFLOW : six things to hold us to, and who does the work.
+       The photograph is the outcome rather than the studio: a doctor looking
+       at their own practice's site on a phone. -->
   <section class="section shell" aria-labelledby="why-title">
-    <SectionHead
-      id="why-title"
-      label="Why CareInflow"
-      title="A healthcare specialist, not a general agency."
-      lede="A studio that builds for a restaurant one month and a clinic the next never learns either properly. These are the six things we work by, and you can hold us to every one."
-    />
+    <div class="grid items-center gap-10 lg:grid-cols-[1fr_420px] lg:gap-16">
+      <SectionHead
+        id="why-title"
+        label="Why CareInflow"
+        title="A healthcare specialist, not a general agency."
+        lede="A studio that builds for a restaurant one month and a clinic the next never learns either properly. These are the six things we work by, and you can hold us to every one."
+      />
+      <Image
+        src={doctorMobileImage}
+        alt="A doctor standing in a busy hospital corridor, smiling at their practice website open on a mobile phone."
+        widths={[420, 630, 840]}
+        sizes="(min-width: 1024px) 420px, 92vw"
+        loading="lazy"
+        class="h-[220px] w-full rounded-3xl border border-line object-cover object-[50%_25%] sm:h-[260px]"
+      />
+    </div>
     <ul class="reveal-group mt-11 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {why.map((w, i) => (
         <li class="flex gap-4 rounded-2xl border border-line bg-surface p-6">
@@ -523,58 +650,84 @@ const topicLabels: Record<string, string> = {
       ))}
     </ul>
 
-    <div class="mt-12 grid items-start gap-6 lg:grid-cols-[1fr_440px]">
-      <div class="flex flex-col gap-6 rounded-3xl border border-line bg-surface p-6 sm:flex-row sm:items-center sm:gap-7 sm:p-7">
-        <Image
-          src={founderImage}
-          alt="Jaidev Jethi, founder of CareInflow."
-          widths={[140, 280]}
-          sizes="140px"
-          loading="lazy"
-          class="h-[150px] w-[122px] shrink-0 rounded-2xl border border-line object-cover object-top"
-        />
-        <div>
-          <p class="label-mono text-faint" style="letter-spacing:0.12em">Who does the work</p>
-          <h3 class="mt-2 text-[clamp(20px,2.2vw,24px)] font-extrabold leading-[1.15] tracking-[-0.03em] text-ink">
-            You work directly with the founder, not an account manager.
-          </h3>
-          <p class="mt-2.5 max-w-[560px] text-[15px] leading-[1.6] text-body">
-            CareInflow is run by {BUSINESS.founder}. Web development in Gujarat,
-            cybersecurity study in Canada, then a year and a half at Microsoft
-            before coming home to start this, in 2026. The person you message is
-            the person who edits your reels and builds your site.
-          </p>
-          <p class="mt-3.5 flex flex-wrap gap-x-5 gap-y-1.5">
-            <a href={href('/about')} class="prose-link text-[15px]">More about the studio →</a>
-          </p>
-        </div>
-      </div>
-
-      <div class="rounded-3xl border border-line bg-surface p-6 sm:p-7">
-        <h3 class="label-mono mb-4 text-faint" style="letter-spacing:0.12em">Specialties we work with</h3>
-        <ul class="flex flex-wrap gap-2">
-          {SPECIALTIES.map((sp) => (
-            <li>
-              <a
-                href={href(sp.href)}
-                class="chip inline-flex min-h-[24px] items-center border border-surgical/40 bg-surgical-tint text-surgical hover:border-surgical hover:no-underline"
-              >
-                {sp.label} →
-              </a>
-            </li>
-          ))}
-        </ul>
-        <p class="mt-5 border-t border-hairline pt-4 text-[15px] leading-[1.6] text-muted">
-          Mehsana, Gujarat, and working across Gujarat: practices in
-          {' '}<a href={href('/areas/ahmedabad')} class="prose-link">Ahmedabad</a>,
-          {' '}<a href={href('/areas/gandhinagar')} class="prose-link">Gandhinagar</a> and across
-          {' '}<a href={href('/areas')} class="prose-link">North Gujarat</a>. One studio, no branch offices.
+    <div class="mt-12 flex max-w-[920px] flex-col gap-6 rounded-3xl border border-line bg-surface p-6 sm:flex-row sm:items-center sm:gap-8 sm:p-8">
+      <Image
+        src={founderImage}
+        alt="Jaidev Jethi, founder of CareInflow."
+        widths={[160, 320]}
+        sizes="160px"
+        loading="lazy"
+        class="h-[180px] w-[146px] shrink-0 rounded-2xl border border-line object-cover object-top"
+      />
+      <div>
+        <p class="label-mono text-faint" style="letter-spacing:0.12em">Who does the work</p>
+        <h3 class="mt-2 text-[clamp(20px,2.2vw,24px)] font-extrabold leading-[1.15] tracking-[-0.03em] text-ink">
+          You work directly with the founder, not an account manager.
+        </h3>
+        <p class="mt-2.5 max-w-[600px] text-[15px] leading-[1.6] text-body">
+          CareInflow is run by {BUSINESS.founder}. Web development in Gujarat,
+          cybersecurity study in Canada, then a year and a half at Microsoft
+          before coming home to start this, in 2026. The person you message is
+          the person who edits your reels and builds your site.
+        </p>
+        <p class="mt-3.5 flex flex-wrap gap-x-5 gap-y-1.5">
+          <a href={href('/about')} class="prose-link text-[15px]">More about the studio →</a>
         </p>
       </div>
     </div>
   </section>
 
-  <!-- 06 · GUIDES : quiet, and after the evidence rather than before it -->
+  <!-- 08 · SPECIALTIES : a photograph of each kind of practice, each a door.
+       This was a list of chips. As pictures it does two jobs a list could
+       not: it carries the eye down the page, and it shows at a glance that
+       the studio is for healthcare broadly, not for one specialty. -->
+  <section class="band-powder" aria-labelledby="specialties-title">
+    <div class="section shell">
+      <div class="mb-10 flex flex-wrap items-end justify-between gap-6">
+        <SectionHead
+          id="specialties-title"
+          label="Specialties we work with"
+          title="Built around the practice you run."
+          lede="What a patient needs to see before booking differs from one specialty to the next. Each of these pages says what changes for that kind of practice."
+        />
+        <a href={href('/specialties')} class="prose-link whitespace-nowrap text-base">All specialties →</a>
+      </div>
+      {/* Twelve tiles: two, three, four or six to a row, all of which divide
+          twelve. The pictures are decorative here (alt=""): the name under each
+          says what it is, and twelve described photographs would be read
+          aloud in full before the first link. */}
+      <ul class="reveal-group grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4 xl:grid-cols-6">
+        {specialties.map((sp) => (
+          <li class="group card-hover card-link flex flex-col overflow-hidden rounded-2xl border border-line bg-surface">
+            <Image
+              src={sp.data.image}
+              alt=""
+              widths={[200, 300, 400, 600]}
+              sizes="(min-width: 1440px) 197px, (min-width: 1280px) 15vw, (min-width: 1024px) 22vw, (min-width: 640px) 29vw, 44vw"
+              loading="lazy"
+              class="aspect-[3/2] w-full border-b border-line object-cover"
+            />
+            <p class="flex flex-1 items-center justify-between gap-2 px-3.5 py-3">
+              <a href={href(`/specialties/${sp.id}`)} class="text-[15px] font-semibold leading-[1.3] text-ink hover:no-underline">
+                {sp.data.navLabel}
+              </a>
+              <span aria-hidden="true" class="text-surgical transition-transform duration-200 ease-instrument group-hover:translate-x-0.5">→</span>
+            </p>
+          </li>
+        ))}
+      </ul>
+      <p class="mt-8 max-w-[860px] text-[15px] leading-[1.6] text-muted">
+        If yours is not listed, it almost certainly still fits, so ask. We work
+        from Mehsana with practices in
+        {' '}<a href={href('/areas/ahmedabad')} class="prose-link">Ahmedabad</a>,
+        {' '}<a href={href('/areas/gandhinagar')} class="prose-link">Gandhinagar</a> and across
+        {' '}<a href={href('/areas')} class="prose-link">North Gujarat</a>. One studio, no branch offices.
+      </p>
+    </div>
+  </section>
+
+  <!-- 09 · GUIDES : quiet, and after the evidence rather than before it.
+       Each with its own lead picture, the one its article opens on. -->
   <section class="border-t border-hairline bg-surface" aria-labelledby="guides-title">
     <div class="section-tight shell">
       <div class="mb-9 flex flex-wrap items-end justify-between gap-6">
@@ -587,13 +740,25 @@ const topicLabels: Record<string, string> = {
       </div>
       <div class="grid gap-5 md:grid-cols-3">
         {guides.map((g) => (
-          <article class="card-hover card-link flex flex-col rounded-2xl border border-line bg-canvas p-6">
-            <p class:list={['label-mono', topicAccent(g.data.topic).text]}>{topicLabels[g.data.topic]}</p>
-            <h3 class="mt-3 text-[18px] font-bold leading-[1.3] tracking-[-0.02em] text-ink">{g.data.title}</h3>
-            <p class="mt-2.5 line-clamp-3 text-[15px] leading-[1.6] text-body">{g.data.description}</p>
-            <p class="mt-auto pt-4">
-              <a href={href(`/resources/${g.id}`)} class="prose-link text-[15px]">Read the guide →</a>
-            </p>
+          <article class="card-hover card-link flex flex-col overflow-hidden rounded-2xl border border-line bg-canvas">
+            {g.data.image && (
+              <Image
+                src={g.data.image}
+                alt=""
+                widths={[320, 480, 640, 860]}
+                sizes="(min-width: 1440px) 413px, (min-width: 768px) 30vw, 92vw"
+                loading="lazy"
+                class="aspect-[2/1] w-full border-b border-line object-cover"
+              />
+            )}
+            <div class="flex flex-1 flex-col p-6">
+              <p class:list={['label-mono', topicAccent(g.data.topic).text]}>{topicLabels[g.data.topic]}</p>
+              <h3 class="mt-3 text-[18px] font-bold leading-[1.3] tracking-[-0.02em] text-ink">{g.data.title}</h3>
+              <p class="mt-2.5 line-clamp-3 text-[15px] leading-[1.6] text-body">{g.data.description}</p>
+              <p class="mt-auto pt-4">
+                <a href={href(`/resources/${g.id}`)} class="prose-link text-[15px]">Read the guide →</a>
+              </p>
+            </div>
           </article>
         ))}
       </div>

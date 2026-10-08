@@ -1,6 +1,8 @@
 ---
 /**
- * The portfolio card, used by /work and by the homepage.
+ * The portfolio card: on /work the full card for the real build and the
+ * compact one for the samples beneath it, and on the homepage the compact one
+ * for the row of all four websites.
  *
  * It lives here because it was written twice, and the two copies had already
  * drifted: the homepage band was 140px where /work's was 150px. Whatever the
@@ -40,7 +42,9 @@ interface Props {
   heading?: 'title' | 'client';
   loading?: 'lazy' | 'eager';
   /**
-   * The homepage thumbnail: cover, labels, name, link, and nothing else.
+   * The thumbnail: cover, labels, name, link, and nothing else. The homepage
+   * row of all four websites uses it, and so do the samples on /work, where
+   * they sit below the real work and should read as smaller than it.
    *
    * The full card ran on the homepage too, and the band it made was 1903px —
    * 2.11 screens, 17% of the page, and the tallest section on it by 800px.
@@ -57,7 +61,17 @@ interface Props {
    * covers would leave that sentence unsupported.
    */
   compact?: boolean;
+  /**
+   * The grid the card sits in, which is what decides how wide its cover is
+   * drawn, and so what `sizes` has to say. `feature` is the real build beside
+   * the content clients on /work; `third` is a sample in the three-across row
+   * below it; `quarter` is the homepage's row of all four websites. Defaults
+   * follow the composition, since that is how /work uses them, but a new grid
+   * needs a new entry in COVER, not a borrowed one.
+   */
+  layout?: Layout;
 }
+type Layout = 'feature' | 'third' | 'quarter';
 
 const {
   study,
@@ -66,7 +80,40 @@ const {
   loading = 'lazy',
   compact = false,
 } = Astro.props;
+const grid = Astro.props.layout ?? (compact ? 'third' : 'feature');
 const d = study.data;
+
+/*
+ * Each `sizes` is its grid's own arithmetic, at each step of the shell's
+ * gutter (20px, 40px from 640, 80px from 1280, a 1440 cap) with gap-6:
+ *
+ *   feature  lg:grid-cols-[1.35fr_1fr]   (1440 - 160 - 24) x 1.35/2.35 = 722px
+ *            1280-1439: 50vw · 1024-1279: 53vw · stacked below: 92vw
+ *   third    lg:grid-cols-3              (1440 - 160 - 48) / 3          = 411px
+ *            1280-1439: 28vw · 1024-1279: 30vw · stacked below: 92vw
+ *   quarter  sm:grid-cols-2 xl:grid-cols-4   (1440 - 160 - 72) / 4      = 302px
+ *            1280-1439: 21vw · two across 640-1279: 46vw · stacked: 92vw
+ *
+ * `widths` runs to about twice the largest box, for a 2x screen.
+ *
+ * Typed by annotation, not `as const`: any `as` in this frontmatter stops
+ * Astro finding `Props`, every prop silently becomes `any`, and astro check
+ * reports it as implicit-any errors fifty lines from the cause.
+ */
+const COVER: Record<Layout, { widths: number[]; sizes: string }> = {
+  feature: {
+    widths: [480, 720, 1000, 1440],
+    sizes: '(min-width: 1440px) 722px, (min-width: 1280px) 50vw, (min-width: 1024px) 53vw, 92vw',
+  },
+  third: {
+    widths: [320, 460, 640, 820],
+    sizes: '(min-width: 1440px) 411px, (min-width: 1280px) 28vw, (min-width: 1024px) 30vw, 92vw',
+  },
+  quarter: {
+    widths: [320, 460, 620],
+    sizes: '(min-width: 1440px) 302px, (min-width: 1280px) 21vw, (min-width: 640px) 46vw, 92vw',
+  },
+};
 const Heading = headingLevel;
 const headline = heading === 'client' ? d.client : d.title;
 const subline = heading === 'client' ? d.location : `${d.client} · ${d.location}`;
@@ -95,21 +142,14 @@ const subline = heading === 'client' ? d.location : `${d.client} · ${d.location
     620px while the card rendered it at 1263px, so the browser fetched a 620px
     variant and stretched it 2.04x — the portfolio's most important screenshot
     served at half resolution. It then said 400px against that same 620px box
-    for exactly the same reason: the grid moved and this did not. Each clause
-    below is its grid's own arithmetic, so neither can drift with the viewport:
-    two columns is (1440 - 160 margins - 24 gap) / 2, four columns is
-    (1440 - 160 - 72) / 4. `widths` runs to 1260 and 620 respectively because a
-    2x screen wants twice the CSS pixels.
+    for exactly the same reason: the grid moved and this did not. So the
+    figures now live in COVER above, one entry per grid, chosen by `layout`.
   */}
   <Image
     src={d.cover}
     alt={d.coverAlt}
-    widths={compact ? [320, 460, 620] : [420, 640, 900, 1260]}
-    sizes={
-      compact
-        ? '(min-width: 1440px) 302px, (min-width: 1280px) 23vw, (min-width: 640px) 46vw, 92vw'
-        : '(min-width: 1440px) 628px, (min-width: 640px) 46vw, 92vw'
-    }
+    widths={COVER[grid].widths}
+    sizes={COVER[grid].sizes}
     {loading}
     class="aspect-[2/1] w-full border-b border-line bg-surface object-cover object-top"
   />

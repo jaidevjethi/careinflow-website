@@ -1,0 +1,51 @@
+---
+/**
+ * One real client, as a text mark: the practice's name set in type, what it
+ * trusted to us, and links to the work itself. Used by the homepage's client
+ * band and by /work, so a client is described the same way wherever it
+ * appears, and always from `src/config/clients.ts`.
+ *
+ * No logo and no monogram tile: a visitor would read either as the practice's
+ * own mark, and none has been supplied. No result either, because none has
+ * been recorded (see the rules at the top of clients.ts).
+ */
+import { href } from '@/lib/url';
+import { ACCENTS } from '@/lib/accents';
+import type { Client } from '@/config/clients';
+
+interface Props {
+  client: Client;
+  /** h3 under a section's h2, which is every current use. */
+  headingLevel?: 'h2' | 'h3';
+  /**
+   * The homepage band is a list; /work stacks the cards in a plain grid.
+   * Named `tag`, not the usual `as`: an `as` anywhere in the frontmatter stops
+   * Astro reading this interface, and every prop becomes `any`.
+   */
+  tag?: 'li' | 'div';
+}
+const { client: c, headingLevel = 'h3', tag = 'div' } = Astro.props;
+const Heading = headingLevel;
+const Tag = tag;
+---
+
+<Tag class="flex h-full flex-col overflow-hidden rounded-3xl border border-line bg-canvas">
+  <span class:list={['accent-bar block h-1 w-full', ACCENTS[c.accent].bar]} aria-hidden="true"></span>
+  <div class="flex flex-1 flex-col p-6 sm:p-7">
+    <p class="flex flex-wrap gap-1.5">
+      <span class="chip bg-ink text-surface">Client work</span>
+      <span class:list={['chip', ACCENTS[c.accent].chip]}>{c.pillar}</span>
+    </p>
+    <Heading class="mt-4 text-[clamp(19px,1.6vw,22px)] font-extrabold leading-[1.2] tracking-[-0.025em] text-ink">
+      {c.name}
+    </Heading>
+    <p class="mt-1.5 font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{c.place}</p>
+    <p class="mt-4 text-[15px] leading-[1.6] text-body">{c.work}</p>
+    <p class="mt-auto flex flex-wrap gap-x-5 gap-y-1.5 pt-5">
+      <a href={c.url} rel="noopener" class="prose-link text-[15px]">{c.linkText} →</a>
+      {c.caseStudy && (
+        <a href={href(c.caseStudy)} class="prose-link text-[15px]">Read the case study →</a>
+      )}
+    </p>
+  </div>
+</Tag>
