@@ -1,0 +1,49 @@
+---
+/**
+ * A phone showing a doctor's reel: a speaker to camera, a medical overlay, a
+ * Gujarati caption and the progress bar. A part, not a picture: it renders a
+ * nested <svg> so the service visuals and the homepage hero can place it at
+ * any position and size inside their own canvas.
+ *
+ * The speaker is two quiet shapes in the screen's own navy, not a cartoon
+ * doctor. What the eye should land on is the caption, which is the product.
+ */
+interface Props {
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+}
+const { x = 0, y = 0, width = 168, height = 348 } = Astro.props;
+
+/** Gujarati falls back to a system face: Manrope has no Gujarati glyphs. */
+const GU = "'Noto Sans Gujarati', 'Nirmala UI', 'Shruti', sans-serif";
+---
+
+<svg {x} {y} {width} {height} viewBox="0 0 168 348">
+  <rect x="0.75" y="0.75" width="166.5" height="346.5" rx="28" class="fill-ink stroke-panel-line-alt" stroke-width="1.5" />
+  <rect x="8" y="8" width="152" height="332" rx="22" class="fill-panel-card" />
+  <rect x="66" y="15" width="36" height="7" rx="3.5" class="fill-ink" />
+
+  <!-- The speaker. -->
+  <path d="M26 306 C26 230 50 210 84 207 C118 210 142 230 142 306 Z" class="fill-panel-line" />
+  <circle cx="84" cy="152" r="32" class="fill-panel-line-alt" />
+  <path d="M63 214 L84 250 L105 214" class="stroke-panel-text-faint" fill="none" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round" />
+
+  <!-- A topic chip and a medical overlay, as the edit adds them. -->
+  <rect x="18" y="34" width="68" height="22" rx="11" class="fill-a-social-vivid" />
+  <text x="52" y="49" text-anchor="middle" font-size="9.5" font-weight="800" letter-spacing="0.08em" class="fill-ink">3 SIGNS</text>
+  <rect x="104" y="32" width="48" height="48" rx="11" class="fill-surface" />
+  <path
+    d="M118 45 C122 41 126 43 128 45 C130 43 134 41 138 45 C142 50 140 57 137 62 C135 66 135 71 132 71 C130 71 129 65 128 65 C127 65 126 71 124 71 C121 71 121 66 119 62 C116 57 114 50 118 45 Z"
+    class="fill-a-social"
+  />
+
+  <!-- The caption: why do gums bleed? -->
+  <rect x="14" y="240" width="140" height="52" rx="11" class="fill-surface" />
+  <text x="84" y="262" text-anchor="middle" font-size="14" font-weight="700" class="fill-ink" font-family={GU}>પેઢામાંથી લોહી</text>
+  <text x="84" y="282" text-anchor="middle" font-size="14" font-weight="700" class="fill-ink" font-family={GU}>કેમ આવે છે?</text>
+
+  <rect x="20" y="316" width="128" height="3" rx="1.5" class="fill-panel-line-alt" />
+  <rect x="20" y="316" width="56" height="3" rx="1.5" class="fill-surface" />
+</svg>

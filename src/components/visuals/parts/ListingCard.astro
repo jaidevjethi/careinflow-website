@@ -1,0 +1,111 @@
+---
+/**
+ * A clinic's listing as a patient sees it in local search: photographs, name,
+ * category, hours, the call / directions / website buttons, services, and a
+ * review with the clinic's reply under it.
+ *
+ * Recognisable, deliberately not Google's: no logo, no Google colours, no
+ * star rating. Stars would be a number, and a number on an illustration is
+ * still an invented number. The reply bubble is the point instead — answering
+ * reviews is part of the work.
+ */
+interface Props {
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+}
+const { x = 0, y = 0, width = 440, height = 300 } = Astro.props;
+
+const photos = [
+  { x: 16, w: 128 },
+  { x: 152, w: 128 },
+  { x: 288, w: 136 },
+];
+
+const actions = [
+  { cx: 36, label: 'Call' },
+  { cx: 98, label: 'Directions' },
+  { cx: 160, label: 'Website' },
+];
+
+const services = [
+  { x: 232, y: 128, w: 80, label: 'Root canal' },
+  { x: 318, y: 128, w: 64, label: 'Implants' },
+  { x: 232, y: 156, w: 68, label: 'Cleaning' },
+  { x: 306, y: 156, w: 58, label: 'Braces' },
+];
+---
+
+<svg {x} {y} {width} {height} viewBox="0 0 440 300">
+  <rect x="0.75" y="0.75" width="438.5" height="298.5" rx="16" class="fill-surface stroke-line" stroke-width="1.5" />
+
+  {photos.map((p) => (
+    <g>
+      <rect x={p.x} y="16" width={p.w} height="72" rx="10" class="fill-powder" />
+      <circle cx={p.x + p.w - 26} cy="36" r="7" class="stroke-line-strong" fill="none" stroke-width="2" />
+      <path
+        d={`M${p.x + 14} 76 L${p.x + 44} 48 L${p.x + 66} 66 L${p.x + 82} 55 L${p.x + p.w - 14} 76`}
+        class="stroke-line-strong"
+        fill="none"
+        stroke-width="2"
+        stroke-linejoin="round"
+        stroke-linecap="round"
+      />
+    </g>
+  ))}
+
+  <text x="16" y="118" font-size="18" font-weight="800" letter-spacing="-0.02em" class="fill-ink">Your Practice</text>
+  <text x="16" y="137" font-size="11" class="fill-muted">Dental clinic · Mehsana</text>
+  <text x="16" y="158" font-size="11"><tspan font-weight="800" class="fill-a-gbp">Open</tspan><tspan class="fill-muted"> · Closes 8 pm</tspan></text>
+
+  {actions.map((a, i) => (
+    <g>
+      <circle cx={a.cx} cy="190" r="16" class="fill-a-gbp-tint" />
+      {i === 0 && <rect x={a.cx - 4.5} y="182" width="9" height="16" rx="2.5" class="stroke-a-gbp" fill="none" stroke-width="1.8" />}
+      {i === 1 && (
+        <path
+          d={`M${a.cx} 181 L${a.cx + 9} 190 L${a.cx} 199 L${a.cx - 9} 190 Z M${a.cx - 3} 193 V189 H${a.cx + 3} M${a.cx + 1} 187 L${a.cx + 3} 189 L${a.cx + 1} 191`}
+          class="stroke-a-gbp"
+          fill="none"
+          stroke-width="1.6"
+          stroke-linejoin="round"
+          stroke-linecap="round"
+        />
+      )}
+      {i === 2 && (
+        <g class="stroke-a-gbp" fill="none" stroke-width="1.6">
+          <circle cx={a.cx} cy="190" r="8" />
+          <ellipse cx={a.cx} cy="190" rx="3.5" ry="8" />
+          <line x1={a.cx - 8} y1="190" x2={a.cx + 8} y2="190" />
+        </g>
+      )}
+      <text x={a.cx} y="222" text-anchor="middle" font-size="9" font-weight="700" class="fill-muted">{a.label}</text>
+    </g>
+  ))}
+
+  <!-- The details that have to match the website -->
+  {[248, 266, 284].map((ry, i) => (
+    <g>
+      <circle cx="22" cy={ry - 3} r="5" class="fill-a-gbp-tint" />
+      <rect x="34" y={ry - 6} width={[132, 104, 118][i]} height="5" rx="2.5" class="fill-line" />
+    </g>
+  ))}
+
+  <text x="232" y="116" font-size="7.5" font-weight="800" letter-spacing="0.14em" class="fill-faint">SERVICES</text>
+  {services.map((s) => (
+    <g>
+      <rect x={s.x} y={s.y} width={s.w} height="22" rx="11" class="fill-canvas stroke-line" stroke-width="1" />
+      <text x={s.x + s.w / 2} y={s.y + 14.5} text-anchor="middle" font-size="9" font-weight="700" class="fill-ink">{s.label}</text>
+    </g>
+  ))}
+
+  <text x="232" y="200" font-size="7.5" font-weight="800" letter-spacing="0.14em" class="fill-faint">REVIEWS</text>
+  <circle cx="242" cy="218" r="9" class="fill-line" />
+  <rect x="258" y="212" width="120" height="5" rx="2.5" class="fill-line" />
+  <rect x="258" y="222" width="88" height="5" rx="2.5" class="fill-line" />
+  <rect x="232" y="236" width="192" height="48" rx="10" class="fill-a-gbp-tint" />
+  <text x="244" y="254" font-size="9" font-weight="800" class="fill-a-gbp">Reply from the clinic</text>
+  <rect x="244" y="263" width="150" height="5" rx="2.5" class="fill-line-strong" />
+  <rect x="244" y="272" width="108" height="5" rx="2.5" class="fill-line-strong" />
+</svg>

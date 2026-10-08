@@ -3,60 +3,135 @@ import { BUSINESS, whatsappFor, type PrefillKey } from '@/config/site';
 import { href } from '@/lib/url';
 
 /**
- * The closing CTA card — used word for word across pages, as the design
- * system specifies ("the same white CTA card as the homepage").
- * `prefill` tailors the WhatsApp opening message to the page's context;
- * `nextStep` chains the funnel to the page a convinced visitor reads next.
+ * The closing CTA card. One card everywhere, and one primary action: a free
+ * digital review, which is what a visitor who is not sure where to start
+ * needs. `nextStep` chains the funnel to the page a convinced visitor reads
+ * next.
  *
- * `offer` picks which of the site's two offers the card makes. Everywhere but
- * the two content pages it is the free written review. On those it is the
- * sample-video reply: send one clip and the topic, learn what the reel would
- * involve and cost. The reply is free; the editing never is, and the card says
- * so, because "send us your video" otherwise reads as a free edit.
+ * `offer` makes the ask specific on a service page, because a doctor reading
+ * about Google listings should be asked about their listing, not about their
+ * practice in general. The structure, the WhatsApp route and the honest
+ * escape hatch are the same in every version; only the words and the list of
+ * what we look at change.
+ *
+ * The content version is the one different offer: send one clip, learn what
+ * the reel would involve and cost. The reply is free; the editing never is,
+ * and the card says so, because "send us your video" otherwise reads as a
+ * free edit.
  */
+type Offer = 'review' | 'website' | 'gbp' | 'seo' | 'care' | 'content';
+
 interface Props {
   prefill?: PrefillKey;
-  offer?: 'review' | 'content';
+  offer?: Offer;
   nextStep?: { label: string; href: string };
 }
 const { offer = 'review', nextStep } = Astro.props;
-const prefill = Astro.props.prefill ?? (offer === 'content' ? 'reel' : 'default');
-const whatsappHref = whatsappFor(prefill);
 
-const reviewCovers = [
-  'Listing accuracy',
-  'Mobile load time',
-  'Treatment page coverage',
-  'Review handling',
-  'AI answer readiness',
-  'The three clinics above you',
-];
+const COPY: Record<
+  Offer,
+  { heading: string; body: string; button: string; prefill: PrefillKey; cardTitle: string; items: string[]; foot: string }
+> = {
+  review: {
+    heading: 'Not sure where your clinic should start?',
+    body: 'Tell us your clinic\'s name and what you are trying to improve. You get a free digital review, written and sent within two working days, before anyone asks for your time. If the answer is "change nothing", we will say that.',
+    button: 'Get a free digital review',
+    prefill: 'default',
+    cardTitle: 'The review covers',
+    items: [
+      'Listing accuracy',
+      'Mobile load time',
+      'Treatment page coverage',
+      'Review handling',
+      'AI answer readiness',
+      'The three clinics above you',
+    ],
+    foot: 'Free · 2 working days',
+  },
+  website: {
+    heading: 'Get a free website review.',
+    body: 'Send your clinic\'s name. We look at your website the way a patient meets it: on a phone, on mobile data, looking for one treatment. You get it in writing within two working days, and if the answer is "change nothing", we will say that.',
+    button: 'Get a free website review',
+    prefill: 'website',
+    cardTitle: 'The review covers',
+    items: [
+      'Mobile load time',
+      'Treatment page coverage',
+      'The path to an enquiry',
+      'What Google can read',
+      'Whether it matches your listing',
+      'The three clinics above you',
+    ],
+    foot: 'Free · 2 working days',
+  },
+  gbp: {
+    heading: 'Request a Google Business Profile review.',
+    body: 'Send your clinic\'s name. We go through your listing line by line, the way a patient reads it, and send you what is wrong and what to fix first, in writing, within two working days. If it is already right, we will say that.',
+    button: 'Request a listing review',
+    prefill: 'gbp',
+    cardTitle: 'The review covers',
+    items: [
+      'Verification and duplicates',
+      'Name, address and phone',
+      'Categories and services',
+      'Hours and photographs',
+      'Reviews and replies',
+      'How it matches your website',
+    ],
+    foot: 'Free · 2 working days',
+  },
+  seo: {
+    heading: 'Ask us where your local-search gaps are.',
+    body: 'Send your clinic\'s name and the treatments you want to be found for. We look at what patients nearby search, who appears, and where your site and listing fall short, and send it in writing within two working days. No ranking promises, in the review or after it.',
+    button: 'Ask about your local search',
+    prefill: 'seo',
+    cardTitle: 'The review covers',
+    items: [
+      'What patients nearby search',
+      'Who appears, and why',
+      'Treatment and area pages',
+      'Your listing and reviews',
+      'What Google can read and quote',
+      'What to fix first',
+    ],
+    foot: 'Free · 2 working days',
+  },
+  care: {
+    heading: 'Keep your website working after launch.',
+    body: 'Tell us about your site, whoever built it. We look at what it needs each month and put one price in writing. If it needs nothing, we will say that.',
+    button: 'Ask about Website Care',
+    prefill: 'care',
+    cardTitle: 'Website Care covers',
+    items: [
+      'Updates and changes',
+      'Doctor and treatment details',
+      'Image changes',
+      'Basic technical maintenance',
+      'Backups, where supported',
+      'Small new sections',
+    ],
+    foot: 'Priced to your site',
+  },
+  content: {
+    heading: 'Send one video. We reply with what the edit involves.',
+    body: 'Record a question patients ask you, or send a clip you already have, with the topic. We tell you how we would turn it into a publish-ready reel, how long it takes and what it costs. We do not edit it for free, and there is no obligation.',
+    button: 'Send one sample video',
+    prefill: 'reel',
+    cardTitle: 'We tell you',
+    items: [
+      'What the edit involves',
+      'Gujarati or English captions',
+      'The graphics it needs',
+      'How long it takes',
+      'What it costs',
+      'Whether a package suits you better',
+    ],
+    foot: 'Free reply · usually the same day',
+  },
+};
 
-const contentAnswers = [
-  'What the edit involves',
-  'Gujarati or English captions',
-  'The graphics it needs',
-  'How long it takes',
-  'What it costs',
-  'Whether a package suits you better',
-];
-
-const copy =
-  offer === 'content'
-    ? {
-        heading: 'Send one video. We reply with what the edit involves.',
-        body: 'Record a question patients ask you, or send a clip you already have, with the topic. We tell you how we would turn it into a publish-ready reel, how long it takes and what it costs. We do not edit it for free, and there is no obligation.',
-        cardTitle: 'We tell you',
-        items: contentAnswers,
-        foot: 'Free reply · usually the same day',
-      }
-    : {
-        heading: "Send your clinic's name. We reply with what a patient sees.",
-        body: 'One WhatsApp message, no form and no sales deck. You get a written review of the specific things costing you patients before anyone asks for your time, and if the answer is "change nothing", we will say that.',
-        cardTitle: 'The review covers',
-        items: reviewCovers,
-        foot: 'Free · 2 working days',
-      };
+const copy = COPY[offer];
+const whatsappHref = whatsappFor(Astro.props.prefill ?? copy.prefill);
 ---
 
 <section class="section shell" aria-labelledby="cta-heading">
@@ -75,10 +150,10 @@ const copy =
       </p>
       <div class="mt-8 flex flex-wrap items-center gap-4.5">
         <a href={whatsappHref} rel="noopener" class="btn-whatsapp px-7 py-4 text-[17px]">
-          WhatsApp {BUSINESS.phoneDisplay}
+          {copy.button}
         </a>
         <p class="text-[15px] leading-normal text-panel-text-dim">
-          Usually answered<br />the same day.
+          On WhatsApp, {BUSINESS.phoneDisplay}.<br />Usually answered the same day.
         </p>
       </div>
       {nextStep && (

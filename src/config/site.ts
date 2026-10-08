@@ -223,7 +223,7 @@ export const whatsappWithMessage = (text: string): string =>
  */
 export const PREFILLS = {
   default:
-    "Hi CareInflow. I would like a free written review of my practice's online presence. Clinic name: ",
+    "Hi CareInflow. I would like a free digital review of my practice. Clinic name: ",
   website:
     "Hi CareInflow. I would like the free review, with a focus on my clinic's website. Clinic name: ",
   gbp:
@@ -235,7 +235,7 @@ export const PREFILLS = {
   pricing:
     "Hi CareInflow. I would like a quote in writing, starting with the free review. Clinic name: ",
   work:
-    "Hi CareInflow. I saw your work and I would like a free written review for my own practice. Clinic name: ",
+    "Hi CareInflow. I saw your work and I would like a free digital review for my own practice. Clinic name: ",
   /** The monthly content packages: a conversation, not yet a clip. */
   content:
     "Hi CareInflow. I would like to talk about healthcare content (reels and posts) for my practice. Clinic name: ",

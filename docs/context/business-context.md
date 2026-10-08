@@ -238,7 +238,7 @@ Person schema. Framing stays "thoughtful technologist", never celebrity.
 
 Two offers, both on WhatsApp, both landing on `/contact`:
 
-1. **The free written review** of a practice's website, Google listing and local
+1. **The free digital review** of a practice's website, Google listing and local
    search, returned within two working days. The default everywhere.
 2. **The sample-video reply**: send the topic and one clip, get back what the
    edit would involve, the turnaround and the price. Free to ask; the editing is

@@ -1,0 +1,35 @@
+---
+/**
+ * Local SEO: the three things that have to line up — where the clinic is,
+ * what a patient searches, and the treatment page that answers it. No graph
+ * going up and to the right, because nobody can promise one.
+ */
+import MapPanel from './parts/MapPanel.astro';
+import SearchResult from './parts/SearchResult.astro';
+import TreatmentPage from './parts/TreatmentPage.astro';
+
+interface Props {
+  title?: string;
+  class?: string;
+}
+const {
+  title = 'Illustration: a map of Mehsana with a clinic pin, a search result for root canal treatment in Mehsana, and the treatment page it leads to.',
+  class: className,
+} = Astro.props;
+const id = 'visual-local-seo';
+---
+
+<svg viewBox="0 0 560 420" role="img" aria-labelledby={id} class:list={['block h-auto w-full', className]} style="font-family: var(--font-sans)">
+  <title id={id}>{title}</title>
+  <rect width="560" height="420" rx="24" class="fill-a-seo-tint" />
+  <text x="24" y="30" font-size="9" font-weight="700" letter-spacing="0.14em" class="fill-a-seo" style="font-family: var(--font-mono)">ILLUSTRATIVE</text>
+
+  <MapPanel x={24} y={44} width={300} height={333.75} />
+
+  <!-- From the pin to the search, and from the search to the page -->
+  <path d="M184 200 C196 170 210 140 236 122" class="stroke-a-seo-vivid" fill="none" stroke-width="1.8" stroke-dasharray="4 5" stroke-linecap="round" />
+  <path d="M448 168 V194" class="stroke-a-seo-vivid" fill="none" stroke-width="1.8" stroke-dasharray="4 5" stroke-linecap="round" />
+
+  <SearchResult x={236} y={64} width={300} height={102.6} />
+  <TreatmentPage x={360} y={196} width={176} height={206} />
+</svg>

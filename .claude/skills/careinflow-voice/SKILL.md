@@ -30,7 +30,7 @@ You are writing for busy healthcare professionals in Gujarat, India — doctors 
 
 - Section labels are **plain language** in uppercase mono: "What we do", "Where patients look", "Our portfolio", "Questions". The old medical-record vocabulary (CHART, TRIAGE, PROTOCOL) was retired — it read cold and worked against comprehension. Still never "Solutions" or "Why choose us".
 - Measurements always carry a reference range the way a lab report does: `LCP 0.9S · REF <1.2S`. A number without a reference is not evidence.
-- CTAs (calm, informative): "Message us on WhatsApp" · "Get a free written review" · "Send your clinic's name" · "Send one sample video" · "Book a consultation" · "See the method". Full placement rules live in the `careinflow-funnel` skill.
+- CTAs (calm, informative): "Message us on WhatsApp" · "Get a free digital review" · "Send your clinic's name" · "Send one sample video" · "Book a consultation" · "See the method". Full placement rules live in the `careinflow-funnel` skill.
 - Every ask carries its honest escape hatch — *if the answer is "change nothing", we will say that*. Never drop it to sound more confident; it is why the offer works. The content ask has its own: *we tell you what the edit involves and what it costs; we do not edit it for free, and there is no obligation.*
 - Healthcare content vocabulary: "healthcare reel", "patient explainer", "clinic creative", "publish-ready". Never "basic reel", never "video editing" as the product. The doctor supplies the knowledge and the footage; we never imply we film, script or post unless a page says that service is included.
 - One studio in Mehsana, no branches. Write "our studio", never "our offices" or "our locations"; service areas are places we serve, not places we sit.

@@ -1,0 +1,28 @@
+---
+/**
+ * Website care: a site having its doctor timings changed, beside the month's
+ * checklist. A monitoring metaphor without the hospital monitor: quiet ticks,
+ * no flashing numbers.
+ */
+import SiteThumb from './parts/SiteThumb.astro';
+import CareChecklist from './parts/CareChecklist.astro';
+
+interface Props {
+  title?: string;
+  class?: string;
+}
+const {
+  title = 'Illustration: a clinic website with its doctor timings being updated, beside a monthly checklist of timings, a new treatment section, a backup, a security check and a speed check.',
+  class: className,
+} = Astro.props;
+const id = 'visual-care';
+---
+
+<svg viewBox="0 0 560 420" role="img" aria-labelledby={id} class:list={['block h-auto w-full', className]} style="font-family: var(--font-sans)">
+  <title id={id}>{title}</title>
+  <rect width="560" height="420" rx="24" class="fill-a-care-tint" />
+  <text x="24" y="30" font-size="9" font-weight="700" letter-spacing="0.14em" class="fill-a-care" style="font-family: var(--font-mono)">ILLUSTRATIVE</text>
+
+  <SiteThumb x={28} y={64} width={230} height={300} />
+  <CareChecklist x={280} y={64} width={252} height={300} />
+</svg>

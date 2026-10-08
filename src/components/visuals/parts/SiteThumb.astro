@@ -1,0 +1,65 @@
+---
+/**
+ * A clinic website with one small change being made to it: the doctor
+ * timings. Website care is mostly this — the hours, the new doctor, the
+ * festival closure — so that is what the picture shows.
+ */
+interface Props {
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+}
+const { x = 0, y = 0, width = 230, height = 300 } = Astro.props;
+
+const timings = [
+  { day: 'Mon – Sat', time: '10 am – 7 pm', edited: false },
+  { day: 'Sunday', time: 'By appointment', edited: true },
+  { day: 'Festivals', time: 'See notice', edited: false },
+];
+---
+
+<svg {x} {y} {width} {height} viewBox="0 0 230 300">
+  <rect x="0.75" y="0.75" width="228.5" height="298.5" rx="14" class="fill-surface stroke-line" stroke-width="1.5" />
+  <path d="M14 0.75 H216 A13.25 13.25 0 0 1 229.25 14 V22 H0.75 V14 A13.25 13.25 0 0 1 14 0.75 Z" class="fill-canvas" />
+  <circle cx="15" cy="12" r="3" class="fill-line-strong" />
+  <circle cx="25" cy="12" r="3" class="fill-line-strong" />
+  <circle cx="35" cy="12" r="3" class="fill-line-strong" />
+
+  <text x="16" y="44" font-size="10.5" font-weight="800" letter-spacing="-0.02em" class="fill-ink">Your Practice</text>
+  <rect x="14" y="54" width="202" height="62" rx="9" class="fill-powder" />
+  <rect x="24" y="66" width="120" height="8" rx="3" class="fill-ink" />
+  <rect x="24" y="79" width="88" height="8" rx="3" class="fill-ink" />
+  <rect x="24" y="96" width="140" height="4" rx="2" class="fill-line-strong" />
+
+  <text x="16" y="138" font-size="7" font-weight="800" letter-spacing="0.14em" class="fill-faint">DOCTOR TIMINGS</text>
+  {timings.map((t, i) => (
+    <g>
+      <rect
+        x="14"
+        y={146 + i * 30}
+        width="202"
+        height="24"
+        rx="7"
+        class:list={[t.edited ? 'fill-a-care-tint stroke-a-care-vivid' : 'fill-canvas stroke-hairline']}
+        stroke-width="1"
+      />
+      <text x="24" y={162 + i * 30} font-size="9" font-weight="800" class="fill-ink">{t.day}</text>
+      <text x={t.edited ? 172 : 204} y={162 + i * 30} text-anchor="end" font-size="9" class="fill-body">{t.time}</text>
+      {t.edited && (
+        <path
+          d={`M188 ${168 + i * 30} L189.2 ${164 + i * 30} L195.5 ${157.7 + i * 30} L198.3 ${160.5 + i * 30} L192 ${166.8 + i * 30} Z`}
+          class="stroke-a-care"
+          fill="none"
+          stroke-width="1.6"
+          stroke-linejoin="round"
+        />
+      )}
+    </g>
+  ))}
+
+  <rect x="14" y="246" width="202" height="4.5" rx="2" class="fill-line" />
+  <rect x="14" y="256" width="160" height="4.5" rx="2" class="fill-line" />
+  <rect x="14" y="270" width="80" height="18" rx="9" class="fill-whatsapp" />
+  <text x="54" y="282" text-anchor="middle" font-size="7.5" font-weight="800" class="fill-ink">WhatsApp</text>
+</svg>

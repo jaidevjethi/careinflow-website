@@ -1,27 +1,20 @@
 ---
-import { getCollection } from 'astro:content';
-import CaseStudyCard from '@/components/CaseStudyCard.astro';
-import { getFaqsFor } from '@/lib/faqs';
+import { getCollection, getEntry } from 'astro:content';
 import { Image } from 'astro:assets';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import SectionHead from '@/components/SectionHead.astro';
-import ServiceIcon from '@/components/ServiceIcon.astro';
-import heroImage from '@/assets/editorial/hero-clinic-owner.webp';
-import heroConsult from '@/assets/editorial/hero-founder-consult.webp';
-import heroDoctorMobile from '@/assets/editorial/hero-doctor-mobile.webp';
-import surfaceGoogleListing from '@/assets/mockups/surface-google-listing.webp';
-import surfacePracticeWebsite from '@/assets/mockups/surface-practice-website.webp';
-import surfaceAiAnswer from '@/assets/mockups/surface-ai-answer.webp';
-import surfaceInstagram from '@/assets/mockups/social-post.webp';
-import founderImage from '@/assets/jaidev-jethi.jpg';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
-import { BUSINESS, whatsappWithMessage } from '@/config/site';
+import HeroVisual from '@/components/visuals/HeroVisual.astro';
+import ServiceVisual from '@/components/visuals/ServiceVisual.astro';
+import founderImage from '@/assets/jaidev-jethi.jpg';
+import { getFaqsFor } from '@/lib/faqs';
+import { BUSINESS } from '@/config/site';
 import { CLIENTS } from '@/config/clients';
 import { href } from '@/lib/url';
-import { BUILDS, GOOGLE_CARE, rupees, PRICE_PREFIX } from '@/config/pricing';
+import { BUILDS, GOOGLE_CARE, rupees } from '@/config/pricing';
 import { PRICE_TOKENS } from '@/lib/prices';
-import { serviceAccent, ACCENTS, cycleAccent } from '@/lib/accents';
+import { ACCENTS, cycleAccent, topicAccent } from '@/lib/accents';
 import {
   graph,
   organizationSchema,
@@ -39,24 +32,14 @@ import {
  */
 const title = 'Clinic Websites, Content & Local SEO in Mehsana | CareInflow';
 /**
- * Built from pricing.ts so the figure in the search result can never drift from
- * the figure on the page. The entry price is in the snippet because a
- * published number is the one thing no competing result shows.
+ * Built from pricing.ts so the figures in the search result can never drift
+ * from the figures on the page. A published number is the one thing no
+ * competing result shows.
  */
 const description =
   `A healthcare-only studio in Mehsana. Clinic websites from ${rupees(BUILDS[0]!.from)}, healthcare reels from ${rupees(PRICE_TOKENS.reel)}, and Google and local search care.`;
 
 const faqs = await getFaqsFor('home');
-
-/**
- * The whole portfolio, in `order`. The homepage used to show one card and
- * describe the other two in a paragraph, which hid the strongest asset on the
- * site on its most-read page. Each card carries its own label, so the sample
- * cannot be mistaken for a client.
- */
-const allCaseStudies = (await getCollection('caseStudies')).sort(
-  (a, b) => a.data.order - b.data.order,
-);
 
 const schema = graph(
   organizationSchema(),
@@ -66,285 +49,143 @@ const schema = graph(
   faqSchema(faqs),
 );
 
-/**
- * The four figures a clinic owner is actually scanning for: the way in, the
- * two websites, and what keeps it going. Four, so the grid is 2x2 then 4x1
- * and never strands a card. The reel leads because it is the smallest
- * decision on the site, not because it is the biggest business.
+/*
+ * THE PAGE, rebuilt 2026-10-08 around one question a doctor should be able to
+ * answer in ten seconds: what does this studio do for a practice like mine?
+ *
+ *   hero → the five services → the practices that already trust us → the one
+ *   real website, in full → how it works → why us → guides → questions → ask
+ *
+ * The page it replaced explained before it showed: three patient surfaces, nine
+ * capability cards, a price strip, a cost-of-delay band and an outcomes grid,
+ * all before a visitor could see the services as five things with five prices.
+ * The services now come straight after the hero, each with a picture of the
+ * work and its price, and everything after them is evidence.
  */
-const priceHeadlines = [
-  {
-    name: 'A healthcare reel',
-    value: rupees(PRICE_TOKENS.reel),
-    unit: 'each',
-    note: 'Your footage, edited, captioned in Gujarati or English, with a cover and the caption written. Usually in one or two working days.',
-    link: '/services/reel-editing',
-  },
-  {
-    name: 'Foundation Website',
-    value: rupees(BUILDS[0]!.from),
-    unit: '',
-    note: 'Up to five pages, with your Google listing set up and audited. Fixed in writing before we start.',
-    link: '/services/healthcare-websites',
-  },
-  {
-    name: 'Practice Website',
-    value: rupees(BUILDS[1]!.from),
-    unit: '',
-    note: 'A page per treatment, and your Google listing rebuilt and matched to it. Ninety days of support after launch. Our recommendation.',
-    link: '/pricing#packages',
-  },
-  {
-    name: 'Local SEO & Google Care',
-    value: rupees(GOOGLE_CARE.monthly),
-    unit: '/ month',
-    note: 'After launch: the listing kept up, reviews answered, a new page a month, and a written report. Month to month.',
-    link: '/services/local-seo',
-  },
-];
 
 /**
- * The practices CareInflow works with come from `src/config/clients.ts`, and
- * have a band of their own directly under the hero.
- *
- * They used to sit in the hero's photo caption, two of them, and that was the
- * right idea in the wrong place: the evidence a doctor scans for first, kept
- * small. A third practice would have pushed the hero past the ~72% viewport cap,
- * and three relationships covering three kinds of work — a website, a month of
- * content, a run of reels — are the argument for the whole studio, which a
- * caption cannot make. The band can.
+ * The five services, as the brief for this page put them: a name, one
+ * sentence, a picture of the work, a price, and a door. No bullet lists — the
+ * detail lives on each service's own page, which is where the card sends you.
+ * Prices come from pricing.ts; the wording of each is the service's own unit.
  */
+const serviceCards = [
+  {
+    slug: 'healthcare-content',
+    name: 'Healthcare content',
+    text: 'Reels, Instagram posts, carousels and clinic creatives, made from your own videos and captioned in Gujarati or English.',
+    price: `From ${rupees(PRICE_TOKENS.reel)}`,
+    unit: '/ reel',
+    cta: 'Explore healthcare content',
+    accent: ACCENTS.social,
+  },
+  {
+    slug: 'healthcare-websites',
+    name: 'Healthcare websites',
+    text: 'Patient-focused websites built around your doctors, your treatments and your clinic.',
+    price: `From ${rupees(BUILDS[0]!.from)}`,
+    unit: 'one-time',
+    cta: 'Explore websites',
+    accent: ACCENTS.web,
+  },
+  {
+    slug: 'google-business-profile',
+    name: 'Google Business Profile',
+    text: 'Improve and maintain how your clinic appears on Google: hours, services, photos and replies to reviews.',
+    price: `From ${rupees(PRICE_TOKENS.gbpRebuild)}`,
+    unit: 'one-time',
+    cta: 'Explore Google profile',
+    accent: ACCENTS.gbp,
+  },
+  {
+    slug: 'local-seo',
+    name: 'Local SEO',
+    text: 'Build stronger local search visibility around your treatments and the areas you serve.',
+    price: `From ${rupees(GOOGLE_CARE.monthly)}`,
+    unit: '/ month',
+    cta: 'Explore local SEO',
+    accent: ACCENTS.seo,
+  },
+  {
+    slug: 'website-care',
+    name: 'Website care',
+    text: 'Keep your website updated, secure and useful after launch.',
+    price: 'Custom monthly plan',
+    unit: '',
+    cta: 'Explore website care',
+    accent: ACCENTS.care,
+  },
+];
 
 /** Three things about the studio a buyer can check, not three things we promise. */
 const credibility = [
   { value: 'Healthcare only', caption: 'we take no other kind of client' },
-  { value: 'Mehsana', caption: 'one studio, no branch offices' },
+  { value: 'Mehsana', caption: 'one studio, working across Gujarat' },
   { value: 'Ex-Microsoft', caption: 'the person who does the work' },
 ];
 
-/** The value case, stated as mechanisms rather than promised results. */
-const outcomes = [
+/** The one real website, shown in full rather than as one of four thumbnails. */
+const caseStudy = (await getEntry('caseStudies', 'pramukh-dental'))!;
+
+/**
+ * Four steps, true for every service: the content route and the website route
+ * only differ in what the second step reviews.
+ */
+const steps = [
   {
-    title: 'Patients can find the treatment they need',
-    text: 'Every treatment you offer gets its own page, written in the words patients actually search. One "Services" list cannot do that.',
+    title: 'Tell us what you need',
+    text: "A WhatsApp message with your clinic's name and what you want to improve, a call, or a booked meeting.",
   },
   {
-    title: 'Your Google listing stops costing you visits',
-    text: 'Correct categories. Real photographs. Hours that are right, including the festival days everyone forgets. A reply under every review, month after month.',
+    title: 'We review where you stand',
+    text: 'A free digital review of your website and Google listing, or a reply on one sample video. Useful whether or not you hire us.',
   },
   {
-    title: 'Your site loads before patients give up',
-    text: 'Built to open in under 1.2 seconds on a mid-range Android over mobile data. That is the phone your patients are holding.',
+    title: 'We build, create or improve',
+    text: 'One fixed price in writing first. Then the website, the listing or the month of content, made by the person you spoke to.',
   },
   {
-    title: 'Enquiries reach a person, not a form',
-    text: 'A WhatsApp button that opens a message the patient only has to send. It arrives where your front desk will see it.',
+    title: 'You get a clear deliverable',
+    text: 'A site you own, a listing that is right, reels ready to post, and monthly care where you want it.',
   },
 ];
 
 /**
- * Why now, without scarcity.
- *
- * The site had no answer to "why not next year", which left every visitor's
- * default answer as "later". Scarcity is banned here and stays banned: there
- * is no deadline, no count, no countdown, and no price on this site expires.
- *
- * What is left when you remove all of that is the honest part — three things
- * that carry on happening whether or not a practice has decided. Each one is
- * checkable by the reader and none of them invents a number, which is the line
- * that separates this from the pressure tactic it would otherwise be. It ends
- * by pointing at the free review and repeating the escape hatch.
+ * Why a doctor would choose this studio, as six things they can hold it to.
+ * Each is a description of how the studio works, none a claim about results.
  */
-const delay = [
+const why = [
   {
-    title: 'Patients search tonight, not when you are ready',
-    text: 'Someone near you is looking for your treatment this evening. They will call whoever appears when they look. That happens tonight whether your listing is right or not.',
+    title: 'Healthcare only',
+    text: 'Doctors and clinics are the only clients we take, so every page and every reel is shaped around patients.',
   },
   {
-    title: 'A wrong listing stays wrong',
-    text: 'Hours that are out of date, an old address, a category describing a different practice. None of it corrects itself. It keeps turning patients away every day until somebody changes it.',
+    title: 'Clear scope',
+    text: 'Every package says what is included and what is not, in the same plain words, before you pay.',
   },
   {
-    title: 'Reviews build for whoever asks',
-    text: 'The practice above you is not always better. Often it is the one that has been asking patients for a review for two years. That gap widens quietly, and it takes time to close.',
+    title: 'Direct communication',
+    text: 'You work with the founder, usually on WhatsApp, not with an account manager.',
+  },
+  {
+    title: 'Fast, practical delivery',
+    text: 'A reel usually in one or two working days, the free review in two, and a website on a timeline agreed at the start.',
+  },
+  {
+    title: 'Published prices',
+    text: 'Every figure is on the pricing page, and yours is fixed in writing before any work starts.',
+  },
+  {
+    title: 'No fake guarantees',
+    text: 'No promised rankings, patients or followers, and no bought reviews. Nobody can honestly promise those.',
   },
 ];
 
 /**
- * The places a patient checks before ringing anyone. Every row here is
- * something a doctor can judge for themselves; the block this replaced showed
- * LCP, CLS and INP with their reference ranges, which is a measurement for the
- * person building the site and means nothing to the person buying it.
- *
- * Four since 2026-10-08, when healthcare content became one of the three
- * things the studio sells: a patient who found a clinic on Google often checks
- * its Instagram before calling, and that is the surface content serves. Four
- * also divides evenly, 2x2, where three in two columns stranded a card.
+ * Specialties we build for. Every one links to the page on what changes for
+ * it; cosmetic points at dermatology rather than competing with it.
  */
-const patientSurfaces = [
-  {
-    title: 'Your Google listing',
-    accent: ACCENTS.gbp,
-    image: surfaceGoogleListing,
-    imageAlt: 'A Google Business Profile for a dental clinic open on a phone, showing the practice name, photographs of the clinic, and call and directions buttons.',
-    imagePos: 'object-[50%_16%]',
-    text: 'For most clinics this is the real homepage: three results, chosen on distance, hours, photos and the newest review. We rebuild the profile and then actually maintain it.',
-    rows: [
-      ['Categories and services', 'rebuilt'],
-      ['Hours, holidays, photos', 'monthly'],
-      ['Review replies drafted', 'every review'],
-    ],
-    link: '/services/google-business-profile',
-    linkText: 'Google Business Profile',
-  },
-  {
-    title: 'Your website',
-    accent: ACCENTS.web,
-    image: surfacePracticeWebsite,
-    imageAlt: 'A clinic website open on a phone, showing a welcome banner, a book-appointment button and a row of treatment cards.',
-    imagePos: 'object-[50%_16%]',
-    text: 'Built by hand, not from a theme. A page for each treatment, written in the words patients type. Symptom and cost, not clinical terminology.',
-    rows: [
-      ['A page per treatment', 'written'],
-      ['Opens on 4G', 'about a second'],
-      ['Enquiry from any page', 'two taps'],
-    ],
-    link: '/services/healthcare-websites',
-    linkText: 'Healthcare websites',
-  },
-  {
-    title: 'Your Instagram',
-    accent: ACCENTS.social,
-    image: surfaceInstagram,
-    imageAlt: 'A phone on a desk showing an educational clinic post: a numbered list of early warning signs, laid out with simple illustrations.',
-    imagePos: 'object-center',
-    text: 'Patients who found you elsewhere often check it before they call, to see whether the practice is active and explains things clearly. We turn the videos you record into reels that do that.',
-    rows: [
-      ['Reels from your footage', 'edited'],
-      ['Captions', 'Gujarati or English'],
-      ['Cover and caption', 'every reel'],
-    ],
-    link: '/services/healthcare-content',
-    linkText: 'Healthcare content',
-  },
-  {
-    title: 'The answer above the results',
-    accent: ACCENTS.seo,
-    image: surfaceAiAnswer,
-    imageAlt: 'A laptop on a desk showing a search results page where an AI-written summary box sits above the ordinary blue links.',
-    imagePos: 'object-center',
-    text: 'Search a treatment today and Google often writes the answer itself, above every link. It builds that from pages it can read and quote. Almost no clinic in India has published the facts it needs.',
-    rows: [
-      ['Practice and doctor details', 'published'],
-      ['Treatments and what they cost', 'stated plainly'],
-      ['Questions patients actually ask', 'answered'],
-    ],
-    link: '/services/local-seo',
-    linkText: 'Local SEO groundwork',
-  },
-];
-
-/**
- * The three pillars, three services in each. Content first, because it is
- * the easiest way into the studio; websites next, the larger project; Google
- * and local search last, the work that keeps going after launch. A practice
- * can start with any one of them, and the lede says so.
- *
- * They were nine flat cards once. At squint the block read as one
- * undifferentiated grey mass a screen and a half tall — nine headings and
- * eighteen lines of body with no anchor, which is a set nobody scans and
- * nobody remembers. Three groups of three keep it scannable, and 3x3 divides
- * evenly.
- *
- * The groups changed on 2026-10-08. They were "the website, being found on
- * Google, after it goes live", with social media as the ninth card under
- * aftercare. Healthcare content is now a pillar of its own, and aftercare
- * folds into the pillar it belongs to: Website Care beside the website, and
- * the monthly Google work beside the Google work.
- */
-const serviceGroups = [
-  {
-    group: 'Healthcare content',
-    accent: 'healthcare-content',
-    lead: 'Your knowledge, turned into reels and posts patients actually watch.',
-    items: [
-      {
-        title: 'Healthcare reels',
-        icon: 'video' as const,
-        text: 'Your footage, edited and captioned in Gujarati or English, with a cover and the caption written.',
-        link: '/services/reel-editing',
-      },
-      {
-        title: 'Posts and carousels',
-        icon: 'social' as const,
-        text: 'Patient education, clinic updates and creatives, made from what you already explain.',
-        link: '/services/healthcare-content',
-      },
-      {
-        title: 'Monthly content packages',
-        icon: 'calendar' as const,
-        text: 'A fixed count of reels and posts each month, so you know exactly what you will get.',
-        link: '/services/healthcare-content',
-      },
-    ],
-  },
-  {
-    group: 'Healthcare websites',
-    accent: 'healthcare-websites',
-    lead: 'Something that loads fast, reads like your practice and asks for the enquiry.',
-    items: [
-      {
-        title: 'Practice website',
-        icon: 'website' as const,
-        text: 'Hand-built, quick on an inexpensive phone, written for a patient who is worried.',
-        link: '/services/healthcare-websites',
-      },
-      {
-        title: 'Enquiry & booking flow',
-        icon: 'enquiry' as const,
-        text: 'Usually WhatsApp, set up so the message lands where someone will answer it.',
-        link: '/services/healthcare-websites',
-      },
-      {
-        title: 'Website care',
-        icon: 'maintenance' as const,
-        text: 'Updates, changes and upkeep after launch, on a monthly plan priced to your site.',
-        link: '/services/website-care',
-      },
-    ],
-  },
-  {
-    group: 'Google & local search',
-    accent: 'google-business-profile',
-    lead: 'The listing, the pages behind it, and the summary Google now writes above both.',
-    items: [
-      {
-        title: 'Google Business Profile',
-        icon: 'listing' as const,
-        text: 'Claimed, rebuilt and then maintained: categories, services, hours, photos, questions.',
-        link: '/services/google-business-profile',
-      },
-      {
-        title: 'Local SEO and AI answers',
-        icon: 'search' as const,
-        text: 'A page per treatment and per area, the same details everywhere, and facts a search engine can quote.',
-        link: '/services/local-seo',
-      },
-      {
-        title: 'Local SEO & Google Care',
-        icon: 'review' as const,
-        text: 'Your listing, reviews and local search looked after every month, with a written report.',
-        link: '/services/local-seo',
-      },
-    ],
-  },
-];
-
-/**
- * Specialties we build for. The three with a written page link to it; the rest
- * are chips, because a link that goes nowhere is worse than plain text.
- */
-const SPECIALTIES: Array<{ label: string; href?: string }> = [
+const SPECIALTIES: Array<{ label: string; href: string }> = [
   { label: 'Dental', href: '/specialties/dental-clinics' },
   { label: 'Dermatology', href: '/specialties/dermatology-clinics' },
   { label: 'Physiotherapy', href: '/specialties/physiotherapy-clinics' },
@@ -352,10 +193,6 @@ const SPECIALTIES: Array<{ label: string; href?: string }> = [
   { label: 'Orthopaedics', href: '/specialties/orthopaedic-clinics' },
   { label: 'Paediatrics', href: '/specialties/paediatric-clinics' },
   { label: 'Gynaecology', href: '/specialties/gynaecology-clinics' },
-  // Cosmetic points at the dermatology page rather than getting one of its
-  // own. A separate page would compete with it for the same searches and cost
-  // both; the dermatology page already argues the medical-versus-cosmetic
-  // split and now carries the label to match.
   { label: 'Cosmetic', href: '/specialties/dermatology-clinics' },
   { label: 'Mental health', href: '/specialties/mental-health-clinics' },
   { label: 'ENT', href: '/specialties/ent-clinics' },
@@ -364,140 +201,190 @@ const SPECIALTIES: Array<{ label: string; href?: string }> = [
   { label: 'Multi-specialty', href: '/specialties/multi-specialty-hospitals' },
 ];
 
-const whatsappHref = whatsappWithMessage(
-  "Hi CareInflow. I would like a free written review of my practice's online presence. Clinic name: ",
+/**
+ * Three guides, one per thing a practice gets judged on: the patient's
+ * decision, the website, and the listing. Named by id so the strip does not
+ * change shape when a new guide is published.
+ */
+const GUIDE_IDS = [
+  'how-patients-choose-a-clinic-online',
+  'what-a-clinic-website-actually-needs',
+  'google-business-profile-for-clinics',
+];
+const allGuides = await getCollection('resources');
+const guides = GUIDE_IDS.map((id) => allGuides.find((g) => g.id === id)).filter(
+  (g): g is NonNullable<typeof g> => Boolean(g),
 );
+const topicLabels: Record<string, string> = {
+  patients: 'Patient behaviour',
+  'google-business-profile': 'Google Business Profile',
+  websites: 'Websites',
+  'local-seo': 'Local SEO',
+  performance: 'Performance',
+};
 ---
 
 <BaseLayout {title} {description} path="/" {schema}>
-  <!-- HERO : the site's first midnight moment. Same rhythm as PageHero:
-       it is allowed to be the tallest page, not to exceed the viewport. -->
+  <!-- HERO : the site's first midnight moment. It is allowed to be the
+       tallest hero on the site, never taller than the viewport. -->
   <section class="panel-depth hero-pad">
     <div class="shell">
-      <!-- Three children, ordered differently by width. On a phone the proof
-           photograph belongs directly under the two buttons, where the visitor
-           is deciding, rather than after the stats where it used to sit two
-           screens down. On a wide screen it returns to the right column and
-           the stats sit back under the copy. -->
-      <div
-        class="flex flex-col gap-10 lg:grid lg:grid-cols-[1fr_560px] lg:grid-rows-[auto_auto] lg:items-center lg:gap-x-16 lg:gap-y-7"
-      >
-        <div class="animate-rise lg:col-start-1 lg:row-start-1">
+      <div class="grid items-center gap-10 lg:grid-cols-[1fr_520px] lg:gap-14">
+        <div class="animate-rise">
           <p class="inline-flex max-w-full items-center gap-2.5 rounded-full border border-panel-line bg-panel-card px-3.5 py-2">
             <span class="inline-block size-[7px] shrink-0 animate-live rounded-full bg-panel-accent" aria-hidden="true"></span>
-            <span class="min-w-0 font-mono text-[11px] uppercase tracking-[0.08em] text-panel-text sm:text-[11px] sm:tracking-[0.1em]">
+            <span class="min-w-0 font-mono text-[11px] uppercase tracking-[0.08em] text-panel-text sm:tracking-[0.1em]">
               Healthcare practices only · Mehsana, Gujarat
             </span>
           </p>
           {/*
-            What the studio does, in the order a doctor meets it, rather than a
-            superlative about it. "Gujarat's best healthcare websites" stood
-            here until 2026-10-08; it was an opinion nobody could check, and it
-            described only one of the three things the studio now does. The
-            accent line is unchanged: it is the patient's path, not a promise.
+            The category first, then the three things in it. "Gujarat's best
+            healthcare websites" stood here until 2026-10-08: an opinion nobody
+            could check, describing one of the three things the studio does.
           */}
-          <h1 class="mt-6 text-[clamp(36px,4.4vw,60px)] font-extrabold leading-[1.02] tracking-[-0.05em] text-surface">
-            Healthcare websites, content and Google. <span class="text-panel-accent">Found, trusted, booked.</span>
+          <h1 class="mt-6 text-[clamp(36px,4.6vw,62px)] font-extrabold leading-[1.02] tracking-[-0.05em] text-surface">
+            Digital growth for <span class="text-panel-accent">doctors and clinics.</span>
           </h1>
-          <p class="mt-5 max-w-[640px] text-[17px] leading-[1.58] text-panel-text">
-            CareInflow works only with healthcare practices, from one studio in
-            Mehsana. We turn your videos into reels patients learn from, build
-            the website they check next, and do the Google and local search
-            groundwork that decides whether nearby patients find you. You work
-            directly with the founder.
+          <p class="mt-5 max-w-[620px] text-[17px] leading-[1.6] text-panel-text">
+            From patient-friendly websites and Gujarati healthcare content to
+            your Google Business Profile and local SEO, CareInflow helps
+            healthcare practices build a stronger digital presence. One studio
+            in Mehsana, and you work directly with the founder.
           </p>
-          {/*
-            Hidden below sm. The fixed bar at the bottom of the viewport already
-            carries both of these on a phone, and it never scrolls away — so on
-            the smallest screen this pair was 130px spent repeating a control
-            the reader can already see. It returns at sm, where there is no bar.
-          */}
-          <div class="mt-7 hidden flex-wrap items-center gap-4 sm:flex">
-            <a href={whatsappHref} rel="noopener" class="btn-whatsapp px-7 py-4 text-base">
-              Message us on WhatsApp
+          {/* One primary action. "Explore services" is the quieter second,
+              for the visitor who wants to see the five before asking. */}
+          <div class="mt-7 flex flex-wrap items-center gap-3.5">
+            <a href={href('/contact')} class="btn-accent px-6 py-3.5 text-base sm:px-7 sm:py-4">
+              Get a free digital review
             </a>
-            <a href={href('/contact')} class="btn-on-dark px-6 py-[15px] text-base">
-              Get a free written review
+            <a href="#services" class="btn-on-dark px-6 py-[13px] text-base sm:py-[15px]">
+              Explore services
             </a>
           </div>
-          {/*
-            The second offer, at a whisper. A doctor who arrived with footage on
-            their phone has no use for a website review, and should not have to
-            find the content page on their own. A text link rather than a third
-            button, so the hero still has one first thing to do; visible at
-            every width, because unlike the buttons the sticky bar does not
-            carry it.
-          */}
-          <p class="mt-4 text-[15px] leading-[1.55] text-panel-text-dim sm:mt-5">
-            Have a video to edit?
-            {' '}<a href={href('/services/reel-editing')} class="link-accent">See what one reel includes →</a>
-          </p>
+          <dl class="mt-9 grid max-w-[620px] gap-x-8 gap-y-5 border-t border-panel-line pt-5 sm:grid-cols-3">
+            {credibility.map((c) => (
+              <div>
+                <dt class="sr-only">{c.caption}</dt>
+                <dd class="numeral whitespace-nowrap text-[clamp(20px,2vw,26px)] text-surface">{c.value}</dd>
+                <dd class="mt-1.5 font-mono text-[11px] uppercase leading-[1.5] tracking-[0.08em] text-panel-text-dim">
+                  {c.caption}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
-        {/*
-          Credibility, not promises. Three facts about the studio rather than
-          four things it swears it will do.
-        */}
-        <dl class="order-last grid max-w-[620px] gap-x-8 gap-y-5 border-t border-panel-line pt-5 sm:grid-cols-3 lg:order-none lg:col-start-1 lg:row-start-2">
-          {credibility.map((c) => (
-            <div>
-              <dt class="sr-only">{c.caption}</dt>
-              <dd class="numeral whitespace-nowrap text-[clamp(20px,2vw,26px)] text-surface">{c.value}</dd>
-              <dd class="mt-1.5 font-mono text-[11px] uppercase leading-[1.5] tracking-[0.08em] text-panel-text-dim">
-                {c.caption}
-              </dd>
-            </div>
-          ))}
-        </dl>
 
-        <figure class="m-0 animate-fade lg:col-start-2 lg:row-span-2 lg:row-start-1">
-          {/*
-            One photograph, not a three-slide track. The track cost two lazy
-            images, a scroll region, a caption row of anchor links and a capped
-            height that every slide had to share, all to show two pictures
-            almost nobody moved to. The other two now do real work further down
-            the page instead.
-          */}
-          <Image
-            src={heroConsult}
-            alt="A doctor in a white coat and a web designer sitting together at a desk, looking at a clinic website on a laptop while the designer points at the screen."
-            widths={[560, 700, 840, 1120]}
-            sizes="(min-width: 1024px) 560px, 92vw"
-            loading="eager"
-            fetchpriority="high"
-            class="aspect-[3/2] w-full rounded-3xl border border-panel-line object-cover"
-          />
-        </figure>
+        {/*
+          Hidden on a phone, on purpose. The five service cards directly below
+          carry a picture each, so on a 375px screen this would be the same
+          pictures twice, pushing the services a full screen down. From sm up
+          there is room for both, and this is the one image that shows all
+          three pillars at once.
+        */}
+        <div class="hidden animate-fade sm:block">
+          <HeroVisual class="mx-auto max-w-[520px]" />
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- 01 · WHO WE WORK WITH : the real practices, before a word of explanation
-       A doctor's first question about a new studio is whether anyone real uses
-       it. Three practices in Mehsana do, and between them they cover the three
-       things the studio sells, so the band answers the second question too
-       (what does this place actually do?) without a paragraph of claims.
+  <!-- 01 · WHAT WE DO : the five services, each a door -->
+  <section id="services" class="bg-canvas" aria-labelledby="services-title">
+    <div class="section shell">
+      <div class="mb-11 flex flex-wrap items-end justify-between gap-6">
+        <SectionHead
+          id="services-title"
+          label="What we do"
+          title="How CareInflow helps your practice"
+          lede="Five services, for healthcare practices only. Start with whichever you need: one is enough, and the free review says which."
+        />
+        <a href={href('/services')} class="prose-link whitespace-nowrap text-base">All services →</a>
+      </div>
+
+      {/*
+        FIVE CARDS, AND A GRID THAT DIVIDES THEM. Five never divides into two or
+        three columns, so the grid is six columns wide at lg: the first three
+        cards take two each, the last two take three each and turn sideways,
+        picture beside words, so the second row is not twice as tall as the
+        first. At sm it is two columns and the fifth card spans both. On a
+        phone they stack, picture first, because the picture is the fastest way
+        to say what each service is.
+      */}
+      <div class="reveal-group grid gap-5 sm:grid-cols-2 lg:grid-cols-6">
+        {serviceCards.map((c, i) => {
+          const wide = i >= 3;
+          return (
+            <article
+              class:list={[
+                'group card-hover card-link flex flex-col overflow-hidden rounded-3xl border border-line bg-surface',
+                wide ? 'lg:col-span-3 lg:flex-row' : 'lg:col-span-2',
+                i === 4 && 'sm:col-span-2',
+              ]}
+            >
+              <div
+                class:list={[
+                  'shrink-0 border-b border-line p-2.5 sm:p-3',
+                  wide && 'lg:flex lg:w-[52%] lg:items-center lg:border-b-0 lg:border-r',
+                ]}
+              >
+                <ServiceVisual
+                  slug={c.slug}
+                  class="rounded-2xl transition-transform duration-200 ease-instrument group-hover:-translate-y-0.5"
+                />
+              </div>
+              <div class="flex flex-1 flex-col p-6 sm:p-7">
+                <p class="flex items-center gap-2.5">
+                  <span class:list={['accent-bar block h-1 w-6 rounded-full', c.accent.bar]} aria-hidden="true"></span>
+                  <span class:list={['font-mono text-[11px] font-semibold uppercase tracking-[0.12em]', c.accent.text]}>
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                </p>
+                <h3 class="mt-3 text-[clamp(21px,1.8vw,24px)] font-extrabold leading-[1.15] tracking-[-0.03em] text-ink">
+                  {c.name}
+                </h3>
+                <p class="mt-2.5 text-[16px] leading-[1.6] text-body">{c.text}</p>
+                <p class="mt-5 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                  <span class="text-[22px] font-extrabold leading-none tracking-[-0.04em] text-ink">{c.price}</span>
+                  {c.unit && (
+                    <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{c.unit}</span>
+                  )}
+                </p>
+                <p class="mt-auto pt-5">
+                  <a href={href(`/services/${c.slug}`)} class="prose-link inline-flex items-center gap-1.5 text-[16px]">
+                    {c.cta}
+                    <span aria-hidden="true" class="inline-block transition-transform duration-200 ease-instrument group-hover:translate-x-1">→</span>
+                  </a>
+                </p>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 · TRUSTED BY : the real practices, named, with what each trusted us with
        Text marks, not logos: a logo goes up only once a practice supplies it
-       for that use, and a monogram tile would read as their logo. -->
-  <section class="bg-canvas" aria-labelledby="clients-title">
+       for that use, and a monogram tile would read as their logo. Permission
+       is secured off the page and never mentioned on it. -->
+  <section class="border-t border-hairline bg-surface" aria-labelledby="clients-title">
     <div class="section-tight shell">
       <SectionHead
         id="clients-title"
-        label="Who we work with"
-        title="Healthcare practices in Mehsana already work with CareInflow."
+        label="Trusted by healthcare practices in Mehsana"
+        title="Practices in Mehsana already work with CareInflow."
         lede="Each one trusted us with something different: a website and a Google listing, a steady run of content, a series of reels. Every card links to the work itself."
       />
 
-      {/* Three across from lg, where each card gets ~400px and the longest
-          name sits on two lines. Stacked below it: at tablet width three
-          columns leave ~190px, which wraps "Pramukh Multispeciality Dental
-          Clinic" to four lines, and these cards are short enough that a stack
-          costs little. Three into three divides evenly. */}
+      {/* Three across from lg; stacked below it, where three columns would
+          wrap "Pramukh Multispeciality Dental Clinic" to four lines. */}
       <ul class="reveal-group mt-10 grid gap-4 lg:grid-cols-3 lg:gap-6">
         {CLIENTS.map((c) => (
-          <li class="flex flex-col overflow-hidden rounded-3xl border border-line bg-surface">
+          <li class="flex flex-col overflow-hidden rounded-3xl border border-line bg-canvas">
             <span class:list={['accent-bar block h-1 w-full', ACCENTS[c.accent].bar]} aria-hidden="true"></span>
             <div class="flex flex-1 flex-col p-6 sm:p-7">
-              <p>
+              <p class="flex flex-wrap gap-1.5">
+                <span class="chip bg-ink text-surface">Client work</span>
                 <span class:list={['chip', ACCENTS[c.accent].chip]}>{c.pillar}</span>
               </p>
               <h3 class="mt-4 text-[clamp(19px,1.6vw,22px)] font-extrabold leading-[1.2] tracking-[-0.025em] text-ink">
@@ -515,476 +402,203 @@ const whatsappHref = whatsappWithMessage(
           </li>
         ))}
       </ul>
-
-      {/*
-        The checkable instruction that used to sit under the hero photograph,
-        kept, because it is the strongest sentence about the studio: it hands
-        the reader the test rather than asking them to trust a claim. Then the
-        one distinction a visitor needs to read the cards correctly.
-      */}
-      <p class="mt-7 max-w-[780px] text-[15px] leading-[1.65] text-muted">
-        Open Pramukh's site on your phone, time how long it takes to appear, and
-        tap the WhatsApp button. Akshar Wellness and Sadbhav are content
-        clients, so their work lives on their own Instagram.
-      </p>
     </div>
   </section>
 
-  <!-- 02 · PROOF : the websites, live, before we explain anything -->
-  <section class="border-t border-hairline bg-surface" aria-labelledby="featured-title">
+  <!-- 03 · REAL WORK : the one live website built for a paying practice, in full
+       It used to be one of four equal thumbnails, three of them samples. The
+       samples are still on /work, labelled; here the real build gets the room,
+       and nothing beside it is a sample. -->
+  <section class="band-powder" aria-labelledby="case-title">
     <div class="section shell">
-      <div class="mb-10 flex flex-wrap items-end justify-between gap-6">
-        <SectionHead
-          id="featured-title"
-          label="Our portfolio"
-          title="Websites we have actually built"
-          lede="Four live sites you can open right now. Time how fast they appear, tap the enquiry button, and see where the message lands. One was built for Pramukh, a real practice; the other three are samples, and each card and page says which."
-        />
-        <a href={href('/work')} class="prose-link whitespace-nowrap text-base">See the portfolio →</a>
-      </div>
-
-      {/*
-        FOUR ACROSS, ONE ROW, AND DELIBERATELY NOT THE /work GRID.
-
-        The two pages want different things from the same four projects. On
-        /work a visitor has arrived to compare them and the full card earns its
-        height. Here they are scrolling past on the way to something else, and
-        the full card built a 1903px band — 2.11 screens, 17% of the homepage,
-        the tallest section on the page by 800px — to say a thing that lands in
-        one glance: real clinic sites exist behind the claim, and here are four
-        of them. A single row is that glance. Everything the tile drops is one
-        click away on the case study, which is where it was always read.
-
-        Four into four divides evenly, the same rule /work follows at two. A
-        fifth project makes this 5 columns at ~238px, which is under what a
-        screenshot survives — at that point this becomes the three or four most
-        recent, with the count in the lede corrected to match.
-
-        Four columns starts at xl, not lg. Tailwind's lg IS 1024, which is the
-        width where four columns measures 214px and "Pramukh Multispeciality
-        Dental Clinic" wraps to three lines while the covers shrink to 106px
-        tall. 1280 gives 262px, which holds the name at two lines.
-
-        One column below sm, and this is the place the shortest layout is the
-        wrong one. Two columns on a phone is tempting — it halves the band —
-        but at 375 it makes the cover 158x79 and at 320 it makes it 130x65 and
-        truncates the "Non-healthcare" chip mid-word. The cover IS the argument
-        here; a thumbnail too small to read is not shorter proof, it is no
-        proof, and a truncated disclosure is worse than either. One column
-        gives 335px and a 167px cover on the phone most patients hold.
-      */}
-      <div class="reveal-group grid items-stretch gap-4 sm:grid-cols-2 sm:gap-6 xl:grid-cols-4">
-        {allCaseStudies.map((cs) => (
-          <CaseStudyCard study={cs} headingLevel="h3" heading="client" compact />
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- 02 · WHERE PATIENTS LOOK : the three surfaces -->
-  <section class="section shell" aria-labelledby="triage-title">
-    <div>
-      <div class="mb-14 flex flex-wrap items-end justify-between gap-6">
-        <SectionHead
-          id="triage-title"
-          label="Where patients look"
-          title="Where do patients look for a clinic like yours?"
-          lede="Your Google listing. Your website. Your Instagram. And now the summary Google writes at the top of the results, before a patient reaches any of them. Patients check more than one before they call anyone, so they all have to agree."
-        />
-        <a href={href('/services')} class="prose-link whitespace-nowrap text-base">See all services →</a>
-      </div>
-
-      <!-- Three places, one weight. The section's argument is that all three
-           have to agree, so no card is allowed to shout over the other two;
-           the dark panel that used to sit here pulled every eye to the one
-           surface a doctor is least likely to be shopping for. Each card is a
-           door to the service that fixes it. -->
-      {/* Four surfaces, two to a row from sm up. Three to a row at xl was the
-          old shape for three cards; four would strand one, and a 2x2 keeps
-          each card roomy enough for its rows. */}
-      <div class="reveal-group grid gap-6 sm:grid-cols-2">
-        {patientSurfaces.map((s) => (
-          <article class="card-hover card-link flex flex-col overflow-hidden rounded-3xl border border-line bg-surface">
-            <span class:list={['accent-bar block h-1 w-full', s.accent.bar]} aria-hidden="true"></span>
-            {/* One band height across all three, so the row stays even even
-                though two sources are portrait phones and one is a laptop on a
-                desk. The portraits are pulled up the frame so the band opens on
-                the phone's screen rather than on the dark space above it. */}
+      <div class="grid items-center gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
+        <figure class="relative m-0 pb-10 sm:pb-14">
+          <Image
+            src={caseStudy.data.cover}
+            alt={caseStudy.data.coverAlt}
+            widths={[480, 720, 960, 1280]}
+            sizes="(min-width: 1440px) 620px, (min-width: 1024px) 46vw, 92vw"
+            loading="lazy"
+            class="aspect-[16/10] w-full rounded-2xl border border-line bg-surface object-cover object-top shadow-card"
+          />
+          {caseStudy.data.coverMobile && (
             <Image
-              src={s.image}
-              alt={s.imageAlt}
-              widths={[420, 640, 840, 1200]}
-              sizes="(min-width: 1440px) 628px, (min-width: 640px) 46vw, 92vw"
+              src={caseStudy.data.coverMobile}
+              alt={caseStudy.data.coverMobileAlt ?? ''}
+              widths={[160, 240, 320]}
+              sizes="(min-width: 640px) 160px, 110px"
               loading="lazy"
-              class:list={['h-[140px] w-full border-b border-line object-cover sm:h-[168px] lg:h-[200px]', s.imagePos]}
+              class="absolute bottom-0 right-3 w-[110px] rounded-2xl border border-line bg-surface shadow-card-lg sm:right-6 sm:w-[160px]"
             />
-            <div class="flex flex-1 flex-col p-5 sm:p-6">
-              <h3 class="text-[24px] font-bold tracking-[-0.03em] text-ink">{s.title}</h3>
-              <p class="mt-3 line-clamp-3 text-base leading-[1.6] text-body">{s.text}</p>
-              {/*
-                Steps at sm and stops, rather than at xl.
+          )}
+        </figure>
 
-                Restoring the fuller card at xl was backwards: xl is also where
-                the grid goes to three columns, so the card gets a *narrower*
-                box (352px at 1280) than it had in two columns at 1024 (452px).
-                The taller band and looser padding landed exactly where there
-                was least room — 358px at 1024 became 718px at 1280, 90% of
-                that laptop's viewport.
-
-                The detail rows are supporting material for a card whose whole
-                job is to send you to the service page, where they appear in
-                full. They return at sm, where the second column arrives.
-              */}
-              <dl class="mt-6 hidden rounded-xl border border-line bg-canvas p-4 sm:block">
-                {s.rows.map((row, i) => (
-                  <div
-                    class:list={[
-                      'flex items-baseline justify-between gap-4 py-2 text-[14px]',
-                      i < s.rows.length - 1 && 'border-b border-hairline-soft',
-                    ]}
-                  >
-                    <dt class="text-muted">{row[0]}</dt>
-                    <dd class:list={['shrink-0 font-semibold', s.accent.text]}>{row[1]}</dd>
-                  </div>
-                ))}
-              </dl>
-              <p class="mt-6">
-                <a href={href(s.link)} class="prose-link text-[16px] font-semibold">{s.linkText} →</a>
-              </p>
-            </div>
-          </article>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- 03 · WHAT WE DO : three groups, nine services -->
-  <section class="band-powder" aria-labelledby="protocols-title">
-    <div class="section shell">
-      <div class="mb-13 flex flex-wrap items-end justify-between gap-6">
-        <SectionHead
-          id="protocols-title"
-          label="What we do"
-          title="What do we do for your clinic?"
-          lede="Three kinds of work, for healthcare practices only. Start with whichever you need: one is enough, and the free review says in writing which one before you pay anything."
-        />
-        <a href={href('/services')} class="prose-link whitespace-nowrap text-base">See all services →</a>
-      </div>
-
-      {/*
-        Three groups rather than nine cards. The group is the unit a doctor
-        decides on — "do I need the Google side of this or not" — and the nine
-        services sit inside it as the answer to "what does that include".
-
-        Numerals rather than icons at group level: the icon set is doing its
-        job one level down, and a large tight number in the group's accent is
-        the system's own ornament. It also gives the block three anchors the
-        eye can find its way back to, which nine equal cards never had.
-      */}
-      <div class="reveal-group grid gap-5 lg:grid-cols-3">
-        {serviceGroups.map((g, gi) => {
-          const a = serviceAccent(g.accent);
-          return (
-            <article class="card-hover flex flex-col overflow-hidden rounded-3xl border border-line bg-surface">
-              <span class:list={['accent-bar block h-1 w-full', a.bar]} aria-hidden="true"></span>
-              <div class="flex flex-col gap-1.5 border-b border-hairline p-6 sm:p-7">
-                <span class:list={['numeral text-[38px] leading-none', a.text]}>
-                  {String(gi + 1).padStart(2, '0')}
-                </span>
-                <h3 class="mt-1.5 text-[22px] font-bold tracking-[-0.03em] text-ink">{g.group}</h3>
-                <p class="text-[15px] leading-[1.55] text-muted">{g.lead}</p>
-              </div>
-              <ul class="flex flex-1 flex-col">
-                {g.items.map((it, i) => (
-                  <li class:list={[i > 0 && 'border-t border-hairline-soft']}>
-                    <a
-                      href={href(it.link)}
-                      class="group flex items-center gap-3.5 px-6 py-4 transition-colors hover:bg-canvas hover:no-underline sm:items-start sm:px-7 sm:py-5.5"
-                    >
-                      <span class:list={['inline-flex size-9 shrink-0 items-center justify-center rounded-lg sm:mt-0.5', a.tint, a.text]}>
-                        <ServiceIcon name={it.icon} />
-                      </span>
-                      <span class="min-w-0">
-                        <span class="block text-[16px] font-bold tracking-[-0.02em] text-ink">
-                          {it.title}
-                        </span>
-                        <span class="mt-1 hidden text-[15px] leading-[1.58] text-body sm:block">{it.text}</span>
-                      </span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </article>
-          );
-        })}
-      </div>
-    </div>
-  </section>
-
-  <!-- WHAT IT COSTS -->
-  <section class="border-t border-hairline bg-surface" aria-labelledby="cost-title">
-    <div class="section shell">
-      <div class="mb-12 flex flex-wrap items-end justify-between gap-6">
-        <SectionHead
-          id="cost-title"
-          label="What it costs"
-          title="Our prices are published, so you do not have to ask."
-          lede="Most studios make you sit through a call before they say a number. Here are the starting points; your exact figure is fixed in writing after the free review."
-        />
-        <a href={href('/pricing') + '#estimate'} class="prose-link whitespace-nowrap text-base">Work out your number →</a>
-      </div>
-      {/* Four cards: 2x2 from sm, one row of four from lg. The figure wraps
-          under its "Starting from" caption in a ~260px card, so the row is a
-          column rather than a baseline. Each card is a link to where its
-          figure is explained, through .card-link, so the anchor keeps a short
-          name of its own. */}
-      <div class="reveal-group grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {priceHeadlines.map((p, i) => (
-          <article class="card-hover card-link flex flex-col overflow-hidden rounded-3xl border border-line bg-canvas shadow-card">
-            <span class:list={['accent-bar block h-1 w-full', cycleAccent(i).bar]} aria-hidden="true"></span>
-            <div class="flex flex-1 flex-col p-6 sm:p-7">
-              <h3 class="text-[17px] font-bold tracking-[-0.02em] text-ink">{p.name}</h3>
-              <p class="mt-4 flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                <span class="w-full font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{PRICE_PREFIX}</span>
-                <span class="text-[clamp(28px,3vw,34px)] font-extrabold leading-none tracking-[-0.045em] text-ink">
-                  {p.value}
-                </span>
-                {p.unit && (
-                  <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{p.unit}</span>
-                )}
-              </p>
-              <p class="mt-3.5 text-[15px] leading-[1.6] text-muted">{p.note}</p>
-              <p class="mt-auto pt-4">
-                <a href={href(p.link)} class="prose-link text-[15px]">See what is included →</a>
-              </p>
-            </div>
-          </article>
-        ))}
-      </div>
-      <p class="mt-8 max-w-[680px] text-[16px] leading-[1.65] text-muted">
-        Prices exclude GST where it applies. Domain and hosting are paid by
-        you, directly, in your own name. We do not mark them up.
-      </p>
-    </div>
-  </section>
-
-  <!-- 05 · WHY NOW : cost of delay, with no deadline attached
-       This is the page's one dark section, and it is dark on purpose. It used
-       to be band-mist, a pale blue-lavender with ink text, which gave the one
-       section on the page that actually asks for the click less presence than
-       the section listing what we do. The design rule is to spend the dark
-       weight on what you want clicked, so the outcomes band below traded
-       grounds with it: this one asks, so this one is dark. -->
-  <section class="band-panel" aria-labelledby="delay-title">
-    <div class="section shell">
-      <div class="grid items-center gap-10 lg:grid-cols-[1fr_420px] lg:gap-16">
-        <div class="max-w-[720px]">
-          <SectionHead
-            id="delay-title"
-            dark
-            label="Why now"
-            title="What waiting actually costs"
-            lede="Nothing here is a deadline, and no price on this site expires. But three things carry on happening while a practice decides, and none of them wait."
-          />
-        </div>
-        <Image
-          src={heroImage}
-          alt="A phone held up in a clinic reception, showing a dental practice website with the clinic's name, opening hours, a booking button, and a call and WhatsApp bar along the bottom."
-          widths={[420, 840]}
-          sizes="(min-width: 1024px) 420px, 92vw"
-          loading="lazy"
-          class="h-[220px] w-full rounded-3xl border border-panel-line object-cover sm:h-[260px]"
-        />
-      </div>
-
-      <div class="reveal-group mt-13 grid gap-6 md:grid-cols-3">
-        {delay.map((d, i) => (
-          <article class="flex flex-col gap-3 border-t-2 border-panel-line-alt pt-6">
-            <span class="numeral text-[46px] leading-none text-panel-accent">
-              {String(i + 1).padStart(2, '0')}
-            </span>
-            <h3 class="text-[19px] font-bold leading-[1.25] tracking-[-0.02em] text-surface">{d.title}</h3>
-            <p class="text-[16px] leading-[1.62] text-panel-text-dim">{d.text}</p>
-          </article>
-        ))}
-      </div>
-
-      <div class="reveal mt-12 flex flex-wrap items-center justify-between gap-5 rounded-2xl border border-panel-line-alt bg-panel-card px-6 py-6 sm:px-8">
-        <p class="max-w-[620px] text-[16px] leading-[1.6] text-panel-text">
-          None of that is a reason to rush a decision. It is a reason to find out
-          where you actually stand, which costs nothing and takes two working days.
-          If the answer is that you should change nothing, we will say that.
-        </p>
-        <a href={href('/contact')} class="btn-accent shrink-0 px-6 py-3 text-[16px]">
-          Get a free written review
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- WHAT CHANGES : the value case, stated as mechanisms -->
-  {/*
-    The page's dark beat, and the reason the mid-tone band it replaced is gone.
-    A medium ground could only carry three of the six text tokens; a dark one
-    carries the whole panel set, so this section finally has the same
-    typographic range as every other. It is also the value case — what actually
-    changes for the practice — which is the right thing to give the weight to.
-  */}
-  <section class="section shell" aria-labelledby="outcomes-title">
-    <div>
-      <div class="grid items-center gap-10 lg:grid-cols-[1fr_400px] lg:gap-16">
-        <div class="max-w-[760px]">
-          <SectionHead
-            id="outcomes-title"
-            label="What changes"
-            title="What is different once the work is done?"
-            lede="Four things change for your practice, and every one of them is something we control and you can check. What we will not do is put a number on how many patients that becomes."
-          />
-        </div>
-        <Image
-          src={heroDoctorMobile}
-          alt="A doctor standing in a busy hospital corridor, smiling at their practice website open on a mobile phone."
-          widths={[400, 800]}
-          sizes="(min-width: 1024px) 400px, 92vw"
-          loading="lazy"
-          class="h-[220px] w-full rounded-3xl border border-line object-cover object-[50%_25%] sm:h-[250px]"
-        />
-      </div>
-      {/*
-        The card fill sits 1.35 from the band behind it (panel-card #143454 on
-        panel-section #0E1B33), which is close enough that at squint the four
-        cards dissolved into one dark rectangle. The fix is not a lighter fill,
-        which would start competing with the CTA panel further down — it is a
-        harder edge (panel-line-alt, 2.39 from the band) plus an accent rule and
-        a numeral, so each card has a corner the eye can catch.
-      */}
-      <div class="reveal-group mt-13 grid gap-6 sm:grid-cols-2">
-        {outcomes.map((o, i) => (
-          <article class="card-hover overflow-hidden rounded-2xl border border-line bg-surface">
-            <span class:list={['accent-bar block h-1 w-full', cycleAccent(i).bar]} aria-hidden="true"></span>
-            <div class="flex gap-4 p-7">
-              <span class:list={['numeral shrink-0 text-[30px] leading-none', cycleAccent(i).text]}>
-                {String(i + 1).padStart(2, '0')}
-              </span>
-              <div class="min-w-0">
-                <h3 class="text-[19px] font-bold tracking-[-0.02em] text-ink">{o.title}</h3>
-                <p class="mt-2.5 text-[16px] leading-[1.62] text-body">{o.text}</p>
-              </div>
-            </div>
-          </article>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- 06 · WHO YOU ARE DEALING WITH
-       Three sections became one. "Why healthcare only" (1.7 screens), the
-       founder strip (0.9) and "Who we work with" (1.6) were 4.2 screens of the
-       same argument told three times: we do one thing, one person does it, and
-       here is who it is for. Each also duplicated a whole page — /about,
-       /process and /specialties — which is where a reader who wants the long
-       version should be, not two screens further down the homepage. -->
-  <section class="band-powder" aria-labelledby="indication-title">
-    <div class="section shell">
-      <div class="grid items-start gap-10 lg:grid-cols-[1fr_420px] lg:gap-16">
         <div>
-          <SectionHead
-            id="indication-title"
-            label="Why healthcare only"
-            title="One studio, one kind of client, one person doing the work."
-            lede="A studio that builds for a restaurant one month and a clinic the next never learns either properly. Patients arriving at your website are worried, comparing you to two other practices, and reading on a phone at an odd hour. That is the only visitor we have learned to write for."
-          />
-
-          {/*
-            These were three bare chips reading as a disclaimer. They are not a
-            disclaimer: a doctor advertising in India works under rules that do
-            not permit guaranteed outcomes, comparative claims or patients' words
-            used as adverts, and the registration at risk is theirs. Working
-            inside those limits is competence, not modesty. Same three facts,
-            given a heading that says why they are here, and a link to the full
-            list on the pricing page.
-          */}
-          <div class="mt-9 rounded-2xl border border-line bg-surface p-5 sm:p-6">
-            <p class="label-mono text-faint" style="letter-spacing:0.12em">
-              We work inside the rules you are held to
-            </p>
-            <div class="mt-3.5 flex flex-wrap gap-2.5">
-              <span class="chip border border-line text-body-deep">No ranking guarantees</span>
-              <span class="chip border border-line text-body-deep">No bought reviews</span>
-              <span class="chip border border-line text-body-deep">No patient words as adverts</span>
-              <span class="chip border border-line text-body-deep">No access to patient records</span>
-            </div>
-            <p class="mt-4 text-[15px] leading-[1.6] text-muted">
-              You hold the licence, not us. If something you ask for would put your
-              registration at risk, we will say so before you have to find out.
-              {' '}<a href={href('/pricing') + '#what-we-will-not-do'} class="prose-link">What we will not do →</a>
-            </p>
-          </div>
-
-          <div class="mt-9 flex flex-col gap-6 border-t border-hairline pt-8 sm:flex-row sm:items-center sm:gap-7">
-            <Image
-              src={founderImage}
-              alt="Jaidev Jethi, founder of CareInflow."
-              widths={[140, 280]}
-              sizes="140px"
-              loading="lazy"
-              class="h-[150px] w-[122px] shrink-0 rounded-2xl border border-line object-cover object-top"
-            />
-            <div>
-              <p class="label-mono text-faint" style="letter-spacing:0.12em">Who does the work</p>
-              <h3 class="mt-2 text-[clamp(20px,2.2vw,25px)] font-extrabold leading-[1.15] tracking-[-0.03em] text-ink">
-                You work directly with the founder, not an account manager.
-              </h3>
-              <p class="mt-2.5 max-w-[560px] text-[15px] leading-[1.6] text-body">
-                CareInflow is run by {BUSINESS.founder}. Web development in Gujarat,
-                cybersecurity study in Canada, then a year and a half at Microsoft
-                before coming home to start this. The person you message is the
-                person who edits your reels and builds your site.
-              </p>
-              <p class="mt-3.5 flex flex-wrap gap-x-5 gap-y-1.5">
-                <a href={href('/about')} class="prose-link text-[15px]">More about the studio →</a>
-                <a href={href('/process')} class="prose-link text-[15px]">See the full method →</a>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="rounded-3xl border border-line bg-surface p-6 sm:p-7">
-          <h3 class="label-mono mb-4 text-faint" style="letter-spacing:0.12em">Specialties we build for</h3>
-          <ul class="flex flex-wrap gap-2">
-            {SPECIALTIES.map((sp) => (
-              <li>
-                {sp.href ? (
-                  <a
-                    href={href(sp.href)}
-                    class="chip inline-flex min-h-[24px] items-center border border-surgical/40 bg-surgical-tint text-surgical hover:border-surgical hover:no-underline"
-                  >
-                    {sp.label} →
-                  </a>
-                ) : (
-                  <span class="chip inline-flex min-h-[24px] items-center border border-line bg-canvas text-body-deep">
-                    {sp.label}
-                  </span>
-                )}
-              </li>
-            ))}
-          </ul>
-          <p class="mt-5 border-t border-hairline pt-4 text-[15px] leading-[1.6] text-muted">
-            Every specialty linked above has a page on what changes for it.
-            {' '}<a href={href('/specialties')} class="prose-link">See all specialties</a>. If yours
-            is not listed, it almost certainly still fits, so ask.
+          <p class="flex flex-wrap gap-1.5">
+            <span class="chip bg-ink text-surface">Real client project</span>
+            <span class="chip border border-line bg-surface text-body-deep">{caseStudy.data.sector} · Mehsana</span>
           </p>
-          <p class="mt-4 border-t border-hairline pt-4 text-[15px] leading-[1.6] text-muted">
-            We work from Mehsana, with practices in
-            {' '}<a href={href('/areas/ahmedabad')} class="prose-link">Ahmedabad</a>,
-            {' '}<a href={href('/areas/gandhinagar')} class="prose-link">Gandhinagar</a> and across
-            {' '}<a href={href('/areas')} class="prose-link">North Gujarat</a>.
+          <h2
+            id="case-title"
+            class="mt-5 text-[clamp(26px,3.2vw,38px)] font-extrabold leading-[1.1] tracking-[-0.035em] text-ink"
+          >
+            {caseStudy.data.client}
+          </h2>
+          <p class="mt-4 max-w-[560px] text-[17px] leading-[1.62] text-body">{caseStudy.data.summary}</p>
+          <dl class="mt-7 grid max-w-[560px] grid-cols-2 gap-x-6 gap-y-5 border-t border-line pt-6">
+            {caseStudy.data.highlights.map((h) => (
+              <div>
+                <dt class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{h.label}</dt>
+                <dd class="mt-1 text-[20px] font-extrabold leading-[1.2] tracking-[-0.03em] text-ink">{h.value}</dd>
+                {h.ref && <dd class="mt-0.5 text-[14px] leading-[1.45] text-muted">{h.ref}</dd>}
+              </div>
+            ))}
+          </dl>
+          <p class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <a href={href('/work/pramukh-dental')} class="btn-primary px-6 py-3.5 text-[16px]">Read the case study</a>
+            {caseStudy.data.url && (
+              <a href={caseStudy.data.url} rel="noopener" class="prose-link text-[16px]">Open the live site →</a>
+            )}
+          </p>
+          <p class="mt-6 max-w-[560px] text-[15px] leading-[1.6] text-muted">
+            The portfolio also has three sample websites, each clearly labelled
+            as a sample. <a href={href('/work')} class="prose-link">See the portfolio →</a>
           </p>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- 04 · HOW IT WORKS : the page's one dark section
+       Dark because it is the section that asks, and the design rule is to
+       spend the dark weight on what you want clicked. -->
+  <section class="band-panel" aria-labelledby="how-title">
+    <div class="section shell">
+      <SectionHead
+        id="how-title"
+        dark
+        label="How it works"
+        title="Four steps, and you always know which one you are on."
+        lede="The same for every service. Nothing is built, edited or charged before the price and the scope are in writing."
+      />
+      <ol class="reveal-group mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {steps.map((s, i) => (
+          <li class="flex flex-col gap-3 border-t-2 border-panel-line-alt pt-6">
+            <span class="numeral text-[44px] leading-none text-panel-accent">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="text-[19px] font-bold leading-[1.25] tracking-[-0.02em] text-surface">{s.title}</h3>
+            <p class="text-[16px] leading-[1.62] text-panel-text-dim">{s.text}</p>
+          </li>
+        ))}
+      </ol>
+      <div class="mt-12 flex flex-wrap items-center gap-x-6 gap-y-4 rounded-2xl border border-panel-line-alt bg-panel-card px-6 py-6 sm:px-8">
+        <p class="max-w-[600px] flex-1 text-[16px] leading-[1.6] text-panel-text">
+          Not sure where to start? The free digital review tells you, in two
+          working days, and if the answer is "change nothing", we will say that.
+        </p>
+        <a href={href('/contact')} class="btn-accent shrink-0 px-6 py-3 text-[16px]">Get a free digital review</a>
+        <a href={href('/process')} class="link-accent shrink-0 text-[15px]">See the full method →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 · WHY CAREINFLOW : six things to hold us to, and who does the work -->
+  <section class="section shell" aria-labelledby="why-title">
+    <SectionHead
+      id="why-title"
+      label="Why CareInflow"
+      title="A healthcare specialist, not a general agency."
+      lede="A studio that builds for a restaurant one month and a clinic the next never learns either properly. These are the six things we work by, and you can hold us to every one."
+    />
+    <ul class="reveal-group mt-11 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {why.map((w, i) => (
+        <li class="flex gap-4 rounded-2xl border border-line bg-surface p-6">
+          <span class:list={['numeral shrink-0 text-[28px] leading-none', cycleAccent(i).text]}>
+            {String(i + 1).padStart(2, '0')}
+          </span>
+          <div class="min-w-0">
+            <h3 class="text-[17px] font-bold tracking-[-0.02em] text-ink">{w.title}</h3>
+            <p class="mt-1.5 text-[15px] leading-[1.6] text-body">{w.text}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+
+    <div class="mt-12 grid items-start gap-6 lg:grid-cols-[1fr_440px]">
+      <div class="flex flex-col gap-6 rounded-3xl border border-line bg-surface p-6 sm:flex-row sm:items-center sm:gap-7 sm:p-7">
+        <Image
+          src={founderImage}
+          alt="Jaidev Jethi, founder of CareInflow."
+          widths={[140, 280]}
+          sizes="140px"
+          loading="lazy"
+          class="h-[150px] w-[122px] shrink-0 rounded-2xl border border-line object-cover object-top"
+        />
+        <div>
+          <p class="label-mono text-faint" style="letter-spacing:0.12em">Who does the work</p>
+          <h3 class="mt-2 text-[clamp(20px,2.2vw,24px)] font-extrabold leading-[1.15] tracking-[-0.03em] text-ink">
+            You work directly with the founder, not an account manager.
+          </h3>
+          <p class="mt-2.5 max-w-[560px] text-[15px] leading-[1.6] text-body">
+            CareInflow is run by {BUSINESS.founder}. Web development in Gujarat,
+            cybersecurity study in Canada, then a year and a half at Microsoft
+            before coming home to start this, in 2026. The person you message is
+            the person who edits your reels and builds your site.
+          </p>
+          <p class="mt-3.5 flex flex-wrap gap-x-5 gap-y-1.5">
+            <a href={href('/about')} class="prose-link text-[15px]">More about the studio →</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="rounded-3xl border border-line bg-surface p-6 sm:p-7">
+        <h3 class="label-mono mb-4 text-faint" style="letter-spacing:0.12em">Specialties we work with</h3>
+        <ul class="flex flex-wrap gap-2">
+          {SPECIALTIES.map((sp) => (
+            <li>
+              <a
+                href={href(sp.href)}
+                class="chip inline-flex min-h-[24px] items-center border border-surgical/40 bg-surgical-tint text-surgical hover:border-surgical hover:no-underline"
+              >
+                {sp.label} →
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-5 border-t border-hairline pt-4 text-[15px] leading-[1.6] text-muted">
+          Mehsana, Gujarat, and working across Gujarat: practices in
+          {' '}<a href={href('/areas/ahmedabad')} class="prose-link">Ahmedabad</a>,
+          {' '}<a href={href('/areas/gandhinagar')} class="prose-link">Gandhinagar</a> and across
+          {' '}<a href={href('/areas')} class="prose-link">North Gujarat</a>. One studio, no branch offices.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 · GUIDES : quiet, and after the evidence rather than before it -->
+  <section class="border-t border-hairline bg-surface" aria-labelledby="guides-title">
+    <div class="section-tight shell">
+      <div class="mb-9 flex flex-wrap items-end justify-between gap-6">
+        <SectionHead
+          id="guides-title"
+          label="Guides"
+          title="Plain-language guides for clinic owners"
+        />
+        <a href={href('/resources')} class="prose-link whitespace-nowrap text-base">All guides →</a>
+      </div>
+      <div class="grid gap-5 md:grid-cols-3">
+        {guides.map((g) => (
+          <article class="card-hover card-link flex flex-col rounded-2xl border border-line bg-canvas p-6">
+            <p class:list={['label-mono', topicAccent(g.data.topic).text]}>{topicLabels[g.data.topic]}</p>
+            <h3 class="mt-3 text-[18px] font-bold leading-[1.3] tracking-[-0.02em] text-ink">{g.data.title}</h3>
+            <p class="mt-2.5 line-clamp-3 text-[15px] leading-[1.6] text-body">{g.data.description}</p>
+            <p class="mt-auto pt-4">
+              <a href={href(`/resources/${g.id}`)} class="prose-link text-[15px]">Read the guide →</a>
+            </p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
 
   <FaqSection
     {faqs}

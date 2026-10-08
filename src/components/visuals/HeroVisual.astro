@@ -1,0 +1,29 @@
+---
+/**
+ * The homepage hero's picture: the three places a patient meets a practice,
+ * layered the way they meet them — the website behind, the Google listing in
+ * front of it, and the doctor's reel on the phone in their hand.
+ *
+ * It replaced a photograph of a doctor and a designer at a laptop. That was
+ * the genre every agency site opens on, and it explained nothing; this shows,
+ * in one look, the three pillars the page is about to list. It sits on the
+ * midnight hero, so it has no background panel of its own.
+ */
+import BrowserSite from './parts/BrowserSite.astro';
+import ListingCard from './parts/ListingCard.astro';
+import PhoneReel from './parts/PhoneReel.astro';
+
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+const id = 'visual-hero';
+---
+
+<svg viewBox="0 0 560 470" role="img" aria-labelledby={id} class:list={['block h-auto w-full', className]} style="font-family: var(--font-sans)">
+  <title id={id}>Illustration: a clinic website in a browser, the clinic's Google listing in front of it, and a doctor's reel with Gujarati captions on a phone.</title>
+  <BrowserSite x={0} y={0} width={430} height={322.5} />
+  <ListingCard x={20} y={262} width={286} height={195} />
+  <PhoneReel x={384} y={98} width={168} height={348} />
+  <text x="556" y="466" text-anchor="end" font-size="8.5" font-weight="700" letter-spacing="0.14em" class="fill-panel-text-faint" style="font-family: var(--font-mono)">ILLUSTRATIVE</text>
+</svg>

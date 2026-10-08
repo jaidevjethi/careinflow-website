@@ -1,0 +1,85 @@
+---
+/**
+ * Healthcare content: a doctor's reel with Gujarati captions, and around it
+ * the parts of the edit a doctor never has to do — choosing the caption
+ * language, cutting the clips, making the cover, writing the caption. It ends
+ * on "ready to post", because posting is the doctor's, not ours.
+ *
+ * Every visual in this folder is an SVG drawn from the palette tokens rather
+ * than an image: it stays sharp at any size, carries real text a screen
+ * reader can be told about, costs no request, and never reads as a photo of a
+ * real clinic. Each one says ILLUSTRATIVE in its corner, as sample interfaces
+ * on this site always do.
+ */
+import PhoneReel from './parts/PhoneReel.astro';
+
+interface Props {
+  title?: string;
+  class?: string;
+}
+const {
+  title = "Illustration: a doctor's reel on a phone with Gujarati captions, beside the caption language, the edit timeline, the reel cover and a ready-to-post note.",
+  class: className,
+} = Astro.props;
+const id = 'visual-content';
+const GU = "'Noto Sans Gujarati', 'Nirmala UI', 'Shruti', sans-serif";
+const MONO = 'font-family: var(--font-mono)';
+
+/** Clip widths along the edit timeline, left to right. */
+const clips = [
+  { x: 42, w: 30, cls: 'fill-a-social-vivid' },
+  { x: 76, w: 22, cls: 'fill-a-social-tint' },
+  { x: 102, w: 34, cls: 'fill-powder' },
+  { x: 140, w: 24, cls: 'fill-a-social-vivid' },
+];
+const wave = [6, 10, 4, 12, 8, 14, 6, 9, 12, 5, 10, 7, 13, 6, 9, 11, 5, 8, 12, 6, 9];
+---
+
+<svg viewBox="0 0 560 420" role="img" aria-labelledby={id} class:list={['block h-auto w-full', className]} style="font-family: var(--font-sans)">
+  <title id={id}>{title}</title>
+  <rect width="560" height="420" rx="24" class="fill-a-social-tint" />
+  <text x="24" y="30" font-size="9" font-weight="700" letter-spacing="0.14em" class="fill-a-social" style={MONO}>ILLUSTRATIVE</text>
+
+  <PhoneReel x={196} y={40} width={168} height={348} />
+
+  <!-- Caption language -->
+  <rect x="28.75" y="96.75" width="148.5" height="104.5" rx="14" class="fill-surface stroke-line" stroke-width="1.5" />
+  <text x="44" y="121" font-size="8.5" font-weight="700" letter-spacing="0.14em" class="fill-faint" style={MONO}>CAPTIONS</text>
+  <circle cx="50" cy="146" r="7" class="fill-a-social" />
+  <circle cx="50" cy="146" r="2.5" class="fill-surface" />
+  <text x="64" y="151" font-size="13" font-weight="700" class="fill-ink" font-family={GU}>ગુજરાતી</text>
+  <circle cx="50" cy="177" r="6.25" class="fill-surface stroke-line-strong" stroke-width="1.5" />
+  <text x="64" y="181.5" font-size="13" font-weight="700" class="fill-muted">English</text>
+
+  <!-- The edit -->
+  <rect x="28.75" y="222.75" width="148.5" height="92.5" rx="14" class="fill-surface stroke-line" stroke-width="1.5" />
+  <text x="44" y="247" font-size="8.5" font-weight="700" letter-spacing="0.14em" class="fill-faint" style={MONO}>EDIT</text>
+  {clips.map((c) => (
+    <rect x={c.x} y="258" width={c.w} height="18" rx="4" class={c.cls} />
+  ))}
+  {wave.map((h, i) => (
+    <line x1={44 + i * 5.8} y1={294 - h / 2} x2={44 + i * 5.8} y2={294 + h / 2} class="stroke-line-strong" stroke-width="2" stroke-linecap="round" />
+  ))}
+  <line x1="92" y1="252" x2="92" y2="304" class="stroke-ink" stroke-width="1.6" />
+  <path d="M87.5 250 H96.5 L92 255 Z" class="fill-ink" />
+
+  <!-- The cover, with the caption already written -->
+  <rect x="384.75" y="72.75" width="146.5" height="206.5" rx="14" class="fill-surface stroke-line" stroke-width="1.5" />
+  <text x="400" y="97" font-size="8.5" font-weight="700" letter-spacing="0.14em" class="fill-faint" style={MONO}>REEL COVER</text>
+  <rect x="400" y="106" width="116" height="130" rx="10" class="fill-panel" />
+  <path
+    d="M447 130 C451 126 455 128 457 130 C459 128 463 126 467 130 C471 135 469 142 466 147 C464 151 464 156 461 156 C459 156 458 150 457 150 C456 150 455 156 453 156 C450 156 450 151 448 147 C445 142 443 135 447 130 Z"
+    class="fill-a-social-vivid"
+  />
+  <text x="458" y="190" text-anchor="middle" font-size="15" font-weight="800" class="fill-surface" font-family={GU}>પેઢાની</text>
+  <text x="458" y="211" text-anchor="middle" font-size="15" font-weight="800" class="fill-surface" font-family={GU}>સંભાળ</text>
+  <text x="400" y="261" font-size="11" font-weight="700" class="fill-body">Caption written</text>
+  <circle cx="510" cy="257" r="8" class="fill-a-social" />
+  <path d="M506 257 L508.8 259.8 L514 254.6" class="stroke-surface" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+
+  <!-- Ready -->
+  <rect x="384" y="296" width="148" height="48" rx="14" class="fill-ink" />
+  <circle cx="408" cy="320" r="11" class="fill-a-social-vivid" />
+  <path d="M408 326 V314 M403 319 L408 314 L413 319" class="stroke-ink" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+  <text x="426" y="324.5" font-size="12.5" font-weight="800" class="fill-surface">Ready to post</text>
+</svg>

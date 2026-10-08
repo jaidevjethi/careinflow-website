@@ -1,0 +1,48 @@
+---
+/**
+ * A month of website care, as the checklist it actually is. Every row is a
+ * kind of work Website Care covers; none carries a number, because an uptime
+ * percentage on an illustration would be an invented measurement.
+ */
+interface Props {
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+}
+const { x = 0, y = 0, width = 252, height = 300 } = Astro.props;
+
+const rows = [
+  { label: 'Doctor timings updated', sub: 'Sunday hours changed' },
+  { label: 'New treatment section', sub: 'Added to the implants page' },
+  { label: 'Backup saved', sub: 'Site files and content' },
+  { label: 'Security checked', sub: 'Nothing needs attention' },
+  { label: 'Speed checked', sub: 'Still quick on a phone' },
+];
+---
+
+<svg {x} {y} {width} {height} viewBox="0 0 252 300">
+  <rect x="0.75" y="0.75" width="250.5" height="298.5" rx="14" class="fill-surface stroke-line" stroke-width="1.5" />
+  <text x="18" y="30" font-size="7.5" font-weight="800" letter-spacing="0.14em" class="fill-faint">THIS MONTH</text>
+
+  {rows.map((r, i) => {
+    const y0 = 44 + i * 50;
+    return (
+      <g>
+        {i > 0 && <line x1="16" y1={y0} x2="236" y2={y0} class="stroke-hairline" stroke-width="1" />}
+        <circle cx="34" cy={y0 + 25} r="14" class="fill-a-care-tint" />
+        <g class="stroke-a-care" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          {i === 0 && <path d={`M28 ${y0 + 31} L29.5 ${y0 + 26} L37 ${y0 + 18.5} L40.5 ${y0 + 22} L33 ${y0 + 29.5} Z`} />}
+          {i === 1 && <path d={`M34 ${y0 + 18} V${y0 + 32} M27 ${y0 + 25} H41`} />}
+          {i === 2 && <path d={`M27.5 ${y0 + 19} H40.5 V${y0 + 31} H27.5 Z M27.5 ${y0 + 23.5} H40.5 M32 ${y0 + 27} H36`} />}
+          {i === 3 && <path d={`M34 ${y0 + 17} L41 ${y0 + 20} V${y0 + 25} C41 ${y0 + 29} 38 ${y0 + 32} 34 ${y0 + 33} C30 ${y0 + 32} 27 ${y0 + 29} 27 ${y0 + 25} V${y0 + 20} Z`} />}
+          {i === 4 && <path d={`M26 ${y0 + 30} A8 8 0 0 1 42 ${y0 + 30} M34 ${y0 + 30} L38 ${y0 + 23}`} />}
+        </g>
+        <text x="58" y={y0 + 23} font-size="10.5" font-weight="800" class="fill-ink">{r.label}</text>
+        <text x="58" y={y0 + 36} font-size="8.5" class="fill-muted">{r.sub}</text>
+        <circle cx="226" cy={y0 + 25} r="9" class="fill-a-care" />
+        <path d={`M221.5 ${y0 + 25} L224.5 ${y0 + 28} L230.5 ${y0 + 22}`} class="stroke-surface" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+      </g>
+    );
+  })}
+</svg>

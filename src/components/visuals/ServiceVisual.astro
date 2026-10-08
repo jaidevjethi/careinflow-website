@@ -1,0 +1,25 @@
+---
+/**
+ * The illustration for a service, chosen by its slug. One place maps services
+ * to pictures, so the homepage card and the service page's hero can never show
+ * a service two different ways. Reel editing shares healthcare content's
+ * picture: it is the same work, one reel at a time.
+ */
+import ContentVisual from './ContentVisual.astro';
+import WebsiteVisual from './WebsiteVisual.astro';
+import GoogleVisual from './GoogleVisual.astro';
+import LocalSeoVisual from './LocalSeoVisual.astro';
+import CareVisual from './CareVisual.astro';
+
+interface Props {
+  slug: string;
+  class?: string;
+}
+const { slug, class: className } = Astro.props;
+---
+
+{(slug === 'healthcare-content' || slug === 'reel-editing') && <ContentVisual class={className} />}
+{slug === 'healthcare-websites' && <WebsiteVisual class={className} />}
+{slug === 'google-business-profile' && <GoogleVisual class={className} />}
+{slug === 'local-seo' && <LocalSeoVisual class={className} />}
+{slug === 'website-care' && <CareVisual class={className} />}

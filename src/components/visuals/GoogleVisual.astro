@@ -1,0 +1,32 @@
+---
+/**
+ * Google Business Profile: a search a patient makes, and the clinic's listing
+ * underneath it. Drawn in CareInflow's palette rather than Google's, so it
+ * reads as "your clinic's information on Google" without borrowing anyone's
+ * brand.
+ */
+import ListingCard from './parts/ListingCard.astro';
+
+interface Props {
+  title?: string;
+  class?: string;
+}
+const {
+  title = "Illustration: a search for a dentist nearby, and a clinic's listing beneath it with photos, hours, call and directions buttons, services and a reply to a review.",
+  class: className,
+} = Astro.props;
+const id = 'visual-google';
+---
+
+<svg viewBox="0 0 560 420" role="img" aria-labelledby={id} class:list={['block h-auto w-full', className]} style="font-family: var(--font-sans)">
+  <title id={id}>{title}</title>
+  <rect width="560" height="420" rx="24" class="fill-a-gbp-tint" />
+  <text x="24" y="30" font-size="9" font-weight="700" letter-spacing="0.14em" class="fill-a-gbp" style="font-family: var(--font-mono)">ILLUSTRATIVE</text>
+
+  <rect x="60.75" y="44.75" width="438.5" height="38.5" rx="19.25" class="fill-surface stroke-line" stroke-width="1.5" />
+  <circle cx="84" cy="62" r="7" class="stroke-faint" fill="none" stroke-width="1.8" />
+  <line x1="89" y1="67" x2="93.5" y2="71.5" class="stroke-faint" stroke-width="1.8" stroke-linecap="round" />
+  <text x="104" y="68" font-size="13.5" font-weight="700" class="fill-ink">dentist near me</text>
+
+  <ListingCard x={60} y={100} width={440} height={300} />
+</svg>
