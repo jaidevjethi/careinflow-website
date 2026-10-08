@@ -12,13 +12,15 @@ import heroDoctorMobile from '@/assets/editorial/hero-doctor-mobile.webp';
 import surfaceGoogleListing from '@/assets/mockups/surface-google-listing.webp';
 import surfacePracticeWebsite from '@/assets/mockups/surface-practice-website.webp';
 import surfaceAiAnswer from '@/assets/mockups/surface-ai-answer.webp';
+import surfaceInstagram from '@/assets/mockups/social-post.webp';
 import founderImage from '@/assets/jaidev-jethi.jpg';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import { BUSINESS, whatsappWithMessage } from '@/config/site';
 import { CLIENTS } from '@/config/clients';
 import { href } from '@/lib/url';
-import { BUILDS, PLANS, rupees, PRICE_PREFIX } from '@/config/pricing';
+import { BUILDS, GOOGLE_CARE, rupees, PRICE_PREFIX } from '@/config/pricing';
+import { PRICE_TOKENS } from '@/lib/prices';
 import { serviceAccent, ACCENTS, cycleAccent } from '@/lib/accents';
 import {
   graph,
@@ -42,7 +44,7 @@ const title = 'Clinic Websites, Content & Local SEO in Mehsana | CareInflow';
  * published number is the one thing no competing result shows.
  */
 const description =
-  `A healthcare-only studio in Mehsana. Clinic websites from ${rupees(BUILDS[0]!.from)}, healthcare content made from your own videos, and Google and local search care.`;
+  `A healthcare-only studio in Mehsana. Clinic websites from ${rupees(BUILDS[0]!.from)}, healthcare reels from ${rupees(PRICE_TOKENS.reel)}, and Google and local search care.`;
 
 const faqs = await getFaqsFor('home');
 
@@ -64,25 +66,40 @@ const schema = graph(
   faqSchema(faqs),
 );
 
-/** The three figures a clinic owner is actually scanning for. */
+/**
+ * The four figures a clinic owner is actually scanning for: the way in, the
+ * two websites, and what keeps it going. Four, so the grid is 2x2 then 4x1
+ * and never strands a card. The reel leads because it is the smallest
+ * decision on the site, not because it is the biggest business.
+ */
 const priceHeadlines = [
   {
-    name: 'A practice website',
+    name: 'A healthcare reel',
+    value: rupees(PRICE_TOKENS.reel),
+    unit: 'each',
+    note: 'Your footage, edited, captioned in Gujarati or English, with a cover and the caption written. Usually in one or two working days.',
+    link: '/services/reel-editing',
+  },
+  {
+    name: 'Foundation Website',
     value: rupees(BUILDS[0]!.from),
     unit: '',
-    note: `Fixed in writing before we start, and it includes an audit of your Google listing. Most of that figure is the writing and the enquiry path rather than the building.`,
+    note: 'Up to five pages, with your Google listing set up and audited. Fixed in writing before we start.',
+    link: '/services/healthcare-websites',
   },
   {
-    name: 'Website + Google',
+    name: 'Practice Website',
     value: rupees(BUILDS[1]!.from),
     unit: '',
-    note: 'The one most practices need: a page per treatment, and your Google listing rebuilt and matched to it. Ninety days of support after launch.',
+    note: 'A page per treatment, and your Google listing rebuilt and matched to it. Ninety days of support after launch. Our recommendation.',
+    link: '/pricing#packages',
   },
   {
-    name: 'Local SEO & Google care',
-    value: rupees(PLANS[0]!.monthly),
+    name: 'Local SEO & Google Care',
+    value: rupees(GOOGLE_CARE.monthly),
     unit: '/ month',
-    note: 'After launch: the listing managed, reviews answered, one new page a month, and a written report. Month to month, stopped by a message.',
+    note: 'After launch: the listing kept up, reviews answered, a new page a month, and a written report. Month to month.',
+    link: '/services/local-seo',
   },
 ];
 
@@ -154,10 +171,15 @@ const delay = [
 ];
 
 /**
- * The three places a patient checks before ringing anyone. Every row here is
+ * The places a patient checks before ringing anyone. Every row here is
  * something a doctor can judge for themselves; the block this replaced showed
  * LCP, CLS and INP with their reference ranges, which is a measurement for the
  * person building the site and means nothing to the person buying it.
+ *
+ * Four since 2026-10-08, when healthcare content became one of the three
+ * things the studio sells: a patient who found a clinic on Google often checks
+ * its Instagram before calling, and that is the surface content serves. Four
+ * also divides evenly, 2x2, where three in two columns stranded a card.
  */
 const patientSurfaces = [
   {
@@ -170,7 +192,7 @@ const patientSurfaces = [
     rows: [
       ['Categories and services', 'rebuilt'],
       ['Hours, holidays, photos', 'monthly'],
-      ['Review replies drafted', 'weekly'],
+      ['Review replies drafted', 'every review'],
     ],
     link: '/services/google-business-profile',
     linkText: 'Google Business Profile',
@@ -191,6 +213,21 @@ const patientSurfaces = [
     linkText: 'Healthcare websites',
   },
   {
+    title: 'Your Instagram',
+    accent: ACCENTS.social,
+    image: surfaceInstagram,
+    imageAlt: 'A phone on a desk showing an educational clinic post: a numbered list of early warning signs, laid out with simple illustrations.',
+    imagePos: 'object-center',
+    text: 'Patients who found you elsewhere often check it before they call, to see whether the practice is active and explains things clearly. We turn the videos you record into reels that do that.',
+    rows: [
+      ['Reels from your footage', 'edited'],
+      ['Captions', 'Gujarati or English'],
+      ['Cover and caption', 'every reel'],
+    ],
+    link: '/services/social-media',
+    linkText: 'Healthcare content',
+  },
+  {
     title: 'The answer above the results',
     accent: ACCENTS.seo,
     image: surfaceAiAnswer,
@@ -208,23 +245,51 @@ const patientSurfaces = [
 ];
 
 /**
- * Nine services, grouped into the three questions a clinic owner actually
- * asks in order: will I have a site, will patients find it, and what happens
- * after launch.
+ * The three pillars, three services in each. Content first, because it is
+ * the easiest way into the studio; websites next, the larger project; Google
+ * and local search last, the work that keeps going after launch. A practice
+ * can start with any one of them, and the lede says so.
  *
- * They were nine flat cards until now. At squint the block read as one
+ * They were nine flat cards once. At squint the block read as one
  * undifferentiated grey mass a screen and a half tall — nine headings and
  * eighteen lines of body with no anchor, which is a set nobody scans and
- * nobody remembers. The nine are all still here and still linked; they are
- * three cards deep instead of nine cards wide.
+ * nobody remembers. Three groups of three keep it scannable, and 3x3 divides
+ * evenly.
  *
- * The grouping is deliberately the same one `pricing.ts` uses for
- * PACKAGE_MATRIX, so what a visitor reads here and what they compare on the
- * pricing page carry the same three headings.
+ * The groups changed on 2026-10-08. They were "the website, being found on
+ * Google, after it goes live", with social media as the ninth card under
+ * aftercare. Healthcare content is now a pillar of its own, and aftercare
+ * folds into the pillar it belongs to: Website Care beside the website, and
+ * the monthly Google work beside the Google work.
  */
 const serviceGroups = [
   {
-    group: 'The website',
+    group: 'Healthcare content',
+    accent: 'social-media',
+    lead: 'Your knowledge, turned into reels and posts patients actually watch.',
+    items: [
+      {
+        title: 'Healthcare reels',
+        icon: 'video' as const,
+        text: 'Your footage, edited and captioned in Gujarati or English, with a cover and the caption written.',
+        link: '/services/reel-editing',
+      },
+      {
+        title: 'Posts and carousels',
+        icon: 'social' as const,
+        text: 'Patient education, clinic updates and creatives, made from what you already explain.',
+        link: '/services/social-media',
+      },
+      {
+        title: 'Monthly content packages',
+        icon: 'calendar' as const,
+        text: 'A fixed count of reels and posts each month, so you know exactly what you will get.',
+        link: '/services/social-media',
+      },
+    ],
+  },
+  {
+    group: 'Healthcare websites',
     accent: 'healthcare-websites',
     lead: 'Something that loads fast, reads like your practice and asks for the enquiry.',
     items: [
@@ -235,21 +300,21 @@ const serviceGroups = [
         link: '/services/healthcare-websites',
       },
       {
-        title: 'Speed & Core Web Vitals',
-        icon: 'speed' as const,
-        text: 'Measured on a mid-range Android on mobile data, not on our laptops.',
-        link: '/services/healthcare-websites',
-      },
-      {
         title: 'Enquiry & booking flow',
         icon: 'enquiry' as const,
         text: 'Usually WhatsApp, set up so the message lands where someone will answer it.',
         link: '/services/healthcare-websites',
       },
+      {
+        title: 'Website care',
+        icon: 'maintenance' as const,
+        text: 'Updates, changes and upkeep after launch, on a monthly plan priced to your site.',
+        link: '/services/website-care',
+      },
     ],
   },
   {
-    group: 'Being found on Google',
+    group: 'Google & local search',
     accent: 'google-business-profile',
     lead: 'The listing, the pages behind it, and the summary Google now writes above both.',
     items: [
@@ -260,41 +325,16 @@ const serviceGroups = [
         link: '/services/google-business-profile',
       },
       {
-        title: 'Local SEO groundwork',
+        title: 'Local SEO and AI answers',
         icon: 'search' as const,
-        text: 'A page per treatment and per area you serve. Consistent details everywhere.',
+        text: 'A page per treatment and per area, the same details everywhere, and facts a search engine can quote.',
         link: '/services/local-seo',
       },
       {
-        title: 'AI answer readiness',
-        icon: 'answer' as const,
-        text: 'Facts, schema and plain answers a search engine can quote when it writes the summary above the results.',
-        link: '/services/local-seo',
-      },
-    ],
-  },
-  {
-    group: 'After it goes live',
-    accent: 'website-care',
-    lead: 'The part most studios stop doing once the invoice is paid.',
-    items: [
-      {
-        title: 'Maintenance & hosting',
-        icon: 'maintenance' as const,
-        text: 'Security, backups, edits, new treatment pages. We do not disappear.',
-        link: '/services/website-care',
-      },
-      {
-        title: 'Quarterly review',
+        title: 'Local SEO & Google Care',
         icon: 'review' as const,
-        text: 'Written: what patients did, what changed nearby, what to do next.',
-        link: '/services/website-care',
-      },
-      {
-        title: 'Social media content',
-        icon: 'social' as const,
-        text: 'Educational posts that support the website. Never a substitute for one.',
-        link: '/services/social-media',
+        text: 'Your listing, reviews and local search looked after every month, with a written report.',
+        link: '/services/local-seo',
       },
     ],
   },
@@ -380,6 +420,18 @@ const whatsappHref = whatsappWithMessage(
               Get a free written review
             </a>
           </div>
+          {/*
+            The second offer, at a whisper. A doctor who arrived with footage on
+            their phone has no use for a website review, and should not have to
+            find the content page on their own. A text link rather than a third
+            button, so the hero still has one first thing to do; visible at
+            every width, because unlike the buttons the sticky bar does not
+            carry it.
+          */}
+          <p class="mt-4 text-[15px] leading-[1.55] text-panel-text-dim sm:mt-5">
+            Have a video to edit?
+            {' '}<a href={href('/services/reel-editing')} class="link-accent">See what one reel includes →</a>
+          </p>
         </div>
         {/*
           Credibility, not promises. Three facts about the studio rather than
@@ -537,7 +589,7 @@ const whatsappHref = whatsappWithMessage(
           id="triage-title"
           label="Where patients look"
           title="Where do patients look for a clinic like yours?"
-          lede="Your Google listing. Your website. And now the summary Google writes at the top of the results, before a patient reaches either. A patient checks all three before they call anyone, so all three have to agree."
+          lede="Your Google listing. Your website. Your Instagram. And now the summary Google writes at the top of the results, before a patient reaches any of them. Patients check more than one before they call anyone, so they all have to agree."
         />
         <a href={href('/services')} class="prose-link whitespace-nowrap text-base">See all services →</a>
       </div>
@@ -547,7 +599,10 @@ const whatsappHref = whatsappWithMessage(
            the dark panel that used to sit here pulled every eye to the one
            surface a doctor is least likely to be shopping for. Each card is a
            door to the service that fixes it. -->
-      <div class="reveal-group grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+      {/* Four surfaces, two to a row from sm up. Three to a row at xl was the
+          old shape for three cards; four would strand one, and a 2x2 keeps
+          each card roomy enough for its rows. */}
+      <div class="reveal-group grid gap-6 sm:grid-cols-2">
         {patientSurfaces.map((s) => (
           <article class="card-hover card-link flex flex-col overflow-hidden rounded-3xl border border-line bg-surface">
             <span class:list={['accent-bar block h-1 w-full', s.accent.bar]} aria-hidden="true"></span>
@@ -558,10 +613,10 @@ const whatsappHref = whatsappWithMessage(
             <Image
               src={s.image}
               alt={s.imageAlt}
-              widths={[420, 640, 700, 840]}
-              sizes="(min-width: 1280px) 400px, (min-width: 640px) 46vw, 92vw"
+              widths={[420, 640, 840, 1200]}
+              sizes="(min-width: 1440px) 628px, (min-width: 640px) 46vw, 92vw"
               loading="lazy"
-              class:list={['h-[140px] w-full border-b border-line object-cover sm:h-[168px]', s.imagePos]}
+              class:list={['h-[140px] w-full border-b border-line object-cover sm:h-[168px] lg:h-[200px]', s.imagePos]}
             />
             <div class="flex flex-1 flex-col p-5 sm:p-6">
               <h3 class="text-[24px] font-bold tracking-[-0.03em] text-ink">{s.title}</h3>
@@ -611,7 +666,7 @@ const whatsappHref = whatsappWithMessage(
           id="protocols-title"
           label="What we do"
           title="What do we do for your clinic?"
-          lede="Nine services, in the three groups a practice actually buys them in. Most need three to begin with, and we tell you which three in writing before you pay anything."
+          lede="Three kinds of work, for healthcare practices only. Start with whichever you need: one is enough, and the free review says in writing which one before you pay anything."
         />
         <a href={href('/services')} class="prose-link whitespace-nowrap text-base">See all services →</a>
       </div>
@@ -678,15 +733,20 @@ const whatsappHref = whatsappWithMessage(
         />
         <a href={href('/pricing') + '#estimate'} class="prose-link whitespace-nowrap text-base">Work out your number →</a>
       </div>
-      <div class="reveal-group grid gap-4 sm:grid-cols-3">
+      {/* Four cards: 2x2 from sm, one row of four from lg. The figure wraps
+          under its "Starting from" caption in a ~260px card, so the row is a
+          column rather than a baseline. Each card is a link to where its
+          figure is explained, through .card-link, so the anchor keeps a short
+          name of its own. */}
+      <div class="reveal-group grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {priceHeadlines.map((p, i) => (
-          <article class="card-hover overflow-hidden rounded-3xl border border-line bg-canvas shadow-card">
+          <article class="card-hover card-link flex flex-col overflow-hidden rounded-3xl border border-line bg-canvas shadow-card">
             <span class:list={['accent-bar block h-1 w-full', cycleAccent(i).bar]} aria-hidden="true"></span>
-            <div class="p-7">
+            <div class="flex flex-1 flex-col p-6 sm:p-7">
               <h3 class="text-[17px] font-bold tracking-[-0.02em] text-ink">{p.name}</h3>
-              <p class="mt-4 flex items-baseline gap-2">
-                <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{PRICE_PREFIX}</span>
-                <span class="text-[clamp(28px,3.2vw,36px)] font-extrabold leading-none tracking-[-0.045em] text-ink">
+              <p class="mt-4 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                <span class="w-full font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{PRICE_PREFIX}</span>
+                <span class="text-[clamp(28px,3vw,34px)] font-extrabold leading-none tracking-[-0.045em] text-ink">
                   {p.value}
                 </span>
                 {p.unit && (
@@ -694,6 +754,9 @@ const whatsappHref = whatsappWithMessage(
                 )}
               </p>
               <p class="mt-3.5 text-[15px] leading-[1.6] text-muted">{p.note}</p>
+              <p class="mt-auto pt-4">
+                <a href={href(p.link)} class="prose-link text-[15px]">See what is included →</a>
+              </p>
             </div>
           </article>
         ))}

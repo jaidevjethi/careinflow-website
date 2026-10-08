@@ -38,14 +38,29 @@ const services = defineCollection({
      * figure. Drives the price line on service cards and the `Offer` in the
      * Service schema, so neither can disagree with /pricing. The real number is
      * still fixed in writing after the free review.
+     *
+     * A service priced to scope (Website Care) sets `custom: true` and no ref:
+     * the page says so in words, and no Offer is emitted, because a figure we
+     * do not publish cannot honestly appear in structured data either.
      */
     pricing: z
       .object({
-        ref: z.enum(PRICE_REFS),
+        ref: z.enum(PRICE_REFS).optional(),
+        custom: z.boolean().default(false),
         /** What that figure buys, in the service's own terms. Use {{tokens}}. */
         note: z.string(),
       })
+      .refine((p) => p.custom !== Boolean(p.ref), {
+        message: 'pricing needs either a ref or custom: true, and not both',
+      })
       .optional(),
+    /**
+     * A service that belongs under another one: reel editing sits under
+     * healthcare content. A child keeps its own page, price and schema, but
+     * stays out of the top-level service lists and takes its parent's place in
+     * the breadcrumb, so the site still reads as five services rather than six.
+     */
+    parent: z.string().optional(),
     faqs: z.array(z.object({ q: z.string(), a: z.string() })),
     related: z.array(z.string()).default([]),
   }),

@@ -7,7 +7,7 @@ import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import CtaStrip from '@/components/CtaStrip.astro';
 import type { PrefillKey } from '@/config/site';
-import { rupees } from '@/config/pricing';
+import { rupees, unitLabel } from '@/config/pricing';
 import { SERVICE_PRICES, resolvePrices } from '@/lib/prices';
 import { resolveFaqs } from '@/lib/faqs';
 import ServiceDiagram from '@/components/diagrams/ServiceDiagram.astro';
@@ -36,23 +36,50 @@ const { Content } = await render(service);
 const allServices = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
 const related = allServices.filter((s) => service.data.related.includes(s.id));
 
+/**
+ * Reel editing sits under healthcare content. It keeps a page of its own,
+ * because "reel editing for doctors" is a different search from "social media
+ * for doctors", but its breadcrumb runs through its parent so the site still
+ * reads as five services with one way into the first.
+ */
+const parent = service.data.parent
+  ? allServices.find((s) => s.id === service.data.parent)
+  : undefined;
+
 const path = `/services/${service.id}`;
 const title = `${service.data.seoTitle ?? service.data.title} | CareInflow`;
-const description = service.data.description;
+/** Tokens resolved, so a description can quote a price without carrying one. */
+const description = resolvePrices(service.data.description);
 
 const prefillByService: Record<string, PrefillKey> = {
   'healthcare-websites': 'website',
   'local-seo': 'seo',
   'google-business-profile': 'gbp',
   'website-care': 'care',
-  'social-media': 'social',
+  'social-media': 'content',
+  'reel-editing': 'reel',
 };
 const prefill = prefillByService[service.id] ?? 'default';
 
+/**
+ * The two content pages close on the sample-video offer rather than the free
+ * written review. A doctor who arrived to have a reel edited does not want a
+ * five-page audit of their website; they want to know what their video would
+ * become and what it costs. Every other service keeps the review.
+ */
+const isContent = service.id === 'social-media' || service.data.parent === 'social-media';
+
 /** Resolved from `pricing.ts` via the frontmatter key — never from the MDX. */
-const price = service.data.pricing ? SERVICE_PRICES[service.data.pricing.ref] : undefined;
-const priceNote = service.data.pricing ? resolvePrices(service.data.pricing.note) : undefined;
+const pricing = service.data.pricing;
+const price = pricing?.ref ? SERVICE_PRICES[pricing.ref] : undefined;
+const priceNote = pricing ? resolvePrices(pricing.note) : undefined;
 const faqs = resolveFaqs(service.data.faqs);
+
+const nextStep = isContent
+  ? service.id === 'reel-editing'
+    ? { label: 'See the monthly content packages', href: '/pricing#content' }
+    : { label: 'See what one reel includes', href: '/services/reel-editing' }
+  : { label: 'See the portfolio first', href: '/work' };
 
 const schema = graph(
   organizationSchema(),
@@ -61,6 +88,7 @@ const schema = graph(
   breadcrumbSchema([
     { name: 'Home', path: '/' },
     { name: 'Services', path: '/services' },
+    ...(parent ? [{ name: parent.data.navLabel, path: `/services/${parent.id}` }] : []),
     { name: service.data.navLabel, path },
   ]),
   serviceSchema({
@@ -74,25 +102,16 @@ const schema = graph(
 );
 ---
 
-<BaseLayout {title} {description} {path} {schema}>
+<BaseLayout {title} {description} {path} {schema} {prefill} offer={isContent ? 'content' : 'review'}>
   <article>
     <PageHero
-      breadcrumb={{ label: 'All services', href: href('/services') }}
+      breadcrumb={parent
+        ? { label: parent.data.navLabel, href: href(`/services/${parent.id}`) }
+        : { label: 'All services', href: href('/services') }}
       label={service.data.navLabel}
       title={service.data.title}
       lede={service.data.summary}
     >
-      {service.data.order > 4 && (
-        <p class="mt-7">
-          <!-- whitespace-normal because this chip carries a sentence, not a
-               measurement. `.chip` is nowrap by default, which is right for a
-               pill like "WCAG AA" but pushed this one 8px past the viewport
-               on a 390px phone. -->
-          <span class="chip border border-panel-line bg-panel-card text-panel-text whitespace-normal">
-            Sold on its own, or alongside anything else
-          </span>
-        </p>
-      )}
       <IllustrationPanel
         slot="aside"
         src={service.data.illustration}
@@ -135,18 +154,39 @@ const schema = graph(
                   {rupees(price.from)}
                 </span>
                 <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">
-                  {price.unit === 'month' ? '/ month' : 'one-time'}
+                  {unitLabel(price.unit)}
                 </span>
               </p>
               <p class="mt-3 text-[14px] leading-[1.6] text-muted">{priceNote}</p>
-              <a href={href('/pricing')} class="prose-link mt-3 inline-block text-[15px]">
+              <a href={href(isContent ? '/pricing#content' : '/pricing')} class="prose-link mt-3 inline-block text-[15px]">
                 See the full price list →
               </a>
             </div>
           )}
+          {pricing?.custom && (
+            <div class="mt-6 border-t border-line pt-5">
+              <p class="label-mono mb-3 text-faint" style="letter-spacing:0.12em">Priced to your site</p>
+              <p class="text-[22px] font-extrabold leading-[1.15] tracking-[-0.03em] text-ink">
+                A custom monthly plan
+              </p>
+              <p class="mt-3 text-[14px] leading-[1.6] text-muted">{priceNote}</p>
+              <a href={href('/pricing#monthly')} class="prose-link mt-3 inline-block text-[15px]">
+                See both monthly plans →
+              </a>
+            </div>
+          )}
           <p class="mt-5 border-t border-line pt-4 text-[14px] leading-[1.6] text-muted">
-            Your exact figure is fixed in writing after the
-            <a href={href('/contact')} class="prose-link">free review</a>.
+            {isContent ? (
+              <>
+                Send one sample video and we confirm what it involves and what it
+                costs before we start.
+              </>
+            ) : (
+              <>
+                Your exact figure is fixed in writing after the
+                <a href={href('/contact')} class="prose-link">free review</a>.
+              </>
+            )}
           </p>
         </aside>
       </div>
@@ -167,7 +207,15 @@ const schema = graph(
     )}
   </article>
 
-  <CtaStrip />
+  {isContent ? (
+    <CtaStrip
+      text="Have a video already recorded? Send the topic and one clip, and we will tell you what the reel would involve."
+      href="/contact#content"
+      linkText="Send one sample video"
+    />
+  ) : (
+    <CtaStrip />
+  )}
 
   <FaqSection
     {faqs}
@@ -175,5 +223,5 @@ const schema = graph(
     title="Asked about this service"
   />
 
-  <CtaPanel {prefill} nextStep={{ label: 'See the portfolio first', href: '/work' }} />
+  <CtaPanel {prefill} offer={isContent ? 'content' : 'review'} {nextStep} />
 </BaseLayout>

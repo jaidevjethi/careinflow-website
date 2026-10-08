@@ -16,7 +16,7 @@ import DiagramFigure from '@/components/diagrams/DiagramFigure.astro';
 import MethodOrder from '@/components/diagrams/MethodOrder.astro';
 import { href } from '@/lib/url';
 import { cycleAccent } from '@/lib/accents';
-import { PLANS, rupees } from '@/config/pricing';
+import { GOOGLE_CARE, WEBSITE_CARE, rupees } from '@/config/pricing';
 import {
   graph,
   organizationSchema,
@@ -97,8 +97,8 @@ const weeks = [
     step: '04',
     week: 'Week 4 →',
     title: 'Launch, then stay',
-    text: 'Launch is measured against the published targets: load time reference, accessibility, valid schema. Then the ongoing schedule begins, weekly monitoring, monthly maintenance, and a written quarterly review.',
-    output: 'Launch measurements + the care schedule',
+    text: 'Launch is measured against the published targets: load time reference, accessibility, valid schema. Then, if you want the work to carry on, one of the two monthly plans begins.',
+    output: 'Launch measurements + a monthly plan, if you want one',
     image: processLaunch,
     imageAlt: 'A laptop and a phone on a desk at launch: the laptop showing a launch checklist of speed, structured data and Core Web Vitals checks, the phone showing the clinic answering a spoken search.',
     fromYou: ['A final yes before launch'],
@@ -119,14 +119,20 @@ const heroStats = [
 ];
 
 /**
- * The schedule that starts at launch. Same three cadences as the table on
- * /services, phrased shorter for a sidebar — the point here is that week four
- * is a beginning, not that the reader should re-read the full care schedule.
+ * What can start at launch: the two monthly plans, the same two the /services
+ * table and the pricing page show, phrased shorter for a sidebar. This used to
+ * be a weekly / monthly / quarterly cadence promising uptime monitoring and a
+ * quarterly written review, neither of which is in either plan's scope.
  */
 const cadence = [
-  { when: 'Every week', what: 'Uptime and performance monitored, review activity checked.' },
-  { when: 'Every month', what: 'Security updates, backups, your content edits, photos and hours refreshed.' },
-  { when: 'Every quarter', what: 'Speed re-measured, and a written review of what patients did and what to do next.' },
+  {
+    when: `${GOOGLE_CARE.name} · ${rupees(GOOGLE_CARE.monthly)} a month`,
+    what: 'Your listing maintained, every review answered, searches watched, a new treatment page and a report, every month.',
+  },
+  {
+    when: `${WEBSITE_CARE.name} · priced to your site`,
+    what: 'Updates, doctor and treatment changes, images, basic maintenance, and backups where your hosting supports them.',
+  },
 ];
 ---
 
@@ -281,10 +287,10 @@ const cadence = [
             id="after-title"
             label="After week four"
             title="What happens after week four?"
-            lede="Launch begins the maintenance schedule: weekly monitoring, monthly upkeep, and a quarterly written review of what patients did and what to do next. The full schedule is on the ongoing care page."
+            lede="Launch is where the build ends and, if you want it, a monthly plan begins: Local SEO & Google Care for the listing, local search and the website, or Website Care for the website alone."
           />
           <p class="mt-6 max-w-[620px] text-[16px] leading-[1.65] text-muted">
-            Local SEO and Google care is {rupees(PLANS[0]!.monthly)} a month:
+            Local SEO and Google care is {rupees(GOOGLE_CARE.monthly)} a month:
             the listing managed, reviews answered, one new page a month and a
             written report. Month to month, no lock-in, and the website stays
             yours either way, see the
@@ -292,13 +298,13 @@ const cadence = [
           </p>
           <p class="mt-7">
             <a href={href('/services/website-care')} class="btn-secondary px-6 py-3.5 text-[16px]">
-              See the care schedule
+              Compare the two plans
             </a>
           </p>
         </div>
 
         <div class="rounded-3xl border border-line bg-surface p-7">
-          <p class="label-mono mb-4 text-faint" style="letter-spacing:0.12em">The ongoing cadence</p>
+          <p class="label-mono mb-4 text-faint" style="letter-spacing:0.12em">After launch, if you want it</p>
           <dl>
             {cadence.map((c, i) => (
               <div

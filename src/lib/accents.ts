@@ -71,6 +71,7 @@ const SERVICE_ACCENTS: Record<string, AccentName> = {
   'local-seo': 'seo',
   'website-care': 'care',
   'social-media': 'social',
+  'reel-editing': 'social',
 };
 
 export const serviceAccent = (slug: string): Accent =>

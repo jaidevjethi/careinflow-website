@@ -9,8 +9,8 @@ import CtaPanel from '@/components/CtaPanel.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import { getFaqsFor } from '@/lib/faqs';
 import { href } from '@/lib/url';
-import { BUILDS, PLANS, rupees } from '@/config/pricing';
-import { SERVICE_PRICES } from '@/lib/prices';
+import { BUILDS, GOOGLE_CARE, PLANS, rupees, type PriceUnit } from '@/config/pricing';
+import { PRICE_TOKENS, SERVICE_PRICES, resolvePrices } from '@/lib/prices';
 import {
   graph,
   faqSchema,
@@ -27,6 +27,14 @@ const description =
 
 const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
 
+/**
+ * Five services. Reel editing has a page of its own but sits under healthcare
+ * content, so it appears inside that row as the single-piece way in rather
+ * than as a sixth row of its own.
+ */
+const topLevel = services.filter((s) => !s.data.parent);
+const childrenOf = (id: string) => services.filter((s) => s.data.parent === id);
+
 /*
  * The service count in the hero stat comes from the collection. It was
  * hand-written as "Nine" — the homepage's count of capability cards — above
@@ -36,6 +44,10 @@ const services = (await getCollection('services')).sort((a, b) => a.data.order -
 
 const faqs = await getFaqsFor('services');
 
+/** The price as a row reads it: "From ₹5,499 a month", "From ₹699 each". */
+const unitWords = (unit: PriceUnit) =>
+  ({ month: 'a month', piece: 'each', page: 'a page', once: 'one-time', project: 'one-time' })[unit];
+
 const schema = graph(
   organizationSchema(),
   webSiteSchema(),
@@ -44,13 +56,15 @@ const schema = graph(
     { name: 'Home', path: '/' },
     { name: 'Services', path: '/services' },
   ]),
+  // Every service with a page, the reel included: its price is shown in the
+  // content row, so its Service node describes something on this page.
   ...services.map((s) =>
     serviceSchema({
       id: s.id,
       name: s.data.navLabel,
-      description: s.data.description,
+      description: resolvePrices(s.data.description),
       path: `/services/${s.id}`,
-      ...(s.data.pricing ? { offer: SERVICE_PRICES[s.data.pricing.ref] } : {}),
+      ...(s.data.pricing?.ref ? { offer: SERVICE_PRICES[s.data.pricing.ref] } : {}),
     }),
   ),
   faqSchema(faqs),
@@ -60,10 +74,14 @@ const schema = graph(
  * What the buyer gets, not what the build scores. A Lighthouse number and a
  * schema validity flag belong in the work, and in the written review; they
  * are not four things a doctor can weigh in the first ten seconds of a page.
+ *
+ * The second stat used to say three services is "what most clinics start
+ * with" — a claim about other practices with nothing behind it. What is true,
+ * and more useful, is that any one of the five is a place to start.
  */
 const targets = [
-  { value: String(services.length), caption: 'services, each priced on this page' },
-  { value: 'Three', caption: 'is what most clinics start with' },
+  { value: String(topLevel.length), caption: 'services, each priced on this page' },
+  { value: 'One', caption: 'is enough to start with' },
   { value: 'Fixed', caption: 'price, agreed before we start' },
   { value: 'Free', caption: 'written review before you pay' },
 ];
@@ -91,32 +109,46 @@ const glossary = [
   },
 ];
 
-const maintenance = [
-  { cadence: 'Weekly', items: 'Uptime and performance monitoring · review activity checked' },
-  { cadence: 'Monthly', items: 'Security updates · backups · content edits · profile photos and hours refreshed' },
-  { cadence: 'Quarterly', items: 'Speed re-measured against reference · written review: what patients did, what to do next' },
-];
+/**
+ * After launch, as the two plans rather than a cadence. The table used to
+ * promise weekly uptime monitoring and a quarterly written review; neither is
+ * in either plan, so the rows now come from pricing.ts and say exactly what
+ * each plan covers.
+ */
+const afterLaunch = PLANS.map((p) => ({
+  name: p.name,
+  price: p.monthly ? `${rupees(p.monthly)} a month` : 'Priced to your site',
+  items: p.includes.join(' · '),
+  link: p.custom ? '/services/website-care' : '/services/local-seo',
+}));
 
 const engagements = [
   {
+    name: 'Start with content',
+    price: `${rupees(PRICE_TOKENS.reel)} a reel, or from ${rupees(PRICE_TOKENS.contentStarter)} a month`,
+    scope: 'Send the videos you record and get back publish-ready reels, posts and carousels: one reel at a time, or a monthly package.',
+    excludes: 'Excludes filming, posting, ads and replying to messages.',
+    suits: 'Suits a doctor who already explains things well on camera and wants it to reach patients.',
+  },
+  {
     name: 'Start with the website',
     price: `${rupees(BUILDS[0]!.from)}, one-time`,
-    scope: 'A practice website up to five pages, with the local-search foundation under it and an audit of your Google listing.',
-    excludes: 'Excludes: month-to-month management of the listing, and a treatment-by-treatment content strategy.',
-    suits: 'Suits a solo doctor or small practice in a straightforward local market.',
+    scope: 'A Foundation Website up to five pages, with the local-search foundation under it and your Google listing set up and audited.',
+    excludes: 'Excludes monthly management of the listing, and a page for every treatment.',
+    suits: 'Suits a doctor or small clinic that needs a professional starting website.',
   },
   {
     name: 'Website and Google together',
     price: `${rupees(BUILDS[1]!.from)}, one-time`,
-    scope: 'Up to ten pages with a page per treatment, plus your Google Business Profile rebuilt, aligned to the site and handed over working. Ninety days of support.',
+    scope: 'A Practice Website up to ten pages with a page per treatment, plus your Google Business Profile rebuilt, aligned to the site and handed over working. Ninety days of support.',
     excludes: 'Excludes ongoing management after the 90 days, Gujarati, and more than one location.',
-    suits: 'Suits the practice that wants a website and wants patients to find it. Most people start here.',
+    suits: 'Suits the practice that wants a website and wants patients to find it. It is the one we recommend for most practices.',
   },
   {
     name: 'Then keep it working',
-    price: `${rupees(PLANS[0]!.monthly)} a month`,
-    scope: 'The listing managed, every review answered, local search monitored, one new treatment page a month, and a written report.',
-    excludes: 'Excludes any promise about rankings. What it promises is continuous improvement and maintenance.',
+    price: `${rupees(GOOGLE_CARE.monthly)} a month`,
+    scope: 'Local SEO & Google Care: the listing maintained, every review answered, local search watched, one new treatment page a month, and a written report.',
+    excludes: 'Excludes any promise about rankings, Maps position, enquiries or patients. What it promises is the work, every month.',
     suits: 'Suits any practice that wants the work to continue after launch. Month to month, no lock-in.',
   },
 ];
@@ -145,60 +177,83 @@ const engagements = [
   <!-- SERVICE DETAILS : alternating rows -->
   <section class="border-t border-hairline bg-surface" aria-label="What we do for clinics">
     <div class="section shell flex flex-col gap-20">
-      {services.map((service, i) => (
-        <article class="grid items-start gap-10 lg:grid-cols-2 lg:gap-20">
-          <div class:list={[i % 2 === 1 && 'lg:order-2']}>
-            <p class="mb-4 flex flex-wrap items-center gap-2.5">
-              {service.data.order > 4 && (
-                <span class="chip bg-hairline-soft text-muted">Sold on its own too</span>
-              )}
-            </p>
-            <h2 class="text-[clamp(26px,3vw,34px)] font-extrabold leading-[1.1] tracking-[-0.03em] text-ink">
-              {service.data.title}
-            </h2>
-            <p class="mt-4 max-w-[520px] text-[17px] leading-[1.65] text-body">{service.data.description}</p>
-            <a href={href(`/services/${service.id}`)} class="prose-link mt-5 inline-block text-base">
-              Read about {service.data.navLabel.toLowerCase()} →
-            </a>
-
-            {service.data.pricing && (
-              <p class="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <span class="text-[24px] font-extrabold leading-none tracking-[-0.04em] text-ink">
-                  From {rupees(SERVICE_PRICES[service.data.pricing.ref].from)}
-                </span>
-                <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">
-                  {SERVICE_PRICES[service.data.pricing.ref].unit === 'month' ? 'a month' : 'one-time'}
-                </span>
+      {topLevel.map((service, i) => {
+        const pricing = service.data.pricing;
+        const price = pricing?.ref ? SERVICE_PRICES[pricing.ref] : undefined;
+        return (
+          <article class="grid items-start gap-10 lg:grid-cols-2 lg:gap-20">
+            <div class:list={[i % 2 === 1 && 'lg:order-2']}>
+              <h2 class="text-[clamp(26px,3vw,34px)] font-extrabold leading-[1.1] tracking-[-0.03em] text-ink">
+                {service.data.title}
+              </h2>
+              <p class="mt-4 max-w-[520px] text-[17px] leading-[1.65] text-body">
+                {resolvePrices(service.data.description)}
               </p>
-            )}
+              <a href={href(`/services/${service.id}`)} class="prose-link mt-5 inline-block text-base">
+                Read about {service.data.navLabel.toLowerCase()} →
+              </a>
 
-            <div class="card-hover mt-8 rounded-3xl border border-line bg-canvas p-7">
-              <p class="label-mono mb-4 text-faint" style="letter-spacing:0.12em">What you receive</p>
-              <dl>
-                {service.data.deliverables.map((d, j) => (
-                  <div
-                    class:list={[
-                      'flex items-baseline justify-between gap-6 py-2.5 text-[15px]',
-                      j < service.data.deliverables.length - 1 && 'border-b border-hairline',
-                    ]}
-                  >
-                    <dt class="text-muted">{d.item}</dt>
-                    <dd class="whitespace-nowrap font-semibold text-pass">{d.status}</dd>
-                  </div>
-                ))}
-              </dl>
+              {price && (
+                <p class="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                  <span class="text-[24px] font-extrabold leading-none tracking-[-0.04em] text-ink">
+                    From {rupees(price.from)}
+                  </span>
+                  <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">
+                    {unitWords(price.unit)}
+                  </span>
+                </p>
+              )}
+              {pricing?.custom && (
+                <p class="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                  <span class="text-[24px] font-extrabold leading-none tracking-[-0.04em] text-ink">
+                    Custom monthly plan
+                  </span>
+                  <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">
+                    priced to your site
+                  </span>
+                </p>
+              )}
+              {childrenOf(service.id).map((child) => {
+                const childPrice = child.data.pricing?.ref ? SERVICE_PRICES[child.data.pricing.ref] : undefined;
+                return (
+                  <p class="mt-3 text-[16px] leading-[1.55] text-body">
+                    Or one at a time:{' '}
+                    <a href={href(`/services/${child.id}`)} class="prose-link">
+                      {child.data.navLabel.toLowerCase()}
+                      {childPrice && `, ${rupees(childPrice.from)} ${unitWords(childPrice.unit)}`} →
+                    </a>
+                  </p>
+                );
+              })}
+
+              <div class="card-hover mt-8 rounded-3xl border border-line bg-canvas p-7">
+                <p class="label-mono mb-4 text-faint" style="letter-spacing:0.12em">What you receive</p>
+                <dl>
+                  {service.data.deliverables.map((d, j) => (
+                    <div
+                      class:list={[
+                        'flex items-baseline justify-between gap-6 py-2.5 text-[15px]',
+                        j < service.data.deliverables.length - 1 && 'border-b border-hairline',
+                      ]}
+                    >
+                      <dt class="text-muted">{d.item}</dt>
+                      <dd class="whitespace-nowrap font-semibold text-pass">{d.status}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
             </div>
-          </div>
 
-          <div class:list={['lg:sticky lg:top-24', i % 2 === 1 && 'lg:order-1']}>
-            <IllustrationPanel
-              src={service.data.illustration}
-              alt={service.data.illustrationAlt}
-              maxWidth={620}
-            />
-          </div>
-        </article>
-      ))}
+            <div class:list={['lg:sticky lg:top-24', i % 2 === 1 && 'lg:order-1']}>
+              <IllustrationPanel
+                src={service.data.illustration}
+                alt={service.data.illustrationAlt}
+                maxWidth={620}
+              />
+            </div>
+          </article>
+        );
+      })}
     </div>
   </section>
 
@@ -209,10 +264,12 @@ const engagements = [
         id="engagements-title"
         dark
         label="Where to start"
-        title="Where do most practices actually start?"
-        lede="Each website package does more for you than the one before it. Every job is one fixed price, agreed in writing after the free review, and what it does not cover is written as plainly as what it does."
+        title="Where can a practice start?"
+        lede="Anywhere. Content is the quickest way in, a website is the larger project, and the Google work is what keeps going after launch. Every job has one fixed price, agreed in writing, and what it does not cover is written as plainly as what it does."
       />
-      <div class="reveal-group mt-12 grid gap-5 lg:grid-cols-3">
+      {/* Four into two columns, from sm up. Three columns stranded the fourth
+          card alone on a row once content became a place to start. */}
+      <div class="reveal-group mt-12 grid gap-5 sm:grid-cols-2">
         {engagements.map((e) => (
           <article class="rounded-3xl border border-panel-line bg-panel-card p-6 sm:p-7">
             <h3 class="text-xl font-bold tracking-[-0.02em] text-surface">{e.name}</h3>
@@ -226,7 +283,7 @@ const engagements = [
         ))}
       </div>
       <p class="mt-8 font-mono text-[11px] uppercase tracking-[0.08em] text-panel-text-faint">
-        Published starting prices · fixed in writing after the review · see the full <a href={href('/pricing')} class="link-accent">price list</a>
+        Published starting prices · fixed in writing before we start · see the full <a href={href('/pricing')} class="link-accent">price list</a>
       </p>
     </div>
   </section>
@@ -241,18 +298,21 @@ const engagements = [
       />
       <div class="mt-10 max-w-[880px] overflow-x-auto">
         <table class="w-full border-collapse text-left">
-          <caption class="sr-only">Maintenance schedule by cadence</caption>
+          <caption class="sr-only">The two monthly plans after launch, and what each covers</caption>
           <thead>
             <tr class="border-b border-line">
-              <th scope="col" class="label-mono py-3 pr-6 text-faint">Cadence</th>
-              <th scope="col" class="label-mono py-3 text-faint">What happens</th>
+              <th scope="col" class="label-mono py-3 pr-6 text-faint">Plan</th>
+              <th scope="col" class="label-mono py-3 text-faint">What it covers</th>
             </tr>
           </thead>
           <tbody>
-            {maintenance.map((row) => (
+            {afterLaunch.map((row) => (
               <tr class="border-b border-hairline align-top">
-                <th scope="row" class="whitespace-nowrap py-4 pr-6 font-mono text-[12px] uppercase tracking-[0.08em] text-surgical">
-                  {row.cadence}
+                <th scope="row" class="py-4 pr-6 text-left align-top">
+                  <a href={href(row.link)} class="prose-link block text-[16px]">{row.name}</a>
+                  <span class="mt-1 block whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.08em] text-surgical">
+                    {row.price}
+                  </span>
                 </th>
                 <td class="py-4 text-[16px] leading-[1.6] text-body">{row.items}</td>
               </tr>
@@ -261,8 +321,10 @@ const engagements = [
         </table>
       </div>
       <p class="mt-6 max-w-[680px] text-[16px] leading-[1.65] text-muted">
-        The full schedule, ownership terms and month-to-month structure are on
-        the <a href={href('/services/website-care')} class="prose-link">ongoing website care</a> page.
+        Both run month to month, with no lock-in, and the website and every
+        account stay in your name whatever you decide. A practice on Local SEO
+        & Google Care does not usually need Website Care as well: website
+        updates are already part of it.
       </p>
     </div>
   </section>

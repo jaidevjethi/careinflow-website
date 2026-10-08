@@ -7,12 +7,20 @@ import { href } from '@/lib/url';
  * system specifies ("the same white CTA card as the homepage").
  * `prefill` tailors the WhatsApp opening message to the page's context;
  * `nextStep` chains the funnel to the page a convinced visitor reads next.
+ *
+ * `offer` picks which of the site's two offers the card makes. Everywhere but
+ * the two content pages it is the free written review. On those it is the
+ * sample-video reply: send one clip and the topic, learn what the reel would
+ * involve and cost. The reply is free; the editing never is, and the card says
+ * so, because "send us your video" otherwise reads as a free edit.
  */
 interface Props {
   prefill?: PrefillKey;
+  offer?: 'review' | 'content';
   nextStep?: { label: string; href: string };
 }
-const { prefill = 'default', nextStep } = Astro.props;
+const { offer = 'review', nextStep } = Astro.props;
+const prefill = Astro.props.prefill ?? (offer === 'content' ? 'reel' : 'default');
 const whatsappHref = whatsappFor(prefill);
 
 const reviewCovers = [
@@ -23,13 +31,39 @@ const reviewCovers = [
   'AI answer readiness',
   'The three clinics above you',
 ];
+
+const contentAnswers = [
+  'What the edit involves',
+  'Gujarati or English captions',
+  'The graphics it needs',
+  'How long it takes',
+  'What it costs',
+  'Whether a package suits you better',
+];
+
+const copy =
+  offer === 'content'
+    ? {
+        heading: 'Send one video. We reply with what the edit involves.',
+        body: 'Record a question patients ask you, or send a clip you already have, with the topic. We tell you how we would turn it into a publish-ready reel, how long it takes and what it costs. We do not edit it for free, and there is no obligation.',
+        cardTitle: 'We tell you',
+        items: contentAnswers,
+        foot: 'Free reply · usually the same day',
+      }
+    : {
+        heading: "Send your clinic's name. We reply with what a patient sees.",
+        body: 'One WhatsApp message, no form and no sales deck. You get a written review of the specific things costing you patients before anyone asks for your time, and if the answer is "change nothing", we will say that.',
+        cardTitle: 'The review covers',
+        items: reviewCovers,
+        foot: 'Free · 2 working days',
+      };
 ---
 
 <section class="section shell" aria-labelledby="cta-heading">
   <div class="panel-depth panel-box grid items-center gap-10 lg:grid-cols-[1fr_380px] lg:gap-16">
     <div>
       <h2 id="cta-heading" class="text-[clamp(32px,5vw,56px)] font-extrabold leading-[1.02] tracking-[-0.05em] text-surface">
-        Send your clinic's name. We reply with what a patient sees.
+        {copy.heading}
       </h2>
       {/* Not "no call". There is a conversation — week one of the method is
           an hour with the practice, and nothing is scoped without it. What
@@ -37,9 +71,7 @@ const reviewCovers = [
           whether it is worth talking at all. The review comes first, and the
           talking happens once you have something in your hand to talk about. */}
       <p class="mt-5 max-w-[560px] text-lg leading-[1.62] text-panel-text">
-        One WhatsApp message, no form and no sales deck. You get a written
-        review of the specific things costing you patients before anyone asks
-        for your time, and if the answer is "change nothing", we will say that.
+        {copy.body}
       </p>
       <div class="mt-8 flex flex-wrap items-center gap-4.5">
         <a href={whatsappHref} rel="noopener" class="btn-whatsapp px-7 py-4 text-[17px]">
@@ -56,14 +88,14 @@ const reviewCovers = [
       )}
     </div>
     <div class="rounded-3xl border border-panel-line bg-panel-card p-7">
-      <h3 class="label-mono mb-4 text-panel-text-faint" style="letter-spacing:0.12em">The review covers</h3>
+      <h3 class="label-mono mb-4 text-panel-text-faint" style="letter-spacing:0.12em">{copy.cardTitle}</h3>
       <ul class="text-[15px] leading-[2.05] text-panel-text">
-        {reviewCovers.map((item) => (
+        {copy.items.map((item) => (
           <li>{item}</li>
         ))}
       </ul>
       <p class="mt-4 border-t border-panel-line pt-3.5 font-mono text-[11px] uppercase tracking-[0.08em] text-panel-accent">
-        Free · 2 working days
+        {copy.foot}
       </p>
     </div>
   </div>

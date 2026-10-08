@@ -27,7 +27,7 @@
   {
     "id": "what-does-it-cost",
     "question": "What does a clinic website cost?",
-    "answer": "Our prices are published, so you do not have to ask. There are four website packages, and what separates them is how much of your local search we take responsibility for. A practice website is {{buildPractice}}. A practice website with your Google listing rebuilt and matched to it is {{buildGoogle}}, and that is the one most practices need. A site built around the treatments you want to compete for is {{buildSeo}}. A multi-specialty or multi-location practice starts at {{buildMulti}} and is quoted rather than packaged. After launch, Local SEO and Google Care is {{careGoogle}} a month. Those are starting points for a described scope. Your exact number is fixed in writing after the free review, and sometimes the honest answer is 'less than you expected'.",
+    "answer": "Our prices are published, so you do not have to ask. There are four website packages, and what separates them is how much of your local search we take responsibility for. The Foundation Website is {{buildPractice}}. The Practice Website, with a page per treatment and your Google listing rebuilt and matched to it, is {{buildGoogle}}, and it is the one we recommend for most practices. The Growth Website, built around the treatments you want to compete for, is {{buildSeo}}. A multi-doctor or multi-location practice starts at {{buildMulti}} and is quoted rather than packaged. After launch, Local SEO and Google Care is {{careGoogle}} a month. Healthcare content is priced separately: a reel is {{reel}}, and monthly packages start at {{contentStarter}}. Those are starting points for a described scope. Your exact number is fixed in writing after the free review, and sometimes the honest answer is 'less than you expected'.",
     "pages": [
       "faq",
       "pricing",
@@ -62,7 +62,7 @@
   {
     "id": "after-launch",
     "question": "What happens after my website launches?",
-    "answer": "Whatever you choose. Local SEO and Google Care is {{careGoogle}} a month: your Google listing managed, every review answered, local search and Search Console watched, one new treatment page written and published each month, and a written report. The two larger website packages include 90 days of support after launch before any of that starts. Without a plan you still own everything. Domain, hosting, code and accounts are in your name from day one, and that is written into every agreement.",
+    "answer": "Whatever you choose. Local SEO and Google Care is {{careGoogle}} a month: your Google listing maintained, every review answered, the searches patients use watched, changes to your website, one new treatment page written and published each month, and a written report. For the website alone there is Website Care, a monthly plan priced to your site. Every package except the Foundation Website includes 90 days of support after launch before any of that starts. Without a plan you still own everything. Domain, hosting, code and accounts are in your name from day one, and that is written into every agreement.",
     "pages": [
       "faq",
       "process",
@@ -73,7 +73,7 @@
   {
     "id": "ranking-guarantee",
     "question": "Will my clinic rank number one on Google?",
-    "answer": "We do not promise rankings, and we would be careful with anyone who does. Rankings depend on competition, reviews and time, none of which an agency controls. What we control, and commit to in writing, is the groundwork rankings are built on: real pages for real searches, a properly maintained Google Business Profile, valid structured data, and speed that passes Google's own measurements.",
+    "answer": "We do not promise rankings, and we would be careful with anyone who does. Where a clinic appears depends on relevance, distance and prominence: how closely the practice matches the search, how far the patient is, and how well known the practice is, which takes in its reviews, the quality of its website and Google listing, the competition nearby, and time. None of that is something an agency can promise. What we control, and commit to in writing, is the groundwork that decides whether your clinic can compete: real pages for real searches, a properly maintained Google Business Profile, valid structured data, and speed that passes Google's own measurements.",
     "pages": [
       "faq",
       "home"
@@ -94,7 +94,7 @@
   {
     "id": "do-you-do-apps",
     "question": "Do you build apps, do branding, or run advertising?",
-    "answer": "No. We are not an advertising agency, a branding studio or an app developer. We do websites, local SEO, Google Business Profile management, ongoing care and social media content, for healthcare practices. Those are what we are good at and we would rather stay good at them.",
+    "answer": "No. We are not an advertising agency, a branding studio or an app developer, and none of those is part of what we sell. We do healthcare websites, healthcare content, Google Business Profile, local SEO and ongoing care, for healthcare practices only. Those are what we are good at, and we would rather stay good at them.",
     "pages": [
       "faq",
       "about"
@@ -144,8 +144,8 @@
   },
   {
     "id": "do-you-do-social",
-    "question": "Do you handle social media for clinics?",
-    "answer": "Yes, and it is a service in its own right rather than an add-on. It starts at {{social}} a month: a monthly content strategy and calendar, Instagram profile optimisation, up to four content pieces a week, captions and publishing, three reel edits from footage you provide, and a monthly review of what worked. The mix of formats follows the strategy rather than a fixed quota, so we are accountable for the volume and the thinking, not for manufacturing sixteen identical graphics. All of it stays inside the limits patient privacy sets. Shoots, complex carousels and advertising are quoted separately, and we do not chase follower counts.",
+    "question": "Do you make social media content for clinics?",
+    "answer": "Yes, as healthcare content: reels, posts and carousels made from footage and ideas you send us, ready to publish. A single reel is {{reel}}: edited, captioned in Gujarati or English, with graphics, a cover and the caption written. Three monthly packages start at {{contentStarter}} a month, each a fixed count of reels and posts, with an introductory rate for your first three billed months. Posting, filming, ads and replying to messages are not part of our packages, and every piece stays inside the limits patient privacy sets. We do not chase follower counts or promise reach.",
     "pages": [
       "faq"
     ],
@@ -174,7 +174,7 @@
   {
     "id": "packages-or-separate",
     "question": "What is the difference between the four website packages?",
-    "answer": "How much we do for you, not how many pages you get. At {{buildPractice}} we build the website and set it up so Google can find it, and we check your Google listing before we start. At {{buildGoogle}} we also fix the listing itself: the right categories, the right services, correct hours and photos, and a listing that says the same thing as your site. At {{buildSeo}} we work out which treatments patients are searching for near you, and build the site to answer those. Above {{buildMulti}} we plan and build the whole thing for a practice with several doctors, departments or branches, and that one is quoted rather than sold as a package. The free review tells you which one you need, and it is usually a smaller one than people expect.",
+    "answer": "How much we do for you, not how many pages you get. At {{buildPractice}} we build the website, set your Google listing up and make sure Google can find both, and we check the listing before we start. At {{buildGoogle}} we also rebuild the listing itself: the right categories, the right services, correct hours and photos, and a listing that says the same thing as your site. At {{buildSeo}} we work out which treatments patients are searching for near you, and build the site to answer those. From {{buildMulti}} we plan and build the whole thing for a practice with several doctors, departments or branches, and that one is quoted rather than sold as a package. The free review tells you which one you need, and sometimes it is a smaller one than you expected.",
     "pages": [
       "faq",
       "pricing"
@@ -194,7 +194,7 @@
   {
     "id": "prices-going-up",
     "question": "Will the price go up later?",
-    "answer": "The studio's rates will move as the work behind them does, but the price agreed at the start of your engagement is held for as long as we work together, even after our rates change. There is no deadline attached to a quote, and nothing comes off the number for deciding this week instead of next.",
+    "answer": "The studio's rates will move as the work behind them does, but the price agreed at the start of your engagement is held for as long as we work together, even after our rates change. On a content package, that agreed price already includes the step from the introductory rate in your first three billed months to the regular one. There is no deadline attached to a quote, and nothing comes off the number for deciding this week instead of next.",
     "pages": [
       "faq",
       "pricing"
@@ -236,7 +236,7 @@
   {
     "id": "which-service-first",
     "question": "Which of these services does my practice need first?",
-    "answer": "Almost always the Google Business Profile, because for most patients it is the first thing they see and it can be corrected in days rather than weeks. The website comes next, because the listing gets you seen and the website is where the patient decides. Ongoing work only makes sense once both exist. The free written review says which of the three you actually need, and if the answer is that you need less than you thought, it says that.",
+    "answer": "It depends on what you already have. For most practices the Google Business Profile comes first, because it is the first thing many patients see and it can be corrected in days rather than weeks. The website comes next, because the listing gets you seen and the website is where the patient decides. If you already record videos and want them working for you, content is the quickest place to start, and it does not depend on the other two. The free written review says which of these you actually need, and if the answer is that you need less than you thought, it says that.",
     "pages": [
       "services",
       "faq"
@@ -246,7 +246,7 @@
   {
     "id": "services-bought-separately",
     "question": "Can I buy just one of these instead of a package?",
-    "answer": "Yes. A Google Business Profile rebuilt on its own is {{gbpRebuild}}, an audit of a site somebody else built is {{takeoverAudit}}, and social media content is {{social}} a month. You do not have to buy a website to work with us. Where a combined package costs less than the parts, the pricing page states the overlap that makes it true.",
+    "answer": "Yes. A Google Business Profile rebuilt on its own is {{gbpRebuild}}, an audit of a site somebody else built is {{takeoverAudit}}, a healthcare reel is {{reel}}, and monthly content packages start at {{contentStarter}}. You do not have to buy a website to work with us. Where a combined package costs less than the parts, the pricing page states the overlap that makes it true.",
     "pages": [
       "services",
       "faq"
@@ -272,5 +272,16 @@
       "faq"
     ],
     "order": 26
+  },
+  {
+    "id": "not-only-websites",
+    "question": "Do you only build websites?",
+    "answer": "No. We work only with healthcare practices, and within that we do three kinds of work: healthcare content, which is reels, posts and carousels made from your own footage; websites; and your Google listing and local search. A practice can start with any one of them, and nobody is asked to buy a website to get content, or content to get a website. The free written review says which one is worth doing first.",
+    "pages": [
+      "home",
+      "services",
+      "faq"
+    ],
+    "order": 27
   }
 ]

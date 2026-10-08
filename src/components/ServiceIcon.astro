@@ -18,7 +18,7 @@
  * and it fails at build rather than at `astro check`.
  */
 interface Props {
-  name: 'website' | 'listing' | 'search' | 'answer' | 'speed' | 'enquiry' | 'maintenance' | 'review' | 'social';
+  name: 'website' | 'listing' | 'search' | 'answer' | 'speed' | 'enquiry' | 'maintenance' | 'review' | 'social' | 'video' | 'calendar';
   class?: string;
 }
 
@@ -44,6 +44,10 @@ const PATHS: Record<Props['name'], string> = {
   review: 'M5 3.5h14v17H5zM8.5 16.5v-3M12 16.5v-6M15.5 16.5v-4.5',
   // share nodes
   social: 'M17.5 3.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM6.5 9a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM17.5 15a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM8.8 10.4l6-2.6M8.8 13.6l6 2.6',
+  // a phone held upright with a play mark: a reel
+  video: 'M7.5 2.5h9v19h-9zM10.8 9.6v4.8l4-2.4zM10.5 18.5h3',
+  // a month on a page
+  calendar: 'M4 5.5h16v15H4zM4 9.5h16M8 3.5v4M16 3.5v4M8 13h.01M12 13h.01M16 13h.01M8 16.5h.01M12 16.5h.01',
 };
 ---
 

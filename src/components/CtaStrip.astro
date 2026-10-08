@@ -1,23 +1,29 @@
 ---
-import { href } from '@/lib/url';
+import { href as withBase } from '@/lib/url';
 
 /**
- * One-line mid-page CTA — a calm nudge between content sections, always
- * pointing at the free review (the funnel's centerpiece).
+ * One-line mid-page CTA — a calm nudge between content sections, pointing at
+ * one of the site's two offers. The free review by default; the two content
+ * pages pass the sample-video offer on /contact instead.
  */
 interface Props {
   text?: string;
+  /** Site-relative path, with an optional #fragment. Defaults to the review. */
+  href?: string;
+  linkText?: string;
 }
 const {
   text = 'Not sure this is your gap? The free review will say so, honestly.',
+  href = '/contact',
+  linkText = 'Get the free review',
 } = Astro.props;
 ---
 
-<aside class="shell" aria-label="Free review">
+<aside class="shell" aria-label={linkText}>
   <div class="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-line bg-canvas px-6 py-5 sm:px-7">
     <p class="text-[16px] leading-[1.5] text-body-deep">{text}</p>
-    <a href={href('/contact')} class="prose-link whitespace-nowrap text-[16px]">
-      Get the free review →
+    <a href={withBase(href)} class="prose-link whitespace-nowrap text-[16px]">
+      {linkText} →
     </a>
   </div>
 </aside>

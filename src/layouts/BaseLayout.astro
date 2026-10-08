@@ -5,7 +5,7 @@ import JsonLd from '@/components/JsonLd.astro';
 import Analytics from '@/components/Analytics.astro';
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
-import { whatsappFor } from '@/config/site';
+import { whatsappFor, type PrefillKey } from '@/config/site';
 import { href } from '@/lib/url';
 // Hashed URLs so the fonts can be preloaded — otherwise the browser only
 // discovers them after the stylesheet has parsed.
@@ -29,6 +29,14 @@ interface Props {
   imageWidth?: number;
   imageHeight?: number;
   noindex?: boolean;
+  /**
+   * The WhatsApp opening for the sticky bar, matching what the page sells. A
+   * reel page whose bar opened a conversation about a website review was
+   * asking the visitor to explain themselves from the first word.
+   */
+  prefill?: PrefillKey;
+  /** Which of the two offers the sticky bar's text link makes. */
+  offer?: 'review' | 'content';
 }
 
 const {
@@ -44,6 +52,8 @@ const {
   imageWidth,
   imageHeight,
   noindex,
+  prefill = 'default',
+  offer = 'review',
 } = Astro.props;
 ---
 
@@ -113,16 +123,28 @@ const {
       class="fixed inset-x-0 bottom-0 z-40 border-t border-panel-line bg-panel"
     >
       <div class="shell flex h-[60px] items-center justify-between gap-3">
-        <a
-          href={href('/contact')}
-          class="flex min-h-[24px] min-w-0 items-center truncate text-[14px] font-semibold text-surface"
-        >
-          Free written review · 2 days
-          <span class="hidden text-panel-text-dim md:inline">
-            &nbsp;· no call, no sales deck
-          </span>
-        </a>
-        <a href={whatsappFor('default')} rel="noopener" class="btn-whatsapp shrink-0 px-4.5 py-2.5 text-[14px]">
+        {offer === 'content' ? (
+          <a
+            href={href('/contact#content')}
+            class="flex min-h-[24px] min-w-0 items-center truncate text-[14px] font-semibold text-surface"
+          >
+            Send one sample video
+            <span class="hidden text-panel-text-dim md:inline">
+              &nbsp;· we reply with what it involves and costs
+            </span>
+          </a>
+        ) : (
+          <a
+            href={href('/contact')}
+            class="flex min-h-[24px] min-w-0 items-center truncate text-[14px] font-semibold text-surface"
+          >
+            Free written review · 2 days
+            <span class="hidden text-panel-text-dim md:inline">
+              &nbsp;· no call, no sales deck
+            </span>
+          </a>
+        )}
+        <a href={whatsappFor(prefill)} rel="noopener" class="btn-whatsapp shrink-0 px-4.5 py-2.5 text-[14px]">
           WhatsApp us
         </a>
       </div>

@@ -1,0 +1,135 @@
+---
+title: 'Healthcare reels for doctors, edited and ready to publish'
+seoTitle: 'Reel Editing for Doctors, in Gujarati or English'
+illustration: '../../assets/mockups/social-post.webp'
+illustrationAlt: 'A phone on a desk showing an educational clinic post: a numbered list of early warning signs, laid out with simple illustrations.'
+navLabel: 'Reel editing'
+parent: 'social-media'
+description: 'Reel editing for doctors and clinics in Gujarat: Gujarati or English captions, graphics, a cover and the caption written. {{reel}} a reel, usually in 1–2 days.'
+code: 'CI-10'
+order: 6
+summary: 'You already have the knowledge. Record one question on your phone, send it, and get back a captioned, publish-ready reel with its cover and caption, usually within one or two working days.'
+deliverables:
+  - { item: 'Final video', status: 'up to 3 min' }
+  - { item: 'Captions', status: 'Gujarati or English' }
+  - { item: 'Audio cleanup and colour', status: 'included' }
+  - { item: 'Graphics, transitions, end card', status: 'included' }
+  - { item: 'Reel cover image', status: 'included' }
+  - { item: 'Instagram caption, written', status: 'included' }
+  - { item: 'Revisions', status: 'one' }
+  - { item: 'Typical turnaround', status: '1–2 working days' }
+pricing:
+  ref: 'reel'
+  note: 'For a standard healthcare reel. An advanced reel starts at {{reelAdvanced}} and a highly complex one at {{reelComplex}}, agreed before the edit begins. A month of reels costs less as a package.'
+faqs:
+  - q: 'How long can the reel be?'
+    a: 'Up to three minutes for a standard reel, and most doctor explainers land between one and three. Raw footage much longer than the reel is fine; cutting it down is part of the edit. Unusually long footage can make it an advanced reel, and we say so before we start.'
+  - q: 'Can the captions be in Gujarati?'
+    a: 'Yes. Every reel is captioned in Gujarati or in English, and you choose for each one. Gujarati with the key medical term kept in English is also an option, when patients may want to search the term later.'
+  - q: 'What if I do not like the edit?'
+    a: 'Tell us what to change. One revision is included in every reel. If you want more changes after that, or a re-edit to a different brief, we quote it before we do it.'
+  - q: 'Do you write the script?'
+    a: 'Not a full script. We help you shape the topic into one clear question before you record, and we write the Instagram caption for every reel. A doctor answering a patient question in their own words usually comes across better than a script read to camera.'
+  - q: 'How do I send the footage?'
+    a: 'On WhatsApp is fine, the same way you would send any video. If a file is too large for WhatsApp, we agree another way to send it.'
+  - q: 'Is a reel cheaper as part of a package?'
+    a: 'Yes. A month planned and produced as one batch costs less than the same pieces bought one at a time. Content Starter is {{contentStarter}} a month for six reels and four posts, where a single reel on its own is {{reel}}.'
+related: ['social-media', 'google-business-profile']
+---
+
+import { CONTENT_CLIENTS } from '@/config/clients';
+import { ADVANCED_REEL_WHEN, STANDARD_REEL_INCLUDES, rupees } from '@/config/pricing';
+import { PRICE_TOKENS } from '@/lib/prices';
+
+## What does a doctor send?
+
+- One video, recorded on your phone: upright, in a quiet room, with your face and voice clear
+- The topic, and the one patient question it answers
+- Gujarati or English for the captions
+- Your logo and contact details, once
+- What patients should do next: call, send a WhatsApp message, or book
+
+One question per video. "Why do my gums bleed when I brush?" makes a better
+reel than "Everything about dental health", and it is easier to record.
+
+## What comes back?
+
+<ul>
+  {STANDARD_REEL_INCLUDES.map((line) => <li>{line}</li>)}
+</ul>
+
+It arrives ready to post from your own account. We do not post it for you.
+
+## What makes a reel advanced?
+
+A standard reel is {rupees(PRICE_TOKENS.reel)}. An advanced reel, from
+{rupees(PRICE_TOKENS.reelAdvanced)}, is for an edit that involves:
+
+<ul>
+  {ADVANCED_REEL_WHEN.map((line) => <li>{line}</li>)}
+</ul>
+
+A highly complex reel, from {rupees(PRICE_TOKENS.reelComplex)}, means heavy
+motion graphics, advanced animation, or a story rebuilt from a lot of material.
+We tell you which kind your video is when it arrives, before we start, and
+never after.
+
+## Gujarati or English?
+
+Whichever your patients read. Gujarati when you speak Gujarati on camera and
+your patients do too. English when they are younger or more urban, or when the
+treatment names are English words anyway. Gujarati with the key term kept in
+English when both matter. The [healthcare content page](/services/social-media/)
+says more about choosing.
+
+## Patient explainers and testimonials
+
+Most reels we edit are one of two kinds.
+
+**Patient explainers.** A doctor answering a question patients ask in the
+chair: what a treatment involves, when a symptom needs attention, what recovery
+actually feels like.
+
+**Patient testimonials.** A patient describing their experience in their own
+words, where your council's rules allow it and only with their written consent
+to appear and to be shared. The National Medical Commission's advertising
+guidelines of 6 October 2026 do not allow registered medical practitioners to
+use patient testimonials to promote their practice on social media, so we check
+which rules apply to you before we edit one. Where one is allowed, we edit for
+clarity, never for claims: we do not add words the patient did not say, suggest
+a treatment works for everyone, or show anything that identifies them beyond
+what they agreed to. More on this is on the
+[healthcare content page](/services/social-media/).
+
+## Revisions and turnaround
+
+One revision is included. Changes beyond that, or a re-edit to a different
+brief, are quoted before we make them.
+
+A standard reel is usually ready in one to two working days from the footage
+arriving. Same-day turnaround is not something we promise.
+
+## What we will not do
+
+- Promise reach, followers, enquiries or patients. Nobody honestly can.
+- Add a medical claim you did not make, or one that cannot be supported
+- Post on your account. You publish it, once you have approved it
+- Use a patient's face, name or story without their written consent
+
+## One reel, or a month of them
+
+A single reel is {rupees(PRICE_TOKENS.reel)}. For a steady rhythm, the
+[monthly content packages](/services/social-media/) start at
+{rupees(PRICE_TOKENS.contentStarter)} a month for six reels and four posts,
+with an introductory rate for your first three billed months.
+
+## See reels we have edited
+
+We edit reels for {CONTENT_CLIENTS.map((c, i) => <>{i > 0 && ' and '}<a href={c.url} rel="noopener">{c.name}</a></>)}, both in Mehsana. Their Instagram shows the work exactly as it was published.
+
+## Send one sample video
+
+Record a question patients ask you, or send a clip you already have, with the
+topic. We reply with what the edit would involve, how long it takes and what it
+costs. We do not edit it for free, and there is no obligation.
+[Send one sample video](/contact/#content).

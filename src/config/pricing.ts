@@ -9,10 +9,15 @@
  * Positioning rules that these numbers must keep honouring:
  * - Published figures are *starting points* for a described scope. The real
  *   number is fixed in writing after the free review.
- * - No discounts, no offers, no countdowns.
+ * - No discounts, no offers, no countdowns — with one published exception,
+ *   the content packages' introductory rate for a new client's first three
+ *   billed months (see CONTENT_PACKAGES). It is a rule every new client gets,
+ *   whenever they start, and it is always shown beside the regular price.
  * - Every package says what the studio is responsible for and what it is not.
  *   That is the point of the ladder below: the price buys a stated amount of
  *   the local-search problem, not a promise about where a practice ranks.
+ * - Competitive, never "the cheapest". The list was set on 2026-10-08 as the
+ *   owner's final price list; change a figure here and nowhere else.
  */
 
 const inr = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 });
@@ -33,7 +38,7 @@ export const PRICE_PREFIX = 'Starting from';
 
 export const CURRENCY = 'INR';
 
-export type PriceUnit = 'project' | 'month' | 'page' | 'once';
+export type PriceUnit = 'project' | 'month' | 'page' | 'once' | 'piece';
 
 /** How a unit is written after a figure, in prose. */
 export const unitSuffix: Record<PriceUnit, string> = {
@@ -41,7 +46,16 @@ export const unitSuffix: Record<PriceUnit, string> = {
   month: ' a month',
   page: ' a page',
   once: ' once',
+  piece: ' each',
 };
+
+/**
+ * How a unit is written beside a large figure, in the mono caption style.
+ * One function, because three pages had three ternaries that each knew about
+ * two units and printed "one-time" under a ₹699 reel.
+ */
+export const unitLabel = (unit: PriceUnit): string =>
+  ({ project: 'one-time', once: 'one-time', month: '/ month', page: '/ page', piece: 'each' })[unit];
 
 /* -------------------------------------------------------------------------
  * Website packages. One-time, fixed price
@@ -104,7 +118,13 @@ export interface Build {
 }
 
 /**
- * The ladder, repriced 2026-08-19.
+ * The ladder, repriced 2026-08-19 and renamed 2026-10-08.
+ *
+ * The names used to list what was inside ("Website (10 pages) + Local SEO +
+ * Google Business Optimisation"). They are now names a doctor can say aloud —
+ * Foundation, Practice, Growth, Multi-Doctor — because the card already shows
+ * the contents underneath: the page count, the three-part stack row, and the
+ * highlights. Prices did not move.
  *
  * The entry package now starts at ₹18,999 and carries the Google listing
  * setup and the SEO foundations, which the old ₹24,999 entry explicitly
@@ -121,8 +141,8 @@ export interface Build {
 export const BUILDS: Build[] = [
   {
     id: 'practice-website',
-    name: 'Website (5 pages) + Google Business Optimisation',
-    suits: 'One doctor, one place, and a market where you are not fighting ten others.',
+    name: 'Foundation Website',
+    suits: 'A doctor or small clinic that needs a professional starting website.',
     from: 18999,
     typicalTo: 24999,
     timeline: '3 weeks',
@@ -144,7 +164,7 @@ export const BUILDS: Build[] = [
   },
   {
     id: 'practice-website-google',
-    name: 'Website (10 pages) + Local SEO + Google Business Optimisation',
+    name: 'Practice Website',
     suits: 'Most practices here. You want a website, and you want patients to find it.',
     from: 34999,
     typicalTo: 44999,
@@ -152,9 +172,12 @@ export const BUILDS: Build[] = [
     pages: 'Up to 10 pages',
     responsibility:
       'We build the website and rebuild your Google listing in full, so the two work as one.',
+    // "Our recommendation", never "most popular": that is a fact about what
+    // buyers chose, and there is no sales record behind it yet. Switch the
+    // wording only when there is.
     recommended: true,
     highlights: [
-      'Everything in the 5-page package',
+      'Everything in the Foundation Website',
       'Up to 10 pages, including a page for each treatment you offer',
       'Google listing rebuilt: categories, services, hours, photos, questions',
       'A way to ask happy patients for reviews, set up and explained',
@@ -169,7 +192,7 @@ export const BUILDS: Build[] = [
   },
   {
     id: 'healthcare-seo',
-    name: 'Website (18 pages) + Complete SEO + Google Business Optimisation',
+    name: 'Growth Website',
     suits: 'An established practice that wants to be found for particular treatments.',
     from: 59999,
     typicalTo: 74999,
@@ -178,7 +201,7 @@ export const BUILDS: Build[] = [
     responsibility:
       'We work out what patients search for, then build the site to answer it.',
     highlights: [
-      'Everything in the 10-page package',
+      'Everything in the Practice Website',
       'Up to 18 pages, including a page for each doctor',
       'We choose which treatments you should compete for, and why',
       'A page for each town you serve',
@@ -193,7 +216,7 @@ export const BUILDS: Build[] = [
   },
   {
     id: 'multi-specialty',
-    name: 'Multi-Doctor Website + Complete SEO + Google Business Optimisation',
+    name: 'Multi-Doctor / Multi-Location Website',
     suits: 'Several doctors or departments, a diagnostic centre, or more than one branch.',
     from: 89999,
     custom: true,
@@ -201,7 +224,7 @@ export const BUILDS: Build[] = [
     pages: 'As many as it needs',
     responsibility: 'We plan and build the whole thing, department by department.',
     highlights: [
-      'Everything in the 18-page package',
+      'Everything in the Growth Website',
       'A section for each department',
       'Pages for more than one branch, each with its own local groundwork',
       'As many treatment and doctor pages as the practice needs',
@@ -370,119 +393,102 @@ export const GBP_AUDIT = {
 };
 
 /* -------------------------------------------------------------------------
- * The one ongoing service
+ * After launch: two monthly plans
  *
- * There used to be five monthly products: care, care + Google, full
- * visibility, and Google and SEO sold separately. Five ways to buy roughly
- * one thing, which made the page a comparison exercise rather than a
- * decision. One plan, one price, and it covers the work that actually has to
- * happen every month.
+ * Until 2026-10-08 there was one plan, and the website-care page sold it too,
+ * so "care" and "Google care" were one product under two names. They are now
+ * two products that answer two different practices:
+ *
+ *   - Local SEO & Google Care: the listing, local search and the website, kept
+ *     improving every month. A published figure.
+ *   - Website Care: the website alone, kept current and working. Priced to the
+ *     site, because a five-page site and a thirty-page one are not the same
+ *     month of work, and publishing one figure for both would be invented.
+ *
+ * A practice on Google Care does not need Website Care as well: website
+ * updates are already inside it. Both pages say so.
+ *
+ * Each plan publishes exactly the work the owner listed and nothing more. The
+ * site used to promise weekly uptime monitoring and quarterly written reviews;
+ * neither is in either list, so neither is promised anywhere.
  * ---------------------------------------------------------------------- */
 
 export interface Plan {
   id: string;
   name: string;
-  monthly: number;
+  /** Absent when the plan is priced to scope (`custom`). */
+  monthly?: number;
+  /** Priced after the free review. No figure is published, and no Offer is emitted. */
+  custom?: boolean;
   summary: string;
   includes: string[];
+  /** What the plan does not cover, stated with the same weight. */
+  excludes: string;
   suits: string;
   /** Shown under the figure. */
-  priceNote?: string;
+  priceNote: string;
   recommended?: boolean;
 }
 
-/** Monthly prices, for anything sold by the month. */
-export const STANDALONE_MONTHLY = {
-  careGoogle: 8999,
-  social: 14999,
-} as const;
-
-/** Content updates included each month, before anything is charged extra. */
-export const CARE_EDITS_PER_MONTH = 4;
-
-export const PLANS: Plan[] = [
-  {
-    id: 'local-seo-google-care',
-    name: 'Local SEO & Google Care',
-    monthly: STANDALONE_MONTHLY.careGoogle,
-    summary: 'We look after your website and your Google listing every month, and keep improving them.',
-    includes: [
-      'Your Google listing kept correct: services, hours, photos, updates',
-      'Every review answered. We write the reply, you approve it before it goes',
-      'We watch what patients searched to find you, and act on it',
-      'Changes to your website whenever you need them',
-      'Pages that are not working improved, based on what the numbers show',
-      'One new treatment page written and published every month',
-      'The site kept fast, and checked so nothing quietly breaks',
-      'A report every month, in plain language, saying what we did',
-    ],
-    suits: 'For any practice that wants the work to carry on after the site goes live.',
-    priceNote: 'Month to month, no lock-in',
-    recommended: true,
-  },
-];
-
-/* -------------------------------------------------------------------------
- * Social media
- *
- * Sold on its own, which it was not before. The scope is a strategy and a
- * content volume, deliberately not a fixed count of any one format — that
- * distinction is what stops "I paid for 16 posts" becoming a demand for 16
- * identical graphics.
- * ---------------------------------------------------------------------- */
-
-export const SOCIAL = {
-  monthly: STANDALONE_MONTHLY.social,
+export const GOOGLE_CARE: Plan & { monthly: number } = {
+  id: 'local-seo-google-care',
+  name: 'Local SEO & Google Care',
+  monthly: 8999,
   summary:
-    'Strategy-led social media for doctors and clinics: patient education, treatment awareness and the questions people actually ask.',
+    'We look after your Google listing, your local search and your website every month, and keep improving them.',
   includes: [
-    { group: 'Strategy', items: [
-      'A monthly content strategy and calendar',
-      'Themes built from your specialty, your treatments and what patients need',
-      'Educational and awareness topics, and treatment-focused planning',
-      'FAQ and patient-question content',
-      'Decisions informed by what performed last month, not guesswork',
-    ] },
-    { group: 'Instagram', items: [
-      'Profile optimisation: bio, positioning and call to action',
-      'Contact information checked',
-      'Highlight structure and profile content recommendations',
-    ] },
-    { group: 'Content', items: [
-      'Up to 4 pieces a week, around 16 a month',
-      'Static posts, educational graphics, treatment posts, patient FAQs',
-      'Awareness content, and practice or doctor content where it fits',
-      'Simple carousels as part of the plan where they suit the topic',
-    ] },
-    { group: 'Reels', items: [
-      '3 reel edits a month, from footage you provide',
-      'Captions and subtitles, text overlays and basic hooks',
-      'Formatted for Instagram',
-    ] },
-    { group: 'Publishing', items: [
-      'Caption writing and topic research',
-      'Scheduling and publishing, with a consistent presentation',
-      'A monthly review of what worked, and what next month should change',
-    ] },
+    'Your Google Business Profile maintained',
+    'Services, hours and photos kept up to date',
+    'Every review answered. We draft the reply, you approve it before it goes',
+    'The searches patients use to find you, watched and acted on',
+    'Changes to your website whenever you need them',
+    'One new treatment page written and published every month',
+    'Speed checked, so the site stays quick',
+    'A report every month, in plain language, saying what we did',
   ],
-  /** Published verbatim. It is what makes the scope enforceable. */
-  strategyClause:
-    'The monthly content mix is decided by the strategy. It may include static posts, carousels, educational graphics, treatment content and other suitable formats. The package is a content volume and a strategy, not a fixed number of any one format.',
-  excludes: [
-    'Professional, on-site photography and video shoots',
-    'Doctor filming sessions, videographer costs, travel, actors or models',
-    'Advanced animation and high-end motion graphics',
-    'Paid advertising spend, and Meta Ads management',
-    'Influencer campaigns',
-    'DM and community management, and handling patient enquiries',
-    'Unlimited revisions',
-    'Additional platforms beyond the one agreed',
-    'Research-heavy carousels beyond the agreed content capacity',
-  ],
+  excludes:
+    'No plan can guarantee a ranking, a position on Google Maps, enquiries, appointments, patient numbers or revenue, and this one does not.',
+  suits: 'For any practice that wants the work to carry on after the site goes live.',
+  priceNote: 'Month to month, no lock-in',
+  recommended: true,
 };
 
+export const WEBSITE_CARE: Plan = {
+  id: 'website-care',
+  name: 'Website Care',
+  custom: true,
+  summary: 'Your website kept current and working, on a monthly plan priced to what your site needs.',
+  includes: [
+    'Updates to your website',
+    'Doctor and clinic information changes',
+    'Treatment information updates',
+    'Image changes',
+    'Basic technical maintenance',
+    'Backups, where your hosting supports them',
+    'Minor fixes we agree on',
+    'New small sections or pages, within the agreed scope',
+  ],
+  excludes:
+    'Major redesigns, complete rebuilds, large new functionality and SEO campaigns are quoted separately.',
+  suits:
+    'For a practice that wants its website looked after without the Google and local search work. On Local SEO & Google Care, website updates are already included.',
+  priceNote: 'Custom monthly plan, quoted after the free review',
+};
+
+/** Both monthly plans, in the order they are shown. */
+export const PLANS: Plan[] = [GOOGLE_CARE, WEBSITE_CARE];
+
 /* -------------------------------------------------------------------------
- * Everything bought on its own
+ * Healthcare content
+ *
+ * Replaces the 14,999-a-month "social media" plan, whose scope was a strategy
+ * and "up to four pieces a week". That was a volume with no edges, which for a
+ * studio of one person is unbounded work at a fixed price. Everything here is
+ * a count: so many reels, so many posts, so many carousels, one revision each.
+ *
+ * The product is not "video editing". It is a doctor's own knowledge and
+ * footage turned into publish-ready, patient-facing content, and the standard
+ * reel below says exactly what that means.
  * ---------------------------------------------------------------------- */
 
 export interface LineItem {
@@ -494,22 +500,212 @@ export interface LineItem {
   note: string;
 }
 
-export const STANDALONE_ITEMS: LineItem[] = [
+export interface ContentPiece extends LineItem {
+  /** Stable key for prices.ts tokens. */
+  id: string;
+}
+
+/** Single pieces, bought one at a time. The "+" items are quoted from the figure. */
+export const CONTENT_PIECES: ContentPiece[] = [
   {
-    item: 'Healthcare social media content',
-    price: STANDALONE_MONTHLY.social,
-    unit: 'month',
+    id: 'reel',
+    item: 'Standard healthcare reel',
+    price: 699,
+    unit: 'piece',
+    note: 'Up to 3 minutes, captioned in Gujarati or English, with graphics, a cover and the Instagram caption written. One revision. Usually 1–2 working days.',
+  },
+  {
+    id: 'reelAdvanced',
+    item: 'Advanced reel',
+    price: 999,
+    unit: 'piece',
     from: true,
-    note: 'Strategy, up to 4 pieces a week and 3 reel edits a month. Sold on its own or alongside anything else.',
+    note: 'Substantially more animation, a restructured story, several source videos or unusually long footage.',
+  },
+  {
+    id: 'reelComplex',
+    item: 'Highly complex reel',
+    price: 1499,
+    unit: 'piece',
+    from: true,
+    note: 'Heavy motion graphics, advanced animation or a story rebuilt from a lot of material. Quoted on the footage before we start.',
+  },
+  {
+    id: 'post',
+    item: 'Instagram post',
+    price: 399,
+    unit: 'piece',
+    note: 'An educational graphic, an announcement or a clinic update, with the caption written.',
+  },
+  {
+    id: 'flyer',
+    item: 'Clinic flyer or promotional design',
+    price: 499,
+    unit: 'piece',
+    note: 'A clinic package, a health camp or an announcement, designed to share or print.',
+  },
+  {
+    id: 'carousel',
+    item: 'Carousel, up to 6 slides',
+    price: 699,
+    unit: 'piece',
+    note: 'One topic explained across several slides.',
+  },
+  {
+    id: 'carouselResearch',
+    item: 'Research-heavy carousel',
+    price: 899,
+    unit: 'piece',
+    from: true,
+    note: 'A medically technical topic, or more slides. Quoted on the research, the slide count and the complexity.',
   },
 ];
+
+/** Everything a standard healthcare reel includes, in the order a doctor asks. */
+export const STANDARD_REEL_INCLUDES: string[] = [
+  'A final video up to 3 minutes long',
+  'Editing and pacing, so it is clear and holds attention',
+  'Captions in Gujarati or English',
+  'Audio cleanup',
+  'Basic colour correction',
+  'Graphics that support what you are saying',
+  'Transitions and an end card',
+  'A cover image for the reel',
+  'The Instagram caption, written for you',
+  'One revision',
+  'Usually delivered in 1–2 working days',
+];
+
+/** When a reel stops being standard. Agreed before the edit starts, never after. */
+export const ADVANCED_REEL_WHEN: string[] = [
+  'Substantially more animation',
+  'Restructuring the story',
+  'Several source videos',
+  'Unusually long raw footage',
+  'Complex storytelling',
+];
+
+export interface ContentPackage {
+  id: string;
+  name: string;
+  /** The regular monthly price — always the headline figure. */
+  monthly: number;
+  /** A new client's first three billed months. Never shown without `monthly`. */
+  intro: number;
+  reels: number;
+  posts: number;
+  carousels: number;
+  suits: string;
+  /** Our recommendation. Not a claim about what other practices chose. */
+  recommended?: boolean;
+}
+
+export const CONTENT_PACKAGES: ContentPackage[] = [
+  {
+    id: 'content-starter',
+    name: 'Content Starter',
+    monthly: 5499,
+    intro: 4999,
+    reels: 6,
+    posts: 4,
+    carousels: 0,
+    suits: 'Consistent content without a large monthly commitment.',
+  },
+  {
+    id: 'content-growth',
+    name: 'Content Growth',
+    monthly: 7999,
+    intro: 7499,
+    reels: 8,
+    posts: 6,
+    carousels: 1,
+    suits: 'About two reels a week, with posts and a carousel around them.',
+    recommended: true,
+  },
+  {
+    id: 'content-plus',
+    name: 'Content Plus',
+    monthly: 10999,
+    intro: 9999,
+    reels: 10,
+    posts: 8,
+    carousels: 2,
+    suits: 'For a clinic that wants a stronger, steady presence every week.',
+  },
+];
+
+/** How many months the introductory rate runs. */
+export const CONTENT_INTRO_MONTHS = 3;
+
+/** The introductory rule, as it is published. */
+export const CONTENT_INTRO_RULE =
+  'For a new client, the first three billed months are at the introductory rate. From the fourth month, the regular price applies. It is the same for everyone, whenever you start.';
+
+/**
+ * Why a package costs less than its parts, which CLAUDE.md requires a page to
+ * say wherever that is true. At the published single prices Starter's pieces
+ * come to 5,790, Growth's to 8,685 and Plus's to 11,580.
+ */
+export const CONTENT_BATCH_REASON =
+  'A package costs less than the same pieces bought one at a time because a month is planned and produced as one batch: one set of templates, one hand-over of footage, one round of approvals.';
+
+/** The counting rules, in plain words. Published, because they are the scope. */
+export const CONTENT_RULES: string[] = [
+  'One revision on every reel, post, flyer and carousel. Further changes are quoted before we make them.',
+  'Packages are built from standard reels. If a month needs an advanced reel, we quote it before we start.',
+  'A carousel is up to 6 slides. A research-heavy one is quoted on its own.',
+  'You send the footage and tell us the topics. We do not film, and we do not post for you.',
+];
+
+/** Not part of any content package. "Not included", never "never". */
+export const CONTENT_EXCLUDES: string[] = [
+  'Filming or photography at your clinic. An on-site shoot is quoted as a custom project',
+  'Posting, scheduling and day-to-day account management',
+  'Replying to comments and messages',
+  'Paid advertising, and ad spend',
+  'Extensive scriptwriting',
+  'Unlimited revisions, or unlimited motion graphics',
+  'Same-day or emergency turnaround',
+  'A researched content strategy or calendar',
+];
+
+/* -------------------------------------------------------------------------
+ * Quoted to scope
+ *
+ * No published figure, on purpose: there is not yet enough of this work
+ * behind the studio to know what it costs to do well, and an arbitrary number
+ * would be the one invented thing on a page of real ones.
+ * ---------------------------------------------------------------------- */
+
+export const CUSTOM_PROJECTS: Array<{ item: string; note: string }> = [
+  {
+    item: 'On-site video or photography',
+    note: 'At your clinic. Quoted on what has to be captured.',
+  },
+  {
+    item: 'Doctor or clinic video production',
+    note: 'Filmed and produced, rather than edited from your own footage.',
+  },
+  {
+    item: 'Complex medical content, or a large creative project',
+    note: 'Quoted after we have seen the material.',
+  },
+  {
+    item: 'Anything else digital',
+    note: 'Quoted after we have looked at what it involves.',
+  },
+];
+
+/* -------------------------------------------------------------------------
+ * Website and Google work, bought on its own
+ * ---------------------------------------------------------------------- */
 
 export const ONE_TIME_ITEMS: LineItem[] = [
   {
     item: 'Google Business Profile rebuild',
-    price: 11999,
+    price: 8999,
     unit: 'once',
-    note: 'Claimed or verified, categories and services rebuilt, hours, photos, questions seeded, review flow set up. For a practice that wants the listing fixed without a website.',
+    note: 'Set up or rebuilt: categories, services, business information, hours, photos and profile sections, questions, a review-reply workflow and local-search groundwork. The profile stays yours. For a practice that wants the listing fixed without a website.',
   },
   {
     item: 'Website takeover audit',
@@ -519,40 +715,16 @@ export const ONE_TIME_ITEMS: LineItem[] = [
   },
   {
     item: 'Extra treatment or area page',
-    price: 3499,
+    price: 3999,
     unit: 'page',
     note: 'After launch, per page: researched, written, designed and published. This is how a site grows past its package without renegotiating it.',
   },
   {
     item: 'Gujarati version of an existing site',
-    price: 14999,
+    price: 6999,
     unit: 'once',
     from: true,
     note: 'Written properly rather than machine-translated, with the language markup search engines need.',
-  },
-];
-
-/** Social add-ons, quoted as ranges because the work genuinely varies. */
-export const SOCIAL_ADDONS: Array<{ item: string; price: string; note: string }> = [
-  {
-    item: 'Complex carousel',
-    price: '₹1,000–₹2,000+',
-    note: 'A research-heavy or medically technical carousel is not the same production work as a static post. Quoted on slides, research, copywriting and design.',
-  },
-  {
-    item: 'Additional reel edit',
-    price: '₹1,000–₹1,500',
-    note: 'Beyond the three a month, edited from footage you provide.',
-  },
-  {
-    item: 'Meta Ads management',
-    price: `${PRICE_PREFIX} ₹5,000 a month`,
-    note: 'Management only. Your ad spend is always paid by you, directly, and is never marked up.',
-  },
-  {
-    item: 'Shoots, photography, video',
-    price: 'Custom quote',
-    note: 'On-site content shoots, professional photography and video production are quoted per project.',
   },
 ];
 
@@ -598,27 +770,34 @@ export const NEVER_CHARGED: string[] = [
   'The Google Business Profile audit at the start of any website project.',
   'Questions on WhatsApp, before you are a client and after.',
   'Small edits under a monthly plan: changed hours, a new doctor, a festival closure.',
+  'A first look at a video you send: what the edit would involve, how long it takes and what it costs.',
   'Your domain and hosting. You pay for those directly and you own them. A domain runs about ₹1,000 a year, and hosting a site built the way we build them usually costs nothing at all.',
 ];
 
 export const PRICE_NOTES: string[] = [
   'Prices are in Indian rupees and exclude GST where it applies.',
   'Published figures are starting points for the scope described. Your number is fixed in writing after the free review, and it does not move unless the scope does.',
-  'The monthly plan runs month to month, with no lock-in. Paid monthly or yearly the price is the same. We do not charge extra for the flexibility, or less for the commitment.',
+  'Monthly plans run month to month, with no lock-in. Paid monthly or yearly the price is the same. We do not charge extra for the flexibility, or less for the commitment.',
+  'Content packages start at an introductory rate for a new client\'s first three billed months, then move to the regular price. It applies to every new client, whenever you start, and it is the only reduced figure we publish.',
 ];
 
 /**
  * A promise about the future rather than a deadline. No count, no countdown,
  * and nothing taken off for deciding sooner. The value is that it holds.
+ *
+ * The content packages' introductory rate does not break it: the step from
+ * the introductory figure to the regular one is written into the agreement on
+ * day one, so it is part of the price that holds rather than a change to it.
  */
 export const PRICE_PROMISE = {
   headline: 'The price we agree is the price that holds.',
-  body: 'Whatever we agree in writing stays fixed for as long as we work together, even after the studio\'s rates move. The monthly plan runs month to month with no lock-in. No deadline is ever attached to a quote, and nothing comes off the number for deciding this week instead of next.',
+  body: 'Whatever we agree in writing stays fixed for as long as we work together, even after the studio\'s rates move. On a content package, that agreement already includes the step from the introductory rate to the regular one. Monthly plans run month to month with no lock-in. No deadline is ever attached to a quote, and nothing comes off the number for deciding this week instead of next.',
 };
 
 /**
- * Range used for `priceRange` in structured data. The website packages, which
- * are what the studio is engaged for — not the cheapest add-on, which would
- * describe the price level of a single extra page rather than of the business.
+ * Range used for `priceRange` in structured data: from a standard healthcare
+ * reel, which is what a practice most often starts with now, to the floor of
+ * the largest website. Not the single post, which describes the price of one
+ * graphic rather than the price level of the business.
  */
-export const PRICE_RANGE = `${rupees(BUILDS[0]!.from)}–${rupees(BUILDS[3]!.from)}+`;
+export const PRICE_RANGE = `${rupees(CONTENT_PIECES.find((p) => p.id === 'reel')!.price)}–${rupees(BUILDS[3]!.from)}+`;

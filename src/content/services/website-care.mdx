@@ -1,41 +1,44 @@
 ---
-title: 'Website maintenance and care for clinics'
-seoTitle: 'Clinic Website Maintenance and Monitoring'
+title: 'Website care for clinics'
+seoTitle: 'Clinic Website Maintenance and Care'
 illustration: '../../assets/editorial/care-monitoring-desk.webp'
 illustrationAlt: 'A monitoring dashboard on a studio screen, uptime and performance for a clinic site shown at a glance.'
 navLabel: 'Website care'
-description: 'Ongoing website care for clinics: weekly monitoring, monthly maintenance and backups, quarterly written reviews. Month to month, and you own everything.'
+description: 'Website care for clinics: updates, doctor and treatment changes, images, basic maintenance and backups, on a monthly plan priced to your site. Yours to own.'
 code: 'CI-07'
-order: 4
-summary: 'Security, backups, edits and new treatment pages. We do not disappear after launch.'
+order: 5
+summary: 'Your website kept current and working after launch: updates, fixes and small new sections, on a monthly plan priced to your site.'
 deliverables:
-  - { item: 'Uptime and performance monitoring', status: 'weekly' }
-  - { item: 'Security updates and backups', status: 'monthly' }
-  - { item: 'Content edits (hours, staff, treatments)', status: 'as needed' }
-  - { item: 'New treatment or location pages', status: 'as needed' }
-  - { item: 'Speed re-measured against reference', status: 'quarterly' }
-  - { item: 'Written review of what patients did', status: 'quarterly' }
+  - { item: 'Updates to your website', status: 'as needed' }
+  - { item: 'Doctor and clinic information changes', status: 'as needed' }
+  - { item: 'Treatment information updates', status: 'as needed' }
+  - { item: 'Image changes', status: 'as needed' }
+  - { item: 'Basic technical maintenance', status: 'included' }
+  - { item: 'Backups', status: 'where supported' }
+  - { item: 'Small new sections or pages', status: 'within scope' }
 pricing:
-  ref: 'care'
-  note: 'Month to month, no lock-in. Care, the Google listing and local SEO run as one plan rather than three, because in practice they are one job.'
+  custom: true
+  note: 'Priced to the size of your site and how much it changes, then fixed in writing after the free review. Month to month. On Local SEO & Google Care, website updates are already included.'
 faqs:
   - q: 'What happens to my website after it launches?'
-    a: 'Software needs updating, backups need taking, hours and staff change, and new treatments deserve new pages. With ongoing care we handle all of it on a written schedule: weekly monitoring, monthly maintenance, and a quarterly review of what actually happened.'
-  - q: 'What is in the quarterly review?'
-    a: 'A short written report in plain language: what patients did on your site and listing, what changed around you, what we changed, and what we recommend next. No jargon, and no dashboard you will never open.'
+    a: 'Hours and doctors change, treatments get added, and a website needs basic upkeep to keep working. Website Care covers that on a monthly plan: updates, doctor and clinic information changes, treatment updates, image changes, basic technical maintenance, backups where your hosting supports them, minor fixes we agree on, and small new sections within the agreed scope.'
+  - q: 'Why is there no published price?'
+    a: 'Because a five-page site and a thirty-page one are not the same month of work, and one figure for both would be invented. We look at your site in the free review, then put one monthly price in writing. It does not move unless the scope does.'
+  - q: 'Do I need this as well as Local SEO & Google Care?'
+    a: 'Usually not. Local SEO & Google Care already includes changes to your website, speed checks and a new treatment page every month, alongside your Google listing and local search. Website Care is for a practice that wants the website looked after without the Google work. If your site needs more technical upkeep than that, the free review will say so.'
   - q: 'Am I locked into a long contract?'
-    a: 'No. Care runs month to month at a fixed price agreed in writing. If you stop, the website stays yours, code, content and accounts are in your name from day one.'
+    a: 'No. Care runs month to month at a fixed price agreed in writing. If you stop, the website stays yours: code, content and accounts are in your name from day one.'
   - q: 'Can you maintain a website another agency built?'
     a: 'Usually, yes. We start with a technical audit to see what we are taking on, then give you a written scope. If the site is beyond saving we say so plainly, and tell you what a rebuild would involve instead.'
   - q: 'How quickly do you make small changes?'
     a: 'Message us on WhatsApp and most small edits, a new doctor, changed hours, a festival closure, are done within a couple of working days. There is no new quotation for every sentence.'
-related: ['healthcare-websites', 'google-business-profile']
+related: ['healthcare-websites', 'local-seo']
 ---
 
 import Figure from '@/components/Figure.astro';
 import monitoring from '@/assets/mockups/care-monitoring.webp';
 import studio from '@/assets/editorial/care-studio.webp';
-import speedChart from '@/assets/mockups/care-speed-chart.webp';
+import { GOOGLE_CARE, WEBSITE_CARE, rupees } from '@/config/pricing';
 
 ## What happens to your website after launch?
 
@@ -43,29 +46,40 @@ Most clinic websites are abandoned the day they go live, by the agency
 that built them. Two years later the doctor list is wrong, the copyright
 says the wrong year, and the enquiry button quietly stopped working.
 
-Ongoing care is our answer to the question clinics rarely think to ask.
-It is the objection almost no competitor answers, so we answer it in
-writing.
+Website Care is our answer to the question clinics rarely think to ask, and
+we answer it in writing.
 
-## What does website maintenance actually include?
+## What does Website Care include?
 
-**Every week.** Uptime and performance monitoring, and a check on new
-review activity on your
-[Google Business Profile](/services/google-business-profile).
+<ul>
+  {WEBSITE_CARE.includes.map((line) => <li>{line}</li>)}
+</ul>
 
-**Every month.** Security updates, off-site backups, the content edits you
-have asked for, and refreshed photos and hours.
-
-**Every quarter.** Speed re-measured on a real phone against its
-reference, plus a written review of what patients did, what changed near
-you, and what we recommend next.
+{WEBSITE_CARE.excludes}
 
 <Figure
   src={monitoring}
   alt="A laptop and tablet on a desk showing a website monitoring dashboard: uptime, page speed readings, backup status and certificate status."
-  caption="Monitoring runs whether or not you look at it"
+  caption="The technical upkeep, kept in one place"
   maxWidth={680}
 />
+
+## Why is it priced to your site?
+
+A five-page site that changes twice a year and a thirty-page site with a new
+doctor every season are not the same month of work. Publishing one figure for
+both would mean inventing it. So Website Care is a custom monthly plan: we look
+at your site in the [free written review](/contact/), then put one price in
+writing, and it does not move unless the scope does.
+
+## Do you need it if you have Local SEO & Google Care?
+
+Usually not. [Local SEO & Google Care](/services/local-seo/), at
+{rupees(GOOGLE_CARE.monthly)} a month, already includes changes to your website,
+speed checks and a new treatment page every month, alongside the Google listing
+and local search work. Website Care is for a practice that wants its website
+looked after without the Google side. If your site needs more technical upkeep
+than that, the free review will say so.
 
 ## How quickly are small changes made?
 
@@ -91,16 +105,9 @@ are registered in your practice's name from day one.
 If we ever part ways, you lose nothing. We think that is the only honest
 way to run maintenance, and it is written into every agreement.
 
-<Figure
-  src={speedChart}
-  alt="A tablet on a desk showing a page-speed chart for a clinic site trending upward over successive checks."
-  caption="Re-measured every quarter, not assumed"
-  maxWidth={680}
-/>
-
 ## How do we prove the site still works?
 
-We publish the standards we hold ourselves to, load time references,
-accessibility, validated schema, and this website runs on the same
-schedule we sell. The [method page](/process) explains how the first four
-weeks work before care begins.
+We publish the standards we hold ourselves to: load time references,
+accessibility and validated schema, and this website is held to the same ones.
+The [method page](/process/) explains how the first four weeks work before care
+begins.

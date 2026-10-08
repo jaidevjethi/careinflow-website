@@ -86,6 +86,9 @@ export function organizationSchema() {
       'Dermatology clinic websites',
       'Physiotherapy clinic websites',
       'Healthcare social media content',
+      'Reel editing for doctors and clinics',
+      'Patient education content',
+      'Gujarati captions for healthcare videos',
       'Schema markup for healthcare websites',
       'Core Web Vitals and page speed',
       'Web accessibility (WCAG 2.2 AA)',
@@ -162,7 +165,7 @@ export interface PriceOffer {
  * `month` and `page` are both *rates*, so they need a unit — published as a
  * flat figure, a ₹3,499-per-page rate reads as the whole price of the work.
  */
-const UNIT_TEXT: Partial<Record<PriceUnit, string>> = { month: 'MONTH', page: 'PAGE' };
+const UNIT_TEXT: Partial<Record<PriceUnit, string>> = { month: 'MONTH', page: 'PAGE', piece: 'EACH' };
 
 function priceSpecification({ from, unit }: PriceOffer) {
   const unitText = UNIT_TEXT[unit];

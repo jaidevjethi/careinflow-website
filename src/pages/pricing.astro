@@ -17,23 +17,28 @@ import pricingMockup from '@/assets/mockups/hero.jpg';
 import { href } from '@/lib/url';
 import { whatsappFor, whatsappWithMessage } from '@/config/site';
 import { cycleAccent } from '@/lib/accents';
+import ContentPackages from '@/components/ContentPackages.astro';
 import {
   PRICE_PREFIX,
   BUILDS,
   PLANS,
-  STANDALONE_ITEMS,
+  GOOGLE_CARE,
   ONE_TIME_ITEMS,
+  CONTENT_PACKAGES,
+  CONTENT_PIECES,
+  CONTENT_RULES,
+  CONTENT_EXCLUDES,
+  CUSTOM_PROJECTS,
   PRICE_MOVERS,
   WHERE_RETURN_COMES_FROM,
   NEVER_CHARGED,
   PRICE_NOTES,
   PRICE_PROMISE,
-  STANDALONE_MONTHLY,
   PACKAGE_MATRIX,
-  SOCIAL_ADDONS,
   GBP_AUDIT,
   rupees,
 } from '@/config/pricing';
+import { PRICE_TOKENS } from '@/lib/prices';
 import {
   graph,
   organizationSchema,
@@ -47,7 +52,7 @@ import {
 const title = 'Clinic Website Cost in Gujarat: Prices Published';
 /** Built from the config so the meta description can never drift from the page. */
 const description =
-  `Clinic websites starting from ${rupees(BUILDS[0]!.from)}, with local SEO and Google Business Profile care from ${rupees(PLANS[0]!.monthly)} a month. Prices published, fixed in writing.`;
+  `Clinic websites from ${rupees(BUILDS[0]!.from)}, healthcare reels from ${rupees(PRICE_TOKENS.reel)}, and local SEO and Google care at ${rupees(GOOGLE_CARE.monthly)} a month. Prices published.`;
 
 /** Counts in prose come from the array, so they cannot drift when it grows. */
 const NUMBER_WORDS = ['No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight'];
@@ -85,13 +90,23 @@ const schema = graph(
         from: b.from,
         unit: 'project' as const,
       })),
-      ...PLANS.map((p) => ({
+      // Website Care is priced to the site and has no figure, so it is not an
+      // offer here: a price that is not published cannot be in the catalog.
+      {
+        name: GOOGLE_CARE.name,
+        description: GOOGLE_CARE.summary,
+        from: GOOGLE_CARE.monthly,
+        unit: 'month' as const,
+      },
+      // The regular price, which is the one that runs. The introductory rate
+      // is a rule about a client's first three months, not a separate offer.
+      ...CONTENT_PACKAGES.map((p) => ({
         name: p.name,
-        description: p.summary,
+        description: `${p.reels} healthcare reels, ${p.posts} Instagram posts${p.carousels ? ` and ${p.carousels} carousel${p.carousels > 1 ? 's' : ''}` : ''} a month. ${p.suits}`,
         from: p.monthly,
         unit: 'month' as const,
       })),
-      ...STANDALONE_ITEMS.map((o) => ({
+      ...CONTENT_PIECES.map((o) => ({
         name: o.item,
         description: o.note,
         from: o.price,
@@ -118,8 +133,9 @@ const schema = graph(
  */
 const headline = [
   { label: 'Websites, one-time', value: rupees(BUILDS[0]!.from) },
-  { label: 'Local SEO & Google, monthly', value: rupees(PLANS[0]!.monthly) },
-  { label: 'Social media, monthly', value: rupees(STANDALONE_MONTHLY.social) },
+  { label: 'Content packages, monthly', value: rupees(PRICE_TOKENS.contentStarter) },
+  { label: 'Local SEO & Google, monthly', value: rupees(GOOGLE_CARE.monthly) },
+  { label: 'A healthcare reel', value: rupees(PRICE_TOKENS.reel) },
 ];
 
 const principles = [
@@ -136,8 +152,11 @@ const principles = [
     text: 'Domain, hosting, code, content, analytics, registered in your name from day one. Stopping never costs you your website.',
   },
   {
-    title: 'No discounts, honestly',
-    text: 'We do not run offers, and we are not the cheapest option, freelancers and site builders exist and for some practices they are enough. We price for work that still looks right, loads fast and gets maintained three years later.',
+    // This card said "We do not run offers" until 2026-10-08, when the owner
+    // added an introductory rate to the content packages. It names that one
+    // exception rather than quietly contradicting itself.
+    title: 'One introductory rate, and no other offers',
+    text: 'The content packages start at a lower rate for a new client\'s first three billed months, for every new client, whenever you start. Nothing else is ever taken off. We are not the cheapest option either: freelancers and site builders exist, and for some practices they are enough. We price for work that still looks right, loads fast and gets maintained three years later.',
   },
 ];
 ---
@@ -194,6 +213,7 @@ const principles = [
       {[
         { label: 'The four packages', href: '#packages' },
         { label: 'Monthly, after launch', href: '#monthly' },
+        { label: 'Healthcare content', href: '#content' },
         { label: 'The Google audit', href: '#google-audit' },
         { label: 'What we will not do', href: '#what-we-will-not-do' },
         { label: 'Bought on its own', href: '#add-ons' },
@@ -509,34 +529,51 @@ const principles = [
 
   <CtaStrip text="Send your clinic's name and we will tell you which of these you actually need, free, in two working days." />
 
-  <!-- MONTHLY PLANS -->
-  <!-- THE ONE MONTHLY PLAN -->
-  <!-- There were five monthly products here, in a three-column grid, with a
-       note underneath explaining why a bundle cost less than its parts. One
-       plan needs no comparison and no arithmetic, so it gets a single panel
-       and the room to list what it actually does. -->
+  <!-- MONTHLY, AFTER LAUNCH : two plans -->
+  <!-- There were five monthly products here once, then one. Since 2026-10-08
+       there are two, because they answer two different practices: the one
+       that wants its Google listing and local search looked after along with
+       the website, and the one that wants the website alone kept current.
+       Each gets the same panel, so the choice reads as a choice rather than
+       an upsell. Website Care carries no figure: it is priced to the site,
+       and the panel says so where a number would otherwise be. -->
   <section id="monthly" class="band-powder" aria-labelledby="plans-title">
     <div class="section shell">
       <SectionHead
         id="plans-title"
         label="Monthly, after launch"
-        title="Going live is the start. One plan keeps it working."
-        lede="Month to month, no contract, stop it by sending a message. The website and every account stay in your name whatever you decide."
+        title="Going live is the start. Two plans keep it working."
+        lede="Month to month, no contract, stop it by sending a message. The website and every account stay in your name whatever you decide. A practice on Local SEO & Google Care does not usually need Website Care as well."
       />
 
-      {PLANS.map((plan) => (
-        <article class="mt-12 overflow-hidden rounded-3xl border border-surgical bg-surface shadow-card">
-          <span class="accent-bar block h-1 w-full bg-a-seo-vivid" aria-hidden="true"></span>
+      {PLANS.map((plan, i) => (
+        <article
+          class:list={[
+            'overflow-hidden rounded-3xl border bg-surface',
+            i === 0 ? 'mt-12' : 'mt-6',
+            plan.recommended ? 'border-surgical shadow-card' : 'border-line',
+          ]}
+        >
+          <span
+            class:list={['accent-bar block h-1 w-full', plan.custom ? 'bg-a-care-vivid' : 'bg-a-seo-vivid']}
+            aria-hidden="true"
+          ></span>
           <div class="grid gap-8 p-6 sm:p-8 lg:grid-cols-[minmax(0,320px)_1fr] lg:gap-14">
             <div>
               <h3 class="text-[22px] font-bold tracking-[-0.025em] text-ink">{plan.name}</h3>
               <p class="mt-2.5 text-[16px] leading-[1.6] text-muted">{plan.summary}</p>
-              <p class="mt-6 flex items-baseline gap-2">
-                <span class="settle text-[clamp(34px,4vw,46px)] font-extrabold leading-none tracking-[-0.045em] text-ink">
-                  {rupees(plan.monthly)}
-                </span>
-                <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">/ month</span>
-              </p>
+              {plan.monthly ? (
+                <p class="mt-6 flex items-baseline gap-2">
+                  <span class="settle text-[clamp(34px,4vw,46px)] font-extrabold leading-none tracking-[-0.045em] text-ink">
+                    {rupees(plan.monthly)}
+                  </span>
+                  <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">/ month</span>
+                </p>
+              ) : (
+                <p class="mt-6 text-[clamp(24px,2.6vw,30px)] font-extrabold leading-[1.1] tracking-[-0.035em] text-ink">
+                  Priced to your site
+                </p>
+              )}
               <p class="mt-3 font-mono text-[11px] uppercase leading-[1.5] tracking-[0.06em] text-surgical">
                 {plan.priceNote}
               </p>
@@ -545,14 +582,19 @@ const principles = [
               </p>
             </div>
 
-            <ul class="grid gap-x-10 border-t border-hairline pt-4 text-[15px] leading-[1.55] text-body sm:grid-cols-2 lg:border-t-0 lg:pt-0">
-              {plan.includes.map((line) => (
-                <li class="flex gap-3 py-1">
-                  <span class="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-pass" aria-hidden="true"></span>
-                  <span>{line}</span>
-                </li>
-              ))}
-            </ul>
+            <div>
+              <ul class="grid gap-x-10 border-t border-hairline pt-4 text-[15px] leading-[1.55] text-body sm:grid-cols-2 lg:border-t-0 lg:pt-0">
+                {plan.includes.map((line) => (
+                  <li class="flex gap-3 py-1">
+                    <span class="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-pass" aria-hidden="true"></span>
+                    <span>{line}</span>
+                  </li>
+                ))}
+              </ul>
+              <p class="mt-4 border-t border-hairline pt-4 text-[14px] leading-[1.6] text-muted">
+                {plan.excludes}
+              </p>
+            </div>
           </div>
         </article>
       ))}
@@ -560,13 +602,78 @@ const principles = [
       <div class="mt-8 max-w-[820px] rounded-2xl border border-line bg-canvas px-6 py-5 sm:px-7">
         <p class="label-mono mb-3 text-faint" style="letter-spacing:0.12em">What it does not promise</p>
         <p class="text-[16px] leading-[1.65] text-body">
-          A ranking. What it does promise is steady work every month: your
-          listing kept right, your reviews answered, a new page written, and a
-          report saying what we did and what changed. Where you end up in the
-          results is Google's decision, not ours, and we would be careful with
-          anyone who tells you otherwise.
+          A ranking. What Local SEO & Google Care does promise is steady work
+          every month: your listing kept right, your reviews answered, a new
+          page written, and a report saying what we did and what changed. Where
+          you end up in the results is Google's decision, not ours, and we would
+          be careful with anyone who tells you otherwise.
         </p>
       </div>
+    </div>
+  </section>
+
+  <!-- HEALTHCARE CONTENT
+       Its own section rather than a line under "Bought on its own", because it
+       is one of the three things the studio sells, not an extra. The packages
+       come from the same component the content page uses, so the two pages can
+       never show different counts or figures. -->
+  <section id="content" class="border-t border-hairline bg-surface" aria-labelledby="content-title">
+    <div class="section shell">
+      <SectionHead
+        id="content-title"
+        label="Healthcare content"
+        title="Reels and posts, made from your own footage."
+        lede="Three monthly packages, each a fixed count of finished pieces, or any single piece on its own. You send the footage and the topics; the editing, captions, graphics and covers are ours."
+      />
+
+      <ContentPackages class="mt-12" />
+
+      <div class="mt-14 grid gap-10 lg:grid-cols-2 lg:gap-14">
+        <div>
+          <h3 class="label-mono mb-4 text-surgical">Single pieces</h3>
+          <dl class="border-t border-line">
+            {CONTENT_PIECES.map((item) => (
+              <div class="flex flex-wrap items-baseline justify-between gap-x-6 border-b border-hairline py-3">
+                <dt class="text-[16px] font-semibold leading-[1.45] text-ink">{item.item}</dt>
+                <dd class="whitespace-nowrap font-mono text-[15px] font-semibold text-pass">
+                  {item.from ? `${PRICE_PREFIX} ` : ''}{rupees(item.price)}
+                </dd>
+                <dd class="mt-1 w-full text-[14px] leading-[1.5] text-muted">{item.note}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+
+        <div>
+          <h3 class="label-mono mb-4 text-surgical">How a package counts</h3>
+          <ul class="border-t border-line text-[15px] leading-[1.55] text-body">
+            {CONTENT_RULES.map((line) => (
+              <li class="flex gap-3 border-b border-hairline py-3">
+                <span class="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-a-social-vivid" aria-hidden="true"></span>
+                <span>{line}</span>
+              </li>
+            ))}
+          </ul>
+
+          <h3 class="label-mono mb-4 mt-10 text-surgical">Not part of a package</h3>
+          <ul class="border-t border-line text-[15px] leading-[1.55] text-body">
+            {CONTENT_EXCLUDES.map((line) => (
+              <li class="flex gap-3 border-b border-hairline py-2.5">
+                <span class="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-line-strong" aria-hidden="true"></span>
+                <span>{line}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <p class="mt-10 max-w-[760px] text-[16px] leading-[1.65] text-muted">
+        What a standard reel includes, and how to send one, is on the
+        {' '}<a href={href('/services/reel-editing')} class="prose-link">reel editing page</a>.
+        The packages in full, with how testimonials and patient privacy are
+        handled, are on the
+        {' '}<a href={href('/services/social-media')} class="prose-link">healthcare content page</a>.
+      </p>
     </div>
   </section>
 
@@ -637,8 +744,8 @@ const principles = [
             text: 'We set up a way to ask patients who are already happy. We never write one, buy one, or offer anything in return for one.',
           },
           {
-            title: 'We do not turn patients into adverts',
-            text: 'A review a patient chose to leave stays where they left it. We answer it. We do not lift it onto a poster.',
+            title: "We do not use patients' words without consent",
+            text: "A review a patient chose to leave stays where they left it: we answer it, we do not lift it onto a poster. A patient's story is only edited with their written consent, and only where the rules your council sets allow it.",
           },
           {
             title: 'We do not touch patient records',
@@ -671,25 +778,10 @@ const principles = [
       id="separate-title"
       label="Bought on its own"
       title="One thing at a time, if that is all you need."
-      lede="You do not have to buy a website to work with us. Each of these can be bought on its own, at the price shown."
+      lede="You do not have to buy a website to work with us. Each of these can be bought on its own: the website and Google work at the price shown, and the larger custom work quoted once we have seen it."
     />
 
     <div class="mt-9 grid gap-8 lg:grid-cols-2 lg:gap-14">
-      <div>
-        <h3 class="label-mono mb-4 text-surgical">Monthly</h3>
-        <dl class="border-t border-line">
-          {STANDALONE_ITEMS.map((item) => (
-            <div class="flex flex-wrap items-baseline justify-between gap-x-6 border-b border-hairline py-3">
-              <dt class="text-[16px] font-semibold leading-[1.45] text-ink">{item.item}</dt>
-              <dd class="whitespace-nowrap font-mono text-[15px] font-semibold text-pass">
-                {rupees(item.price)}/mo
-              </dd>
-              <dd class="mt-1 w-full text-[14px] leading-[1.5] text-muted">{item.note}</dd>
-            </div>
-          ))}
-        </dl>
-      </div>
-
       <div>
         <h3 class="label-mono mb-4 text-surgical">One-time</h3>
         <dl class="border-t border-line">
@@ -704,28 +796,24 @@ const principles = [
           ))}
         </dl>
       </div>
-    </div>
 
-    {/* Ranges, not fixed figures, because the work genuinely varies. A
-        seven-slide researched carousel and a static post are not the same
-        production, and pricing them the same is how a content plan quietly
-        stops being profitable. */}
-    <div class="mt-10">
-      <h3 class="label-mono mb-4 text-surgical">Social media, quoted on top</h3>
-      <dl class="border-t border-line">
-        {SOCIAL_ADDONS.map((item) => (
-          <div class="flex flex-wrap items-baseline justify-between gap-x-6 border-b border-hairline py-3">
-            <dt class="text-[16px] font-semibold leading-[1.45] text-ink">{item.item}</dt>
-            <dd class="whitespace-nowrap font-mono text-[15px] font-semibold text-pass">{item.price}</dd>
-            <dd class="mt-1 w-full text-[14px] leading-[1.5] text-muted">{item.note}</dd>
-          </div>
-        ))}
-      </dl>
-      <p class="mt-4 max-w-[760px] text-[15px] leading-[1.6] text-muted">
-        Your advertising spend is always separate, paid by you directly, and
-        never marked up by us. Full scope on the
-        {' '}<a href={href('/services/social-media')} class="prose-link">social media page</a>.
-      </p>
+      {/* No published figure for these, on purpose. There is not yet enough
+          of this work behind the studio to know what it costs to do well, and
+          an arbitrary number would be the one invented thing on this page.
+          The social add-ons that sat here — Meta Ads management among them —
+          are gone: ads are not something the studio sells. */}
+      <div>
+        <h3 class="label-mono mb-4 text-surgical">Quoted to scope</h3>
+        <dl class="border-t border-line">
+          {CUSTOM_PROJECTS.map((item) => (
+            <div class="flex flex-wrap items-baseline justify-between gap-x-6 border-b border-hairline py-3">
+              <dt class="text-[16px] font-semibold leading-[1.45] text-ink">{item.item}</dt>
+              <dd class="whitespace-nowrap font-mono text-[15px] font-semibold text-pass">Custom quote</dd>
+              <dd class="mt-1 w-full text-[14px] leading-[1.5] text-muted">{item.note}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
     </div>
 
     <div class="mt-10 max-w-[820px] rounded-3xl border border-line bg-surface p-6 sm:p-7">

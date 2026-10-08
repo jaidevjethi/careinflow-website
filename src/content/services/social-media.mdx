@@ -1,87 +1,88 @@
 ---
-title: 'Social media for clinics and doctors'
-seoTitle: 'Social Media for Clinics: Planned Ahead'
+title: 'Healthcare content for doctors and clinics'
+seoTitle: 'Social Media Content for Doctors in Gujarat'
 illustration: '../../assets/mockups/social-media.jpg'
 illustrationAlt: 'A phone standing upright showing a simple social post with an image placeholder and a teal accent.'
-navLabel: 'Social media'
-description: 'Strategy-led social media for clinics in North Gujarat: a monthly plan, up to four pieces a week and three reel edits, within patient-privacy limits.'
+navLabel: 'Healthcare content'
+description: 'Reels, posts and carousels for doctors and clinics in Gujarat, made from your own footage. Packages from {{contentStarter}} a month; a single reel is {{reel}}.'
 code: 'CI-09'
-order: 5
-summary: 'A strategy, a calendar, and steady educational content that gives a patient a reason to trust the practice.'
+order: 2
+summary: 'You already have the knowledge. We turn your footage, ideas and clinic updates into patient-facing reels, posts and carousels, ready to publish.'
 deliverables:
-  - { item: 'Content strategy and calendar', status: 'monthly' }
-  - { item: 'Content pieces, planned by strategy', status: 'up to 4 a week' }
-  - { item: 'Reel edits from your footage', status: '3 a month' }
-  - { item: 'Instagram profile optimisation', status: 'once' }
-  - { item: 'Captions, scheduling and publishing', status: 'included' }
-  - { item: 'Performance review and next-month plan', status: 'monthly' }
-  - { item: 'Paid advertising spend', status: 'never ours' }
+  - { item: 'Healthcare reels from your footage', status: '6, 8 or 10 a month' }
+  - { item: 'Instagram posts', status: '4, 6 or 8 a month' }
+  - { item: 'Carousels, up to 6 slides', status: 'up to 2 a month' }
+  - { item: 'Captions in Gujarati or English', status: 'every reel' }
+  - { item: 'Reel cover and caption copy', status: 'every reel' }
+  - { item: 'Revisions', status: 'one per piece' }
+  - { item: 'Posting, ads and messages', status: 'not included' }
 pricing:
-  ref: 'social'
-  note: 'Sold on its own or alongside anything else. Strategy, up to four pieces a week and three reel edits a month. Shoots and complex carousels are quoted separately.'
+  ref: 'content'
+  note: 'Three packages, at {{contentStarter}}, {{contentGrowth}} and {{contentPlus}} a month, each with an introductory rate for your first three billed months. A single reel is {{reel}}.'
 faqs:
-  - q: 'Will social media bring my clinic new patients?'
-    a: 'Sometimes, slowly, and rarely on its own. Most patients find a clinic through search and Google Maps, then check social media to see whether the practice looks active and current. That checking step is what social media is genuinely good at, and doing it well is worth real money. What it is not is a substitute for a website or a listing, and if one of those is your weaker surface we will say so before taking the work.'
-  - q: 'What should a clinic actually post?'
-    a: 'Answers to the questions patients ask in the chair. What a treatment involves, what recovery feels like, when to come in urgently, what a fee covers. Educational posts age well and build trust. Promotional posts do neither.'
-  - q: 'Can you post before-and-after photos or patient stories?'
-    a: 'Only with clear written patient consent, and never in a way that identifies someone who has not agreed. We will not post clinical photographs or testimonials that put a patient''s privacy at risk, even when the patient offers. That restraint protects your practice as much as it protects them.'
-  - q: 'Do you run paid ads on Instagram or Facebook?'
-    a: 'No. We are not an advertising agency and we do not manage ad budgets. If paid ads are genuinely right for you, we will say so and step aside.'
-  - q: 'How often should a clinic post?'
-    a: 'Less often than most agencies suggest, and more consistently. A few genuinely useful posts a month beats daily filler, and it is a schedule a busy practice can actually sustain.'
-related: ['google-business-profile', 'healthcare-websites']
+  - q: 'Will reels bring my clinic new patients?'
+    a: 'Nobody can promise that, and we do not. What good healthcare content does is let a patient who is deciding see how you explain things before they ever meet you. Most patients still find a clinic through Google and Maps, then check its Instagram to see whether the practice looks active and trustworthy. Content does that checking job well. It does not replace a website or a Google listing, and if one of those is your weaker link we will say so.'
+  - q: 'Do you post the content for us?'
+    a: 'No. Every piece arrives ready to post: the reel, the cover and the caption written. You publish it from your own account, when it suits you. Posting, scheduling and day-to-day account management are not part of our packages.'
+  - q: 'Do you come to the clinic and film?'
+    a: 'Not as part of a package. You record on your phone, which is how most doctors already do it, and we do everything after that. If you want an on-site shoot, it is quoted as a custom project.'
+  - q: 'Do you run Instagram or Facebook ads?'
+    a: 'Not as part of our packages, and we do not sell ad management. Everything we make is organic content for your own account.'
+  - q: 'What counts as a post, and what is a carousel?'
+    a: 'A post is a single image: an educational graphic, an announcement or a clinic update, with its caption. A carousel explains one topic across up to six slides. A carousel that needs medical research, or more slides, is quoted on its own from {{carouselResearch}}.'
+  - q: 'Can you edit patient testimonial videos?'
+    a: 'Yes, where your council''s rules allow them, and we check that with you first. The National Medical Commission''s advertising guidelines of 6 October 2026 do not allow registered medical practitioners to request or share patient testimonials to promote their practice on social media, and consent alone does not make one permissible. Where a testimonial is allowed, the patient agrees in writing, we add no claims they did not make, nothing suggests a treatment works for everyone, and nothing identifies them beyond what they agreed to.'
+  - q: 'Do you write the scripts?'
+    a: 'We help you shape a topic into one clear question before you record, and we write the caption for every piece. Extensive scriptwriting is not part of a package. A doctor answering a patient question in their own words usually comes across better than a script read to camera.'
+related: ['reel-editing', 'healthcare-websites']
 ---
 
+import ContentPackages from '@/components/ContentPackages.astro';
 import Figure from '@/components/Figure.astro';
 import socialPost from '@/assets/mockups/social-post.webp';
-import socialCalendar from '@/assets/editorial/social-calendar.webp';
+import { CONTENT_CLIENTS } from '@/config/clients';
+import {
+  ADVANCED_REEL_WHEN,
+  CONTENT_EXCLUDES,
+  CONTENT_RULES,
+  STANDARD_REEL_INCLUDES,
+  rupees,
+} from '@/config/pricing';
+import { PRICE_TOKENS } from '@/lib/prices';
 
-## What does social media actually do for a practice?
+## Who is this for?
 
-It confirms. A patient who found you through search checks your profile
-before calling. If the last post is two years old, that hesitates them. If
-it shows a practice that explains things clearly and posts steadily, it
-settles them. That is a real job, and it is worth doing properly.
+Doctors who already explain things well, in the chair or on camera, and do not
+have the time or the tools to turn that into something worth posting. If your
+phone holds videos that never went out, or went out unedited, this is for you.
 
-What it is not is a substitute for a website or a Google listing, and we
-will still say so if those are the weaker link. But we no longer refuse the
-work on that basis: plenty of practices have a perfectly good site and an
-empty Instagram, and the empty Instagram is the thing costing them.
+It is healthcare content only. We make reels and posts for clinics and for
+nobody else, so the edit understands what a patient needs to hear, and what a
+doctor should not say.
 
-## What does the social media plan include?
+## What do you send us?
 
-Every month: a content strategy and a calendar built from your specialty,
-your treatments and what your patients keep asking. Instagram profile
-optimisation: bio, positioning, call to action, contact details and
-highlight structure. Up to four content pieces a week, around sixteen a
-month. Three reel edits from footage you provide, with captions, text
-overlays and hooks. Caption writing, topic research, scheduling and
-publishing. Then a review of what performed, and what next month should do
-differently.
+Less than you might think:
 
-### The mix follows the strategy
+- The footage, recorded on your phone. One question per video works best.
+- The topic, and the patient question it answers
+- The language you want the captions in
+- Your logo and contact details, once
+- What you want patients to do next: call, send a WhatsApp message, or book
 
-The monthly content mix is decided by the strategy. It may include static
-posts, carousels, educational graphics, treatment content and other
-suitable formats. **The package is a content volume and a strategy, not a
-fixed number of any one format.** A seven-slide researched carousel and a
-static post are not the same production work, and pricing them as though
-they were is how a content plan quietly stops being any good.
+For a post or a carousel, a few lines on the topic, or a photo of a clinic
+update, is enough. You check every piece for medical accuracy before it goes
+anywhere.
 
-## What do we post for a healthcare practice?
+## What do you get back?
 
-The best clinic content is the answer to a question you already give ten
-times a week in the chair:
+Publish-ready, patient-facing content:
 
-- What a treatment involves, step by step
-- What recovery actually feels like, honestly
-- When a symptom means "come in today"
-- What affects the cost of a procedure
-- Practical clinic updates, new equipment, festival hours, a new doctor
-
-We write these as short, plain-language posts. You approve everything
-before it goes out, and you correct anything clinically inaccurate.
+- **Reels.** Patient explainers, treatment explainers, and patient testimonials where your council's rules allow them and the patient has agreed in writing.
+- **Educational posts.** One useful thing per post.
+- **Carousels.** One topic, across up to six slides.
+- **Clinic creatives.** A package flyer, a health camp, a change of hours.
+- **Captions and covers.** Written and designed for every reel.
 
 <Figure
   src={socialPost}
@@ -90,56 +91,144 @@ before it goes out, and you correct anything clinically inaccurate.
   maxWidth={680}
 />
 
-## How is patient privacy protected in content?
+## What is in a standard healthcare reel?
 
-Healthcare social media has limits that other industries do not. We hold
-to them even when it costs reach:
+A standard reel is {rupees(PRICE_TOKENS.reel)}, and it includes:
+
+<ul>
+  {STANDARD_REEL_INCLUDES.map((line) => <li>{line}</li>)}
+</ul>
+
+An advanced reel, from {rupees(PRICE_TOKENS.reelAdvanced)}, is for an edit that
+involves {ADVANCED_REEL_WHEN.slice(0, -1).join(', ').toLowerCase()} or {ADVANCED_REEL_WHEN.at(-1)?.toLowerCase()}.
+We tell you which kind a video is when it arrives, before we start. Everything about a single reel, and
+how to send one, is on the [reel editing page](/services/reel-editing/).
+
+## What does each package include?
+
+Three monthly packages, each a fixed count of finished pieces, so you know at
+the start of the month exactly what you will get.
+
+<ContentPackages />
+
+The rules that keep a package what it says it is:
+
+<ul>
+  {CONTENT_RULES.map((line) => <li>{line}</li>)}
+</ul>
+
+Every single piece is priced on the [pricing page](/pricing/#content), from a
+{rupees(PRICE_TOKENS.post)} post to a research-heavy carousel.
+
+## Gujarati or English captions?
+
+Your choice, reel by reel, and it should follow your patients rather than your
+own preference:
+
+- **Gujarati** when you speak Gujarati on camera and your patients mostly read it. It is how they hear you in the chair.
+- **English** when your patients are younger, more urban or mixed, or when the treatment names are English words anyway.
+- **Both**, sometimes: Gujarati captions with the key medical term kept in English, so a patient can search for it later.
+
+We do not claim one language reaches more people than the other. Tell us who
+your patients are, we will suggest one, and you decide.
+
+## One recording, a month of content
+
+Most doctors think of one video as one post. One good explanation is usually a
+great deal more than that.
+
+A dentist who records eight to ten minutes on gum disease has given us a main
+reel, a shorter reel, a carousel of warning signs and an educational post. The
+same knowledge can then become a story, an answer to a question the front desk
+hears every week, a section of the treatment page on the website, and an update
+on the Google listing. The diagram below lays it out.
+
+Not every recording yields all of that, and a package counts reels, posts and
+carousels rather than everything on the list. But it is why we ask for your
+explanation rather than a finished script.
+
+## How does content help your website and Google listing?
+
+A patient deciding between clinics checks more than one place: your Google
+listing, your website, and often your Instagram. The same knowledge serves all
+three. An explanation you recorded for a reel can become the answer on your
+treatment page, and a short update on your Google Business Profile.
+
+That does not make every post or page a search result. Where a clinic appears
+depends on relevance, distance, prominence, competition and reviews, and on the
+website and the listing being right. Content gives those places something
+useful to say. If your [website](/services/healthcare-websites/) or your
+[Google listing](/services/google-business-profile/) is the weaker link, the
+[free written review](/contact/) will say so, and so will we.
+
+## How are patient testimonials handled?
+
+Patient experience videos are a format we edit, and they come with more rules
+than any other, so the first question is whether one can be published at all.
+The National Medical Commission's guidelines on advertising, issued on
+6 October 2026, do not allow registered medical practitioners to request or
+share patient testimonials to promote their practice on social media, and they
+say a patient's consent alone does not make one permissible. Dentists and
+physiotherapists answer to their own councils, with their own rules. Before we
+edit a testimonial we check with you which rules apply to your practice, and if
+they rule it out, we say so rather than edit it.
+
+Where one is allowed:
+
+- The patient agrees in writing to appear, and to the video being shared.
+- Nothing identifies them beyond what they agreed to: no names, phone numbers, reports or appointment details on screen.
+- We do not add words, claims or results the patient did not say.
+- Nothing suggests a treatment works for everyone, and there are no staged before-and-after outcomes.
+- You approve the final edit before it is published.
+
+The rules on advertising apply to you, and it is your registration at risk,
+not ours. If something in a clip reads like a promise, we flag it before it
+goes out.
+
+## How is patient privacy protected?
+
+Healthcare content has limits other industries do not, and we hold to them even
+when it costs reach:
 
 - No clinical photographs without clear written consent
 - No patient stories that could identify someone who has not agreed
-- No replies that confirm whether a person was treated at your clinic
-- No claims about outcomes we cannot support
+- No claims about outcomes that cannot be supported
 
-A post that embarrasses a patient is worse for your practice than no post
-at all.
+A post that embarrasses a patient is worse for your practice than no post at
+all.
 
-<Figure
-  src={socialCalendar}
-  alt="A desk with a content planning calendar open on screen, posts scheduled across the coming weeks, beside handwritten notes."
-  caption="Planned weeks ahead, not posted in a hurry"
-  maxWidth={680}
-/>
+## Revisions and turnaround
 
-## What does the monthly price not include?
+Every reel, post, flyer and carousel includes one revision. Changes beyond that
+are quoted before we make them, so nothing becomes an open-ended back and forth.
 
-Stated plainly, because a content plan with no edges is a content plan that
-disappoints someone:
+A standard reel is usually delivered in one to two working days from the
+footage arriving. A package is delivered across the month, on a schedule we
+agree with you at the start. Same-day or emergency turnaround is not part of a
+package.
 
-- Professional photography, on-site shoots and doctor filming sessions
-- Videographer costs, travel, actors or models
-- Advanced animation and high-end motion graphics
-- Advertising spend, and Meta Ads management
-- Influencer campaigns
-- Direct-message and community management, or handling patient enquiries
-- Unlimited revisions, or additional platforms beyond the one agreed
-- Research-heavy carousels beyond the agreed content capacity
+## What is not included?
 
-Those are quoted separately, and every rate is
-[published on the pricing page](/pricing): complex carousels, extra reel
-edits, Meta Ads management and shoots. A carousel is priced on slides,
-research and medical complexity rather than at one flat figure, because a
-seven-slide researched explainer is not a static post. Your advertising
-spend is always paid by you, directly, and never marked up by us.
+Stated plainly, because a content plan with no edges is one that disappoints
+someone:
 
-We do not chase follower counts or buy engagement, and we do not promise
-that social media will fill your appointment book. If someone promises you
-that, ask them how they will measure it.
+<ul>
+  {CONTENT_EXCLUDES.map((line) => <li>{line}</li>)}
+</ul>
 
-## Where should social media sit on your list?
+We do not chase follower counts, and we do not promise reach. If someone tells
+you reels will fill your appointment book, ask them how they will measure it.
 
-If you are weighing social media, the free review will tell you honestly
-where it belongs. Sometimes it is the obvious next thing. Sometimes your
-[clinic website](/services/healthcare-websites) or your
-[Google Business Profile](/services/google-business-profile) is the weaker
-surface and would move more, and we will say so before taking the work
-rather than after.
+## Who makes it?
+
+We make this for practices in Mehsana now. The reels and posts we make for {CONTENT_CLIENTS.map((c, i) => <>{i > 0 && ' and '}<a href={c.url} rel="noopener">{c.name}</a></>)} are on their own Instagram, exactly as they were published.
+
+The person you message is the person who edits your reels. There is no account
+manager in between.
+
+## How do you start?
+
+Send one sample video. Record a question patients ask you, or send a clip you
+already have, with the topic. We reply with what the edit would involve, how
+long it takes and what it costs, usually the same day. We do not edit it for
+free, and there is no obligation. [Send one sample video](/contact/#content).

@@ -17,7 +17,7 @@
  *    still render and the published price list is directly below, so nobody
  *    loses access to a number.
  */
-import { BUILDS, ONE_TIME_ITEMS, PLANS, PRICE_PREFIX, STANDALONE_MONTHLY, rupees } from '@/config/pricing';
+import { BUILDS, CONTENT_PACKAGES, GOOGLE_CARE, ONE_TIME_ITEMS, PLANS, PRICE_PREFIX, rupees } from '@/config/pricing';
 import { WHATSAPP_URL } from '@/config/site';
 
 const extraPage = ONE_TIME_ITEMS.find((i) => i.item.startsWith('Extra treatment'))!;
@@ -28,8 +28,8 @@ const takeover = ONE_TIME_ITEMS.find((i) => i.item.startsWith('Website takeover 
 /** Everything the script needs, straight from the config. */
 const rates = {
   builds: Object.fromEntries(BUILDS.map((b) => [b.id, b.from])),
-  plans: Object.fromEntries(PLANS.map((p) => [p.id, p.monthly])),
-  social: STANDALONE_MONTHLY.social,
+  plans: Object.fromEntries(PLANS.filter((p) => p.monthly).map((p) => [p.id, p.monthly])),
+  content: Object.fromEntries(CONTENT_PACKAGES.map((p) => [p.id, p.monthly])),
   extraPage: extraPage.price,
   gujarati: gujarati.price,
   gbpRebuild: gbpRebuild.price,
@@ -49,9 +49,29 @@ const buildOptions = [
   { value: 'none', label: 'I already have a website', note: 'Keep it, and we work on what it does', price: 0 },
 ];
 
+/*
+ * Only the plans with a published figure. Website Care is priced to the site,
+ * so an estimate cannot include it without inventing a number; a line under
+ * the fieldset says so instead.
+ */
 const planOptions = [
   { value: 'none', label: 'Nothing monthly', note: 'Build only, and you manage it afterwards', price: 0 },
-  ...PLANS.map((p) => ({ value: p.id, label: p.name, note: p.summary, price: p.monthly })),
+  ...PLANS.filter((p) => p.monthly).map((p) => ({ value: p.id, label: p.name, note: p.summary, price: p.monthly ?? 0 })),
+];
+
+/*
+ * Content each month, at the regular price — the one that runs. The note
+ * carries the introductory rate as a sentence with both figures in it, the
+ * way every other place on the site states it.
+ */
+const contentOptions = [
+  { value: 'none', label: 'No content', note: 'Websites and Google only', price: 0 },
+  ...CONTENT_PACKAGES.map((p) => ({
+    value: p.id,
+    label: p.name,
+    note: `${p.reels} reels, ${p.posts} posts${p.carousels ? `, ${p.carousels} carousel${p.carousels > 1 ? 's' : ''}` : ''}. ${rupees(p.intro)} for your first three billed months, then ${rupees(p.monthly)}.`,
+    price: p.monthly,
+  })),
 ];
 ---
 
@@ -174,7 +194,7 @@ const planOptions = [
                   value={o.value}
                   data-price={o.price}
                   data-label={o.label}
-                  checked={o.value === 'care-google'}
+                  checked={o.value === GOOGLE_CARE.id}
                   class="mt-1 size-4 shrink-0 accent-[var(--color-surgical)]"
                 />
                 <span class="min-w-0">
@@ -189,18 +209,38 @@ const planOptions = [
               </label>
             ))}
           </div>
-          <label class="mt-4 flex cursor-pointer items-start gap-3 rounded-xl border border-line bg-canvas p-3.5">
-            <input type="checkbox" name="social" data-price={rates.social} class="mt-0.5 size-4 shrink-0 accent-[var(--color-surgical)]" />
-            <span class="min-w-0 text-[15px] leading-[1.5] text-body-deep">
-              Add social media content
-              <span class="mt-0.5 block font-mono text-[11px] text-surgical">
-                {rupees(STANDALONE_MONTHLY.social)}/mo
-              </span>
-              <span class="mt-1 block text-[14px] leading-[1.5] text-muted">
-                Strategy, up to four pieces a week and three reel edits a month.
-              </span>
-            </span>
-          </label>
+          <p class="mt-3 text-[14px] leading-[1.55] text-muted">
+            Website Care, for the website alone, is priced to your site, so it
+            is not in this estimate.
+          </p>
+
+          <p class="label-mono mt-6 border-t border-hairline pt-5 text-faint" style="letter-spacing:0.12em">
+            Healthcare content
+          </p>
+          <div class="mt-3 grid gap-2.5" role="radiogroup" aria-label="Healthcare content each month">
+            {contentOptions.map((o) => (
+              <label class="card-hover flex cursor-pointer flex-wrap items-start gap-x-3.5 gap-y-1.5 rounded-2xl border border-line bg-canvas p-4">
+                <input
+                  type="radio"
+                  name="content"
+                  value={o.value}
+                  data-price={o.price}
+                  data-label={o.label}
+                  checked={o.value === 'none'}
+                  class="mt-1 size-4 shrink-0 accent-[var(--color-surgical)]"
+                />
+                <span class="min-w-0">
+                  <span class="block text-[16px] font-bold tracking-[-0.01em] text-ink">
+                    {o.label}
+                  </span>
+                  <span class="mt-0.5 block text-[14px] leading-[1.5] text-muted">{o.note}</span>
+                </span>
+                <span class="w-full shrink-0 whitespace-nowrap pl-[30px] font-mono text-[12px] text-surgical sm:ml-auto sm:w-auto sm:pl-0">
+                  {o.price ? `${rupees(o.price)}/mo` : 'nothing'}
+                </span>
+              </label>
+            ))}
+          </div>
         </fieldset>
       </div>
 
@@ -223,10 +263,10 @@ const planOptions = [
 
         <p class="mt-6 border-t border-line pt-5">
           <span id="ci-monthly" class="numeral block text-[clamp(30px,3.6vw,42px)] text-ink">
-            {rupees(PLANS[0]!.monthly)}
+            {rupees(GOOGLE_CARE.monthly)}
           </span>
           <span class="mt-1 block font-mono text-[11px] uppercase tracking-[0.08em] text-surgical">
-            a month, to keep it working
+            a month, after launch
           </span>
         </p>
 
@@ -287,6 +327,7 @@ const planOptions = [
     const update = () => {
       const build = radio('build');
       const plan = radio('plan');
+      const content = radio('content');
       const hasBuild = build.value !== 'none';
 
       // The takeover and rebuild options only make sense without a new build.
@@ -303,7 +344,7 @@ const planOptions = [
 
       const oneTime =
         build.price + pagesCost + checked('gujarati') + checked('takeover') + checked('gbpRebuild');
-      const perMonth = plan.price + checked('social');
+      const perMonth = plan.price + content.price;
 
       once.textContent = oneTime ? money(oneTime) : 'Nothing';
       monthly.textContent = perMonth ? money(perMonth) : 'Nothing';
@@ -316,7 +357,7 @@ const planOptions = [
       if (checked('takeover')) parts.push('takeover audit');
       if (checked('gbpRebuild')) parts.push('listing rebuild');
       if (plan.price) parts.push(`${plan.label} every month`);
-      if (checked('social')) parts.push('social content');
+      if (content.price) parts.push(`${content.label} every month`);
       breakdown.textContent = parts.length ? 'Includes: ' + parts.join(', ') + '.' : '';
 
       const message =

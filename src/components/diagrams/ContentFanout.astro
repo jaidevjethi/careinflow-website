@@ -1,0 +1,78 @@
+---
+import { ACCENTS } from '@/lib/accents';
+
+/**
+ * One doctor's explanation, and everything it can become.
+ *
+ * The argument that makes healthcare content a system rather than a cheap
+ * edit: stop thinking one video is one post. A single eight-to-ten-minute
+ * explanation of gum disease holds a month of useful material.
+ *
+ * It is drawn honestly about where each piece comes from. The top four are
+ * what the content packages count — reels, posts and carousels. The bottom
+ * four are where the same knowledge can go next, and none of them is promised
+ * by a content package: a story is the doctor's own to post, an FAQ answer and
+ * a treatment-page section are website work, and a Google update is part of
+ * the monthly Google care. Nor does a published page or post guarantee a
+ * search result; the caption says so.
+ *
+ * ServiceDiagram frames it, after the page's prose, the way every service
+ * page shows its diagram. No lists and every margin set by a utility all the
+ * same, so it can be dropped into MDX later without prose restyling it.
+ */
+const a = ACCENTS.social;
+
+const outputs = [
+  { title: 'The main reel', text: 'The full explanation, cut to two or three minutes and captioned in Gujarati.', inPackage: true },
+  { title: 'A short reel', text: 'The single most useful minute, for people who will not watch three.', inPackage: true },
+  { title: 'A carousel', text: 'The early warning signs, one on each slide.', inPackage: true },
+  { title: 'An educational post', text: 'The one thing patients most often get wrong about it.', inPackage: true },
+  { title: 'A story sequence', text: 'A quick question for followers, from the same footage.', inPackage: false },
+  { title: 'A clinic FAQ answer', text: 'The reply to the question your front desk hears every week.', inPackage: false },
+  { title: 'A website section', text: 'A plain paragraph for the treatment page on gum disease.', inPackage: false },
+  { title: 'A Google update', text: 'A short post on your Business Profile, where it fits.', inPackage: false },
+];
+---
+
+<div>
+  <div class:list={['not-prose rounded-2xl border border-transparent p-5', a.tint]}>
+    <p class:list={['label-mono mb-0', a.text]}>The source</p>
+    <p class="mb-0 mt-2 text-[16px] font-bold leading-[1.35] tracking-[-0.02em] text-ink">
+      A dentist explains gum disease to camera, recorded on a phone.
+    </p>
+    <p class="mb-0 mt-1.5 text-[13.5px] leading-[1.5] text-body-deep">
+      Raw, unscripted, in the words they use in the chair.
+    </p>
+  </div>
+
+  <p class="mx-auto mb-0 flex w-fit items-center gap-3 py-3" aria-hidden="true">
+    <span class="h-px w-10 bg-line"></span>
+    <span class="font-mono text-[10.5px] uppercase tracking-[0.08em] text-faint">can become</span>
+    <span class="h-px w-10 bg-line"></span>
+  </p>
+
+  {/* Eight into two columns divides evenly at every width this column has. */}
+  <div class="grid gap-3 sm:grid-cols-2">
+    {outputs.map((o) => (
+      <div
+        class:list={[
+          'flex flex-col rounded-2xl border p-4',
+          o.inPackage ? 'border-line bg-canvas' : 'border-dashed border-line-strong bg-surface',
+        ]}
+      >
+        <p class:list={['mb-0 font-mono text-[10.5px] uppercase tracking-[0.08em]', o.inPackage ? a.text : 'text-faint']}>
+          {o.inPackage ? 'In a content package' : 'Where else it can go'}
+        </p>
+        <p class="mb-0 mt-2 text-[15px] font-bold leading-[1.35] tracking-[-0.01em] text-ink">{o.title}</p>
+        <p class="mb-0 mt-1 text-[13.5px] leading-[1.5] text-muted">{o.text}</p>
+      </div>
+    ))}
+  </div>
+
+  <p class="mb-0 mt-5 text-[13.5px] leading-[1.55] text-muted">
+    An example, not a promise. What one recording yields depends on what is in
+    it, and a package counts reels, posts and carousels, not everything above.
+    A website section or a Google update is not a ranking either; it is useful
+    material in the places patients look.
+  </p>
+</div>

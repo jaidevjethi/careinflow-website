@@ -236,8 +236,15 @@ export const PREFILLS = {
     "Hi CareInflow. I would like a quote in writing, starting with the free review. Clinic name: ",
   work:
     "Hi CareInflow. I saw your work and I would like a free written review for my own practice. Clinic name: ",
-  social:
-    "Hi CareInflow. I would like to talk about social media content for my practice. Clinic name: ",
+  /** The monthly content packages: a conversation, not yet a clip. */
+  content:
+    "Hi CareInflow. I would like to talk about healthcare content (reels and posts) for my practice. Clinic name: ",
+  /**
+   * The sample-video offer. Sets up the one thing the visitor sends next — the
+   * topic and the clip — so the reply can say what the edit involves.
+   */
+  reel:
+    "Hi CareInflow. I have a video I would like turned into a reel. I will send the topic and a sample clip here. Clinic name: ",
 } as const;
 
 export type PrefillKey = keyof typeof PREFILLS;
