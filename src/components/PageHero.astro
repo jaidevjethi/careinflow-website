@@ -37,6 +37,12 @@ interface Props extends HTMLAttributes<'section'> {
    * argument in a picture, and at 400px its labels were too small to read.
    */
   asideWide?: boolean;
+  /**
+   * Classes for the aside's wrapper, e.g. `hidden lg:block` for a picture that
+   * only earns its place beside the text. Hiding the picture alone would leave
+   * an empty grid row, and the grid gap above it, under the hero on a phone.
+   */
+  asideClass?: string;
 }
 
 const {
@@ -48,6 +54,7 @@ const {
   breadcrumb,
   compact = false,
   asideWide = false,
+  asideClass,
   ...attrs
 } = Astro.props;
 const hasAside = Astro.slots.has('aside');
@@ -98,7 +105,7 @@ const hasAside = Astro.slots.has('aside');
       </div>
 
       {hasAside && (
-        <div class="animate-fade lg:pt-2">
+        <div class:list={['animate-fade lg:pt-2', asideClass]}>
           <slot name="aside" />
         </div>
       )}

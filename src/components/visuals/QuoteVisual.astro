@@ -1,0 +1,103 @@
+---
+/**
+ * The pricing page's picture: the written quote a practice receives after the
+ * free review. It draws the page's argument rather than decorating it — one
+ * published package, what it includes and what it does not listed with equal
+ * weight, and one fixed figure at the bottom, with no deadline on it.
+ *
+ * It replaced a photograph of a handshake over a "certified" seal. The seal
+ * certified nothing, and a picture of a promise is not a promise; a picture of
+ * the document is.
+ *
+ * Every figure and line comes from pricing.ts, so the drawing cannot quote a
+ * price the page does not publish. The practice is an eye clinic, because the
+ * illustrations show the range of healthcare this studio serves, not one
+ * specialty, and its town is written in Gujarati the way the clinic would
+ * write it.
+ */
+import { BUILDS, rupees } from '@/config/pricing';
+import { GU, MONO } from './fonts';
+
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+const id = 'visual-quote';
+
+// The package the page recommends, drawn at its published starting price.
+const build = BUILDS.find((b) => b.recommended) ?? BUILDS[0]!;
+const price = rupees(build.from);
+
+const included = [
+  { label: build.label, value: price, strong: true },
+  { label: `Google listing, ${build.stack.listing.toLowerCase()}`, value: 'Included', strong: false },
+  { label: 'A page for each treatment you offer', value: 'Included', strong: false },
+];
+const excluded = [
+  { label: 'Reels and posts', value: 'Separate package' },
+  { label: 'Paid advertising', value: 'Not offered' },
+];
+
+const check = 'M0 5.5l3.8 3.8L11 2';
+---
+
+<svg viewBox="0 0 560 470" role="img" aria-labelledby={id} class:list={['block h-auto w-full', className]} style="font-family: var(--font-sans)">
+  <title id={id}>
+    {`Illustration: a written quotation from CareInflow for an eye clinic in Mehsana. It lists the ${build.label} at its published ${price}, the Google listing and treatment pages as included, reels and paid advertising as not included, and one fixed price agreed in writing, with no deadline attached.`}
+  </title>
+
+  <rect x="20" y="6" width="520" height="446" rx="20" class="fill-surface" />
+
+  <!-- Letterhead -->
+  <text x="52" y="46" font-size="18" font-weight="800" letter-spacing="-0.02em" class="fill-ink">CareInflow</text>
+  <text x="52" y="63" font-size="9" font-weight="600" letter-spacing="0.12em" class="fill-faint" style={MONO}>MEHSANA, GUJARAT</text>
+  <text x="508" y="42" text-anchor="end" font-size="9.5" font-weight="700" letter-spacing="0.14em" class="fill-surgical" style={MONO}>QUOTATION</text>
+  <text x="508" y="62" text-anchor="end" font-size="13" font-weight="600" class="fill-muted" font-family={GU}>ક્વોટેશન</text>
+  <line x1="52" y1="78" x2="508" y2="78" class="stroke-hairline" stroke-width="1.5" />
+
+  <!-- Who it is for -->
+  <text x="52" y="100" font-size="9" font-weight="600" letter-spacing="0.12em" class="fill-faint" style={MONO}>PREPARED FOR</text>
+  <text x="52" y="122" font-size="17" font-weight="800" letter-spacing="-0.02em" class="fill-ink">Your Practice</text>
+  <text x="52" y="143" font-size="13.5" font-weight="600" class="fill-body" font-family={GU}>આંખનું ક્લિનિક · મહેસાણા</text>
+  <line x1="52" y1="158" x2="508" y2="158" class="stroke-hairline" stroke-width="1.5" />
+
+  <!-- What is included -->
+  <text x="52" y="181" font-size="9" font-weight="700" letter-spacing="0.12em" class="fill-surgical" style={MONO}>WHAT IS INCLUDED</text>
+  {included.map((row, i) => {
+    const y = 207 + i * 28;
+    return (
+      <g>
+        <path d={check} transform={`translate(52 ${y - 10})`} class="stroke-a-web" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <text x="72" y={y} font-size="14" font-weight={row.strong ? 700 : 500} class={row.strong ? 'fill-ink' : 'fill-body'}>{row.label}</text>
+        <text x="508" y={y} text-anchor="end" font-size={row.strong ? 14 : 12} font-weight={row.strong ? 800 : 600} class={row.strong ? 'fill-ink' : 'fill-muted'}>{row.value}</text>
+        {i < included.length - 1 && <line x1="72" y1={y + 10} x2="508" y2={y + 10} class="stroke-hairline" stroke-width="1" />}
+      </g>
+    );
+  })}
+
+  <!-- What is not, with the same weight on the page -->
+  <text x="52" y="290" font-size="9" font-weight="700" letter-spacing="0.12em" class="fill-faint" style={MONO}>NOT INCLUDED</text>
+  {excluded.map((row, i) => {
+    const y = 315 + i * 26;
+    return (
+      <g>
+        <line x1="53" y1={y - 5} x2="62" y2={y - 5} class="stroke-line-strong" stroke-width="2" stroke-linecap="round" />
+        <text x="72" y={y} font-size="13.5" font-weight="500" class="fill-muted">{row.label}</text>
+        <text x="508" y={y} text-anchor="end" font-size="12" font-weight="600" class="fill-faint">{row.value}</text>
+        {i < excluded.length - 1 && <line x1="72" y1={y + 9} x2="508" y2={y + 9} class="stroke-hairline" stroke-width="1" />}
+      </g>
+    );
+  })}
+
+  <!-- One number -->
+  <line x1="52" y1="358" x2="508" y2="358" class="stroke-line-strong" stroke-width="1.5" />
+  <text x="52" y="386" font-size="15" font-weight="800" letter-spacing="-0.01em" class="fill-ink">Fixed price</text>
+  <text x="52" y="404" font-size="9" font-weight="600" letter-spacing="0.1em" class="fill-faint" style={MONO}>ONE-TIME · AGREED IN WRITING</text>
+  <text x="508" y="400" text-anchor="end" font-size="34" font-weight="800" letter-spacing="-0.035em" class="fill-ink">{price}</text>
+
+  <line x1="52" y1="418" x2="508" y2="418" class="stroke-hairline" stroke-width="1" />
+  <text x="52" y="440" font-size="12.5" font-weight="600" class="fill-muted" font-family={GU}>લેખિતમાં, કામ શરૂ થાય તે પહેલાં</text>
+  <text x="508" y="439" text-anchor="end" font-size="9" font-weight="600" letter-spacing="0.1em" class="fill-faint" style={MONO}>NO DEADLINE ATTACHED</text>
+
+  <text x="540" y="467" text-anchor="end" font-size="8.5" font-weight="700" letter-spacing="0.14em" class="fill-panel-text-faint" style={MONO}>ILLUSTRATIVE</text>
+</svg>

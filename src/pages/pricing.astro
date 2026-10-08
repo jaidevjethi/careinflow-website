@@ -1,34 +1,28 @@
 ---
 import { getFaqsFor } from '@/lib/faqs';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { Image } from 'astro:assets';
 import PageHero from '@/components/PageHero.astro';
 import PriceEstimator from '@/components/PriceEstimator.astro';
 import SectionHead from '@/components/SectionHead.astro';
-import Figure from '@/components/Figure.astro';
-import pricingConsult from '@/assets/editorial/pricing-consult.webp';
-import promiseSeal from '@/assets/mockups/pricing-promise.webp';
+import QuoteVisual from '@/components/visuals/QuoteVisual.astro';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
-import CtaStrip from '@/components/CtaStrip.astro';
-import IllustrationPanel from '@/components/IllustrationPanel.astro';
-import pricingMockup from '@/assets/mockups/hero.jpg';
+import ServicePricing from '@/components/ServicePricing.astro';
+import WebsitePackages from '@/components/WebsitePackages.astro';
 import { href } from '@/lib/url';
 import { whatsappFor } from '@/config/site';
-import { cycleAccent } from '@/lib/accents';
-import ContentPackages from '@/components/ContentPackages.astro';
-import WebsitePackages from '@/components/WebsitePackages.astro';
+import { ACCENTS, cycleAccent } from '@/lib/accents';
 import {
   PRICE_PREFIX,
   BUILDS,
-  PLANS,
   GOOGLE_CARE,
+  WEBSITE_CARE,
   ONE_TIME_ITEMS,
   CONTENT_PACKAGES,
   CONTENT_PIECES,
-  CONTENT_RULES,
   CONTENT_EXCLUDES,
   CUSTOM_PROJECTS,
+  GBP_REBUILD_INCLUDES,
   PRICE_MOVERS,
   WHERE_RETURN_COMES_FROM,
   NEVER_CHARGED,
@@ -36,6 +30,7 @@ import {
   PRICE_PROMISE,
   PACKAGE_MATRIX,
   GBP_AUDIT,
+  packageLabel,
   rupees,
 } from '@/config/pricing';
 import { PRICE_TOKENS } from '@/lib/prices';
@@ -72,9 +67,8 @@ const schema = graph(
     name: 'CareInflow published prices',
     path: '/pricing',
     offers: [
-      // The package names already contain "Website", so nothing is appended.
       ...BUILDS.map((b) => ({
-        name: b.name,
+        name: `${b.label} (${b.name})`,
         description: `${b.responsibility} ${b.suits} ${b.pages}, ${b.timeline}.`,
         from: b.from,
         unit: 'project' as const,
@@ -90,7 +84,7 @@ const schema = graph(
       // The regular price, which is the one that runs. The introductory rate
       // is a rule about a client's first three months, not a separate offer.
       ...CONTENT_PACKAGES.map((p) => ({
-        name: p.name,
+        name: `${packageLabel(p)} (${p.name})`,
         description: `${p.reels} healthcare reels, ${p.posts} Instagram posts${p.carousels ? ` and ${p.carousels} carousel${p.carousels > 1 ? 's' : ''}` : ''} a month. ${p.suits}`,
         from: p.monthly,
         unit: 'month' as const,
@@ -112,20 +106,68 @@ const schema = graph(
   faqSchema(faqs),
 );
 
-/** The three figures a visitor is really scanning for. */
 /*
- * These read left to right under the figure, so the caption has to be a noun
- * phrase. It used to be `${label} · ${suffix}`, which rendered
- * "₹24,999 / WEBSITES, ONE-TIME · FROM" — the word "from" landing after the
- * number it qualifies. Every figure on this page is a starting point and the
- * lede above says so, so the captions just name the thing.
+ * THE PAGE, redesigned 2026-10-08 for one test from the brief: can a doctor
+ * understand what CareInflow costs in thirty seconds, on a phone?
+ *
+ * It used to open on a stock photograph and run eighteen screens, with the
+ * website packages first and everything else found by scrolling. It now
+ * opens on every price at once — five cards, one per service, each linking
+ * to its detail — and the detail follows in the same order as the services.
+ * The long reference material (the line-by-line comparison, what moves a
+ * price, where the return comes from) is still here, behind disclosures, so
+ * the page reads fast and loses nothing.
  */
-const headline = [
-  { label: 'Websites, one-time', value: rupees(BUILDS[0]!.from) },
-  { label: 'Content packages, monthly', value: rupees(PRICE_TOKENS.contentStarter) },
-  { label: 'Local SEO & Google, monthly', value: rupees(GOOGLE_CARE.monthly) },
-  { label: 'A healthcare reel', value: rupees(PRICE_TOKENS.reel) },
+
+/** Every price on one screen: the overview the rest of the page expands. */
+const overview = [
+  {
+    name: 'Healthcare content',
+    accent: ACCENTS.social,
+    target: '#content',
+    caption: 'One reel, or a month of them',
+    rows: [
+      { label: 'A standard healthcare reel', value: rupees(PRICE_TOKENS.reel), unit: '' },
+      ...CONTENT_PACKAGES.map((p) => ({ label: packageLabel(p), value: rupees(p.monthly), unit: '/ mo' })),
+    ],
+    note: 'Lower introductory rates for your first three billed months.',
+  },
+  {
+    name: 'Healthcare websites',
+    accent: ACCENTS.web,
+    target: '#packages',
+    caption: 'Starting prices, one-time',
+    rows: BUILDS.map((b) => ({ label: b.label, value: `${rupees(b.from)}${b.custom ? '+' : ''}`, unit: '' })),
+    note: 'Fixed in writing after the free review.',
+  },
+  {
+    name: 'Google Business Profile',
+    accent: ACCENTS.gbp,
+    target: '#google',
+    caption: 'Rebuilt once, then kept up',
+    rows: [{ label: 'Profile rebuild', value: rupees(PRICE_TOKENS.gbpRebuild), unit: 'once' }],
+    note: 'Kept up every month as part of Local SEO & Google Care. The profile stays in your name.',
+  },
+  {
+    name: 'Local SEO & Google Care',
+    accent: ACCENTS.seo,
+    target: '#google',
+    caption: 'Every month, month to month',
+    rows: [{ label: 'Listing, local search and website', value: rupees(GOOGLE_CARE.monthly), unit: '/ mo' }],
+    note: 'No ranking guarantee, from us or anyone.',
+  },
+  {
+    name: 'Website Care',
+    accent: ACCENTS.care,
+    target: '#google',
+    caption: 'Every month, month to month',
+    rows: [{ label: 'Updates, maintenance, backups where supported', value: 'Custom', unit: '/ mo' }],
+    note: 'Priced to your site after the free review.',
+  },
 ];
+
+/** The three website add-ons, beside the packages they extend. */
+const addOns = ONE_TIME_ITEMS.filter((i) => !i.item.startsWith('Google Business Profile'));
 
 const principles = [
   {
@@ -148,16 +190,41 @@ const principles = [
     text: 'The content packages start at a lower rate for a new client\'s first three billed months, for every new client, whenever you start. Nothing else is ever taken off. We are not the cheapest option either: freelancers and site builders exist, and for some practices they are enough. We price for work that still looks right, loads fast and gets maintained three years later.',
   },
 ];
+
+const limits = [
+  {
+    title: 'We do not promise a ranking',
+    text: 'Nobody honestly can. What we promise is the work, and a written report every month showing what it changed.',
+  },
+  {
+    title: 'We do not buy or reward reviews',
+    text: 'We set up a way to ask patients who are already happy. We never write one, buy one, or offer anything in return for one.',
+  },
+  {
+    title: "We do not use patients' words without consent",
+    text: "A review a patient chose to leave stays where they left it: we answer it, we do not lift it onto a poster. A patient's story is only edited with their written consent, and only where the rules your council sets allow it.",
+  },
+  {
+    title: 'We do not touch patient records',
+    text: 'We never ask for access, and nothing we build or run stores them. We do not need them for any of this.',
+  },
+];
+
+const check = 'M3 8.5l3.5 3.5L13 4.5';
 ---
 
 <BaseLayout {title} {description} path="/pricing" {schema}>
+  <!-- HERO : the picture is the written quote itself, beside the text only.
+       On a phone the prices below are the picture, and they come sooner. -->
   <PageHero
     label="Pricing"
-    title="Clinic website prices, published. You should not have to ask."
-    lede="Most studios make you sit through a call before they tell you a number. Here is what things cost, what makes the price go up, and what we never charge for. Your own figure is fixed in writing after the free review."
-    stats={headline.map((h) => ({ value: h.value, caption: h.label }))}
+    title="Every price, published. You should not have to ask."
+    lede="Websites, healthcare content, your Google listing and the care after launch: what each one costs, what it includes and what it does not. Your own figure is fixed in writing before anything starts."
+    asideWide
+    asideClass="hidden lg:block"
   >
-    <div class="mt-7 flex flex-wrap items-center gap-3.5">
+    <QuoteVisual slot="aside" />
+    <div class="mt-8 flex flex-wrap items-center gap-3.5">
       <a href={whatsappFor('pricing')} rel="noopener" class="btn-whatsapp px-6 py-3.5 text-[16px]">
         Get a quote in writing
       </a>
@@ -165,317 +232,89 @@ const principles = [
         Work out your number
       </a>
     </div>
-
-    {/* The three fears a buyer arrives with, answered before the first figure.
-        A single line rather than the chip row it started as: the chips wrapped
-        to two rows and cost 110px in a hero that is already over the design
-        system's viewport cap. */}
-    <p class="mt-4 text-[15px] leading-[1.55] text-panel-text-dim">
+    <p class="mt-5 text-[15px] leading-[1.55] text-panel-text-dim">
       Month to month, no lock-in. No deadline is ever attached to a quote, and
-      the written review costs nothing.
+      the free digital review costs nothing.
     </p>
-
-    {/* A photograph, so it takes the plain image treatment the /contact and
-        /about heroes use rather than IllustrationPanel, which exists for
-        device renders. A 3:2 source in this 260px band keeps 97% of the
-        height, so both faces stay in frame on the default centre crop. */}
-    <Image
-      slot="aside"
-      src={pricingConsult}
-      alt="A web designer and a doctor either side of a desk, going through a price estimate on a tablet held between them."
-      widths={[400, 600, 800]}
-      sizes="(min-width: 1024px) 400px, 92vw"
-      loading="eager"
-      fetchpriority="high"
-      class="aspect-[3/2] w-full rounded-3xl border border-panel-line object-cover"
-    />
   </PageHero>
 
-  {/* Moved out of the hero, which was running to 90% of a laptop viewport
-      against the design system's ~72% cap. It also belongs here: a jump nav
-      is more use directly above the thing it jumps to. Real anchors, so it
-      works with JavaScript off, and :root already sets scroll-margin-top so
-      each target clears the sticky header. */}
-  <nav aria-label="On this page" class="border-b border-hairline bg-canvas">
-    <div class="shell flex flex-wrap items-center gap-x-6 gap-y-2 py-4">
-      <p class="label-mono text-faint">On this page</p>
-      {[
-        { label: 'The four packages', href: '#packages' },
-        { label: 'Monthly, after launch', href: '#monthly' },
-        { label: 'Healthcare content', href: '#content' },
-        { label: 'The Google audit', href: '#google-audit' },
-        { label: 'What we will not do', href: '#what-we-will-not-do' },
-        { label: 'Bought on its own', href: '#add-ons' },
-        { label: 'Work out your number', href: '#estimate' },
-      ].map((item) => (
-        <a
-          href={item.href}
-          class="inline-flex min-h-[24px] items-center text-[15px] text-body-deep underline underline-offset-4 hover:text-ink"
-        >
-          {item.label}
-        </a>
-      ))}
-    </div>
-  </nav>
-
-  <!-- THE PACKAGES -->
-  <!-- The decision, and only the decision. These cards used to carry their
-       full inclusion list, which made each one about 1000px tall — taller than
-       the viewport, so a buyer could never see one whole card, let alone hold
-       two side by side. What is in each package now sits in its own block
-       directly below, where four columns can be read across rather than
-       scrolled through. Nothing is hidden; it is just not all in the card. -->
-  <section id="packages" class="border-t border-hairline bg-surface" aria-labelledby="builds-title">
-    <div class="section shell">
-      <SectionHead
-        id="builds-title"
-        label="Websites, one-time"
-        title="Four packages. Each one says how much we do for you."
-        lede="The difference is how much of the work we take on, not how many pages you get. The smallest builds your website and sets it up to be found. The largest plans and builds the whole thing for a practice with several doctors or branches. Every price is agreed in writing before we start."
-      />
-
-      <WebsitePackages class="mt-12" />
-
-      <p class="mt-7 max-w-[680px] text-[16px] leading-[1.65] text-muted">
-        Not sure which one is right for your practice? That is exactly what the
-        <a href={href('/contact')} class="prose-link">free digital review</a>
-        tells you, and the answer is often "less than you expected".
-      </p>
-      <p class="mt-3.5 max-w-[680px] text-[16px] leading-[1.65] text-muted">
-        What a practice needs also depends on where it is. We build from Mehsana,
-        for practices in
-        {' '}<a href={href('/areas/mehsana')} class="prose-link">Mehsana</a>,
-        {' '}<a href={href('/areas/ahmedabad')} class="prose-link">Ahmedabad</a>,
-        {' '}<a href={href('/areas/gandhinagar')} class="prose-link">Gandhinagar</a> and
-        {' '}<a href={href('/areas')} class="prose-link">eight other towns</a>. Each of
-        those pages says what actually moves in that market.
-      </p>
-    </div>
-  </section>
-
-  {/*
-    The estimator sat seventh of thirteen sections, roughly twelve screens
-    down a thirty-four-screen page. It is the strongest thing here: it turns
-    four published starting points into one number for the practice actually
-    reading, and it ends by attaching that number to a WhatsApp message.
-
-    It belongs immediately after the four packages, which is the moment a
-    reader has just asked "which of these is me". Everything below it — the
-    inclusion table, the monthly plan, the audit — is detail for someone who
-    has already found their shape.
-  */}
-  <PriceEstimator />
-
-  <!-- WHAT IS IN EACH PACKAGE -->
-  <!-- A table, because this is tabular data: one row per thing, one column per
-       package, read across. It was four parallel lists, which made a reader
-       hold ten lines in their head to work out what the next package added.
-       A real <table> is also the right semantics — a screen reader announces
-       the row and column headers with every cell, which four <ul>s cannot do.
-
-       It needs 860px to be a comparison at all, so below lg it used to be a
-       sideways-scrolling table — 3.3 screens of a phone spent on something a
-       reader had to drag left and right to use, which is where phone readers
-       stop. Every package card above now lists what it includes, so on a phone
-       the table is duplication and the cards are the answer. From lg up, where
-       the columns actually fit side by side, the table is the better tool and
-       it returns. The region is focusable and labelled for keyboard use. -->
-  <section class="band-powder" aria-labelledby="includes-title">
-    <div class="section shell">
-      <SectionHead
-        id="includes-title"
-        label="Side by side"
-        title="What do you get in each one?"
-        lede="Every package includes everything in the one before it, and each card above says what it adds. A tick means included, a dash means not, and we would rather show you that than leave it out."
-      />
-
-      <div
-        class="mt-11 hidden overflow-x-auto rounded-3xl border border-line bg-surface lg:block"
-        tabindex="0"
-        role="region"
-        aria-label="Compare the four packages, scrollable"
-      >
-        <table class="w-full min-w-[860px] border-collapse text-left">
-          <caption class="sr-only">
-            What is included in each of the four website packages
-          </caption>
-          <thead>
-            <tr class="border-b border-line">
-              <th scope="col" class="w-[38%] px-6 py-5 align-bottom">
-                <span class="label-mono text-faint">What you get</span>
-              </th>
-              {BUILDS.map((build, i) => (
-                <th scope="col" class="px-4 py-5 align-bottom">
-                  <span class="block text-[15px] font-bold leading-[1.3] tracking-[-0.02em] text-ink">
-                    {build.label}
-                  </span>
-                  <span class:list={['mt-1.5 block font-mono text-[12px]', cycleAccent(i).text]}>
-                    {build.custom ? `${PRICE_PREFIX} ` : ''}{rupees(build.from)}
-                  </span>
-                </th>
-              ))}
-            </tr>
-          </thead>
-
-          {PACKAGE_MATRIX.map((group) => (
-            <tbody>
-              <tr>
-                <th
-                  scope="colgroup"
-                  colspan={BUILDS.length + 1}
-                  class="border-b border-line bg-canvas px-6 py-2.5"
-                >
-                  <span class="label-mono text-surgical">{group.group}</span>
-                </th>
-              </tr>
-              {group.rows.map((row) => (
-                <tr class="border-b border-hairline last:border-0">
-                  <th scope="row" class="px-6 py-3 text-[15px] font-normal leading-[1.45] text-body">
-                    {row.label}
-                  </th>
-                  {row.values.map((value) => (
-                    <td class="px-4 py-3 text-[14px] leading-[1.4]">
-                      {typeof value === 'string' ? (
-                        <span class="font-semibold text-body-deep">{value}</span>
-                      ) : value ? (
-                        <>
-                          {/* The tick carries the meaning, so it is not
-                              aria-hidden — it gets a text label instead. */}
-                          <svg
-                            width="18" height="18" viewBox="0 0 24 24" fill="none"
-                            class="block text-pass" role="img" aria-label="Included"
-                          >
-                            <path
-                              d="M4.5 12.5l5 5 10-11"
-                              stroke="currentColor" stroke-width="2.4"
-                              stroke-linecap="round" stroke-linejoin="round"
-                            />
-                          </svg>
-                        </>
-                      ) : (
-                        <svg
-                          width="18" height="18" viewBox="0 0 24 24" fill="none"
-                          class="block text-line-strong" role="img" aria-label="Not included"
-                        >
-                          <path d="M6 12h12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" />
-                        </svg>
-                      )}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          ))}
-        </table>
+  <!-- 1 · EVERY PRICE AT ONCE : five cards, one per service, each a door.
+       No display heading and a tight top: the hero has just said what this
+       is, so the cards start on the first screen instead of a third heading
+       restating it. They are also the page's navigation, which is why there
+       is no separate jump bar above them any more. -->
+  <section id="overview" class="bg-surface" aria-labelledby="overview-title">
+    <div class="section-tight shell">
+      <div class="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
+        <h2 id="overview-title" class="text-[clamp(22px,2.4vw,28px)] font-extrabold leading-[1.2] tracking-[-0.03em] text-ink">
+          Five services, each priced.
+        </h2>
+        <p class="text-[16px] leading-[1.5] text-muted">Tap a card for what is included, and what is not.</p>
       </div>
-
-      <p class="mt-4 text-[14px] leading-[1.6] text-muted sm:hidden">
-        The table scrolls sideways.
-      </p>
-
-      {/* What each price does not cover, in the same words the cards use. */}
-      <div class="mt-10 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-        {BUILDS.map((build) => (
-          <div class="border-t border-line pt-4">
-            <p class="text-[15px] font-bold tracking-[-0.02em] text-ink">{build.label}</p>
-            <p class="mt-2 text-[14px] leading-[1.55] text-muted">{build.excludes}</p>
-          </div>
+      {/* The homepage's five-card grid: six columns at lg, three cards then
+          two, so five divides evenly; two columns at sm with the fifth
+          spanning both; a single stack on a phone. */}
+      <div class="reveal-group mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-6">
+        {overview.map((o, i) => (
+          <article
+            class:list={[
+              'card-hover card-link group flex flex-col overflow-hidden rounded-3xl border border-line bg-canvas',
+              i < 3 ? 'lg:col-span-2' : 'lg:col-span-3',
+              i === 4 && 'sm:col-span-2',
+            ]}
+          >
+            <span class:list={['accent-bar block h-1 w-full', o.accent.bar]} aria-hidden="true"></span>
+            <div class="flex flex-1 flex-col p-6 sm:p-7">
+              <p class:list={['font-mono text-[11px] font-semibold uppercase tracking-[0.12em]', o.accent.text]}>
+                {o.caption}
+              </p>
+              <h3 class="mt-2 text-[21px] font-extrabold leading-[1.2] tracking-[-0.03em] text-ink">{o.name}</h3>
+              <dl class="mt-4 border-t border-line">
+                {o.rows.map((r) => (
+                  <div class="flex items-baseline justify-between gap-4 border-b border-hairline py-2.5">
+                    <dt class="min-w-0 text-[15px] leading-[1.4] text-body">{r.label}</dt>
+                    <dd class="shrink-0 whitespace-nowrap text-right">
+                      <span class="text-[18px] font-extrabold tracking-[-0.03em] text-ink">{r.value}</span>
+                      {r.unit && <span class="ml-1 font-mono text-[10.5px] uppercase tracking-[0.06em] text-faint">{r.unit}</span>}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+              <p class="mt-3 text-[14px] leading-[1.5] text-muted">{o.note}</p>
+              <p class="mt-auto pt-4">
+                <a href={o.target} class="prose-link inline-flex items-center gap-1.5 text-[15px]">
+                  What is included
+                  <span aria-hidden="true" class="inline-block transition-transform duration-200 ease-instrument group-hover:translate-y-0.5">↓</span>
+                </a>
+              </p>
+            </div>
+          </article>
         ))}
       </div>
+
+      {/* The rest of the page, for the reader who knows what they want. Real
+          anchors, so it works with JavaScript off. */}
+      <nav aria-label="Also on this page" class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-hairline pt-5">
+        <p class="label-mono text-faint">Also on this page</p>
+        {[
+          { label: 'Work out your number', href: '#estimate' },
+          { label: 'Larger work, quoted to scope', href: '#other' },
+          { label: 'How our pricing works', href: '#how' },
+          { label: 'Questions about cost', href: '#faq' },
+        ].map((item) => (
+          <a
+            href={item.href}
+            class="inline-flex min-h-[24px] items-center text-[15px] text-body-deep underline underline-offset-4 hover:text-ink"
+          >
+            {item.label}
+          </a>
+        ))}
+      </nav>
     </div>
   </section>
 
-  <CtaStrip text="Send your clinic's name and we will tell you which of these you actually need, free, in two working days." />
-
-  <!-- MONTHLY, AFTER LAUNCH : two plans -->
-  <!-- There were five monthly products here once, then one. Since 2026-10-08
-       there are two, because they answer two different practices: the one
-       that wants its Google listing and local search looked after along with
-       the website, and the one that wants the website alone kept current.
-       Each gets the same panel, so the choice reads as a choice rather than
-       an upsell. Website Care carries no figure: it is priced to the site,
-       and the panel says so where a number would otherwise be. -->
-  <section id="monthly" class="band-powder" aria-labelledby="plans-title">
-    <div class="section shell">
-      <SectionHead
-        id="plans-title"
-        label="Monthly, after launch"
-        title="Going live is the start. Two plans keep it working."
-        lede="Month to month, no contract, stop it by sending a message. The website and every account stay in your name whatever you decide. A practice on Local SEO & Google Care does not usually need Website Care as well."
-      />
-
-      {PLANS.map((plan, i) => (
-        <article
-          class:list={[
-            'overflow-hidden rounded-3xl border bg-surface',
-            i === 0 ? 'mt-12' : 'mt-6',
-            plan.recommended ? 'border-surgical shadow-card' : 'border-line',
-          ]}
-        >
-          <span
-            class:list={['accent-bar block h-1 w-full', plan.custom ? 'bg-a-care-vivid' : 'bg-a-seo-vivid']}
-            aria-hidden="true"
-          ></span>
-          <div class="grid gap-8 p-6 sm:p-8 lg:grid-cols-[minmax(0,320px)_1fr] lg:gap-14">
-            <div>
-              <h3 class="text-[22px] font-bold tracking-[-0.025em] text-ink">{plan.name}</h3>
-              <p class="mt-2.5 text-[16px] leading-[1.6] text-muted">{plan.summary}</p>
-              {plan.monthly ? (
-                <p class="mt-6 flex items-baseline gap-2">
-                  <span class="settle text-[clamp(34px,4vw,46px)] font-extrabold leading-none tracking-[-0.045em] text-ink">
-                    {rupees(plan.monthly)}
-                  </span>
-                  <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">/ month</span>
-                </p>
-              ) : (
-                <p class="mt-6 text-[clamp(24px,2.6vw,30px)] font-extrabold leading-[1.1] tracking-[-0.035em] text-ink">
-                  Priced to your site
-                </p>
-              )}
-              <p class="mt-3 font-mono text-[11px] uppercase leading-[1.5] tracking-[0.06em] text-surgical">
-                {plan.priceNote}
-              </p>
-              <p class="mt-5 border-t border-hairline pt-4 text-[15px] leading-[1.6] text-muted">
-                {plan.suits}
-              </p>
-            </div>
-
-            <div>
-              <ul class="grid gap-x-10 border-t border-hairline pt-4 text-[15px] leading-[1.55] text-body sm:grid-cols-2 lg:border-t-0 lg:pt-0">
-                {plan.includes.map((line) => (
-                  <li class="flex gap-3 py-1">
-                    <span class="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-pass" aria-hidden="true"></span>
-                    <span>{line}</span>
-                  </li>
-                ))}
-              </ul>
-              <p class="mt-4 border-t border-hairline pt-4 text-[14px] leading-[1.6] text-muted">
-                {plan.excludes}
-              </p>
-            </div>
-          </div>
-        </article>
-      ))}
-
-      <div class="mt-8 max-w-[820px] rounded-2xl border border-line bg-canvas px-6 py-5 sm:px-7">
-        <p class="label-mono mb-3 text-faint" style="letter-spacing:0.12em">What it does not promise</p>
-        <p class="text-[16px] leading-[1.65] text-body">
-          A ranking. What Local SEO & Google Care does promise is steady work
-          every month: your listing kept right, your reviews answered, a new
-          page written, and a report saying what we did and what changed. Where
-          you end up in the results is Google's decision, not ours, and we would
-          be careful with anyone who tells you otherwise.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- HEALTHCARE CONTENT
-       Its own section rather than a line under "Bought on its own", because it
-       is one of the three things the studio sells, not an extra. The packages
-       come from the same component the content page uses, so the two pages can
-       never show different counts or figures. -->
-  <section id="content" class="border-t border-hairline bg-surface" aria-labelledby="content-title">
+  <!-- 2 · HEALTHCARE CONTENT -->
+  <section id="content" class="band-powder" aria-labelledby="content-title">
     <div class="section shell">
       <SectionHead
         id="content-title"
@@ -483,323 +322,408 @@ const principles = [
         title="Reels and posts, made from your own footage."
         lede="Three monthly packages, each a fixed count of finished pieces, or any single piece on its own. You send the footage and the topics; the editing, captions, graphics and covers are ours."
       />
-
-      <ContentPackages class="mt-12" />
-
-      <div class="mt-14 grid gap-10 lg:grid-cols-2 lg:gap-14">
-        <div>
-          <h3 class="label-mono mb-4 text-surgical">Single pieces</h3>
-          <dl class="border-t border-line">
-            {CONTENT_PIECES.map((item) => (
-              <div class="flex flex-wrap items-baseline justify-between gap-x-6 border-b border-hairline py-3">
-                <dt class="text-[16px] font-semibold leading-[1.45] text-ink">{item.item}</dt>
-                <dd class="whitespace-nowrap font-mono text-[15px] font-semibold text-pass">
-                  {item.from ? `${PRICE_PREFIX} ` : ''}{rupees(item.price)}
-                </dd>
-                <dd class="mt-1 w-full text-[14px] leading-[1.5] text-muted">{item.note}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-
-        <div>
-          <h3 class="label-mono mb-4 text-surgical">How a package counts</h3>
-          <ul class="border-t border-line text-[15px] leading-[1.55] text-body">
-            {CONTENT_RULES.map((line) => (
-              <li class="flex gap-3 border-b border-hairline py-3">
-                <span class="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-a-social-vivid" aria-hidden="true"></span>
-                <span>{line}</span>
-              </li>
-            ))}
-          </ul>
-
-          <h3 class="label-mono mb-4 mt-10 text-surgical">Not part of a package</h3>
-          <ul class="border-t border-line text-[15px] leading-[1.55] text-body">
-            {CONTENT_EXCLUDES.map((line) => (
-              <li class="flex gap-3 border-b border-hairline py-2.5">
-                <span class="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-line-strong" aria-hidden="true"></span>
-                <span>{line}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+      <div class="mt-11">
+        <ServicePricing slug="healthcare-content" />
       </div>
-
-      <p class="mt-10 max-w-[760px] text-[16px] leading-[1.65] text-muted">
+      <div class="mt-10 grid gap-6 rounded-3xl border border-line bg-surface p-6 sm:p-7 lg:grid-cols-[minmax(0,280px)_1fr] lg:gap-10">
+        <p class="text-[17px] font-bold tracking-[-0.02em] text-ink">Not part of a content package</p>
+        <ul class="grid gap-x-8 text-[15px] leading-[1.5] text-body sm:grid-cols-2">
+          {CONTENT_EXCLUDES.map((line) => (
+            <li class="flex gap-2.5 py-1.5">
+              <span class="mt-[8px] h-1.5 w-1.5 shrink-0 rounded-full bg-line-strong" aria-hidden="true"></span>
+              <span>{line}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <p class="mt-6 max-w-[760px] text-[16px] leading-[1.65] text-muted">
         What a standard reel includes, and how to send one, is on the
-        {' '}<a href={href('/services/reel-editing')} class="prose-link">reel editing page</a>.
-        The packages in full, with how testimonials and patient privacy are
-        handled, are on the
+        {' '}<a href={href('/services/reel-editing')} class="prose-link">reel editing page</a>; how
+        testimonials and patient privacy are handled is on the
         {' '}<a href={href('/services/healthcare-content')} class="prose-link">healthcare content page</a>.
       </p>
     </div>
   </section>
 
-  <!-- THE AUDIT THAT STARTS EVERY PROJECT -->
-  <!-- The most important section on the page. It is what stops a website
-       purchase being read as a ranking promise. -->
-  <section id="google-audit" class="section shell" aria-labelledby="audit-title">
-    <SectionHead
-      id="audit-title"
-      label="Before any design"
-      title={GBP_AUDIT.headline}
-      lede={GBP_AUDIT.lede}
-    />
-
-    <div class="mt-11 grid gap-10 lg:grid-cols-[1fr_minmax(0,420px)] lg:gap-16">
-      <ul class="grid grid-cols-2 gap-x-5 border-t border-line pt-4 text-[14px] leading-[1.45] text-body sm:gap-x-10 sm:text-[15px]">
-        {GBP_AUDIT.checks.map((check) => (
-          <li class="flex gap-2.5 py-1">
-            <span class="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-a-gbp" aria-hidden="true"></span>
-            <span>{check}</span>
-          </li>
-        ))}
-      </ul>
-
-      <aside class="rounded-3xl border border-line bg-canvas p-7 sm:p-8">
-        <h3 class="label-mono mb-4 text-faint" style="letter-spacing:0.12em">What we are saying, plainly</h3>
-        <p class="text-[16px] leading-[1.65] text-body-deep">{GBP_AUDIT.statement}</p>
-        <p class="mt-5 border-t border-hairline pt-4 text-[15px] leading-[1.6] text-muted">
-          This check is part of every package, and it costs nothing on its own
-          either — it comes with the
-          {' '}<a href={href('/contact')} class="prose-link">free digital review</a>.
-        </p>
-      </aside>
-    </div>
-  </section>
-
-  <!-- WHAT WE WILL NOT DO
-       The site already contained every fact in this section, scattered across
-       three pages and framed as humility: we do not guarantee rankings, we do
-       not buy reviews, we do not resell templates. Framed that way it reads as
-       a studio managing expectations downward.
-
-       It is the opposite. A doctor advertising in India works under rules that
-       do not permit guaranteed outcomes, claims that one practice is better
-       than another, or patient testimonials used as adverts — and the licence
-       at risk is theirs, not ours. A supplier who already works inside those
-       limits is not being modest, they are being competent, and that is a
-       reason to hire rather than a caveat to forgive. Same facts, correct frame. -->
-  <section id="what-we-will-not-do" class="band-powder" aria-labelledby="limits-title">
+  <!-- 3 · WEBSITES : the four packages, then the detail behind disclosures -->
+  <section id="packages" class="bg-surface" aria-labelledby="builds-title">
     <div class="section shell">
-      <div class="max-w-[760px]">
-        <SectionHead
-          id="limits-title"
-          label="How we work"
-          title="We work inside the rules you are held to."
-          lede="You hold the licence, not us. The rules doctors advertise under here do not allow guaranteed outcomes, claims that one practice is better than another, or patients' words turned into adverts. We do not do those things, and we will say no if you ask us to."
-        />
+      <SectionHead
+        id="builds-title"
+        label="Healthcare websites"
+        title="Four website packages. Each says how much we do for you."
+        lede="The difference is how much of the work we take on, not how many pages you get. Every package ships with your Google listing set up and starts with a look at it, and every price is agreed in writing before we start."
+      />
+
+      <WebsitePackages class="mt-11" />
+
+      {/* The add-ons, beside the packages they extend. */}
+      <div class="mt-8 grid gap-4 md:grid-cols-3">
+        {addOns.map((item, i) => (
+          <div class="flex flex-col rounded-2xl border border-line bg-canvas p-5">
+            <p class="text-[15px] font-bold leading-[1.35] tracking-[-0.01em] text-ink">{item.item}</p>
+            <p class="mt-2 flex items-baseline gap-1.5">
+              {item.from && <span class="font-mono text-[10.5px] uppercase tracking-[0.08em] text-faint">From</span>}
+              <span class:list={['text-[20px] font-extrabold tracking-[-0.03em]', cycleAccent(i).text]}>{rupees(item.price)}</span>
+              <span class="font-mono text-[10.5px] uppercase tracking-[0.08em] text-faint">{item.unit === 'page' ? '/ page' : 'one-time'}</span>
+            </p>
+            <p class="mt-2 text-[14px] leading-[1.55] text-muted">{item.note}</p>
+          </div>
+        ))}
       </div>
 
-      <ul class="reveal-group mt-12 grid gap-5 sm:grid-cols-2">
-        {[
-          {
-            title: 'We do not promise a ranking',
-            text: 'Nobody honestly can. What we promise is the work, and a written report every month showing what it changed.',
-          },
-          {
-            title: 'We do not buy or reward reviews',
-            text: 'We set up a way to ask patients who are already happy. We never write one, buy one, or offer anything in return for one.',
-          },
-          {
-            title: "We do not use patients' words without consent",
-            text: "A review a patient chose to leave stays where they left it: we answer it, we do not lift it onto a poster. A patient's story is only edited with their written consent, and only where the rules your council sets allow it.",
-          },
-          {
-            title: 'We do not touch patient records',
-            text: 'We never ask for access, and nothing we build or run stores them. We do not need them for any of this.',
-          },
-        ].map((r, i) => (
-          <li class="flex gap-4 rounded-2xl border border-line bg-surface p-6">
-            <span class:list={['numeral shrink-0 text-[26px] leading-none', cycleAccent(i).text]}>
-              {String(i + 1).padStart(2, '0')}
-            </span>
-            <div class="min-w-0">
-              <h3 class="text-[17px] font-bold tracking-[-0.02em] text-ink">{r.title}</h3>
-              <p class="mt-1.5 text-[15px] leading-[1.6] text-body">{r.text}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
+      {/* The Google audit, as a short callout: it is part of every package,
+          and the one paragraph that stops a website being read as a ranking
+          promise. The sixteen checks sit behind a disclosure. */}
+      <div class="mt-8 rounded-3xl border border-line bg-canvas p-6 sm:p-7">
+        <p class:list={['font-mono text-[11px] font-semibold uppercase tracking-[0.12em]', ACCENTS.gbp.text]}>Before any design</p>
+        <p class="mt-2 text-[19px] font-bold tracking-[-0.02em] text-ink">{GBP_AUDIT.headline}</p>
+        <p class="mt-3 max-w-[820px] text-[16px] leading-[1.65] text-body-deep">{GBP_AUDIT.statement}</p>
+        <details class="group mt-4">
+          <summary class="inline-flex cursor-pointer list-none items-center gap-2 text-[15px] font-semibold text-surgical [&::-webkit-details-marker]:hidden">
+            See the {GBP_AUDIT.checks.length} things we check
+            <svg class="shrink-0 transition-transform duration-200 ease-instrument group-open:rotate-45" width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+          </summary>
+          <ul class="mt-4 grid grid-cols-1 gap-x-10 text-[15px] leading-[1.45] text-body sm:grid-cols-2">
+            {GBP_AUDIT.checks.map((c) => (
+              <li class="flex gap-2.5 py-1">
+                <span class="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-a-gbp" aria-hidden="true"></span>
+                <span>{c}</span>
+              </li>
+            ))}
+          </ul>
+        </details>
+      </div>
 
-      <p class="mt-9 max-w-[760px] text-[16px] leading-[1.65] text-body-deep">
-        If something you ask us for would put your registration at risk, we will
-        tell you before you have to find out. That is part of what you are paying
-        a healthcare-only studio for.
+      {/* The line-by-line comparison. A real table, because this is tabular
+          data, inside a disclosure so it no longer costs three screens to
+          scroll past. It needs ~860px to be a comparison at all, so on a
+          phone it scrolls sideways inside its own box; every card above
+          already lists what it adds. */}
+      <details class="group mt-6 rounded-3xl border border-line bg-surface open:shadow-card">
+        <summary class="flex cursor-pointer list-none items-center justify-between gap-6 px-6 py-5 text-[17px] font-bold tracking-[-0.01em] text-ink sm:px-7 [&::-webkit-details-marker]:hidden">
+          Compare the four packages, line by line
+          <svg class="shrink-0 text-faint transition-transform duration-200 ease-instrument group-open:rotate-45" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+        </summary>
+        <div class="border-t border-line">
+          <div class="overflow-x-auto" tabindex="0" role="region" aria-label="Compare the four packages, scrollable">
+            <table class="w-full min-w-[860px] border-collapse text-left">
+              <caption class="sr-only">What is included in each of the four website packages</caption>
+              <thead>
+                <tr class="border-b border-line">
+                  <th scope="col" class="w-[38%] px-6 py-5 align-bottom">
+                    <span class="label-mono text-faint">What you get</span>
+                  </th>
+                  {BUILDS.map((build, i) => (
+                    <th scope="col" class="px-4 py-5 align-bottom">
+                      <span class="block text-[15px] font-bold leading-[1.3] tracking-[-0.02em] text-ink">{build.label}</span>
+                      <span class:list={['mt-1.5 block font-mono text-[12px]', cycleAccent(i).text]}>
+                        {build.custom ? `${PRICE_PREFIX} ` : ''}{rupees(build.from)}
+                      </span>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              {PACKAGE_MATRIX.map((group) => (
+                <tbody>
+                  <tr>
+                    <th scope="colgroup" colspan={BUILDS.length + 1} class="border-b border-line bg-canvas px-6 py-2.5">
+                      <span class="label-mono text-surgical">{group.group}</span>
+                    </th>
+                  </tr>
+                  {group.rows.map((row) => (
+                    <tr class="border-b border-hairline last:border-0">
+                      <th scope="row" class="px-6 py-3 text-[15px] font-normal leading-[1.45] text-body">{row.label}</th>
+                      {row.values.map((value) => (
+                        <td class="px-4 py-3 text-[14px] leading-[1.4]">
+                          {typeof value === 'string' ? (
+                            <span class="font-semibold text-body-deep">{value}</span>
+                          ) : value ? (
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="block text-surgical" role="img" aria-label="Included">
+                              <path d="M4.5 12.5l5 5 10-11" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                          ) : (
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="block text-line-strong" role="img" aria-label="Not included">
+                              <path d="M6 12h12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" />
+                            </svg>
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              ))}
+            </table>
+          </div>
+          <div class="grid gap-6 border-t border-line px-6 py-6 sm:grid-cols-2 sm:px-7 xl:grid-cols-4">
+            {BUILDS.map((build) => (
+              <div>
+                <p class="text-[15px] font-bold tracking-[-0.02em] text-ink">{build.label}: not included</p>
+                <p class="mt-2 text-[14px] leading-[1.55] text-muted">{build.excludes}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </details>
+
+      <p class="mt-7 max-w-[680px] text-[16px] leading-[1.65] text-muted">
+        Not sure which one is right for your practice? That is exactly what the
+        <a href={href('/contact')} class="prose-link">free digital review</a>
+        tells you, and the answer is often "less than you expected". What a
+        practice needs also depends on where it is: we build from Mehsana for
+        practices in
+        {' '}<a href={href('/areas/mehsana')} class="prose-link">Mehsana</a>,
+        {' '}<a href={href('/areas/ahmedabad')} class="prose-link">Ahmedabad</a>,
+        {' '}<a href={href('/areas/gandhinagar')} class="prose-link">Gandhinagar</a> and
+        {' '}<a href={href('/areas')} class="prose-link">across Gujarat</a>.
       </p>
     </div>
   </section>
 
-  <!-- BOUGHT ON ITS OWN -->
-  <section id="add-ons" class="section shell" aria-labelledby="separate-title">
-    <SectionHead
-      id="separate-title"
-      label="Bought on its own"
-      title="One thing at a time, if that is all you need."
-      lede="You do not have to buy a website to work with us. Each of these can be bought on its own: the website and Google work at the price shown, and the larger custom work quoted once we have seen it."
-    />
+  <!-- 4 · GOOGLE AND MONTHLY CARE : the rebuild, and the two monthly plans -->
+  <section id="google" class="band-mist" aria-labelledby="google-title">
+    <span id="monthly" aria-hidden="true"></span>
+    <div class="section shell">
+      <SectionHead
+        id="google-title"
+        label="Google, and after launch"
+        title="Your Google listing, and the work that keeps going."
+        lede="A one-time rebuild for the listing, and two monthly plans for after launch. Both plans run month to month, with no lock-in, and every account stays in your name."
+      />
+      <div class="reveal-group mt-11 grid items-stretch gap-5 lg:grid-cols-3">
+        <!-- The rebuild -->
+        <article class="flex flex-col overflow-hidden rounded-3xl border border-line bg-surface">
+          <span class:list={['accent-bar block h-1 w-full', ACCENTS.gbp.bar]} aria-hidden="true"></span>
+          <div class="flex flex-1 flex-col p-6 sm:p-7">
+            <p class:list={['font-mono text-[11px] font-semibold uppercase tracking-[0.12em]', ACCENTS.gbp.text]}>One-time</p>
+            <h3 class="mt-2 text-[20px] font-extrabold leading-[1.25] tracking-[-0.025em] text-ink">Google Business Profile rebuild</h3>
+            <p class="mt-3 flex items-baseline gap-2">
+              <span class="settle numeral text-[clamp(30px,3vw,38px)] text-ink">{rupees(PRICE_TOKENS.gbpRebuild)}</span>
+              <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">one-time</span>
+            </p>
+            <ul class="mt-4 grow border-t border-hairline pt-3 text-[15px] leading-[1.5] text-body">
+              {GBP_REBUILD_INCLUDES.map((line) => (
+                <li class="flex gap-2.5 py-1">
+                  <svg class="mt-[3px] size-4 shrink-0 text-a-gbp" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={check} /></svg>
+                  <span>{line}</span>
+                </li>
+              ))}
+            </ul>
+            <p class="mt-4 text-[14px] leading-[1.55] text-muted">The profile stays in your name. Nothing monthly is attached.</p>
+            <a href={whatsappFor('gbp')} rel="noopener" class="btn-secondary mt-5 w-full justify-center px-5 py-3 text-[15px]">Ask about the rebuild</a>
+          </div>
+        </article>
 
-    <div class="mt-9 grid gap-8 lg:grid-cols-2 lg:gap-14">
-      <div>
-        <h3 class="label-mono mb-4 text-surgical">One-time</h3>
-        <dl class="border-t border-line">
-          {ONE_TIME_ITEMS.map((item) => (
-            <div class="flex flex-wrap items-baseline justify-between gap-x-6 border-b border-hairline py-3">
-              <dt class="text-[16px] font-semibold leading-[1.45] text-ink">{item.item}</dt>
-              <dd class="whitespace-nowrap font-mono text-[15px] font-semibold text-pass">
-                {item.from ? `${PRICE_PREFIX} ` : ''}{rupees(item.price)}{item.unit === 'page' ? '/page' : ''}
-              </dd>
-              <dd class="mt-1 w-full text-[14px] leading-[1.5] text-muted">{item.note}</dd>
-            </div>
-          ))}
-        </dl>
+        <!-- Local SEO & Google Care -->
+        <article class="flex flex-col overflow-hidden rounded-3xl border border-surgical bg-surface shadow-card">
+          <span class:list={['accent-bar block h-1 w-full', ACCENTS.seo.bar]} aria-hidden="true"></span>
+          <div class="flex flex-1 flex-col p-6 sm:p-7">
+            <p class="flex flex-wrap items-center gap-2">
+              <span class:list={['font-mono text-[11px] font-semibold uppercase tracking-[0.12em]', ACCENTS.seo.text]}>Monthly</span>
+              <span class="chip bg-surgical-tint text-surgical">Our recommendation</span>
+            </p>
+            <h3 class="mt-2 text-[20px] font-extrabold leading-[1.25] tracking-[-0.025em] text-ink">{GOOGLE_CARE.name}</h3>
+            <p class="mt-3 flex items-baseline gap-2">
+              <span class="settle numeral text-[clamp(30px,3vw,38px)] text-ink">{rupees(GOOGLE_CARE.monthly)}</span>
+              <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">/ month</span>
+            </p>
+            <ul class="mt-4 grow border-t border-hairline pt-3 text-[15px] leading-[1.5] text-body">
+              {GOOGLE_CARE.includes.map((line) => (
+                <li class="flex gap-2.5 py-1">
+                  <svg class="mt-[3px] size-4 shrink-0 text-a-seo" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={check} /></svg>
+                  <span>{line}</span>
+                </li>
+              ))}
+            </ul>
+            <p class="mt-4 text-[14px] leading-[1.55] text-muted">{GOOGLE_CARE.priceNote}.</p>
+            <a href={whatsappFor('seo')} rel="noopener" class="btn-primary mt-5 w-full justify-center px-5 py-3 text-[15px]">Start with this</a>
+          </div>
+        </article>
+
+        <!-- Website Care -->
+        <article class="flex flex-col overflow-hidden rounded-3xl border border-line bg-surface">
+          <span class:list={['accent-bar block h-1 w-full', ACCENTS.care.bar]} aria-hidden="true"></span>
+          <div class="flex flex-1 flex-col p-6 sm:p-7">
+            <p class:list={['font-mono text-[11px] font-semibold uppercase tracking-[0.12em]', ACCENTS.care.text]}>Monthly, website only</p>
+            <h3 class="mt-2 text-[20px] font-extrabold leading-[1.25] tracking-[-0.025em] text-ink">{WEBSITE_CARE.name}</h3>
+            <p class="mt-3 flex items-baseline gap-2">
+              <span class="numeral text-[clamp(30px,3vw,38px)] text-ink">Custom</span>
+              <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">/ month, quoted</span>
+            </p>
+            <ul class="mt-4 grow border-t border-hairline pt-3 text-[15px] leading-[1.5] text-body">
+              {WEBSITE_CARE.includes.map((line) => (
+                <li class="flex gap-2.5 py-1">
+                  <svg class="mt-[3px] size-4 shrink-0 text-a-care" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={check} /></svg>
+                  <span>{line}</span>
+                </li>
+              ))}
+            </ul>
+            <p class="mt-4 text-[14px] leading-[1.55] text-muted">
+              {WEBSITE_CARE.priceNote}. On Google Care, website updates are already included.
+            </p>
+            <a href={whatsappFor('care')} rel="noopener" class="btn-secondary mt-5 w-full justify-center px-5 py-3 text-[15px]">Ask about Website Care</a>
+          </div>
+        </article>
       </div>
 
-      {/* No published figure for these, on purpose. There is not yet enough
-          of this work behind the studio to know what it costs to do well, and
-          an arbitrary number would be the one invented thing on this page.
-          The social add-ons that sat here — Meta Ads management among them —
-          are gone: ads are not something the studio sells. */}
+      <p class="mt-6 rounded-2xl border border-line bg-surface px-6 py-5 text-[16px] leading-[1.6] text-body-deep sm:px-7">
+        <strong class="text-ink">No guaranteed Google ranking.</strong> {GOOGLE_CARE.excludes} What
+        the monthly plan does promise is steady work: your listing kept right,
+        your reviews answered, a new page written, and a report saying what we
+        did and what changed.
+      </p>
+    </div>
+  </section>
+
+  <!-- 5 · THE ESTIMATOR : a rough number for the practice actually reading -->
+  <PriceEstimator />
+
+  <!-- 6 · QUOTED TO SCOPE, AND NEVER CHARGED -->
+  <section id="other" class="bg-surface" aria-labelledby="other-title">
+    <div class="section shell grid gap-12 lg:grid-cols-2 lg:gap-16">
       <div>
-        <h3 class="label-mono mb-4 text-surgical">Quoted to scope</h3>
-        <dl class="border-t border-line">
+        <SectionHead
+          id="other-title"
+          label="Quoted to scope"
+          title="Larger work, priced once we have seen it."
+          lede="No published figure for these, on purpose: an arbitrary number would be the one invented thing on this page."
+        />
+        <dl class="mt-8 border-t border-line">
           {CUSTOM_PROJECTS.map((item) => (
             <div class="flex flex-wrap items-baseline justify-between gap-x-6 border-b border-hairline py-3">
               <dt class="text-[16px] font-semibold leading-[1.45] text-ink">{item.item}</dt>
-              <dd class="whitespace-nowrap font-mono text-[15px] font-semibold text-pass">Custom quote</dd>
+              <dd class="whitespace-nowrap font-mono text-[13px] font-semibold uppercase tracking-[0.06em] text-surgical">Custom quote</dd>
               <dd class="mt-1 w-full text-[14px] leading-[1.5] text-muted">{item.note}</dd>
             </div>
           ))}
         </dl>
       </div>
-    </div>
-
-    <div class="mt-10 max-w-[820px] rounded-3xl border border-line bg-surface p-6 sm:p-7">
-      <h3 class="text-[19px] font-bold tracking-[-0.02em] text-ink">What we never charge for</h3>
-      <ul class="mt-4 text-[15px] leading-[1.55] text-body">
-        {NEVER_CHARGED.map((line) => (
-          <li class="flex gap-3 border-b border-hairline py-2.5 last:border-0">
-            <span class="mt-[10px] h-1.5 w-1.5 shrink-0 rounded-full bg-pass" aria-hidden="true"></span>
-            <span>{line}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </section>
-
-
-  <!-- WHERE THE RETURN COMES FROM -->
-  <!-- The longest page on the site ran eight sections without a single image.
-       The render carries its own backdrop, so it sits on the section colour
-       rather than needing a tint behind it. -->
-  <section class="section shell" aria-labelledby="return-title">
-    <div class="grid items-center gap-12 lg:grid-cols-[1fr_460px] lg:gap-16">
-      <SectionHead
-        id="return-title"
-        label="Where the return comes from"
-        title={WHERE_RETURN_COMES_FROM.headline}
-        lede={WHERE_RETURN_COMES_FROM.lede}
-      />
-      <IllustrationPanel
-        src={pricingMockup}
-        alt="A clinic website shown on a laptop and a phone, with the treatment pages and the enquiry button visible."
-        maxWidth={460}
-        class="mx-auto lg:ml-auto lg:mr-0"
-      />
-    </div>
-    {/*
-      Six padded cards ran 3.4 screens on a phone, eighteen screens down a page
-      whose decision is made in the first five. The content earns its place;
-      the packaging did not. A ruled list carries the same six points in
-      roughly half the height, and it reads differently from the card grids
-      above it, which is worth having on a page this long.
-    */}
-    <ul class="reveal-group mt-11 grid gap-x-12 border-t border-line sm:grid-cols-2">
-      {WHERE_RETURN_COMES_FROM.points.map((p, i) => (
-        <li class="flex gap-4 border-b border-hairline py-5">
-          <span class:list={['numeral shrink-0 text-[26px] leading-none', cycleAccent(i).text]}>
-            {String(i + 1).padStart(2, '0')}
-          </span>
-          <div class="min-w-0">
-            <h3 class="text-[17px] font-bold tracking-[-0.02em] text-ink">{p.title}</h3>
-            <p class="mt-1.5 text-[15px] leading-[1.6] text-body">{p.text}</p>
-          </div>
-        </li>
-      ))}
-    </ul>
-    <p class="mt-8 max-w-[760px] rounded-2xl border border-line bg-surface px-6 py-5 text-[16px] leading-[1.65] text-body sm:px-7">
-      {WHERE_RETURN_COMES_FROM.closing}
-    </p>
-  </section>
-
-  <!-- WHAT MOVES THE PRICE -->
-  <section class="section shell" aria-labelledby="movers-title">
-    <SectionHead
-      id="movers-title"
-      label="What moves the number"
-      title={`What decides where your price lands? ${spell(PRICE_MOVERS.length)} things.`}
-      lede="A quotation with no explanation is just a number to argue about. These are the factors we actually price against, in the order they matter."
-    />
-    <div class="mt-10 max-w-[900px] overflow-x-auto">
-      <table class="w-full border-collapse text-left">
-        <caption class="sr-only">Factors that change the price of an engagement</caption>
-        <thead>
-          <tr class="border-b border-line">
-            <th scope="col" class="label-mono py-3 pr-6 text-faint">Factor</th>
-            <th scope="col" class="label-mono py-3 text-faint">What it does to the price</th>
-          </tr>
-        </thead>
-        <tbody>
-          {PRICE_MOVERS.map((m) => (
-            <tr class="border-b border-hairline align-top">
-              <th scope="row" class="w-[38%] py-4 pr-6 text-[16px] font-semibold leading-[1.5] text-ink">
-                {m.factor}
-              </th>
-              <td class="py-4 text-[16px] leading-[1.6] text-body">{m.effect}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-
-    {/*
-      "How our pricing behaves" was its own section two screens further down,
-      answering the same question this one does: why is the number what it is.
-      Folded in here, and the four cards are a ruled list rather than four
-      padded boxes — same four principles, about a third of the height.
-    */}
-    <div class="mt-14 border-t border-line pt-10">
-      <h3 class="text-[clamp(22px,2.4vw,28px)] font-extrabold leading-[1.15] tracking-[-0.035em] text-ink">
-        How our pricing behaves
-      </h3>
-      <ul class="mt-7 grid max-w-[980px] gap-x-12 sm:grid-cols-2">
-        {principles.map((pr, i) => (
-          <li class="flex gap-4 border-b border-hairline py-5">
-            <span class:list={['numeral shrink-0 text-[28px] leading-none', cycleAccent(i).text]}>
-              {String(i + 1).padStart(2, '0')}
-            </span>
-            <div class="min-w-0">
-              <h4 class="text-[16px] font-bold tracking-[-0.02em] text-ink">{pr.title}</h4>
-              <p class="mt-1.5 text-[15px] leading-[1.6] text-body">{pr.text}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
-
-      <div class="mt-8 max-w-[980px] rounded-2xl border border-line bg-surface px-6 py-5 sm:px-7">
-        <p class="label-mono mb-3 text-faint" style="letter-spacing:0.12em">The small print, in full</p>
-        <ul class="text-[15px] leading-[1.6] text-muted">
-          {PRICE_NOTES.map((note) => (
-            <li class="border-b border-hairline py-2.5 last:border-0 last:pb-0">{note}</li>
+      <div class="self-start rounded-3xl border border-line bg-canvas p-6 sm:p-8">
+        <h2 class="text-[22px] font-extrabold tracking-[-0.025em] text-ink">What we never charge for</h2>
+        <ul class="mt-4 text-[15px] leading-[1.55] text-body">
+          {NEVER_CHARGED.map((line) => (
+            <li class="flex gap-3 border-b border-hairline py-2.5 last:border-0">
+              <span class="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-surgical" aria-hidden="true"></span>
+              <span>{line}</span>
+            </li>
           ))}
         </ul>
       </div>
     </div>
   </section>
 
-  <CtaStrip text="Not sure which of these your practice actually needs? The free review will say so, honestly." />
+  <!-- 7 · HOW OUR PRICING WORKS : the rules every number follows, beside the
+       things we will not do, then the reasoning behind disclosures.
 
-  <!-- THE PRICE PROMISE — the page's one dark panel -->
+       These were two sections of four numbered cards each, one after the
+       other, and read as the same section twice. Side by side they read as
+       what they are: the two halves of one promise.
+
+       The second half is not modesty: a doctor advertising in India works
+       under rules that do not permit guaranteed outcomes, comparative claims
+       or patients' words used as adverts, and the licence at risk is theirs.
+       A supplier already working inside those limits is being competent, not
+       careful. -->
+  <section id="how" class="band-powder" aria-labelledby="how-title">
+    <div class="section shell">
+      <SectionHead
+        id="how-title"
+        label="How our pricing works"
+        title="Four rules we price by. Four things we will not do."
+      />
+      <div class="reveal-group mt-10 grid items-start gap-5 lg:grid-cols-2">
+        <div class="rounded-3xl border border-line bg-surface p-6 sm:p-8">
+          <h3 class="text-[20px] font-extrabold tracking-[-0.025em] text-ink">The rules every price follows</h3>
+          <ol class="mt-5">
+            {principles.map((pr, i) => (
+              <li class="flex gap-4 border-t border-hairline py-4 last:pb-0">
+                <span class:list={['numeral w-9 shrink-0 text-[24px] leading-none', cycleAccent(i).text]}>
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <div class="min-w-0">
+                  <h4 class="text-[16px] font-bold leading-[1.4] tracking-[-0.015em] text-ink">{pr.title}</h4>
+                  <p class="mt-1 text-[15px] leading-[1.6] text-body">{pr.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <div id="what-we-will-not-do" class="rounded-3xl border border-line bg-surface p-6 sm:p-8">
+          <h3 class="text-[20px] font-extrabold tracking-[-0.025em] text-ink">We work inside the rules you are held to</h3>
+          <p class="mt-2 text-[15px] leading-[1.6] text-muted">
+            You hold the licence, not us. The rules doctors advertise under do
+            not allow guaranteed outcomes, claims that one practice is better
+            than another, or patients' words turned into adverts. We will say no
+            if you ask us to.
+          </p>
+          <ol class="mt-5">
+            {limits.map((r, i) => (
+              <li class="flex gap-4 border-t border-hairline py-4 last:pb-0">
+                <span class:list={['numeral w-9 shrink-0 text-[24px] leading-none', cycleAccent(i + 1).text]}>
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <div class="min-w-0">
+                  <h4 class="text-[16px] font-bold leading-[1.4] tracking-[-0.015em] text-ink">{r.title}</h4>
+                  <p class="mt-1 text-[15px] leading-[1.6] text-body">{r.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+
+      <div class="mt-5 grid gap-3.5">
+        <details class="group rounded-2xl border border-line bg-surface open:shadow-card">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-6 px-6 py-5 text-[17px] font-bold tracking-[-0.01em] text-ink [&::-webkit-details-marker]:hidden">
+            What decides where your price lands? {spell(PRICE_MOVERS.length)} things.
+            <svg class="shrink-0 text-faint transition-transform duration-200 ease-instrument group-open:rotate-45" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+          </summary>
+          <dl class="grid gap-x-10 px-6 pb-6 md:grid-cols-2">
+            {PRICE_MOVERS.map((m) => (
+              <div class="border-t border-hairline py-4">
+                <dt class="text-[16px] font-semibold leading-[1.5] text-ink">{m.factor}</dt>
+                <dd class="mt-1 text-[15px] leading-[1.6] text-body">{m.effect}</dd>
+              </div>
+            ))}
+          </dl>
+        </details>
+
+        <details class="group rounded-2xl border border-line bg-surface open:shadow-card">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-6 px-6 py-5 text-[17px] font-bold tracking-[-0.01em] text-ink [&::-webkit-details-marker]:hidden">
+            {WHERE_RETURN_COMES_FROM.headline}
+            <svg class="shrink-0 text-faint transition-transform duration-200 ease-instrument group-open:rotate-45" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+          </summary>
+          <div class="px-6 pb-6">
+            <p class="max-w-[860px] text-[16px] leading-[1.65] text-body">{WHERE_RETURN_COMES_FROM.lede}</p>
+            <ul class="mt-4 grid gap-x-10 sm:grid-cols-2">
+              {WHERE_RETURN_COMES_FROM.points.map((p) => (
+                <li class="border-t border-hairline py-4">
+                  <h4 class="text-[16px] font-bold tracking-[-0.02em] text-ink">{p.title}</h4>
+                  <p class="mt-1.5 text-[15px] leading-[1.6] text-body">{p.text}</p>
+                </li>
+              ))}
+            </ul>
+            <p class="mt-2 text-[15px] leading-[1.6] text-muted">{WHERE_RETURN_COMES_FROM.closing}</p>
+          </div>
+        </details>
+
+        <details class="group rounded-2xl border border-line bg-surface open:shadow-card">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-6 px-6 py-5 text-[17px] font-bold tracking-[-0.01em] text-ink [&::-webkit-details-marker]:hidden">
+            The small print, in full
+            <svg class="shrink-0 text-faint transition-transform duration-200 ease-instrument group-open:rotate-45" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+          </summary>
+          <ul class="px-6 pb-6 text-[15px] leading-[1.6] text-body">
+            {PRICE_NOTES.map((note) => (
+              <li class="border-t border-hairline py-3">{note}</li>
+            ))}
+          </ul>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 · THE PRICE PROMISE — the page's one dark panel -->
   <section class="section shell" aria-labelledby="promise-title">
     <div class="panel-depth panel-box">
       <div class="grid items-start gap-12 lg:grid-cols-[1fr_360px] lg:gap-16">
@@ -818,10 +742,10 @@ const principles = [
           </p>
           <p class="mt-8 flex flex-wrap gap-4">
             <a href={href('/contact')} class="btn-accent px-6 py-3.5 text-[16px]">
-              Start with the free review
+              Get a free digital review
             </a>
             <a href={href('/services')} class="link-accent self-center text-base">
-              See what each engagement includes →
+              See what each service includes →
             </a>
           </p>
         </div>
@@ -842,24 +766,17 @@ const principles = [
             ))}
           </dl>
         </div>
-        {/* Sits under the list it illustrates rather than beside the heading:
-            the four fixed things are the promise, and the seal is the picture
-            of it. */}
-        <Figure
-          src={promiseSeal}
-          alt="A printed fixed-price agreement with a seal on it, two people shaking hands out of focus behind."
-          maxWidth={360}
-          class="lg:col-start-2"
-        />
       </div>
     </div>
   </section>
 
-  <FaqSection
-    {faqs}
-    label="Questions about pricing"
-    title="Questions about cost"
-  />
+  <div id="faq">
+    <FaqSection
+      {faqs}
+      label="Questions about pricing"
+      title="Questions about cost"
+    />
+  </div>
 
   <CtaPanel prefill="pricing" nextStep={{ label: 'Start with the free review', href: '/contact' }} />
 </BaseLayout>
