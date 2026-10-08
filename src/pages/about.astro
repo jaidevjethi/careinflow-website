@@ -23,9 +23,9 @@ import {
   faqSchema,
 } from '@/lib/schema';
 
-const title = "About Gujarat's healthcare-only web studio | CareInflow";
+const title = 'About CareInflow, a Healthcare-Only Studio in Mehsana';
 const description =
-  "Why Gujarat's best clinic websites come from a healthcare-only studio in Mehsana, and who builds them: founder Jaidev Jethi, ex-Microsoft.";
+  'Why a studio that works only with healthcare practices does the work better, and who does it: founder Jaidev Jethi, ex-Microsoft, from Mehsana.';
 
 const faqs = await getFaqsFor('about');
 
@@ -55,7 +55,7 @@ const standards = [
 
 const notList = [
   'an advertising agency',
-  'a branding or creative agency',
+  'a general social-media or creative agency',
   'an app development company',
   'an IT consultancy',
 ];
@@ -64,8 +64,8 @@ const notList = [
 <BaseLayout {title} {description} path="/about" {schema}>
   <PageHero
     label="About the studio"
-    title="Gujarat's healthcare-only web studio, and the person who runs it."
-    lede="CareInflow exists because good clinics are routinely represented by bad websites. We build the online presence a healthcare practice deserves, with the same professionalism patients meet inside it — and because clinics are the only work this studio takes, every practice gets the benefit of the last one."
+    title="A healthcare-only studio in Mehsana, and the person who runs it."
+    lede="CareInflow exists because good clinics are routinely represented badly online. We make the content, the website and the Google presence a healthcare practice deserves, with the same professionalism patients meet inside it. Clinics are the only work this studio takes, so every practice gets the benefit of the last one."
     stats={standards.map((s) => ({ value: s.value, caption: s.caption }))}
   >
     {/* The one hero whose source is portrait (900x1117) rather than the 3:2
@@ -109,8 +109,8 @@ const notList = [
             <p class="mt-2 text-[24px] font-extrabold tracking-[-0.03em] text-ink">{BUSINESS.founder}</p>
             <p class="mt-3 max-w-[46ch] text-[16px] leading-[1.65] text-body">
               Web developer, then cybersecurity student in Canada, then more
-              than a year at Microsoft. Now building websites for clinics in
-              Gujarat: the work he came home to do.
+              than a year at Microsoft. Now making websites and healthcare
+              content for clinics in Gujarat: the work he came home to do.
             </p>
             <p class="mt-4 flex flex-wrap gap-x-5 gap-y-1.5">
               <a href={href('/process')} class="prose-link text-[15px]">How the work runs →</a>
@@ -182,9 +182,9 @@ const notList = [
             ))}
           </ul>
           <p class="mt-4 border-t border-hairline pt-4 text-[14px] leading-[1.6] text-muted">
-            Websites, local SEO, Google Business Profile and ongoing care, for
-            healthcare practices, with social media content as a support
-            service. That is the whole list.
+            Healthcare websites, healthcare content, Google Business Profile,
+            local SEO and ongoing care, for healthcare practices. That is the
+            whole list.
           </p>
         </div>
       </aside>

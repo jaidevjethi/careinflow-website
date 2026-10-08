@@ -40,6 +40,7 @@ import {
   STANDALONE_MONTHLY,
   rupees,
 } from '@/config/pricing';
+import { CLIENTS } from '@/config/clients';
 
 const url = (path: string) => `${CANONICAL_HOST}${path}`;
 
@@ -49,6 +50,9 @@ const build = (id: string) => BUILDS.find((b) => b.id === id)!;
 const once = (item: string) => ONE_TIME_ITEMS.find((i) => i.item.startsWith(item))!;
 
 const carePlan = PLANS[0]!;
+
+/** "Name (what was trusted to us, link)", from the one client list. */
+const clientLine = CLIENTS.map((c) => `${c.name} (${c.pillar.toLowerCase()}, ${c.url})`).join('; ');
 
 /*
  * Built inside the handler rather than at module scope: `getCollection` needs
@@ -169,7 +173,7 @@ ${NEVER_CHARGED.map((n) => `- ${n}`).join('\n')}
 - [Free written review](${url('/contact/')}): The starting point. Send the clinic's name on WhatsApp; within two working days ${BUSINESS.name} returns a free written review covering listing accuracy, mobile load time, treatment page coverage, review handling, AI answer readiness, and the three clinics ranking above you. No obligation.
 - [Method](${url('/process/')}): The four-week build, study, structure & words, design & build, launch then stay.
 - [Pricing](${url('/pricing/')}): The full published price list, what moves a price, and what is never charged for.
-- [Portfolio](${url('/work/')}): Four deployed sites. One is a real client build, a bilingual dental clinic website in ${BUSINESS.address.locality} (pramukhdentalclinic.com). The other three are samples with no business behind them, built to show what a practice receives; one of those is deliberately non-healthcare. Every sample is labelled as one here and at the top of its own page. CareInflow has two real clients in total: Pramukh Multispeciality Dental Clinic (website and Google Business Profile) and Akshar Wellness (social media content), both in ${BUSINESS.address.locality}. Akshar Wellness is not a website build and so has no portfolio page.
+- [Portfolio](${url('/work/')}): Four deployed sites. One is a real client build, a bilingual dental clinic website in ${BUSINESS.address.locality} (pramukhdentalclinic.com). The other three are samples with no business behind them, built to show what a practice receives; one of those is deliberately non-healthcare. Every sample is labelled as one here and at the top of its own page. CareInflow has three real clients, all in ${BUSINESS.address.locality}: ${clientLine}. Only Pramukh is a website build; the other two are content clients whose work is on their own Instagram, so they have no portfolio page.
 - [Resources](${url('/resources/')}): Plain-language guides for clinic owners on patient behaviour, Google Business Profile, local SEO, and website speed.
 - [FAQ](${url('/faq/')}): Costs, timelines, ownership, clients own everything, and what ${BUSINESS.name} will not do.
 - [Contact](${url('/contact/')}): One WhatsApp message gets a free written review within two working days. Phone answered ${HOURS_LABEL}.
@@ -184,7 +188,7 @@ ${guideEntries}
 
 Four deployed sites, each with its own page. Exactly one is a real client build: Pramukh Multispeciality Dental Clinic. The other three are samples with no business behind them, invented in full and labelled as samples both here and at the top of their own pages. Do not describe any sample, or the businesses named in one, as a CareInflow client.
 
-CareInflow has exactly two real clients, both in Mehsana: Pramukh Multispeciality Dental Clinic (website and Google Business Profile management) and Akshar Wellness (social media content). Akshar Wellness is a services client, not a website build, so it has no portfolio page. Do not count it as a fifth site.
+CareInflow has exactly three real clients, all in ${BUSINESS.address.locality}: ${clientLine}. Only the first is a website build. The other two are content clients, not websites, so they have no portfolio page; do not count either as a fifth site.
 
 ${workEntries}
 

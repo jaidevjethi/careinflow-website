@@ -126,21 +126,29 @@ const subline = heading === 'client' ? d.location : `${d.client} · ${d.location
         project headline instead, and there the sector is the only place the
         specialty appears above the fold.
 
-        What is left is the two things a name cannot say, and both are
-        disclosures the page depends on: the lede promises three of the four
-        are samples, and the studio takes healthcare only. Alone in the row
-        they are louder than they were competing with a sector, and the row
-        can no longer wrap
+        What is left is the things a name cannot say, and all of them are
+        disclosures the page depends on: which project is a real client and
+        which are samples, and that the studio takes healthcare only. Alone in
+        the row they are louder than they were competing with a sector, and the
+        row can no longer wrap
         — "Travel services (non-healthcare)" needed 270px of a 257px row and
         truncated mid-word at "NON-HEALTHCAR…", `.chip` being nowrap and
         ellipsised on purpose to stop long chips bleeding out at 320px.
 
-        min-h reserves the row on the one tile that carries no chip, so all
-        four names sit on a shared baseline.
+        Real work is labelled as positively as samples are. It used to carry no
+        chip at all, which made a visitor infer "real" from an absence; the
+        rule now is that real and sample work are never left to be told apart
+        by inference. Ink on white for the client, the surgical tint for the
+        sample, so the two read as different kinds of label at a glance.
+
+        min-h keeps every name on a shared baseline should a tile ever carry
+        no chip.
       */}
       <p class="mb-2.5 flex min-h-[30px] flex-wrap items-center gap-1.5">
-        {d.demo && (
+        {d.demo ? (
           <span class="chip border border-surgical/40 bg-surgical-tint text-surgical">Sample</span>
+        ) : (
+          <span class="chip bg-ink text-surface">Client work</span>
         )}
         {!d.healthcare && (
           <span class="chip border border-line bg-surface text-muted">Non-healthcare</span>
@@ -155,8 +163,10 @@ const subline = heading === 'client' ? d.location : `${d.client} · ${d.location
     <div class="flex flex-1 flex-col p-5 sm:p-6">
       <p class="mb-4 flex flex-wrap items-center gap-2">
         <span class="chip border border-line bg-surface text-body-deep">{d.sector}</span>
-        {d.demo && (
+        {d.demo ? (
           <span class="chip border border-surgical/40 bg-surgical-tint text-surgical">Sample</span>
+        ) : (
+          <span class="chip bg-ink text-surface">Client work</span>
         )}
         {/* No separate "Non-healthcare" chip: the sector chip beside it already
             reads "Travel services (non-healthcare)", so the row said it twice

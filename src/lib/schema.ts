@@ -17,7 +17,7 @@ export function organizationSchema() {
     '@id': ORG_ID,
     name: BUSINESS.name,
     description:
-      'Healthcare-focused web design and digital growth studio. Websites, local SEO, and Google Business Profile management for doctors and clinics.',
+      'A healthcare-only studio in Mehsana, Gujarat. Healthcare content, websites, Google Business Profile and local SEO for doctors and clinics.',
     url: `${CANONICAL_HOST}/`,
     // What kind of business this is, in a vocabulary that is not our own —
     // a search engine reconciling this entity with the "Website designer"
@@ -91,8 +91,8 @@ export function organizationSchema() {
       'Web accessibility (WCAG 2.2 AA)',
       'Gujarati language websites',
     ],
-    serviceType: 'Healthcare web design, local SEO and Google Business Profile management',
-    slogan: 'Websites, local search, and Google presence for healthcare practices.',
+    serviceType: 'Healthcare content, healthcare website design, Google Business Profile management and local SEO',
+    slogan: 'Content, websites and Google, for healthcare practices only.',
     priceRange: PRICE_RANGE,
     currenciesAccepted: CURRENCY,
   };

@@ -16,6 +16,7 @@ import founderImage from '@/assets/jaidev-jethi.jpg';
 import FaqSection from '@/components/FaqSection.astro';
 import CtaPanel from '@/components/CtaPanel.astro';
 import { BUSINESS, whatsappWithMessage } from '@/config/site';
+import { CLIENTS } from '@/config/clients';
 import { href } from '@/lib/url';
 import { BUILDS, PLANS, rupees, PRICE_PREFIX } from '@/config/pricing';
 import { serviceAccent, ACCENTS, cycleAccent } from '@/lib/accents';
@@ -28,16 +29,20 @@ import {
   faqSchema,
 } from '@/lib/schema';
 
-const title = "Gujarat's Best Healthcare Websites & Local SEO | CareInflow";
+/**
+ * What the studio does and where it is, in the words a doctor in Mehsana
+ * types. It used to open "Gujarat's Best Healthcare Websites", which was
+ * withdrawn on 2026-10-08 along with every other superlative: a claim nobody
+ * can check is weaker in a search result than a place name and a service.
+ */
+const title = 'Clinic Websites, Content & Local SEO in Mehsana | CareInflow';
 /**
  * Built from pricing.ts so the figure in the search result can never drift from
- * the figure on the page. Ahmedabad is named because Search Console shows the
- * demand there ("seo for doctors ahmedabad", "clinic marketing ahmedabad")
- * while the studio itself is in Mehsana, and the entry price is in the snippet
- * because a published number is the one thing no competing result shows.
+ * the figure on the page. The entry price is in the snippet because a
+ * published number is the one thing no competing result shows.
  */
 const description =
-  `Gujarat's healthcare-only web studio, in Mehsana and serving Ahmedabad. Clinic websites starting from ${rupees(BUILDS[0]!.from)}, with local SEO and Google listing care.`;
+  `A healthcare-only studio in Mehsana. Clinic websites from ${rupees(BUILDS[0]!.from)}, healthcare content made from your own videos, and Google and local search care.`;
 
 const faqs = await getFaqsFor('home');
 
@@ -82,50 +87,22 @@ const priceHeadlines = [
 ];
 
 /**
- * The hero's trust block, rebuilt 2026-08-19.
+ * The practices CareInflow works with come from `src/config/clients.ts`, and
+ * have a band of their own directly under the hero.
  *
- * It used to be four oversized words: 4 weeks, Free, Fixed, Yours. Every one
- * was a promise about how the studio behaves, and a doctor who has been burned
- * by an agency has heard all four before from the agency that burned them. A
- * promise is not evidence.
- *
- * These are the two practices CareInflow actually works with. Both are real,
- * both are in Mehsana, and the first can be opened and timed by the reader on
- * the phone they are holding. That is the whole difference: it is checkable.
- *
- * Permission is secured off-page and is not mentioned on it. Telling a buyer
- * that your clients agreed to be named reads as a studio reassuring itself.
- *
- * Do not add a practice to this list that is not a paying client, and do not
- * pad it with the portfolio samples. The samples are labelled samples for
- * exactly this reason.
+ * They used to sit in the hero's photo caption, two of them, and that was the
+ * right idea in the wrong place: the evidence a doctor scans for first, kept
+ * small. A third practice would have pushed the hero past the ~72% viewport cap,
+ * and three relationships covering three kinds of work — a website, a month of
+ * content, a run of reels — are the argument for the whole studio, which a
+ * caption cannot make. The band can.
  */
-const clients = [
-  {
-    name: 'Pramukh Multispeciality Dental Clinic',
-    place: 'Mehsana',
-    work: 'Website and Google Business Profile',
-    url: 'https://pramukhdentalclinic.com',
-    linkText: 'Open the live site',
-  },
-  {
-    name: 'Akshar Wellness',
-    place: 'Mehsana',
-    work: 'Social media content',
-    // The share-sheet URL carried utm_source and igsh tracking parameters.
-    // Those identify the session that copied the link, not the profile, and
-    // publishing them would send every visitor through someone else's
-    // analytics. The bare profile URL is the same destination.
-    url: 'https://www.instagram.com/akshar_360_wellness',
-    linkText: 'See the Instagram',
-  },
-];
 
 /** Three things about the studio a buyer can check, not three things we promise. */
 const credibility = [
   { value: 'Healthcare only', caption: 'we take no other kind of client' },
   { value: 'Mehsana', caption: 'one studio, no branch offices' },
-  { value: 'Ex-Microsoft', caption: 'the person who builds your site' },
+  { value: 'Ex-Microsoft', caption: 'the person who does the work' },
 ];
 
 /** The value case, stated as mechanisms rather than promised results. */
@@ -372,14 +349,22 @@ const whatsappHref = whatsappWithMessage(
               Healthcare practices only · Mehsana, Gujarat
             </span>
           </p>
+          {/*
+            What the studio does, in the order a doctor meets it, rather than a
+            superlative about it. "Gujarat's best healthcare websites" stood
+            here until 2026-10-08; it was an opinion nobody could check, and it
+            described only one of the three things the studio now does. The
+            accent line is unchanged: it is the patient's path, not a promise.
+          */}
           <h1 class="mt-6 text-[clamp(36px,4.4vw,60px)] font-extrabold leading-[1.02] tracking-[-0.05em] text-surface">
-            Gujarat's best healthcare websites. <span class="text-panel-accent">Found, trusted, booked.</span>
+            Healthcare websites, content and Google. <span class="text-panel-accent">Found, trusted, booked.</span>
           </h1>
           <p class="mt-5 max-w-[640px] text-[17px] leading-[1.58] text-panel-text">
-            We are Gujarat's healthcare-only web studio. We build the website,
-            run the Google listing, and do the local search work that puts your
-            practice in front of patients nearby. Clinics are the only thing we
-            build for, which is why we build it better.
+            CareInflow works only with healthcare practices, from one studio in
+            Mehsana. We turn your videos into reels patients learn from, build
+            the website they check next, and do the Google and local search
+            groundwork that decides whether nearby patients find you. You work
+            directly with the founder.
           </p>
           {/*
             Hidden below sm. The fixed bar at the bottom of the viewport already
@@ -427,56 +412,73 @@ const whatsappHref = whatsappWithMessage(
             sizes="(min-width: 1024px) 560px, 92vw"
             loading="eager"
             fetchpriority="high"
-            class="aspect-[3/2] w-full rounded-t-3xl border border-panel-line object-cover"
+            class="aspect-[3/2] w-full rounded-3xl border border-panel-line object-cover"
           />
-
-          {/*
-            The trust element sits under the photograph rather than on top of
-            it. An overlay needs absolute positioning that has to be unwound at
-            320px, and this site's hard rule is that nothing crosses the
-            viewport at any width. Joined radii make the two read as one object.
-          */}
-          <figcaption class="rounded-b-3xl border border-t-0 border-panel-line bg-panel-card px-5 py-3.5 sm:px-6">
-            <p class="label-mono text-panel-text-faint" style="letter-spacing:0.12em">
-              Practices we work with
-            </p>
-            <ul class="mt-2.5 flex flex-col gap-2">
-              {clients.map((c) => (
-                <li class="flex flex-wrap items-baseline gap-x-2.5 border-t border-panel-divider pt-2 first:border-0 first:pt-0">
-                  <span class="text-[15px] font-bold leading-[1.3] text-surface">{c.name}</span>
-                  <span class="font-mono text-[10px] uppercase tracking-[0.08em] text-panel-text-faint">
-                    {c.place}
-                  </span>
-                  <span class="w-full text-[14px] leading-[1.45] text-panel-text-dim">
-                    {c.work}
-                    {c.url && (
-                      <>
-                        {' · '}
-                        <a href={c.url} rel="noopener" class="link-accent">{c.linkText} →</a>
-                      </>
-                    )}
-                  </span>
-                </li>
-              ))}
-            </ul>
-            {/*
-              Doctors comparing suppliers here are advised to ask for clients in
-              a similar specialty and city tier, then check the claims
-              themselves. Pramukh is dental, in Mehsana, and the site is live —
-              so the honest move is to hand over the instructions rather than
-              wait to be asked for them.
-            */}
-            <p class="mt-3 border-t border-panel-divider pt-2.5 text-[13px] leading-[1.5] text-panel-text-faint">
-              Open it on your phone. Time how long it takes to appear, tap the
-              WhatsApp button, and watch where the message lands.
-            </p>
-          </figcaption>
         </figure>
       </div>
     </div>
   </section>
 
-  <!-- 01 · PROOF : REAL BUILDS, before we explain anything -->
+  <!-- 01 · WHO WE WORK WITH : the real practices, before a word of explanation
+       A doctor's first question about a new studio is whether anyone real uses
+       it. Three practices in Mehsana do, and between them they cover the three
+       things the studio sells, so the band answers the second question too
+       (what does this place actually do?) without a paragraph of claims.
+       Text marks, not logos: a logo goes up only once a practice supplies it
+       for that use, and a monogram tile would read as their logo. -->
+  <section class="bg-canvas" aria-labelledby="clients-title">
+    <div class="section-tight shell">
+      <SectionHead
+        id="clients-title"
+        label="Who we work with"
+        title="Healthcare practices in Mehsana already work with CareInflow."
+        lede="Each one trusted us with something different: a website and a Google listing, a steady run of content, a series of reels. Every card links to the work itself."
+      />
+
+      {/* Three across from lg, where each card gets ~400px and the longest
+          name sits on two lines. Stacked below it: at tablet width three
+          columns leave ~190px, which wraps "Pramukh Multispeciality Dental
+          Clinic" to four lines, and these cards are short enough that a stack
+          costs little. Three into three divides evenly. */}
+      <ul class="reveal-group mt-10 grid gap-4 lg:grid-cols-3 lg:gap-6">
+        {CLIENTS.map((c) => (
+          <li class="flex flex-col overflow-hidden rounded-3xl border border-line bg-surface">
+            <span class:list={['accent-bar block h-1 w-full', ACCENTS[c.accent].bar]} aria-hidden="true"></span>
+            <div class="flex flex-1 flex-col p-6 sm:p-7">
+              <p>
+                <span class:list={['chip', ACCENTS[c.accent].chip]}>{c.pillar}</span>
+              </p>
+              <h3 class="mt-4 text-[clamp(19px,1.6vw,22px)] font-extrabold leading-[1.2] tracking-[-0.025em] text-ink">
+                {c.name}
+              </h3>
+              <p class="mt-1.5 font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{c.place}</p>
+              <p class="mt-4 text-[15px] leading-[1.6] text-body">{c.work}</p>
+              <p class="mt-auto flex flex-wrap gap-x-5 gap-y-1.5 pt-5">
+                <a href={c.url} rel="noopener" class="prose-link text-[15px]">{c.linkText} →</a>
+                {c.caseStudy && (
+                  <a href={href(c.caseStudy)} class="prose-link text-[15px]">Read the case study →</a>
+                )}
+              </p>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      {/*
+        The checkable instruction that used to sit under the hero photograph,
+        kept, because it is the strongest sentence about the studio: it hands
+        the reader the test rather than asking them to trust a claim. Then the
+        one distinction a visitor needs to read the cards correctly.
+      */}
+      <p class="mt-7 max-w-[780px] text-[15px] leading-[1.65] text-muted">
+        Open Pramukh's site on your phone, time how long it takes to appear, and
+        tap the WhatsApp button. Akshar Wellness and Sadbhav are content
+        clients, so their work lives on their own Instagram.
+      </p>
+    </div>
+  </section>
+
+  <!-- 02 · PROOF : the websites, live, before we explain anything -->
   <section class="border-t border-hairline bg-surface" aria-labelledby="featured-title">
     <div class="section shell">
       <div class="mb-10 flex flex-wrap items-end justify-between gap-6">
@@ -484,7 +486,7 @@ const whatsappHref = whatsappWithMessage(
           id="featured-title"
           label="Our portfolio"
           title="Websites we have actually built"
-          lede="Four live sites you can open right now. Time how fast they appear, tap the enquiry button, and see where the message lands. One was built for a real practice; the other three are samples, and each page says so. We also run social media content for Akshar Wellness in Mehsana, which is client work rather than a website, so it is not on this page."
+          lede="Four live sites you can open right now. Time how fast they appear, tap the enquiry button, and see where the message lands. One was built for Pramukh, a real practice; the other three are samples, and each card and page says which."
         />
         <a href={href('/work')} class="prose-link whitespace-nowrap text-base">See the portfolio →</a>
       </div>
@@ -826,7 +828,7 @@ const whatsappHref = whatsappWithMessage(
           <SectionHead
             id="indication-title"
             label="Why healthcare only"
-            title="One studio, one kind of client, one person building it."
+            title="One studio, one kind of client, one person doing the work."
             lede="A studio that builds for a restaurant one month and a clinic the next never learns either properly. Patients arriving at your website are worried, comparing you to two other practices, and reading on a phone at an odd hour. That is the only visitor we have learned to write for."
           />
 
@@ -868,13 +870,13 @@ const whatsappHref = whatsappWithMessage(
             <div>
               <p class="label-mono text-faint" style="letter-spacing:0.12em">Who does the work</p>
               <h3 class="mt-2 text-[clamp(20px,2.2vw,25px)] font-extrabold leading-[1.15] tracking-[-0.03em] text-ink">
-                You talk to the person building your website.
+                You work directly with the founder, not an account manager.
               </h3>
               <p class="mt-2.5 max-w-[560px] text-[15px] leading-[1.6] text-body">
                 CareInflow is run by {BUSINESS.founder}. Web development in Gujarat,
                 cybersecurity study in Canada, then a year and a half at Microsoft
-                before coming home to start this. There is no account manager between
-                you and the work.
+                before coming home to start this. The person you message is the
+                person who edits your reels and builds your site.
               </p>
               <p class="mt-3.5 flex flex-wrap gap-x-5 gap-y-1.5">
                 <a href={href('/about')} class="prose-link text-[15px]">More about the studio →</a>

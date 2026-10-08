@@ -20,7 +20,7 @@ import {
 
 const title = 'Clinic web design across Gujarat: 10 towns | CareInflow';
 const description =
-  "Gujarat's healthcare-only web studio works with clinics in Mehsana, Ahmedabad, Gandhinagar, Rajkot, Patan and five more towns. Served, not staffed.";
+  'A healthcare-only studio in Mehsana, working with clinics in Ahmedabad, Gandhinagar, Rajkot, Patan and five more towns. Served, not staffed.';
 
 const areas = (await getCollection('areas')).sort((a, b) => a.data.order - b.data.order);
 const written = new Set(areas.map((a) => a.data.city));
