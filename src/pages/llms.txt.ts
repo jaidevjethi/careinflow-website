@@ -213,7 +213,7 @@ ${NEVER_CHARGED.map((n) => `- ${n}`).join('\n')}
 
 ## Services
 
-- [Healthcare content](${url('/services/social-media/')}): Reels, posts and carousels for doctors and clinics, made from the doctor's own footage. Gujarati or English captions, covers and caption copy. Three monthly packages or single pieces. No posting, filming or advertising, and no promise of reach.
+- [Healthcare content](${url('/services/healthcare-content/')}): Reels, posts and carousels for doctors and clinics, made from the doctor's own footage. Gujarati or English captions, covers and caption copy. Three monthly packages or single pieces. No posting, filming or advertising, and no promise of reach.
 - [Reel editing for doctors](${url('/services/reel-editing/')}): One standard healthcare reel at ${rupees(reel.price)}, usually in 1–2 working days. Patient explainers and patient testimonials (with written consent). Send one sample video and the studio replies with what the edit involves and costs.
 - [Healthcare websites](${url('/services/healthcare-websites/')}): Custom clinic websites: a page per treatment, WhatsApp enquiry flow, speed measured on mid-range Android phones (reference <1.2s LCP), WCAG AA accessibility.
 - [Google Business Profile](${url('/services/google-business-profile/')}): Profile setup or rebuild, categories, services, photos, hours, and an honest review workflow, then maintained monthly inside Local SEO & Google Care.

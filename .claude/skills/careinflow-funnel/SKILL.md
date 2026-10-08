@@ -8,7 +8,7 @@ description: CareInflow's conversion funnel — how every page earns and asks fo
 The site sells through **two low-friction offers**, both answered on WhatsApp, and nothing else:
 
 1. **The free written review** — of a practice's website, Google listing and local search, delivered in two working days. The offer for website, Google and local-search intent, and the default everywhere.
-2. **The sample-video reply** — a doctor sends the topic and one clip, and gets back what the edit would involve, the turnaround and the price. The offer for content intent (`/services/social-media/`, `/services/reel-editing/`). The reply is free; **the editing is never free**, and the copy says so every time.
+2. **The sample-video reply** — a doctor sends the topic and one clip, and gets back what the edit would involve, the turnaround and the price. The offer for content intent (`/services/healthcare-content/`, `/services/reel-editing/`). The reply is free; **the editing is never free**, and the copy says so every time.
 
 They are not competing routes, because they answer different visitors: a doctor who wants a website does not want to send a video, and a doctor with footage on their phone does not want a five-page audit. Use the one that matches what the page sells. Both land on one enquiry page, `/contact`.
 

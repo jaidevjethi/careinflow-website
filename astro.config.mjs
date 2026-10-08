@@ -71,9 +71,15 @@ export default defineConfig({
   // renders but not to redirect targets, so a literal '/contact/' works at the
   // root and 404s on the GitHub Pages mirror, which serves from
   // /careinflow-website. Same trap rehypeInternalLinks above exists to avoid.
+  // /services/social-media moved to /services/healthcare-content on
+  // 2026-10-08; the same split applies, a 301 in _redirects on production
+  // and a meta-refresh here for the mirror.
   redirects: IS_CANONICAL
     ? {}
-    : { '/free-review': `${BASE_PATH.replace(/\/$/, '')}/contact/` },
+    : {
+        '/free-review': `${BASE_PATH.replace(/\/$/, '')}/contact/`,
+        '/services/social-media': `${BASE_PATH.replace(/\/$/, '')}/services/healthcare-content/`,
+      },
   integrations: [
     mdx(),
     sitemap({

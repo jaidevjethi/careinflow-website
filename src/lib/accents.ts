@@ -70,7 +70,7 @@ const SERVICE_ACCENTS: Record<string, AccentName> = {
   'google-business-profile': 'gbp',
   'local-seo': 'seo',
   'website-care': 'care',
-  'social-media': 'social',
+  'healthcare-content': 'social',
   'reel-editing': 'social',
 };
 

@@ -56,7 +56,7 @@ const prefillByService: Record<string, PrefillKey> = {
   'local-seo': 'seo',
   'google-business-profile': 'gbp',
   'website-care': 'care',
-  'social-media': 'content',
+  'healthcare-content': 'content',
   'reel-editing': 'reel',
 };
 const prefill = prefillByService[service.id] ?? 'default';
@@ -67,7 +67,7 @@ const prefill = prefillByService[service.id] ?? 'default';
  * five-page audit of their website; they want to know what their video would
  * become and what it costs. Every other service keeps the review.
  */
-const isContent = service.id === 'social-media' || service.data.parent === 'social-media';
+const isContent = service.id === 'healthcare-content' || service.data.parent === 'healthcare-content';
 
 /** Resolved from `pricing.ts` via the frontmatter key — never from the MDX. */
 const pricing = service.data.pricing;

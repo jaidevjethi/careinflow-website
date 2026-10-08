@@ -35,7 +35,7 @@ const FRAMES: Record<string, { label: string; title: string }> = {
     label: 'Two plans',
     title: 'What each monthly plan looks after, side by side.',
   },
-  'social-media': {
+  'healthcare-content': {
     label: 'One recording',
     title: 'One eight-to-ten-minute explanation of gum disease, and what it can become.',
   },
@@ -105,7 +105,7 @@ const reelSteps = [
     {slug === 'local-seo' && <ThreeFactors />}
     {slug === 'google-business-profile' && <ListingScan />}
     {slug === 'website-care' && <CarePlans />}
-    {slug === 'social-media' && <ContentFanout />}
+    {slug === 'healthcare-content' && <ContentFanout />}
     {slug === 'reel-editing' && <FlowSteps steps={reelSteps} accent="social" emphasiseLast />}
   </DiagramFigure>
 )}

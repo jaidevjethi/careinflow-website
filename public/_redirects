@@ -19,3 +19,10 @@
 # indexed result move properly.
 /free-review     /contact/     301
 /free-review/    /contact/     301
+#
+# The healthcare content service moved from /services/social-media to
+# /services/healthcare-content on 2026-10-08, when content stopped being a
+# support act and became one of the three things the studio sells. A real 301
+# so any link or indexed result moves with it.
+/services/social-media     /services/healthcare-content/   301
+/services/social-media/    /services/healthcare-content/   301

@@ -275,7 +275,7 @@ export const FOOTER_GROUPS = [
       { label: 'Local SEO', href: '/services/local-seo' },
       { label: 'Google Business Profile', href: '/services/google-business-profile' },
       { label: 'Ongoing website care', href: '/services/website-care' },
-      { label: 'Social media', href: '/services/social-media' },
+      { label: 'Healthcare content', href: '/services/healthcare-content' },
     ],
   },
   {
