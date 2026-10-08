@@ -98,7 +98,7 @@ the day the palette moved. Each has the bare name (AA-safe text), `-vivid`
 | `seo` | local SEO | `#1A5ECB` blue | `#D6E7FD` | 289 | 4.76 | 4.70 |
 | `gbp` | Google Business Profile | `#0E6A97` cyan-blue | `#CFEAF8` | 256 | 4.76 | 4.67 |
 | `care` | website care | `#6039B2` violet | `#EEE0FC` | 308 | 6.13 | 6.05 |
-| `social` | social media | `#8A3499` magenta | `#F8E1F4` | 323 | 5.63 | 5.44 |
+| `social` | healthcare content and reels | `#8A3499` magenta | `#F8E1F4` | 323 | 5.63 | 5.44 |
 
 Five hues on a cool arc from cyan-blue to violet, 256° → 323°. Smallest
 pairwise deltaE between the text colours is **15.1** (`web`/`seo`); between the
@@ -213,6 +213,19 @@ Reuse before building: `PageHero`, `SectionHead`, `CtaPanel`, `CtaStrip`,
 `.card-link` makes a whole card clickable from one link inside it, so the anchor
 keeps its own short accessible name instead of swallowing every word in the
 card. Use it rather than wrapping a content-heavy card in an `<a>`.
+
+**The Services menu** in the header is the site's one disclosure menu. A
+`<button>` with `aria-expanded` and `aria-controls`, opened by click or Enter,
+closed by Escape (focus returns to the button), a click outside, or focus
+leaving it. It never opens on hover: a menu that appears under a passing cursor
+is a menu that covers the page by accident, and a phone has no hover at all.
+The panel is midnight (`bg-panel`, `border-panel-line`) with the one shadow
+recipe, and only `opacity` and `transform` move. On a phone the same links sit
+nested and indented in the mobile menu rather than behind a second toggle.
+
+**Clients are text marks until a logo is supplied with permission.** The
+practice name set in type, never a monogram tile, which a visitor would read as
+the client's own logo.
 
 ## Imagery
 

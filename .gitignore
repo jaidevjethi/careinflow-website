@@ -23,3 +23,7 @@ generated_images/
 
 # Print assets: business collateral, kept on the studio machine, not in the repo.
 docs/print/
+
+# Private business notes: unit economics and client-specific arrangements.
+# The repo is public, so these never leave the studio machine.
+docs/private/

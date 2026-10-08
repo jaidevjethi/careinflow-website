@@ -1,115 +1,115 @@
 # CareInflow — Business Context Specification
 
 > Source of truth for what CareInflow is, what it sells, who it serves, and how it speaks.
-> Companion docs: [website-strategy.md](website-strategy.md) · [technical-seo-spec.md](technical-seo-spec.md) · design: [../design/careinflow-design-system.dc.html](../design/careinflow-design-system.dc.html)
+> Companion docs: [website-strategy.md](website-strategy.md) · [technical-seo-spec.md](technical-seo-spec.md) · [proof-library.md](proof-library.md) · design: [../design/careinflow-design-system.dc.html](../design/careinflow-design-system.dc.html)
 
 ## Business Overview
 
-CareInflow is a healthcare-focused web design and digital growth studio.
+CareInflow is a healthcare-only digital studio in Mehsana, Gujarat.
 
-We help doctors, clinics, and healthcare practices build a professional online presence through modern websites, local search optimization, and ongoing digital support.
+It helps doctors and clinics build a trustworthy digital presence through
+healthcare content, websites, Google and local search. The specialisation is
+the client — healthcare practices, and nobody else — not a production medium.
 
-Everything we do is centered around helping healthcare practices look more professional, become easier to find online, and create a better first impression for potential patients.
+It started in 2026 and is run by its founder, Jaidev Jethi. That is said
+plainly and never apologised for: a practice works directly with the person
+doing the work, not with an account manager.
 
-We do not try to be a full-service marketing agency. We specialize in a focused set of services that directly improve a clinic's online presence.
+## The three pillars
 
-## Core Services
+They work together, and a practice can start with any one of them.
 
-The business offers four primary service categories.
+```
+Doctor has knowledge and footage
+  → CareInflow turns it into reels, posts and carousels   (content: the easy front door)
+  → the doctor comes to trust the studio
+  → the gaps in the website and Google listing become visible
+  → a website and local-search foundation                  (the higher-value project)
+  → Local SEO & Google Care continues after launch         (the recurring work)
+```
 
-### 1. Premium Healthcare Websites
+**Sell the thing the practice actually needs.** A content client is never
+pushed into a website; a website client is never pushed into content.
 
-Design and develop custom websites for healthcare practices. This includes:
+### 1. Healthcare content
 
-- UI/UX Design
-- Responsive Development
-- Website Strategy
-- Landing Pages
-- Appointment-focused layouts
-- Performance optimization
-- Accessibility
-- SEO-ready structure
+> We turn your footage, ideas and clinic updates into ready-to-publish,
+> patient-facing content.
 
-Every website should be custom designed around the clinic rather than built from a generic template.
+Reels (patient explainers, treatment explainers, patient testimonials with
+consent), educational posts, carousels, clinic creatives such as a package
+flyer, captions and covers. The deliverable is a publish-ready healthcare
+content asset, not "video editing" and never a "basic reel".
 
-### 2. Local SEO
+A standard healthcare reel: final video up to 3 minutes, editing and pacing for
+retention and clarity, Gujarati or English captions, audio cleanup, basic colour
+correction, relevant supporting graphics, transitions, an end card, a reel cover,
+the Instagram caption copy, one revision, typically delivered in 1–2 working
+days. Advanced pricing applies when an edit needs substantially more animation,
+restructuring, several source videos, unusually long footage or complex
+storytelling.
 
-Help clinics become easier to discover in local search results. Services include:
+Sold one piece at a time or as one of three monthly packages. Every figure is in
+[`src/config/pricing.ts`](../../src/config/pricing.ts).
 
-- On-page SEO
-- Local SEO optimization
-- Technical SEO
-- Location pages
-- Schema implementation
-- Search Console setup
-- Analytics configuration
-- SEO audits
+No claim is ever made about reach, followers, leads, patients or revenue.
 
-The objective is sustainable organic visibility rather than short-term ranking promises.
+### 2. Healthcare websites
 
-### 3. Google Business Profile Management
+Custom websites for healthcare practices: a page per treatment, written for a
+worried patient, fast on a mid-range Android, with WhatsApp and tap-to-call on
+every page. Four packages (Foundation, Practice, Growth, Multi-Doctor /
+Multi-Location). Every one ships with the local-search foundation and the
+Google listing set up, and starts with an audit of the listing.
 
-Help healthcare practices maximize their visibility on Google Maps and local search. Services include:
+### 3. Google & local search
 
-- Google Business Profile setup
-- Profile optimization
-- Category optimization
-- Service configuration
-- Review strategy
-- Image optimization
-- Business information management
-- Ongoing profile improvements
+- **Google Business Profile rebuild**, one-time: setup or rebuild, categories,
+  services, business information, hours, photos and profile sections, questions,
+  a review-response workflow and local-search groundwork. The practice keeps
+  ownership of its profile.
+- **Local SEO & Google Care**, monthly: the profile maintained, review replies
+  drafted for approval, search queries watched, website content updates, one new
+  treatment page a month, speed checks and a monthly report.
+- **Website Care**, monthly and priced to scope, for a practice that wants its
+  website looked after without the Google work.
 
-This is a major trust-building service because many patients discover clinics through Google before visiting their website.
+The objective is the groundwork that decides whether a practice can compete in
+local search. Ranking depends on relevance, distance, prominence, competition,
+reviews, time, website quality and profile quality, and nothing guarantees it.
 
-### 4. Ongoing Website Care
+## What CareInflow does NOT sell
 
-Launch is not the end of the relationship. Provide ongoing support including:
+Not on any menu, and not advertised. Exclusions say "not part of our packages"
+rather than "never", because the founder may still take one on selectively —
+but none of them is a service CareInflow offers or markets:
 
-- Website maintenance
-- Security updates
-- Backups
-- Performance monitoring
-- Content updates
-- Technical improvements
-- Minor feature additions
+- Meta Ads or any paid-advertising management
+- Full social-media account management, daily posting, DM and community management
+- Influencer marketing
+- Full branding projects
+- Large-scale photography or video production (on-site shoots are custom projects)
+- Mobile apps, software, IT consultancy
 
-The objective is long-term reliability.
+CareInflow is never a generic social-media agency, reel-editing shop,
+graphic-design freelancer, web-development agency, or "we do everything"
+marketing agency.
 
-## Optional Services
+## Real clients
 
-These services should be presented as complementary rather than core offerings.
+Three, all in Mehsana. The single source is
+[`src/config/clients.ts`](../../src/config/clients.ts); permissions are tracked
+in [proof-library.md](proof-library.md).
 
-- Social Media Management
-- Social Media Content Support
-- Basic Branding Assets
-- Content Upload Assistance
-- Digital Consultation
+| Practice | What was trusted to CareInflow | Public link |
+|---|---|---|
+| Pramukh Multispeciality Dental Clinic | Website and Google Business Profile | pramukhdentalclinic.com, plus a full case study at /work/pramukh-dental/ |
+| Akshar Wellness | Healthcare content: reels, posts, clinic creatives, flyers | instagram.com/akshar_360_wellness |
+| Sadbhav Physiotherapy Clinic | Healthcare reels | instagram.com/sadbhav_physiotherapy_clinic |
 
-These should never overshadow the primary services.
-
-## What CareInflow Does NOT Do
-
-The website should clearly avoid positioning the company as:
-
-- Advertising agency
-- Creative agency
-- Branding agency
-- Product design studio
-- Mobile app development company
-- Software development company
-- Enterprise IT company
-- Digital transformation consultancy
-
-The focus should remain narrow. That makes the positioning stronger.
-
-## Business Philosophy
-
-CareInflow believes that every healthcare practice deserves an online presence that reflects the quality of care it provides.
-
-Patients often interact with a clinic online before they ever visit in person. A professional website, accurate Google presence, and strong local visibility help create confidence during that decision-making process.
-
-The role of CareInflow is to help clinics present themselves professionally online while making it easier for patients to find information, understand services, and book appointments.
+"Akshar Wellness" is the public name the owner confirmed on 2026-10-08. Do not
+rename it. The portfolio's three other websites (Lavanya, Gati, Divyam) are
+samples with no business behind them and are labelled as samples everywhere.
 
 ## Target Customers
 
@@ -129,76 +129,39 @@ The role of CareInflow is to help clinics present themselves professionally onli
 
 **Secondary audience:**
 
-- Diagnostic centers
+- Diagnostic centers and pathology labs
 - Healthcare startups
 - Medical consultants
 
-## Brand Positioning
-
-CareInflow is a specialist. Not a generalist.
-
-Instead of serving every industry, the company focuses on healthcare. Instead of offering dozens of unrelated marketing services, it concentrates on websites, local SEO, Google Business Profile optimization, and ongoing website support.
-
-This specialization should be the foundation of the brand.
+**Good enquiries over many enquiries.** The site should filter as well as
+attract. A practice that values healthcare specialisation, clear scope, reliable
+turnaround and ongoing content is a better client than one asking for thirty
+reels at the lowest possible rate.
 
 ## Pricing Philosophy
 
-CareInflow is positioned as a premium service provider. Pricing should communicate value rather than affordability. The business should not compete with freelancers or low-cost website builders.
+Published, specific and competitive — never "the cheapest". The figures live in
+one place, [`src/config/pricing.ts`](../../src/config/pricing.ts), and every
+page, FAQ answer, the price estimator, `llms.txt` and the JSON-LD read from it.
+A price written anywhere else fails the build (`npm run verify`). The old price
+table that used to sit here went stale twice; it is deliberately gone.
 
-Clients should understand that they are paying for:
-
-- Healthcare specialization
-- Custom design
-- Modern development
-- Search optimization
-- Long-term support
-- Personal attention
-
-Do not use discount messaging or "cheap website" positioning. Instead, communicate that investing in a professional digital presence is an investment in the clinic's credibility and long-term growth.
-
-### Published price list
-
-Prices are public, on `/pricing`, and defined once in
-[`src/config/pricing.ts`](../../src/config/pricing.ts). Publishing them is a
-positioning decision: a clinic owner who has to book a call to hear a number
-assumes the number is negotiable, and negotiable is the opposite of premium.
-
-| | Starting price | Usual range |
-|---|---|---|
-| Single practice website | ₹28,999 one-time | ₹28,999 – ₹44,999 |
-| Established clinic website | ₹58,999 one-time | ₹58,999 – ₹89,999 |
-| Multi-specialty website | ₹1,09,999 one-time | ₹1,09,999 – ₹1,79,999 |
-| Care plan | ₹3,499 / month | |
-| Care + Google plan | ₹7,999 / month | |
-| Full visibility plan | ₹17,999 / month | |
-| Google Business Profile management | ₹5,499 / month | |
-| Local SEO, standalone | ₹12,999 / month | |
-| Social media content (support) | ₹7,999 / month | |
-| Google Business Profile rebuild | ₹11,999 once | |
-| Website takeover audit | ₹6,999 once | |
-| Extra treatment or area page | ₹3,499 per page | |
-| Gujarati version of an existing site | from ₹14,999 | |
-
-**Where the value sits.** The builds are deliberately priced below agency
-quotes for comparable work, because CareInflow does not build the expensive
-kind: the sites are hand-built and static, with no application behind them.
-What earns a clinic its return — and what the price actually buys — is the
-layer above the code: the path a patient takes from landing to enquiry, the
-words on every page, and brand alignment between the site and the practice a
-patient walks into. Copy and funnel work is therefore the bulk of every
-build, and continues inside the monthly plans. Never sell or describe a build
-as a technical deliverable measured in pages.
+What a client pays for: healthcare specialisation, clear scope, the writing and
+the enquiry path rather than the code, reliable turnaround, direct
+communication with the founder.
 
 Rules that hold the list together:
 
 - Published figures are **starting points** for the scope described on the
   page. The exact number is fixed in writing after the free review.
-- Combined plans cost less than their parts because the work genuinely
-  overlaps — one monthly pass, one set of measurements, one report. The site
-  says so in those words. It is never framed as a discount or an offer.
+- **No discounts, no offers, with one exception**: the content packages'
+  introductory rate for a new client's first three billed months. It is shown
+  beside the regular price, never alone, and never as a saving or a deadline.
+- Combined plans that cost less than their parts say why — the content packages
+  are planned and produced as one monthly batch. Never framed as a deal.
 - The agreed price is **held**: whatever is fixed in writing stays fixed for
   as long as the engagement runs, even as studio rates rise. No deadline is
-  ever attached to a quote, and nothing is taken off for deciding sooner.
+  ever attached to a quote.
 - Prices exclude GST where it applies. Domain and hosting are paid by the
   client, in the client's own name, and are never marked up.
 - Payment: a standard build in two halves (start, launch); larger builds in
@@ -231,19 +194,32 @@ Avoid sounding:
 
 ## Tone of Voice
 
-Write for busy healthcare professionals.
-
-Use simple English. Short paragraphs. Clear headings. Explain practical benefits. Avoid marketing jargon.
+Write as a knowledgeable specialist speaking directly to a doctor. Simple
+English, short paragraphs, specific examples, concrete scope, honest
+limitations, transparent pricing, direct answers.
 
 Instead of saying:
 
-> "We create cutting-edge digital ecosystems."
+> "Gujarat's best healthcare websites. Skyrocket your patients."
 
 Say:
 
-> "We build modern websites that help your clinic look professional, earn patient trust, and perform well on Google."
+> "Healthcare websites, content and local search for clinics in Mehsana and Gujarat."
 
-The website should always prioritize clarity over cleverness.
+No unsupported superlatives ("best", "#1", "leading", "guaranteed", "most
+popular"), no promise about outcomes, no urgency. The full rules are in the
+`careinflow-voice` skill.
+
+## Healthcare content integrity
+
+Part of how the work is done, not marketing theatre:
+
+- No invented patient results, fabricated testimonials or unsupported medical claims.
+- No identifying patient information, and no clinical images, without clear written consent.
+- No claim that a treatment works for everyone, and no fake before/after outcomes.
+- Patient testimonial videos need the patient's written consent; we do not add claims the patient did not make.
+- The doctor approves every piece for medical accuracy before it is published.
+- Where a professional advertising rule is discussed in copy, the current rule is verified first.
 
 ## Brand mark
 
@@ -258,38 +234,36 @@ Jaidev's portrait (`src/assets/jaidev-jethi.jpg`) appears on the About page
 beside the founder story and in a homepage strip, and is referenced by the
 Person schema. Framing stays "thoughtful technologist", never celebrity.
 
-## Social media (support service)
-
-`/services/social-media` exists as a **support** service, not a fifth core
-one. It is educational content written within patient-privacy limits: no
-paid advertising, no follower-count chasing, no clinical photographs or
-patient stories without clear written consent. If a practice's website or
-Google listing needs work, the page says to fix those first.
-
 ## Funnel
 
-The site sells one thing: a **free written review** of a practice's online
-presence, requested with a single WhatsApp message and returned within two
-working days. `/contact` explains it in full; every page routes there or to
-WhatsApp. (`/free-review` was a second page competing for the same conversion
-and now redirects.) No gated downloads, and no discovery call *before* the
-review — the review comes first, and the conversation happens once there is
-something in the reader's hand to talk about.
+Two offers, both on WhatsApp, both landing on `/contact`:
 
-Since 2026-08-26 there is a second way in. Booking is a button in the `/contact`
-hero and a section of its own, opening Calendly in a new tab for visitors who
-would rather talk before reading anything. It does not replace the review and is
-never placed above it. Nothing of Calendly's loads on this site, so "no forms"
-still holds here — the form is on their page, not ours.
+1. **The free written review** of a practice's website, Google listing and local
+   search, returned within two working days. The default everywhere.
+2. **The sample-video reply**: send the topic and one clip, get back what the
+   edit would involve, the turnaround and the price. Free to ask; the editing is
+   never free.
+
+(`/free-review` was a second page competing for the same conversion and now
+redirects.) No gated downloads, and no discovery call *before* the review — the
+review comes first, and the conversation happens once there is something in the
+reader's hand to talk about.
+
+Since 2026-08-26 there is a second way into the review. Booking is a button in
+the `/contact` hero and a section of its own, opening Calendly in a new tab for
+visitors who would rather talk before reading anything. It does not replace the
+review and is never placed above it. Nothing of Calendly's loads on this site,
+so "no forms" still holds here — the form is on their page, not ours.
 
 Every ask carries the honest escape hatch — if the answer is "change nothing",
 we say so.
 
-## Business Facts (from the design doc, confirmed for use)
+## Business Facts
 
 - Founder: Jaidev Jethi
 - Address: F-27, Platinum Plaza, Radhanpur Rd, Mehsana, Gujarat 384005, India
 - WhatsApp / phone: +91 97734 56668
-- Email: jaydevjethi123@gmail.com (until a careinflow.com mailbox exists)
-- Canonical domain: https://careinflow.com
-- Positioning on the site: no scarcity, no counts, no "we are new" framing, and no limits on geography or client numbers. Anything about capacity or who we are currently taking on is handled in the sales conversation after someone makes contact — never stated on the site. The integrity rules are unchanged: no invented track record, no fabricated testimonials, no ranking guarantees.
+- Email: careinflow.support@gmail.com
+- Canonical domain: https://www.careinflow.com
+- Founded: 2026, one studio, no branches. Service areas are places served, not places staffed.
+- No scarcity, no counts presented as pressure, no fabricated track record. The integrity rules are unchanged: no invented testimonials, no ranking guarantees.

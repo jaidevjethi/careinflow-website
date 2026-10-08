@@ -19,7 +19,7 @@ Every page should communicate competence before making claims. The visitor shoul
 - Showcase the quality of design and development.
 - Educate clinic owners about why their digital presence matters.
 - Remove common objections before visitors ask them.
-- Encourage qualified leads to schedule a consultation.
+- Encourage qualified leads to start a conversation — and filter as well as attract: good enquiries, not merely more of them.
 - Position CareInflow as a long-term digital partner rather than a one-time vendor.
 
 ## User Experience Goals
@@ -32,7 +32,9 @@ Every page should answer one primary question:
 | About | "Who is behind CareInflow, and why can I trust them?" |
 | Services | "What exactly do they offer?" |
 | Individual service pages | "How does this service help my practice?" |
-| Portfolio | "What quality of work can I expect?" |
+| Healthcare content | "What do I send, what do I get back each month, and what does it cost?" |
+| Reel editing | "I already record videos. What would one edit involve, and how fast?" |
+| Portfolio | "Which of this is real work, and what quality can I expect?" |
 | Process | "What happens if I hire them?" |
 | Pricing | "What level of investment should I expect?" |
 | FAQ | "Are my concerns already answered?" |
@@ -51,6 +53,8 @@ Each page should remove one or more objections:
 - "My current website is good enough." → Educate visitors about how patients actually evaluate clinics online.
 - "I don't know what happens after launch." → Clearly explain maintenance and long-term support.
 - "I'm worried about wasting money." → Show the long-term value of investing in a professional online presence.
+- "I have no time to make content." → You already explain these things in the chair. Record one on your phone; we turn it into a publish-ready reel, and one good explanation can become a month of posts.
+- "Are they real? Who else uses them?" → Name the three Mehsana practices that already work with us, say exactly what each trusted us with, and link to the work. Never inflate it.
 
 Every section should either answer a question, reduce uncertainty, or build confidence.
 
@@ -58,7 +62,7 @@ Every section should either answer a question, reduce uncertainty, or build conf
 
 Trust should not exist in only one section. It should appear throughout the experience:
 
-healthcare specialization · founder perspective · educational insights · real project examples · website performance · transparent process · frequently asked questions · clear pricing philosophy · maintenance and ongoing support · testimonials and client feedback · professional photography · thoughtful microcopy.
+healthcare specialization · founder perspective · educational insights · real project examples · website performance · transparent process · frequently asked questions · clear pricing philosophy · maintenance and ongoing support · named real clients and what each trusted us with (testimonials only once a client approves their own words) · professional photography · thoughtful microcopy.
 
 Every interaction should reinforce professionalism.
 
@@ -79,7 +83,7 @@ The more visitors understand these concepts, the easier it becomes to understand
 
 Calls to action should feel natural. Never interrupt the visitor. Only introduce a CTA after providing enough information.
 
-**Use:** Book a Consultation · Request a Website Audit · Discuss Your Clinic's Website · Get a Free Website Review · Message us on WhatsApp
+**Use:** Book a Consultation · Get a Free Written Review · Send One Sample Video · Message us on WhatsApp
 
 **Avoid:** Buy Now · Limited Time · Only Today · Last Chance
 
@@ -117,7 +121,7 @@ His role within the brand is to establish credibility, standards, and long-term 
 
 When visitors leave the website, they should remember four things:
 
-1. CareInflow specializes in websites, local SEO, and Google Business Profile optimization for healthcare practices.
+1. CareInflow helps doctors and clinics build a trustworthy digital presence through healthcare content, websites, Google and local search, and works only with healthcare practices.
 2. The company understands both technology and the realities of running a healthcare practice.
 3. The quality of the website reflects the quality of work clients can expect.
 4. Working with CareInflow feels like partnering with a knowledgeable specialist rather than hiring a generic web agency.
