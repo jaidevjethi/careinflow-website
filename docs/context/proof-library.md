@@ -30,7 +30,9 @@ for another.
 | Proof level today | 1: public case study | 3: name and link | 3: name and link |
 | Name on the site | Yes | Yes. "Akshar Wellness" is the public name the owner confirmed on 2026-10-08 | Yes |
 | Link | pramukhdentalclinic.com and /work/pramukh-dental/ | instagram.com/akshar_360_wellness | instagram.com/sadbhav_physiotherapy_clinic |
-| Logo | Not yet. Ask | Not yet. Ask | Not yet. Ask |
+| Logo | Cleared for the printed flyer (owner, 2026-10-09). Site use not yet decided | Cleared for the printed flyer (owner, 2026-10-09). Site use not yet decided | Cleared for the printed flyer (owner, 2026-10-09). Site use not yet decided |
+| Doctor named in print | Dr. Chinmay H. Patel. Cleared for the printed flyer (owner, 2026-10-09) | Dr. Dipesh Pradapati. Cleared for the printed flyer (owner, 2026-10-09) | Dr. Ketul Oza. Cleared for the printed flyer (owner, 2026-10-09) |
+| Name on the printed flyer | Pramukh Multi-Speciality Dental Clinic | Akshar Wellness | Sadbhav Neurodiagnostic and Physiotherapy Clinic |
 | Testimonial | None. Ask | None. Ask | None. Ask |
 | Screenshots of the work | Website screenshots in the case study | None on the site. Ask first | None on the site. Ask first |
 | Numbers | Build facts only: 11 treatment pages, English + Gujarati, about a second on 4G, two taps to enquire | None recorded yet | None recorded yet |
@@ -39,6 +41,13 @@ Name and link permission for Akshar Wellness and Sadbhav comes from the owner,
 who placed them on the site as real clients for social-media work. Nothing
 further — logo, quote, screenshot, figure — goes up until the client has agreed
 to that specific use. Logo use is never a condition of working together.
+
+Print is recorded separately from the site. On 2026-10-09 the owner confirmed
+that all three practices agreed to their logo and their doctor's name appearing
+on the printed front-side flyer, under the names in the last row above (Pramukh
+and Sadbhav are written differently there than on the site). That clearance
+covers the flyer only; putting a logo or a doctor's name on the website is a
+separate decision, still to be made.
 
 ## What to collect next
 
