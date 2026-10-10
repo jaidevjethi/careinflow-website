@@ -27,3 +27,7 @@ docs/print/
 # Private business notes: unit economics and client-specific arrangements.
 # The repo is public, so these never leave the studio machine.
 docs/private/
+
+# Social-media studio: design system, renderer, content calendar and exports.
+# Kept on the studio machine only; the repo is public.
+careinflow-social/
