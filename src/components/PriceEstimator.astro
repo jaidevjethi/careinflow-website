@@ -105,7 +105,7 @@ const contentOptions = [
             {buildOptions.map((o, i) => (
               <label
                 class:list={[
-                  'card-hover flex cursor-pointer items-start gap-x-3.5 rounded-2xl border border-line bg-canvas p-4',
+                  'card-hover flex cursor-pointer items-start gap-x-3.5 rounded-2xl border border-line bg-canvas p-4 has-checked:border-surgical has-checked:bg-surgical-tint',
                   o.value === 'none' && 'md:col-span-2 lg:col-span-1 xl:col-span-2',
                 ]}
               >
@@ -149,7 +149,7 @@ const contentOptions = [
                 class="mt-2.5 w-full rounded-xl border border-line bg-canvas px-3.5 py-2.5 text-[16px] text-ink"
               />
             </label>
-            <label class="flex cursor-pointer items-start gap-3 self-end rounded-xl border border-line bg-canvas p-3.5">
+            <label class="flex cursor-pointer items-start gap-3 self-end rounded-xl border border-line bg-canvas p-3.5 transition-colors duration-200 ease-instrument has-checked:border-surgical has-checked:bg-surgical-tint">
               <input
                 type="checkbox"
                 name="gujarati"
@@ -169,14 +169,14 @@ const contentOptions = [
             <p class="text-[14px] leading-[1.55] text-muted">
               Two things worth doing on a site someone else built:
             </p>
-            <label class="flex cursor-pointer items-start gap-3 rounded-xl border border-line bg-canvas p-3.5">
+            <label class="flex cursor-pointer items-start gap-3 rounded-xl border border-line bg-canvas p-3.5 transition-colors duration-200 ease-instrument has-checked:border-surgical has-checked:bg-surgical-tint">
               <input type="checkbox" name="takeover" data-price={takeover.price} class="mt-0.5 size-4 shrink-0 accent-[var(--color-surgical)]" />
               <span class="min-w-0 text-[15px] leading-[1.5] text-body-deep">
                 Website takeover audit
                 <span class="mt-0.5 block font-mono text-[11px] text-surgical">{rupees(takeover.price)}</span>
               </span>
             </label>
-            <label class="flex cursor-pointer items-start gap-3 rounded-xl border border-line bg-canvas p-3.5">
+            <label class="flex cursor-pointer items-start gap-3 rounded-xl border border-line bg-canvas p-3.5 transition-colors duration-200 ease-instrument has-checked:border-surgical has-checked:bg-surgical-tint">
               <input type="checkbox" name="gbpRebuild" data-price={gbpRebuild.price} class="mt-0.5 size-4 shrink-0 accent-[var(--color-surgical)]" />
               <span class="min-w-0 text-[15px] leading-[1.5] text-body-deep">
                 Google Business Profile rebuild
@@ -192,7 +192,7 @@ const contentOptions = [
           </legend>
           <div class="mt-4 grid gap-2.5 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
             {planOptions.map((o) => (
-              <label class="card-hover flex cursor-pointer items-start gap-x-3.5 rounded-2xl border border-line bg-canvas p-4">
+              <label class="card-hover flex cursor-pointer items-start gap-x-3.5 rounded-2xl border border-line bg-canvas p-4 has-checked:border-surgical has-checked:bg-surgical-tint">
                 <input
                   type="radio"
                   name="plan"
@@ -224,7 +224,7 @@ const contentOptions = [
           </p>
           <div class="mt-3 grid gap-2.5 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2" role="radiogroup" aria-label="Healthcare content each month">
             {contentOptions.map((o) => (
-              <label class="card-hover flex cursor-pointer items-start gap-x-3.5 rounded-2xl border border-line bg-canvas p-4">
+              <label class="card-hover flex cursor-pointer items-start gap-x-3.5 rounded-2xl border border-line bg-canvas p-4 has-checked:border-surgical has-checked:bg-surgical-tint">
                 <input
                   type="radio"
                   name="content"
@@ -327,6 +327,26 @@ const contentOptions = [
         : { value: 'none', price: 0, label: '' };
     };
 
+    /*
+     * A total that changes settles into place, so the visitor sees the number
+     * answer the choice they just made. Only when it actually changed, never
+     * on load, never under reduced motion. 200ms on the one easing: the JS
+     * mirror of --duration-hover and --ease-instrument in global.css, written
+     * out because reading the tokens back cost more bytes than the effect.
+     */
+    const still = matchMedia('(prefers-reduced-motion: reduce)');
+    let ready = false;
+    const show = (el: HTMLElement, text: string) => {
+      if (el.textContent === text) return;
+      el.textContent = text;
+      if (ready && !still.matches) {
+        el.animate([{ opacity: 0.4, translate: '0 4px' }, { opacity: 1, translate: 'none' }], {
+          duration: 200,
+          easing: 'cubic-bezier(.22,1,.36,1)',
+        });
+      }
+    };
+
     // An arrow assigned to a const, not a hoisted `function`, so the null
     // guard above still narrows these five elements inside the closure.
     const update = () => {
@@ -351,8 +371,8 @@ const contentOptions = [
         build.price + pagesCost + checked('gujarati') + checked('takeover') + checked('gbpRebuild');
       const perMonth = plan.price + content.price;
 
-      once.textContent = oneTime ? money(oneTime) : 'Nothing';
-      monthly.textContent = perMonth ? money(perMonth) : 'Nothing';
+      show(once, oneTime ? money(oneTime) : 'Nothing');
+      show(monthly, perMonth ? money(perMonth) : 'Nothing');
 
       const parts: string[] = [];
       // The package names already say "Website", so nothing is appended.
@@ -376,5 +396,6 @@ const contentOptions = [
     form.addEventListener('input', update);
     form.addEventListener('change', update);
     update();
+    ready = true;
   })();
 </script>

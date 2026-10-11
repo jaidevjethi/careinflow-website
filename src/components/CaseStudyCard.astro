@@ -145,14 +145,18 @@ const subline = heading === 'client' ? d.location : `${d.client} · ${d.location
     for exactly the same reason: the grid moved and this did not. So the
     figures now live in COVER above, one entry per grid, chosen by `layout`.
   */}
-  <Image
-    src={d.cover}
-    alt={d.coverAlt}
-    widths={COVER[grid].widths}
-    sizes={COVER[grid].sizes}
-    {loading}
-    class="aspect-[2/1] w-full border-b border-line bg-surface object-cover object-top"
-  />
+  {/* The frame clips the cover's 2% hover zoom (.card-media), so it never
+      grows over the card's text. The border moved onto it from the image. */}
+  <div class="card-media border-b border-line">
+    <Image
+      src={d.cover}
+      alt={d.coverAlt}
+      widths={COVER[grid].widths}
+      sizes={COVER[grid].sizes}
+      {loading}
+      class="aspect-[2/1] w-full bg-surface object-cover object-top"
+    />
+  </div>
   {compact ? (
     <div class="flex flex-1 flex-col p-4 sm:p-5">
       {/*
@@ -197,7 +201,7 @@ const subline = heading === 'client' ? d.location : `${d.client} · ${d.location
       <Heading class="text-[16px] font-extrabold leading-[1.25] tracking-[-0.02em] text-ink">
         {headline}
       </Heading>
-      <p class="prose-link mt-auto pt-3 text-[14px]">See the case study →</p>
+      <p class="prose-link mt-auto pt-3 text-[14px]">See the case study <span class="go" aria-hidden="true">→</span></p>
     </div>
   ) : (
     <div class="flex flex-1 flex-col p-5 sm:p-6">
@@ -230,7 +234,7 @@ const subline = heading === 'client' ? d.location : `${d.client} · ${d.location
           </div>
         ))}
       </dl>
-      <p class="prose-link mt-5 text-[16px]">Read the case study →</p>
+      <p class="prose-link mt-5 text-[16px]">Read the case study <span class="go" aria-hidden="true">→</span></p>
     </div>
   )}
 </a>

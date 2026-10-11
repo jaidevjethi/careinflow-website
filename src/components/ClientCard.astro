@@ -42,9 +42,9 @@ const Tag = tag;
     <p class="mt-1.5 font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{c.place}</p>
     <p class="mt-4 text-[15px] leading-[1.6] text-body">{c.work}</p>
     <p class="mt-auto flex flex-wrap gap-x-5 gap-y-1.5 pt-5">
-      <a href={c.url} rel="noopener" class="prose-link text-[15px]">{c.linkText} →</a>
+      <a href={c.url} rel="noopener" class="prose-link text-[15px]">{c.linkText} <span class="go" aria-hidden="true">→</span></a>
       {c.caseStudy && (
-        <a href={href(c.caseStudy)} class="prose-link text-[15px]">Read the case study →</a>
+        <a href={href(c.caseStudy)} class="prose-link text-[15px]">Read the case study <span class="go" aria-hidden="true">→</span></a>
       )}
     </p>
   </div>

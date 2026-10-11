@@ -107,14 +107,16 @@ const schema = graph(
             ]}
           >
             {s.data.image && (
-              <Image
-                src={s.data.image}
-                alt={s.data.imageAlt ?? ''}
-                widths={[400, 800]}
-                sizes="(min-width: 1024px) 400px, 92vw"
-                loading="lazy"
-                class="aspect-[16/9] w-full border-b border-line object-cover"
-              />
+              <div class="card-media border-b border-line">
+                <Image
+                  src={s.data.image}
+                  alt={s.data.imageAlt ?? ''}
+                  widths={[400, 800]}
+                  sizes="(min-width: 1024px) 400px, 92vw"
+                  loading="lazy"
+                  class="aspect-[16/9] w-full object-cover"
+                />
+              </div>
             )}
             <div class="flex flex-1 flex-col p-8">
             <h2 class="text-[24px] font-extrabold leading-[1.15] tracking-[-0.03em] text-ink">
@@ -131,7 +133,7 @@ const schema = graph(
               {/* Lowercased so the label reads inside a sentence, except where
                   the label is an acronym: "Read the ent page" is wrong in a way
                   a reader notices immediately. */}
-              Read the {s.data.navLabel === s.data.navLabel.toUpperCase() ? s.data.navLabel : s.data.navLabel.toLowerCase()} page →
+              Read the {s.data.navLabel === s.data.navLabel.toUpperCase() ? s.data.navLabel : s.data.navLabel.toLowerCase()} page <span class="go" aria-hidden="true">→</span>
             </span>
             </div>
           </a>

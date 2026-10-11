@@ -62,7 +62,7 @@ const serviceLinks: ServiceLink[] = SERVICE_MENU.flatMap((g): ServiceLink[] => [
             <div
               id="services-menu"
               hidden
-              class="absolute right-0 top-[calc(100%+24px)] w-[720px] animate-rise rounded-2xl border border-panel-line bg-panel p-3 shadow-card-lg"
+              class="absolute right-0 top-[calc(100%+24px)] w-[720px] rounded-2xl border border-panel-line bg-panel p-3 shadow-card-lg"
             >
               <div class="grid grid-cols-3 gap-2">
                 {SERVICE_MENU.map((g) => (
@@ -90,7 +90,7 @@ const serviceLinks: ServiceLink[] = SERVICE_MENU.flatMap((g): ServiceLink[] => [
                 class="mt-2 flex items-center justify-between gap-4 rounded-xl border-t border-panel-divider px-3.5 py-3 text-[14px] font-semibold text-panel-accent hover:bg-panel-card hover:no-underline"
               >
                 All services, and where to start
-                <span aria-hidden="true">→</span>
+                <span class="go" aria-hidden="true">→</span>
               </a>
             </div>
           </div>
@@ -157,7 +157,7 @@ const serviceLinks: ServiceLink[] = SERVICE_MENU.flatMap((g): ServiceLink[] => [
           <a
             href={href(item.href)}
             aria-current={isActive(item.href) ? 'page' : undefined}
-            class="block rounded-[10px] px-3 py-3 text-[16px] font-semibold text-surface hover:bg-panel-card hover:no-underline"
+            class="block rounded-[10px] px-3 py-3 text-[16px] font-semibold text-surface hover:bg-panel-card hover:no-underline aria-[current=page]:text-panel-accent"
           >
             {item.label}
           </a>

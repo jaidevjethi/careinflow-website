@@ -158,7 +158,7 @@ const whatsappHref = whatsappFor(Astro.props.prefill ?? copy.prefill);
       </div>
       {nextStep && (
         <p class="mt-6 text-[15px] text-panel-text-dim">
-          Still reading first? <a href={href(nextStep.href)} class="link-accent">{nextStep.label} →</a>
+          Still reading first? <a href={href(nextStep.href)} class="link-accent">{nextStep.label} <span class="go" aria-hidden="true">→</span></a>
         </p>
       )}
     </div>

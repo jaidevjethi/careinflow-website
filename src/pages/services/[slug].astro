@@ -237,7 +237,7 @@ const schema = graph(
           {isContent
             ? 'Send one sample video and we confirm what it involves and what it costs before we start.'
             : 'Your exact figure is fixed in writing after the free review, and it does not move unless the scope does.'}
-          {' '}<a href={href(isContent ? '/pricing#content' : '/pricing')} class="prose-link">See the full price list →</a>
+          {' '}<a href={href(isContent ? '/pricing#content' : '/pricing')} class="prose-link">See the full price list <span class="go" aria-hidden="true">→</span></a>
         </p>
       </div>
     </section>
@@ -305,7 +305,7 @@ const schema = graph(
             <p class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
               <a href={href('/work/pramukh-dental')} class="btn-primary px-6 py-3.5 text-[16px]">Read the case study</a>
               {caseStudy.data.url && (
-                <a href={caseStudy.data.url} rel="noopener" class="prose-link text-[16px]">Open the live site →</a>
+                <a href={caseStudy.data.url} rel="noopener" class="prose-link text-[16px]">Open the live site <span class="go" aria-hidden="true">→</span></a>
               )}
             </p>
           </div>
@@ -334,7 +334,7 @@ const schema = graph(
                   <p class="mt-1.5 font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{c.place}</p>
                   <p class="mt-3 text-[15px] leading-[1.6] text-body">{c.work}</p>
                   <p class="mt-auto pt-5">
-                    <a href={c.url} rel="noopener" class="prose-link text-[15px]">{c.linkText} →</a>
+                    <a href={c.url} rel="noopener" class="prose-link text-[15px]">{c.linkText} <span class="go" aria-hidden="true">→</span></a>
                   </p>
                 </div>
               </li>

@@ -191,7 +191,7 @@ const engagements = [
                 {resolvePrices(service.data.description)}
               </p>
               <a href={href(`/services/${service.id}`)} class="prose-link mt-5 inline-block text-base">
-                Read about {service.data.navLabel.toLowerCase()} →
+                Read about {service.data.navLabel.toLowerCase()} <span class="go" aria-hidden="true">→</span>
               </a>
 
               {price && (
@@ -221,7 +221,7 @@ const engagements = [
                     Or one at a time:{' '}
                     <a href={href(`/services/${child.id}`)} class="prose-link">
                       {child.data.navLabel.toLowerCase()}
-                      {childPrice && `, ${rupees(childPrice.from)} ${unitWords(childPrice.unit)}`} →
+                      {childPrice && `, ${rupees(childPrice.from)} ${unitWords(childPrice.unit)}`} <span class="go" aria-hidden="true">→</span>
                     </a>
                   </p>
                 );

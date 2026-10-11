@@ -23,7 +23,7 @@ const {
   <div class="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-line bg-canvas px-6 py-5 sm:px-7">
     <p class="text-[16px] leading-[1.5] text-body-deep">{text}</p>
     <a href={withBase(href)} class="prose-link whitespace-nowrap text-[16px]">
-      {linkText} →
+      {linkText} <span class="go" aria-hidden="true">→</span>
     </a>
   </div>
 </aside>

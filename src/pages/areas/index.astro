@@ -89,14 +89,16 @@ const schema = graph(
             ACCENTS[home.data.accent].tint,
           ]}
         >
-          <Image
-            src={home.data.image}
-            alt={home.data.imageAlt ?? ''}
-            widths={[420, 840]}
-            sizes="(min-width: 1024px) 420px, 92vw"
-            loading="lazy"
-            class="aspect-[16/9] w-full border-b border-line object-cover lg:aspect-auto lg:h-full lg:border-b-0 lg:border-r"
-          />
+          <div class="card-media border-b border-line lg:border-b-0 lg:border-r">
+            <Image
+              src={home.data.image}
+              alt={home.data.imageAlt ?? ''}
+              widths={[420, 840]}
+              sizes="(min-width: 1024px) 420px, 92vw"
+              loading="lazy"
+              class="aspect-[16/9] w-full object-cover lg:aspect-auto lg:h-full"
+            />
+          </div>
           <div class="flex flex-col justify-center p-8 lg:p-10">
             <p class="mb-3">
               <span class="chip bg-surface/70 text-muted">Our studio is here</span>
@@ -108,7 +110,7 @@ const schema = graph(
             <span
               class:list={['prose-link mt-6 inline-block text-[16px]', ACCENTS[home.data.accent].text]}
             >
-              Working in {home.data.city} →
+              Working in {home.data.city} <span class="go" aria-hidden="true">→</span>
             </span>
           </div>
         </a>
@@ -123,14 +125,16 @@ const schema = graph(
             ]}
           >
             {a.data.image && (
-              <Image
-                src={a.data.image}
-                alt={a.data.imageAlt ?? ''}
-                widths={[400, 800]}
-                sizes="(min-width: 1024px) 400px, 92vw"
-                loading="lazy"
-                class="aspect-[16/9] w-full border-b border-line object-cover"
-              />
+              <div class="card-media border-b border-line">
+                <Image
+                  src={a.data.image}
+                  alt={a.data.imageAlt ?? ''}
+                  widths={[400, 800]}
+                  sizes="(min-width: 1024px) 400px, 92vw"
+                  loading="lazy"
+                  class="aspect-[16/9] w-full object-cover"
+                />
+              </div>
             )}
             <div class="flex flex-1 flex-col p-8">
             <p class="mb-3">
@@ -143,7 +147,7 @@ const schema = graph(
             </h2>
             <p class="mt-3 flex-1 text-[16px] leading-[1.6] text-body">{a.data.summary}</p>
             <span class:list={['prose-link mt-6 inline-block text-[16px]', ACCENTS[a.data.accent].text]}>
-              Working in {a.data.city} →
+              Working in {a.data.city} <span class="go" aria-hidden="true">→</span>
             </span>
             </div>
           </a>

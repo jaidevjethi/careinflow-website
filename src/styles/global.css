@@ -1010,6 +1010,81 @@
     border-radius: inherit;
   }
 
+  /*
+   * The arrow at the end of a link that goes somewhere. It moves 3px toward
+   * where the link goes when the link, or the card around it, is hovered or
+   * keyboard-focused. It is wrapped in its own aria-hidden span, so a screen
+   * reader says "All services", not "All services, right arrow".
+   *
+   * inline-block, because translate does not apply to an inline box.
+   */
+  .go {
+    display: inline-block;
+    transition: translate var(--duration-hover) var(--ease-instrument);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    a:hover .go,
+    .card-hover:hover .go {
+      translate: 3px 0;
+    }
+  }
+  a:focus-visible .go,
+  .card-hover:has(:focus-visible) .go {
+    translate: 3px 0;
+  }
+
+  /*
+   * A card's picture answers with the card: 2% larger inside its own frame
+   * when the card is hovered or keyboard-focused. The frame clips it, so the
+   * picture never grows over the card's border or its text. `scale` rather
+   * than `transform`, so it composes with anything else on the image.
+   */
+  .card-media {
+    overflow: hidden;
+  }
+  .card-media > img {
+    transition: scale var(--duration-hover) var(--ease-instrument);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .card-hover:hover .card-media > img {
+      scale: 1.02;
+    }
+  }
+  .card-hover:focus-visible .card-media > img,
+  .card-hover:has(:focus-visible) .card-media > img {
+    scale: 1.02;
+  }
+
+  /*
+   * The two header menus open and close, rather than appearing and vanishing.
+   * In with the entrance rise (240ms, from 8px below); out faster (160ms, 4px
+   * down), because something leaving should get out of the way.
+   *
+   * `display` transitions discretely, so the panel stays rendered until its
+   * fade has finished, and @starting-style gives the opening its first frame.
+   * Browsers without either simply show and hide it, as before.
+   */
+  #services-menu,
+  #mobile-nav {
+    transition-property: opacity, translate, display;
+    transition-duration: var(--duration-enter);
+    transition-timing-function: var(--ease-instrument);
+    transition-behavior: allow-discrete;
+  }
+  #services-menu[hidden],
+  #mobile-nav.hidden {
+    opacity: 0;
+    translate: 0 4px;
+    transition-duration: var(--duration-exit);
+  }
+  @starting-style {
+    #services-menu,
+    #mobile-nav {
+      opacity: 0;
+      translate: 0 var(--rise);
+    }
+  }
+
   /* --------------------------------------------------------------------------
      Entrances. Two kinds, and they never overlap: the hero arrives by the
      clock, on load; everything below it arrives by scroll position.

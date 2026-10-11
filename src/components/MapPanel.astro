@@ -68,7 +68,7 @@ const { class: className, onPanel = false } = Astro.props;
         onPanel ? 'text-panel-text-dim hover:text-surface' : 'prose-link',
       ]}
     >
-      Get directions →
+      Get directions <span class="go" aria-hidden="true">→</span>
     </a>
     <a
       href={GBP_URL}
@@ -78,7 +78,7 @@ const { class: className, onPanel = false } = Astro.props;
         onPanel ? 'text-panel-text-dim hover:text-surface' : 'prose-link',
       ]}
     >
-      See the listing →
+      See the listing <span class="go" aria-hidden="true">→</span>
     </a>
   </figcaption>
 </figure>

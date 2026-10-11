@@ -367,7 +367,7 @@ const topicLabels: Record<string, string> = {
           title="How CareInflow helps your practice"
           lede="Five services, for healthcare practices only. Start with whichever you need: one is enough, and the free review says which."
         />
-        <a href={href('/services')} class="prose-link whitespace-nowrap text-base">All services →</a>
+        <a href={href('/services')} class="prose-link whitespace-nowrap text-base">All services <span class="go" aria-hidden="true">→</span></a>
       </div>
 
       {/*
@@ -421,7 +421,7 @@ const topicLabels: Record<string, string> = {
                 <p class="mt-auto pt-5">
                   <a href={href(`/services/${c.slug}`)} class="prose-link inline-flex items-center gap-1.5 text-[16px]">
                     {c.cta}
-                    <span aria-hidden="true" class="inline-block transition-transform duration-200 ease-instrument group-hover:translate-x-1">→</span>
+                    <span class="go" aria-hidden="true">→</span>
                   </a>
                 </p>
               </div>
@@ -504,7 +504,7 @@ const topicLabels: Record<string, string> = {
           <p class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
             <a href={href('/work/pramukh-dental')} class="btn-primary px-6 py-3.5 text-[16px]">Read the case study</a>
             {caseStudy.data.url && (
-              <a href={caseStudy.data.url} rel="noopener" class="prose-link text-[16px]">Open the live site →</a>
+              <a href={caseStudy.data.url} rel="noopener" class="prose-link text-[16px]">Open the live site <span class="go" aria-hidden="true">→</span></a>
             )}
           </p>
         </div>
@@ -527,7 +527,7 @@ const topicLabels: Record<string, string> = {
           title="Four websites, live. Open any of them."
           lede="Pramukh's, and three samples built to show a clinic exactly what it receives. Time how fast each one appears and tap its enquiry button. Every card says which is which."
         />
-        <a href={href('/work')} class="prose-link whitespace-nowrap text-base">See the portfolio →</a>
+        <a href={href('/work')} class="prose-link whitespace-nowrap text-base">See the portfolio <span class="go" aria-hidden="true">→</span></a>
       </div>
       {/*
         Four across from xl, two from sm, one on a phone. Four into four
@@ -563,7 +563,7 @@ const topicLabels: Record<string, string> = {
           lede="Your Google listing, your website, your Instagram, and now the answer Google writes above the results. A patient often sees more than one, so they all have to say the same thing, and all of it has to be right."
         />
         <p class="mt-6">
-          <a href={href('/services')} class="prose-link text-base">See all services →</a>
+          <a href={href('/services')} class="prose-link text-base">See all services <span class="go" aria-hidden="true">→</span></a>
         </p>
       </div>
       <div class="rounded-3xl bg-surgical-tint p-5 sm:p-7">
@@ -579,21 +579,23 @@ const topicLabels: Record<string, string> = {
       {patientSurfaces.map((s) => (
         <article class="group card-hover card-link flex flex-col overflow-hidden rounded-3xl border border-line bg-surface">
           <span class:list={['accent-bar block h-1 w-full', s.accent.bar]} aria-hidden="true"></span>
-          <Image
-            src={s.image}
-            alt={s.imageAlt}
-            widths={[420, 640, 840, 1200]}
-            sizes="(min-width: 1440px) 628px, (min-width: 640px) 46vw, 92vw"
-            loading="lazy"
-            class:list={['h-[180px] w-full border-b border-line object-cover sm:h-[210px] lg:h-[250px]', s.imagePos]}
-          />
+          <div class="card-media border-b border-line">
+            <Image
+              src={s.image}
+              alt={s.imageAlt}
+              widths={[420, 640, 840, 1200]}
+              sizes="(min-width: 1440px) 628px, (min-width: 640px) 46vw, 92vw"
+              loading="lazy"
+              class:list={['h-[180px] w-full object-cover sm:h-[210px] lg:h-[250px]', s.imagePos]}
+            />
+          </div>
           <div class="flex flex-1 flex-col p-6 sm:p-7">
             <h3 class="text-[clamp(21px,1.9vw,24px)] font-extrabold leading-[1.2] tracking-[-0.03em] text-ink">{s.title}</h3>
             <p class="mt-2.5 text-[16px] leading-[1.6] text-body">{s.text}</p>
             <p class="mt-auto pt-5">
               <a href={href(s.link)} class="prose-link inline-flex items-center gap-1.5 text-[16px]">
                 {s.linkText}
-                <span aria-hidden="true" class="inline-block transition-transform duration-200 ease-instrument group-hover:translate-x-1">→</span>
+                <span class="go" aria-hidden="true">→</span>
               </a>
             </p>
           </div>
@@ -641,7 +643,7 @@ const topicLabels: Record<string, string> = {
           working days, and if the answer is "change nothing", we will say that.
         </p>
         <a href={href('/contact')} class="btn-accent shrink-0 px-6 py-3 text-[16px]">Get a free digital review</a>
-        <a href={href('/process')} class="link-accent shrink-0 text-[15px]">See the full method →</a>
+        <a href={href('/process')} class="link-accent shrink-0 text-[15px]">See the full method <span class="go" aria-hidden="true">→</span></a>
       </div>
     </div>
   </section>
@@ -701,7 +703,7 @@ const topicLabels: Record<string, string> = {
           the person who edits your reels and builds your site.
         </p>
         <p class="mt-3.5 flex flex-wrap gap-x-5 gap-y-1.5">
-          <a href={href('/about')} class="prose-link text-[15px]">More about the studio →</a>
+          <a href={href('/about')} class="prose-link text-[15px]">More about the studio <span class="go" aria-hidden="true">→</span></a>
         </p>
       </div>
     </div>
@@ -720,7 +722,7 @@ const topicLabels: Record<string, string> = {
           title="Built around the practice you run."
           lede="What a patient needs to see before booking differs from one specialty to the next. Each of these pages says what changes for that kind of practice."
         />
-        <a href={href('/specialties')} class="prose-link whitespace-nowrap text-base">All specialties →</a>
+        <a href={href('/specialties')} class="prose-link whitespace-nowrap text-base">All specialties <span class="go" aria-hidden="true">→</span></a>
       </div>
       {/* Twelve tiles: two, three, four or six to a row, all of which divide
           twelve. The pictures are decorative here (alt=""): the name under each
@@ -729,19 +731,21 @@ const topicLabels: Record<string, string> = {
       <ul class="reveal-group grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4 xl:grid-cols-6">
         {specialties.map((sp) => (
           <li class="group card-hover card-link flex flex-col overflow-hidden rounded-2xl border border-line bg-surface">
-            <Image
-              src={sp.data.image}
-              alt=""
-              widths={[200, 300, 400, 600]}
-              sizes="(min-width: 1440px) 197px, (min-width: 1280px) 15vw, (min-width: 1024px) 22vw, (min-width: 640px) 29vw, 44vw"
-              loading="lazy"
-              class="aspect-[3/2] w-full border-b border-line object-cover"
-            />
+            <div class="card-media border-b border-line">
+              <Image
+                src={sp.data.image}
+                alt=""
+                widths={[200, 300, 400, 600]}
+                sizes="(min-width: 1440px) 197px, (min-width: 1280px) 15vw, (min-width: 1024px) 22vw, (min-width: 640px) 29vw, 44vw"
+                loading="lazy"
+                class="aspect-[3/2] w-full object-cover"
+              />
+            </div>
             <p class="flex flex-1 items-center justify-between gap-2 px-3.5 py-3">
               <a href={href(`/specialties/${sp.id}`)} class="text-[15px] font-semibold leading-[1.3] text-ink hover:no-underline">
                 {sp.data.navLabel}
               </a>
-              <span aria-hidden="true" class="text-surgical transition-transform duration-200 ease-instrument group-hover:translate-x-0.5">→</span>
+              <span class="go text-surgical" aria-hidden="true">→</span>
             </p>
           </li>
         ))}
@@ -766,27 +770,29 @@ const topicLabels: Record<string, string> = {
           label="Guides"
           title="Plain-language guides for clinic owners"
         />
-        <a href={href('/resources')} class="prose-link whitespace-nowrap text-base">All guides →</a>
+        <a href={href('/resources')} class="prose-link whitespace-nowrap text-base">All guides <span class="go" aria-hidden="true">→</span></a>
       </div>
       <div class="grid gap-5 md:grid-cols-3">
         {guides.map((g) => (
           <article class="card-hover card-link flex flex-col overflow-hidden rounded-2xl border border-line bg-canvas">
             {g.data.image && (
-              <Image
-                src={g.data.image}
-                alt=""
-                widths={[320, 480, 640, 860]}
-                sizes="(min-width: 1440px) 413px, (min-width: 768px) 30vw, 92vw"
-                loading="lazy"
-                class="aspect-[2/1] w-full border-b border-line object-cover"
-              />
+              <div class="card-media border-b border-line">
+                <Image
+                  src={g.data.image}
+                  alt=""
+                  widths={[320, 480, 640, 860]}
+                  sizes="(min-width: 1440px) 413px, (min-width: 768px) 30vw, 92vw"
+                  loading="lazy"
+                  class="aspect-[2/1] w-full object-cover"
+                />
+              </div>
             )}
             <div class="flex flex-1 flex-col p-6">
               <p class:list={['label-mono', topicAccent(g.data.topic).text]}>{topicLabels[g.data.topic]}</p>
               <h3 class="mt-3 text-[18px] font-bold leading-[1.3] tracking-[-0.02em] text-ink">{g.data.title}</h3>
               <p class="mt-2.5 line-clamp-3 text-[15px] leading-[1.6] text-body">{g.data.description}</p>
               <p class="mt-auto pt-4">
-                <a href={href(`/resources/${g.id}`)} class="prose-link text-[15px]">Read the guide →</a>
+                <a href={href(`/resources/${g.id}`)} class="prose-link text-[15px]">Read the guide <span class="go" aria-hidden="true">→</span></a>
               </p>
             </div>
           </article>
