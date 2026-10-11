@@ -1025,16 +1025,21 @@
    * the same time within run-to-run noise (Lighthouse, 2026-10-11).
    *
    * So the headline settles 6px into place with no fade, and the hero
-   * photograph does not animate at all.
+   * photograph does not animate at all. The lede settles the same way, one
+   * stagger step later: on a phone, where the photograph sits below the
+   * fold, the lede is often the largest thing on screen, and a fade on it
+   * pushed /pricing's measured LCP 74ms later.
    */
   .hero-settle {
     animation: ci-settle var(--duration-enter) var(--ease-instrument) both;
+    animation-delay: calc(var(--i, 0) * var(--stagger));
   }
   /*
-   * The lines around it (label, lede, buttons, facts) rise in behind it, one
-   * stagger step apart. Set the step with an arbitrary property,
+   * The smaller lines around them (label, buttons, chips, facts) fade and
+   * rise in, one stagger step apart. Set the step with an arbitrary property,
    * `hero-in [--i:2]`. Four steps at most, so the last line has landed 420ms
-   * after first paint.
+   * after first paint. Never use this on anything that could be the page's
+   * largest element.
    */
   .hero-in {
     animation: ci-rise var(--duration-enter) var(--ease-instrument) backwards;
