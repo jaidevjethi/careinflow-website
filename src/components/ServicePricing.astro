@@ -132,7 +132,7 @@ const check = 'M3 8.5l3.5 3.5L13 4.5';
       {reelTiers.map((t, i) => (
         <article
           class:list={[
-            'flex flex-col overflow-hidden rounded-3xl border bg-surface',
+            'flex flex-col overflow-clip rounded-3xl border bg-surface',
             i === 0 ? 'border-surgical shadow-card' : 'border-line',
           ]}
         >
@@ -190,7 +190,7 @@ const check = 'M3 8.5l3.5 3.5L13 4.5';
 {slug === 'google-business-profile' && (
   <div>
     <div class="grid items-stretch gap-5 lg:grid-cols-2">
-      <article class="flex flex-col overflow-hidden rounded-3xl border border-surgical bg-surface shadow-card">
+      <article class="flex flex-col overflow-clip rounded-3xl border border-surgical bg-surface shadow-card">
         <span class:list={['accent-bar block h-1 w-full', ACCENTS.gbp.bar]} aria-hidden="true"></span>
         <div class="flex flex-1 flex-col p-6 sm:p-7">
           <p class:list={['font-mono text-[11px] font-semibold uppercase tracking-[0.12em]', ACCENTS.gbp.text]}>One-time</p>
@@ -215,7 +215,7 @@ const check = 'M3 8.5l3.5 3.5L13 4.5';
           </a>
         </div>
       </article>
-      <article class="flex flex-col overflow-hidden rounded-3xl border border-line bg-surface">
+      <article class="flex flex-col overflow-clip rounded-3xl border border-line bg-surface">
         <span class:list={['accent-bar block h-1 w-full', ACCENTS.seo.bar]} aria-hidden="true"></span>
         <div class="flex flex-1 flex-col p-6 sm:p-7">
           <p class:list={['font-mono text-[11px] font-semibold uppercase tracking-[0.12em]', ACCENTS.seo.text]}>Every month after</p>
@@ -247,7 +247,7 @@ const check = 'M3 8.5l3.5 3.5L13 4.5';
 
 {slug === 'local-seo' && (
   <div>
-    <article class="overflow-hidden rounded-3xl border border-surgical bg-surface shadow-card">
+    <article class="overflow-clip rounded-3xl border border-surgical bg-surface shadow-card">
       <span class:list={['accent-bar block h-1 w-full', ACCENTS.seo.bar]} aria-hidden="true"></span>
       <div class="grid gap-8 p-6 sm:p-8 lg:grid-cols-[minmax(0,320px)_1fr] lg:gap-14">
         <div>

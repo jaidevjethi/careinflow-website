@@ -318,8 +318,23 @@
   --shell-gutter-sm: 40px;
   --shell-gutter-xl: 80px;
 
-  /* One easing for everything */
+  /*
+   * Motion. One easing, four durations, one stagger, one rise — and nothing
+   * outside this block may invent a fifth duration. Every motion rule in this
+   * file reads these, so the site keeps one rhythm however many things move.
+   *
+   *   enter  240ms  things arriving: hero, reveals, menus opening
+   *   hover  200ms  lifts and colour changes under a pointer or focus
+   *   exit   160ms  things leaving, quicker than they came
+   *   press  100ms  the answer to a tap, which has to feel immediate
+   */
   --ease-instrument: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-enter: 240ms;
+  --duration-hover: 200ms;
+  --duration-exit: 160ms;
+  --duration-press: 100ms;
+  --stagger: 60ms;
+  --rise: 8px;
 
   /* One shadow recipe */
   /* Tinted with the current ink #0E2439, so a shadow is the ground darkening
@@ -327,18 +342,35 @@
   --shadow-card: 0 1px 2px rgba(14, 36, 57, 0.05), 0 16px 36px rgba(14, 36, 57, 0.06);
   --shadow-card-lg: 0 1px 2px rgba(14, 36, 57, 0.05), 0 24px 56px rgba(14, 36, 57, 0.07);
 
-  --animate-rise: ci-rise 240ms var(--ease-instrument) both;
-  --animate-fade: ci-fade 240ms var(--ease-instrument) both;
+  --animate-rise: ci-rise var(--duration-enter) var(--ease-instrument) both;
+  --animate-fade: ci-fade var(--duration-enter) var(--ease-instrument) both;
   --animate-live: ci-live 2400ms ease-in-out infinite;
 
+  /*
+   * The rise moves the individual `translate` property, never `transform`.
+   * It used to move `transform` with fill `both`, and an animation's filled
+   * value outranks every normal declaration — so on the 25 cards that sat in
+   * a reveal group, `.card-hover:hover { transform }` lost and the lift never
+   * happened. `translate` and `transform` compose, so a card can finish its
+   * entrance and still lift under the pointer.
+   */
   @keyframes ci-rise {
     from {
       opacity: 0;
-      transform: translateY(8px);
+      translate: 0 var(--rise);
     }
     to {
       opacity: 1;
-      transform: none;
+      translate: none;
+    }
+  }
+  /* The hero headline's settle: movement without a fade. See .hero-settle. */
+  @keyframes ci-settle {
+    from {
+      translate: 0 6px;
+    }
+    to {
+      translate: none;
     }
   }
   @keyframes ci-fade {
@@ -377,15 +409,34 @@
   /*
    * Cross-document view transitions: a soft fade between pages in browsers
    * that support it, inert everywhere else. No JavaScript, no router.
+   *
+   * Opted into only when motion is welcome. The global reduced-motion rule
+   * below targets `*`, which never matches the ::view-transition-* tree, so
+   * this page fade used to run for visitors who had asked for no motion.
    */
-  @view-transition {
-    navigation: auto;
+  @media (prefers-reduced-motion: no-preference) {
+    @view-transition {
+      navigation: auto;
+    }
   }
 
   ::view-transition-old(root),
   ::view-transition-new(root) {
-    animation-duration: 240ms;
+    animation-duration: var(--duration-enter);
     animation-timing-function: var(--ease-instrument);
+  }
+
+  /*
+   * The header and the quick-contact bar hold their place while the page
+   * between them crossfades. Without names they faded out and back in with
+   * everything else, so the one constant on every page flashed on every click.
+   * Each name is used exactly once per page, which the spec requires.
+   */
+  body > header {
+    view-transition-name: site-header;
+  }
+  body > nav[aria-label='Quick contact'] {
+    view-transition-name: quick-bar;
   }
 
   body {
@@ -508,8 +559,26 @@
       animation: none !important;
       transition: none !important;
     }
+    /* Belt and braces: the transition is not opted into above, and if a
+       browser starts one anyway, nothing in it moves. */
+    ::view-transition-group(*),
+    ::view-transition-old(*),
+    ::view-transition-new(*) {
+      animation: none !important;
+    }
     html {
       scroll-behavior: auto;
+    }
+  }
+
+  /* Paper has no scroll position. Every entrance resolves to its end state,
+     so a printed page can never carry a card that had not yet faded in. */
+  @media print {
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      transition: none !important;
     }
   }
 }
@@ -761,11 +830,10 @@
     font-weight: 600;
     border-radius: 12px;
     transition:
-      transform 200ms var(--ease-instrument),
-      opacity 200ms linear;
+      transform var(--duration-hover) var(--ease-instrument),
+      opacity var(--duration-hover) linear;
   }
   .btn-primary:hover {
-    transform: translateY(-2px);
     text-decoration: none;
   }
   /* Primary CTA — ink text on the accent fill; white on it measures 2.98
@@ -780,11 +848,10 @@
     font-weight: 700;
     border-radius: 12px;
     transition:
-      transform 200ms var(--ease-instrument),
-      filter 200ms linear;
+      transform var(--duration-hover) var(--ease-instrument),
+      filter var(--duration-hover) linear;
   }
   .btn-accent:hover {
-    transform: translateY(-2px);
     filter: brightness(1.06);
     text-decoration: none;
   }
@@ -804,11 +871,10 @@
     font-weight: 700;
     border-radius: 12px;
     transition:
-      transform 200ms var(--ease-instrument),
-      filter 200ms linear;
+      transform var(--duration-hover) var(--ease-instrument),
+      filter var(--duration-hover) linear;
   }
   .btn-cta:hover {
-    transform: translateY(-2px);
     filter: brightness(1.08);
     text-decoration: none;
   }
@@ -829,11 +895,10 @@
     font-weight: 700;
     border-radius: 12px;
     transition:
-      transform 200ms var(--ease-instrument),
-      filter 200ms linear;
+      transform var(--duration-hover) var(--ease-instrument),
+      filter var(--duration-hover) linear;
   }
   .btn-whatsapp:hover {
-    transform: translateY(-2px);
     filter: brightness(1.06);
     text-decoration: none;
   }
@@ -873,11 +938,10 @@
     font-weight: 600;
     border-radius: 12px;
     transition:
-      transform 200ms var(--ease-instrument),
-      border-color 200ms linear;
+      transform var(--duration-hover) var(--ease-instrument),
+      border-color var(--duration-hover) linear;
   }
   .btn-on-dark:hover {
-    transform: translateY(-2px);
     border-color: var(--color-panel-accent);
     text-decoration: none;
   }
@@ -893,102 +957,41 @@
     font-weight: 600;
     border-radius: 12px;
     transition:
-      transform 200ms var(--ease-instrument),
-      border-color 200ms linear;
+      transform var(--duration-hover) var(--ease-instrument),
+      border-color var(--duration-hover) linear;
   }
   .btn-secondary:hover {
-    transform: translateY(-2px);
     border-color: var(--color-surgical);
     text-decoration: none;
   }
 
-  /* Card that lifts 2px and darkens its border on hover. */
-  .card-hover {
-    transition:
-      transform 200ms var(--ease-instrument),
-      border-color 200ms linear,
-      box-shadow 200ms var(--ease-instrument);
-  }
-  .card-hover:hover {
-    transform: translateY(-2px);
-    border-color: var(--color-line-hover);
-  }
-
   /*
-   * Horizontal galleries — the hero photographs and the specialty strip.
+   * Button movement, shared by all six.
    *
-   * A native scroll container, not a scripted carousel. Touch, trackpad,
-   * shift-wheel, keyboard arrows and screen-reader navigation all work with no
-   * JavaScript, and `scroll-behavior: smooth` above already falls back to
-   * `auto` under prefers-reduced-motion, so the motion rule holds for free.
-   *
-   * The scrollbar is hidden because it appears and disappears on the platforms
-   * that overlay it, which makes the track twitch as the pointer moves. The
-   * affordance is carried instead by a partial card at the trailing edge, and
-   * by the dots where the slides are full-width and nothing can peek.
-   *
-   * `overscroll-behavior-x: contain` stops a swipe that reaches the end of the
-   * track from being handed to the browser as a back gesture.
+   * The 2px lift is for a pointer that can hover. On a phone, :hover sticks to
+   * whatever was last tapped, so a button stayed raised after the tap that
+   * opened WhatsApp. Touch gets the press instead: every button answers a tap
+   * by sinking 2% for 100ms, which is the only confirmation a thumb gets that
+   * it landed. The press reads on a mouse too.
    */
-  .snap-track {
-    scrollbar-width: none;
-    overscroll-behavior-x: contain;
+  @media (hover: hover) and (pointer: fine) {
+    .btn-primary:hover,
+    .btn-accent:hover,
+    .btn-cta:hover,
+    .btn-whatsapp:hover,
+    .btn-on-dark:hover,
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+    }
   }
-  .snap-track::-webkit-scrollbar {
-    display: none;
-  }
-
-  /*
-   * Stop a dot from scrolling the page as well as the track.
-   *
-   * Fragment navigation aligns the target to the *start* of the scrollport, in
-   * both axes, and it does that even when the element is already fully visible
-   * — so a dot click scrolled the hero up under the header before moving the
-   * track sideways. The global `[id] { scroll-margin-top: 96px }` above made it
-   * worse, but removing that only fixed the second and third dots.
-   *
-   * A scroll-margin taller than the viewport puts the target box's top above
-   * the start of the document, where the vertical scroll clamps to zero and
-   * becomes a no-op. The horizontal alignment is unaffected, so the track still
-   * snaps exactly. Measured: 0px of page movement on every dot, both
-   * directions, where the first dot previously moved the page 168px.
-   */
-  .snap-track > * {
-    scroll-margin-top: 100vh;
-  }
-
-  /* 7px of dot inside a 24px target, which is the minimum this site holds
-     itself to for anything tappable. The negative margin closes the gap the
-     padding opens, so they still read as a tight row. */
-  /*
-   * 24px is the floor WCAG 2.2 sets for a target, and these were exactly that
-   * — then pulled 6px into each neighbour to tighten the visual spacing of the
-   * 7px dots inside them. Against the 8px flex gap that left the hit boxes
-   * overlapping by 4px, so a tap in the seam between two dots landed on
-   * whichever the browser resolved first. The negative margin is gone and the
-   * row sets `gap-0`, which puts the boxes edge to edge: still 24px, no
-   * overlap, and the dots themselves move 4px further apart.
-   */
-  .snap-dot {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-  }
-  .snap-dot::before {
-    content: '';
-    width: 7px;
-    height: 7px;
-    border-radius: 999px;
-    background: var(--color-panel-line-alt);
-    transition:
-      background-color 200ms linear,
-      transform 200ms var(--ease-instrument);
-  }
-  .snap-dot:hover::before {
-    background: var(--color-panel-accent);
-    transform: scale(1.35);
+  .btn-primary:active,
+  .btn-accent:active,
+  .btn-cta:active,
+  .btn-whatsapp:active,
+  .btn-on-dark:active,
+  .btn-secondary:active {
+    transform: scale(0.98);
+    transition-duration: var(--duration-press);
   }
 
   /*
@@ -1007,56 +1010,104 @@
     border-radius: inherit;
   }
 
+  /* --------------------------------------------------------------------------
+     Entrances. Two kinds, and they never overlap: the hero arrives by the
+     clock, on load; everything below it arrives by scroll position.
+     -------------------------------------------------------------------------- */
+
   /*
-   * Scroll-driven entrance: fade + 8px rise as the element enters the
-   * viewport, played once. Pure CSS via animation-timeline, so there is no
-   * observer, no scroll listener and nothing to run on the main thread.
-   * Browsers without support simply show the content — no flash of hidden
-   * content, because the hidden state only applies inside the @supports.
+   * The hero headline never starts invisible. It used to sit inside a 240ms
+   * fade from opacity 0, and Chrome does not count an element painted at
+   * opacity 0 as a largest-contentful-paint candidate — so on every page the
+   * measured LCP was the 14px text of the quick-contact bar, or a heading
+   * below the hero, rather than the headline or photograph a visitor actually
+   * sees first. With the fades gone the photograph is what gets measured, at
+   * the same time within run-to-run noise (Lighthouse, 2026-10-11).
+   *
+   * So the headline settles 6px into place with no fade, and the hero
+   * photograph does not animate at all.
+   */
+  .hero-settle {
+    animation: ci-settle var(--duration-enter) var(--ease-instrument) both;
+  }
+  /*
+   * The lines around it (label, lede, buttons, facts) rise in behind it, one
+   * stagger step apart. Set the step with an arbitrary property,
+   * `hero-in [--i:2]`. Four steps at most, so the last line has landed 420ms
+   * after first paint.
+   */
+  .hero-in {
+    animation: ci-rise var(--duration-enter) var(--ease-instrument) backwards;
+    animation-delay: calc(var(--i, 0) * var(--stagger));
+  }
+
+  /*
+   * Scroll-linked entrances: fade + 8px rise as an element comes into view.
+   * Pure CSS via animation-timeline, so there is no observer, no scroll
+   * listener and nothing on the main thread — and visibility is a pure
+   * function of scroll position, so content a visitor jumps to (an anchor
+   * link, a restored scroll position, find-in-page) is simply visible, with
+   * no event that has to fire first. Browsers without support show the
+   * content: the hidden state only exists inside the @supports.
+   *
+   * CSS scroll-TRIGGERED animations were tried in place of this and rejected:
+   * cards brought into view by a programmatic jump stayed at opacity 0 until
+   * a real scroll happened. Never trade this determinism for a clock.
+   *
+   * Three things this used to get wrong, each measured:
+   *
+   *  - The ranges were percentages of the element's height, so a tall card
+   *    needed hundreds of pixels of scroll to finish fading, and cards at the
+   *    fold sat half-transparent until the visitor moved. Lighthouse failed
+   *    /pricing on contrast for it. The range is now a fixed 96px of travel:
+   *    every element is fully opaque once its top is 96px into view, however
+   *    tall it is.
+   *  - The timeline ignored the sticky header and the quick-contact bar, so
+   *    the first 60px of every entrance played underneath the bar. The view()
+   *    insets take 72px off the top and 60px off the bottom, so the movement
+   *    happens where it can be seen.
+   *  - Grid children shared one timeline named on the container, so in a
+   *    stacked phone column every card below the first finished animating
+   *    long before it reached the screen. Each child now owns its timeline.
+   *
+   * Fill is `backwards`, not `both`. After its range the animation has no
+   * effect at all, which is identical to its end state and leaves the
+   * element free for anything else that moves it.
    */
   @supports (animation-timeline: view()) {
     @media (prefers-reduced-motion: no-preference) {
-      .reveal {
-        animation: ci-rise linear both;
-        animation-timeline: view();
-        animation-range: entry 0% entry 40%;
-      }
-
-      /*
-       * Staggered variant for grids. The children share ONE timeline named on
-       * the container rather than each owning a view() timeline of its own.
-       * With per-element timelines, cards sitting in the same row resolve in
-       * perfect unison, which reads mechanical. Offsetting each child against
-       * the shared timeline makes a grid settle in reading order at any column
-       * count, so it stays correct at every breakpoint.
-       */
-      .reveal-group {
-        view-timeline-name: --ci-group;
-      }
+      .reveal,
       .reveal-group > * {
-        animation: ci-rise linear both;
-        animation-timeline: --ci-group;
-        animation-range: entry 0% entry 40%;
+        animation: ci-rise linear backwards;
+        animation-timeline: view(block 72px 60px);
+        animation-range: entry 0px entry 96px;
       }
-      .reveal-group > *:nth-child(2) { animation-range: entry 6% entry 46%; }
-      .reveal-group > *:nth-child(3) { animation-range: entry 12% entry 52%; }
-      .reveal-group > *:nth-child(4) { animation-range: entry 18% entry 58%; }
-      .reveal-group > *:nth-child(5) { animation-range: entry 24% entry 64%; }
-      .reveal-group > *:nth-child(6) { animation-range: entry 30% entry 70%; }
-      /* Cap the cascade so long lists never feel like they are queueing. */
-      .reveal-group > *:nth-child(n + 7) { animation-range: entry 36% entry 76%; }
+      /*
+       * Cards in one row enter the view together, so they cascade by column
+       * instead: a short offset for the second and third of every three. In
+       * a stacked phone column that is 24px or 48px of scroll, which nobody
+       * sees; across a three- or six-column row it settles in reading order.
+       */
+      .reveal-group > :nth-child(3n + 2) {
+        animation-range: entry 24px entry 120px;
+      }
+      .reveal-group > :nth-child(3n + 3) {
+        animation-range: entry 48px entry 144px;
+      }
 
       /*
        * The instrument signature: the tick rule draws itself left to right as
        * its section arrives, like a chart being plotted. It animates the
        * system's own motif rather than adding a new one, and scaleX is
-       * compositor-only, so it costs nothing to run.
+       * compositor-only, so it costs nothing to run. The rule is 7px tall, so
+       * a percentage range was over within 3px of scroll; a fixed 120px lets
+       * the plot be seen.
        */
       .tick-rule {
         transform-origin: left center;
-        animation: ci-plot linear both;
-        animation-timeline: view();
-        animation-range: entry 0% entry 45%;
+        animation: ci-plot linear backwards;
+        animation-timeline: view(block 72px 60px);
+        animation-range: entry 0px entry 120px;
       }
 
       /*
@@ -1065,22 +1116,44 @@
        * the fold and can never delay a largest-contentful-paint element.
        */
       .settle {
-        animation: ci-rise linear both;
-        animation-timeline: view();
-        animation-range: entry 10% entry 55%;
+        animation: ci-rise linear backwards;
+        animation-timeline: view(block 72px 60px);
+        animation-range: entry 16px entry 112px;
+      }
+
+      /*
+       * view() measures against the nearest SCROLL CONTAINER, and an element
+       * with overflow hidden or auto is one even when it never scrolls. Inside
+       * one, an entrance measures against that box instead of the window, and
+       * the insets above can leave it stopped part-way: the price numerals in
+       * overflow-hidden cards sat at 75% opacity for good. A card that holds
+       * an entrance takes `overflow-clip`, which clips identically and is not
+       * a scroll container. This guard makes sure anything missed is shown.
+       */
+      :is(.overflow-hidden, .overflow-auto, .overflow-scroll, .overflow-x-auto, .overflow-y-auto, .overflow-x-hidden, .overflow-y-hidden)
+        :is(.reveal, .reveal-group > *, .settle, .tick-rule) {
+        animation: none;
       }
     }
   }
 
-  /* Smooth FAQ disclosure where ::details-content is supported. */
+  /*
+   * Smooth FAQ disclosure where ::details-content is supported.
+   *
+   * The one sanctioned exception to "only opacity and transform animate":
+   * the answer's height opens over 240ms. It is user-initiated, it runs once
+   * per click, and an answer that appears with a jump pushes every question
+   * below it down with no warning. The cost is a layout per frame for 240ms,
+   * on a click, which no interaction metric sees.
+   */
   @supports selector(::details-content) {
     @media (prefers-reduced-motion: no-preference) {
       details::details-content {
         block-size: 0;
         overflow: clip;
         transition:
-          block-size 240ms var(--ease-instrument),
-          content-visibility 240ms allow-discrete;
+          block-size var(--duration-enter) var(--ease-instrument),
+          content-visibility var(--duration-enter) allow-discrete;
       }
       details[open]::details-content {
         block-size: auto;
@@ -1206,5 +1279,45 @@
   }
   .prose-ci figure + h2 {
     margin-top: 44px;
+  }
+}
+
+/*
+ * Card hover, focus and press — in the utilities layer on purpose.
+ *
+ * Every card carries a `border-line` utility, and a rule in `components`
+ * loses to any utility whatever its specificity, so the border change that
+ * was designed here never once showed: hovered cards kept #CBD9E8. Inside
+ * `utilities` the higher specificity of `.card-hover:hover` wins, as meant.
+ *
+ * The lift moves `transform`; the scroll entrance moves `translate`. The two
+ * compose, so a card that has just arrived can still lift.
+ */
+@layer utilities {
+  .card-hover {
+    transition:
+      transform var(--duration-hover) var(--ease-instrument),
+      border-color var(--duration-hover) linear;
+  }
+  /* A pointer that can hover. On a phone :hover sticks to the last card
+     tapped, which left it raised for no reason. */
+  @media (hover: hover) and (pointer: fine) {
+    .card-hover:hover {
+      transform: translateY(-2px);
+      border-color: var(--color-line-hover);
+    }
+  }
+  /* A keyboard visitor gets the same lift as a mouse visitor, on the card
+     itself or on the one link inside a .card-link card. Keyboard focus only:
+     a mouse click on an estimator option must not leave it raised. */
+  .card-hover:focus-visible,
+  .card-hover:has(:focus-visible) {
+    transform: translateY(-2px);
+    border-color: var(--color-line-hover);
+  }
+  /* And a tap is answered, on every device. */
+  .card-hover:active {
+    transform: scale(0.99);
+    transition-duration: var(--duration-press);
   }
 }

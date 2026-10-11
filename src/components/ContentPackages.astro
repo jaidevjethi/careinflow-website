@@ -65,7 +65,7 @@ const counts = (p: ContentPackage) =>
     {CONTENT_PACKAGES.map((p) => (
       <article
         class:list={[
-          'card-hover flex h-full flex-col overflow-hidden rounded-3xl border bg-surface',
+          'card-hover flex h-full flex-col overflow-clip rounded-3xl border bg-surface',
           p.recommended ? 'border-surgical shadow-card' : 'border-line',
         ]}
       >

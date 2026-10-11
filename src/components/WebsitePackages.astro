@@ -30,7 +30,7 @@ const askAbout = (b: Build) =>
   {BUILDS.map((build, i) => (
     <article
       class:list={[
-        'card-hover flex h-full flex-col overflow-hidden rounded-3xl border bg-canvas',
+        'card-hover flex h-full flex-col overflow-clip rounded-3xl border bg-canvas',
         build.recommended ? 'border-surgical shadow-card' : 'border-line',
       ]}
     >

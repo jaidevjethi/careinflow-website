@@ -52,6 +52,7 @@ const {
   ...attrs
 } = Astro.props;
 const hasAside = Astro.slots.has('aside');
+const hasDefault = Astro.slots.has('default');
 ---
 
 <section class="panel-depth hero-pad" {...attrs}>
@@ -62,22 +63,30 @@ const hasAside = Astro.slots.has('aside');
         hasAside && 'lg:grid-cols-[1fr_400px] lg:items-start lg:gap-16',
       ]}
     >
-      <div class="animate-rise">
-        {breadcrumb && (
-          <nav aria-label="Breadcrumb" class="mb-3">
-            <a
-              href={breadcrumb.href}
-              class="inline-flex min-h-[24px] items-center font-mono text-[11px] uppercase tracking-[0.1em] text-panel-text-faint hover:text-panel-accent"
-            >
-              ← {breadcrumb.label}
-            </a>
-          </nav>
-        )}
-        <div class="tick-rule tick-rule-dark mb-3" aria-hidden="true"></div>
-        <p class="label-mono mb-4 text-panel-accent">{label}</p>
+      {/*
+        The entrance (see .hero-settle in global.css): the headline is there
+        from the first frame and settles without a fade, so it always counts as
+        painted; the lines around it rise in one stagger step apart. The aside
+        photograph does not animate at all.
+      */}
+      <div>
+        <div class="hero-in">
+          {breadcrumb && (
+            <nav aria-label="Breadcrumb" class="mb-3">
+              <a
+                href={breadcrumb.href}
+                class="inline-flex min-h-[24px] items-center font-mono text-[11px] uppercase tracking-[0.1em] text-panel-text-faint hover:text-panel-accent"
+              >
+                ← {breadcrumb.label}
+              </a>
+            </nav>
+          )}
+          <div class="tick-rule tick-rule-dark mb-3" aria-hidden="true"></div>
+          <p class="label-mono mb-4 text-panel-accent">{label}</p>
+        </div>
         <h1
           class:list={[
-            'font-extrabold leading-[1.04] tracking-[-0.045em] text-surface',
+            'hero-settle font-extrabold leading-[1.04] tracking-[-0.045em] text-surface',
             hasAside
               ? 'text-[clamp(34px,4.6vw,54px)]'
               : 'max-w-[900px] text-[clamp(34px,5vw,62px)]',
@@ -86,20 +95,24 @@ const hasAside = Astro.slots.has('aside');
           {title}
         </h1>
         {lede && (
-          <p class="mt-6 max-w-[660px] text-lg leading-[1.62] text-panel-text">{lede}</p>
+          <p class="hero-in [--i:1] mt-6 max-w-[660px] text-lg leading-[1.62] text-panel-text">{lede}</p>
         )}
         {chips && chips.length > 0 && (
-          <ul class="mt-8 flex flex-wrap gap-2.5">
+          <ul class="hero-in [--i:2] mt-8 flex flex-wrap gap-2.5">
             {chips.map((c) => (
               <li class="chip border border-panel-line bg-panel-card text-panel-text">{c}</li>
             ))}
           </ul>
         )}
-        <slot />
+        {hasDefault && (
+          <div class="hero-in [--i:2]">
+            <slot />
+          </div>
+        )}
       </div>
 
       {hasAside && (
-        <div class="animate-fade lg:pt-2">
+        <div class="lg:pt-2">
           <slot name="aside" />
         </div>
       )}
@@ -108,7 +121,7 @@ const hasAside = Astro.slots.has('aside');
     {stats && stats.length > 0 && (
       <dl
         class:list={[
-          'mt-10 grid grid-cols-2 gap-x-8 gap-y-6 border-t border-panel-line pt-7',
+          'hero-in [--i:3] mt-10 grid grid-cols-2 gap-x-8 gap-y-6 border-t border-panel-line pt-7',
           stats.length >= 4 ? 'sm:grid-cols-4' : 'sm:grid-cols-3',
         ]}
       >

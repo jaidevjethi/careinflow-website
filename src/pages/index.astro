@@ -297,8 +297,8 @@ const topicLabels: Record<string, string> = {
       <div
         class="flex flex-col gap-10 lg:grid lg:grid-cols-[1fr_560px] lg:grid-rows-[auto_auto] lg:items-center lg:gap-x-16 lg:gap-y-7"
       >
-        <div class="animate-rise lg:col-start-1 lg:row-start-1">
-          <p class="inline-flex max-w-full items-center gap-2.5 rounded-full border border-panel-line bg-panel-card px-3.5 py-2">
+        <div class="lg:col-start-1 lg:row-start-1">
+          <p class="hero-in inline-flex max-w-full items-center gap-2.5 rounded-full border border-panel-line bg-panel-card px-3.5 py-2">
             <span class="inline-block size-[7px] shrink-0 animate-live rounded-full bg-panel-accent" aria-hidden="true"></span>
             <span class="min-w-0 font-mono text-[11px] uppercase tracking-[0.08em] text-panel-text sm:tracking-[0.1em]">
               Healthcare practices only · Mehsana, Gujarat
@@ -309,10 +309,10 @@ const topicLabels: Record<string, string> = {
             healthcare websites" stood here until 2026-10-08: an opinion nobody
             could check, describing one of the three things the studio does.
           */}
-          <h1 class="mt-6 text-[clamp(36px,4.6vw,62px)] font-extrabold leading-[1.02] tracking-[-0.05em] text-surface">
+          <h1 class="hero-settle mt-6 text-[clamp(36px,4.6vw,62px)] font-extrabold leading-[1.02] tracking-[-0.05em] text-surface">
             Digital growth for <span class="text-panel-accent">doctors and clinics.</span>
           </h1>
-          <p class="mt-5 max-w-[620px] text-[17px] leading-[1.6] text-panel-text">
+          <p class="hero-in [--i:1] mt-5 max-w-[620px] text-[17px] leading-[1.6] text-panel-text">
             From patient-friendly websites and Gujarati healthcare content to
             your Google Business Profile and local SEO, CareInflow helps
             healthcare practices build a stronger digital presence. One studio
@@ -320,7 +320,7 @@ const topicLabels: Record<string, string> = {
           </p>
           {/* One primary action. "Explore services" is the quieter second,
               for the visitor who wants to see the five before asking. */}
-          <div class="mt-7 flex flex-wrap items-center gap-3.5">
+          <div class="hero-in [--i:2] mt-7 flex flex-wrap items-center gap-3.5">
             <a href={href('/contact')} class="btn-accent px-6 py-3.5 text-base sm:px-7 sm:py-4">
               Get a free digital review
             </a>
@@ -330,7 +330,7 @@ const topicLabels: Record<string, string> = {
           </div>
         </div>
 
-        <dl class="order-last grid max-w-[620px] gap-x-8 gap-y-5 border-t border-panel-line pt-5 sm:grid-cols-3 lg:order-none lg:col-start-1 lg:row-start-2">
+        <dl class="hero-in [--i:3] order-last grid max-w-[620px] gap-x-8 gap-y-5 border-t border-panel-line pt-5 sm:grid-cols-3 lg:order-none lg:col-start-1 lg:row-start-2">
           {credibility.map((c) => (
             <div>
               <dt class="sr-only">{c.caption}</dt>
@@ -342,7 +342,7 @@ const topicLabels: Record<string, string> = {
           ))}
         </dl>
 
-        <figure class="m-0 animate-fade lg:col-start-2 lg:row-span-2 lg:row-start-1">
+        <figure class="m-0 lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <Image
             src={heroPhoto}
             alt="A doctor in a white coat and a web designer sitting together at a desk, looking at a clinic website on a laptop while the designer points at the screen."
