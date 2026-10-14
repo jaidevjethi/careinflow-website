@@ -254,7 +254,7 @@ const resources = defineCollection({
     description: z.string(),
     publishDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
-    topic: z.enum(['websites', 'local-seo', 'google-business-profile', 'performance', 'patients']),
+    topic: z.enum(['websites', 'local-seo', 'google-business-profile', 'performance', 'patients', 'content', 'strategy']),
     minutesRead: z.number(),
     order: z.number(),
     /**

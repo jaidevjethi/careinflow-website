@@ -55,6 +55,14 @@ const shareImage = cover
 
 const faqs = resource.data.faqs ? resolveFaqs(resource.data.faqs) : [];
 
+/*
+ * A guide about healthcare content is read by a doctor with footage on their
+ * phone, so its mid-page ask is the sample-video offer and the sticky bar
+ * opens a content conversation (careinflow-funnel). Every other guide asks
+ * for the free review. The closing panel stays the review everywhere.
+ */
+const isContent = resource.data.topic === 'content';
+
 const schema = graph(
   organizationSchema(),
   founderSchema(),
@@ -95,6 +103,8 @@ const dateFmt = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long'
   imageWidth={shareImage.width}
   imageHeight={shareImage.height}
   progress
+  prefill={isContent ? 'content' : 'default'}
+  offer={isContent ? 'content' : 'review'}
 >
   <article>
     <PageHero
@@ -140,7 +150,15 @@ const dateFmt = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long'
     </div>
   </article>
 
-  <CtaStrip text="Want this applied to your practice? The free review shows exactly where you stand." />
+  {isContent ? (
+    <CtaStrip
+      text="Already recording in the clinic? Send one clip: we reply with what the edit involves and costs. The reply is free, the editing is not, and there is no obligation."
+      href="/contact#content"
+      linkText="Send one sample video"
+    />
+  ) : (
+    <CtaStrip text="Want this applied to your practice? The free review shows exactly where you stand." />
+  )}
 
   {faqs.length > 0 && (
     <FaqSection
@@ -150,5 +168,9 @@ const dateFmt = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long'
     />
   )}
 
-  <CtaPanel nextStep={{ label: 'See what we do', href: '/services' }} />
+  <CtaPanel
+    nextStep={isContent
+      ? { label: 'See healthcare content', href: '/services/healthcare-content' }
+      : { label: 'See what we do', href: '/services' }}
+  />
 </BaseLayout>

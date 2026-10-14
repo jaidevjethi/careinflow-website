@@ -159,8 +159,8 @@ const patientSurfaces = [
     title: 'Your Google listing',
     accent: ACCENTS.gbp,
     image: surfaceGoogleListing,
-    imageAlt: 'A Google Business Profile for a clinic open on a phone, showing the practice name, photographs of the clinic, and call and directions buttons.',
-    imagePos: 'object-[50%_16%]',
+    imageAlt: "A clinic's Google listing open on a phone outside the clinic's entrance, showing photographs, call and directions buttons and opening hours.",
+    imagePos: 'object-[50%_55%]',
     text: 'For many patients this is the first thing they see: the map, a few nearby practices, and their hours, photos and reviews. We rebuild the profile, and keep it right every month on Google Care.',
     link: '/services/google-business-profile',
     linkText: 'Google Business Profile',
@@ -169,8 +169,8 @@ const patientSurfaces = [
     title: 'Your website',
     accent: ACCENTS.web,
     image: surfacePracticeWebsite,
-    imageAlt: 'A clinic website open on a phone, showing a welcome banner, a book-appointment button and a row of treatment cards.',
-    imagePos: 'object-[50%_16%]',
+    imageAlt: "A clinic's website open on a laptop and a phone at the reception counter: a treatment page with a photograph of a doctor and a patient, short paragraphs and one booking button.",
+    imagePos: 'object-[50%_72%]',
     text: 'Built by hand, not from a theme. A page for each treatment, written in the words patients type: the symptom and the cost, not the clinical term.',
     link: '/services/healthcare-websites',
     linkText: 'Healthcare websites',
@@ -179,7 +179,7 @@ const patientSurfaces = [
     title: 'Your Instagram',
     accent: ACCENTS.social,
     image: surfaceInstagram,
-    imageAlt: 'A phone on a desk showing an educational clinic post: a numbered list of early warning signs, laid out with simple illustrations.',
+    imageAlt: "A phone on a dental clinic desk showing an educational post: three points, each beside a simple tooth illustration.",
     imagePos: 'object-center',
     text: 'Patients who found you elsewhere often check it before they call, to see whether the practice is active and explains things clearly. We turn the videos you record into reels that do that.',
     link: '/services/healthcare-content',
@@ -189,7 +189,7 @@ const patientSurfaces = [
     title: 'The answer above the results',
     accent: ACCENTS.seo,
     image: surfaceAiAnswer,
-    imageAlt: 'A laptop on a desk showing a search results page where an AI-written summary box sits above the ordinary blue links.',
+    imageAlt: "A laptop on a dining table at home in the evening, showing an AI-written answer above a short list of the sources it drew on.",
     imagePos: 'object-center',
     text: 'Search a treatment today and Google often writes the answer itself, above every link. It builds that answer from pages it can read and quote, so the facts about your practice have to be published where it can find them.',
     link: '/services/local-seo',
@@ -277,6 +277,8 @@ const topicLabels: Record<string, string> = {
   websites: 'Websites',
   'local-seo': 'Local SEO',
   performance: 'Performance',
+  content: 'Healthcare content',
+  strategy: 'Where to start',
 };
 ---
 
@@ -573,8 +575,9 @@ const topicLabels: Record<string, string> = {
     {/* Four surfaces, two to a row from sm up: a 2x2 keeps each picture large
         enough to read the screen in it. One band height across all four, so
         the rows stay even though two sources are portrait phones and two are
-        landscape; the portraits are pulled up the frame so the band opens on
-        the phone's screen rather than the space above it. */}
+        landscape; each portrait's `imagePos` sets the band on its screen (the
+        phone in one, the laptop in the other) rather than on the faces or
+        the space above. Re-check both whenever a picture is replaced. */}
     <div class="reveal-group grid gap-6 sm:grid-cols-2">
       {patientSurfaces.map((s) => (
         <article class="group card-hover card-link flex flex-col overflow-hidden rounded-3xl border border-line bg-surface">

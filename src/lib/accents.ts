@@ -84,6 +84,10 @@ const TOPIC_ACCENTS: Record<string, AccentName> = {
   'local-seo': 'seo',
   performance: 'care',
   patients: 'social',
+  /* Healthcare content owns `social`; the overview of where to start takes
+     the websites accent, since the website is the centre of the plan. */
+  content: 'social',
+  strategy: 'web',
 };
 
 export const topicAccent = (topic: string): Accent =>
