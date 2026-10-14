@@ -18,11 +18,15 @@ const {
 const id = 'visual-care';
 ---
 
-<svg viewBox="0 0 560 420" role="img" aria-labelledby={id} class:list={['block h-auto w-full', className]} style="font-family: var(--font-sans)">
+<svg viewBox="0 0 560 420" role="img" aria-labelledby={id} class:list={['v-assemble block h-auto w-full', className]} style="font-family: var(--font-sans)">
   <title id={id}>{title}</title>
   <rect width="560" height="420" rx="24" class="fill-a-care-tint" />
   <text x="24" y="30" font-size="9" font-weight="700" letter-spacing="0.14em" class="fill-a-care" style="font-family: var(--font-mono)">ILLUSTRATIVE</text>
 
-  <SiteThumb x={28} y={64} width={230} height={300} />
-  <CareChecklist x={280} y={64} width={252} height={300} />
+  <g class="v-part">
+    <SiteThumb x={28} y={64} width={230} height={300} />
+  </g>
+  <g class="v-part [--p:1]">
+    <CareChecklist x={280} y={64} width={252} height={300} />
+  </g>
 </svg>

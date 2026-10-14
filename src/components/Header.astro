@@ -2,6 +2,15 @@
 import { NAV_ITEMS, SERVICE_MENU } from '@/config/site';
 import { href } from '@/lib/url';
 
+interface Props {
+  /**
+   * A 2px line along the header's bottom edge that fills as the page is
+   * read. Long reads only: guides and case studies.
+   */
+  progress?: boolean;
+}
+const { progress = false } = Astro.props;
+
 const currentPath = Astro.url.pathname.replace(import.meta.env.BASE_URL.replace(/\/$/, ''), '') || '/';
 const isActive = (itemHref: string) => currentPath === itemHref || currentPath.startsWith(`${itemHref}/`);
 
@@ -146,6 +155,9 @@ const serviceLinks: ServiceLink[] = SERVICE_MENU.flatMap((g): ServiceLink[] => [
       </svg>
     </button>
   </div>
+
+  {/* Decorative and aria-hidden: it says nothing the scrollbar does not. */}
+  {progress && <div class="read-progress" aria-hidden="true"></div>}
 
   {/* Scrolls inside itself: with the services listed it is taller than a
       small phone's screen, and the header it hangs from is sticky, so without

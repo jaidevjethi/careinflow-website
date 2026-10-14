@@ -64,9 +64,10 @@ const hasDefault = Astro.slots.has('default');
       ]}
     >
       {/*
-        The entrance (see .hero-settle in global.css): the headline is there
-        from the first frame and settles without a fade, so it always counts as
-        painted; the lines around it rise in one stagger step apart. The aside
+        The entrance (see .hero-settle in global.css): the headline and the
+        lede are there from the first frame and settle without a fade, so
+        whichever is the largest thing on screen counts as painted at once; the
+        smaller lines around them rise in one stagger step apart. The aside
         photograph does not animate at all.
       */}
       <div>

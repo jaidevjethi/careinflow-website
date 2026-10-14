@@ -19,15 +19,21 @@ const {
 const id = 'visual-website';
 ---
 
-<svg viewBox="0 0 560 420" role="img" aria-labelledby={id} class:list={['block h-auto w-full', className]} style="font-family: var(--font-sans)">
+<svg viewBox="0 0 560 420" role="img" aria-labelledby={id} class:list={['v-assemble block h-auto w-full', className]} style="font-family: var(--font-sans)">
   <title id={id}>{title}</title>
   <rect width="560" height="420" rx="24" class="fill-a-web-tint" />
   <text x="24" y="30" font-size="9" font-weight="700" letter-spacing="0.14em" class="fill-a-web" style="font-family: var(--font-mono)">ILLUSTRATIVE</text>
 
-  <BrowserSite x={24} y={46} width={408} height={306} />
-  <PhoneSite x={404} y={150} width={136} height={236} />
+  <g class="v-part">
+    <BrowserSite x={24} y={46} width={408} height={306} />
+  </g>
+  <g class="v-part [--p:1]">
+    <PhoneSite x={404} y={150} width={136} height={236} />
+  </g>
 
-  <rect x="24.75" y="368.75" width="226.5" height="30.5" rx="15.25" class="fill-surface stroke-line" stroke-width="1.5" />
-  <circle cx="44" cy="384" r="4" class="fill-a-web-vivid" />
-  <text x="56" y="388" font-size="11" font-weight="800" class="fill-ink">A page for every treatment</text>
+  <g class="v-part [--p:2]">
+    <rect x="24.75" y="368.75" width="226.5" height="30.5" rx="15.25" class="fill-surface stroke-line" stroke-width="1.5" />
+    <circle cx="44" cy="384" r="4" class="fill-a-web-vivid" />
+    <text x="56" y="388" font-size="11" font-weight="800" class="fill-ink">A page for every treatment</text>
+  </g>
 </svg>

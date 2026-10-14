@@ -1202,6 +1202,29 @@
       }
 
       /*
+       * The drawn illustrations assemble as they arrive: each part of the
+       * drawing (the browser, then the phone, then the caption; the search,
+       * then the listing) rises into place one step after the last, so the
+       * picture shows the work being put together rather than a finished
+       * poster. Parts are <g class="v-part [--p:N]"> inside the drawing; the
+       * drawing names the timeline they share, so the whole assembly is
+       * measured against one box and steps by 40px of scroll each.
+       *
+       * The only motion on the site that is not composited: an SVG subtree
+       * repaints while it moves. It runs once per drawing over at most
+       * ~220px of scroll, and nothing moves afterwards.
+       */
+      .v-assemble {
+        view-timeline: --vis block;
+        view-timeline-inset: 72px 60px;
+      }
+      .v-assemble .v-part {
+        animation: ci-rise linear backwards;
+        animation-timeline: --vis;
+        animation-range: entry calc(var(--p, 0) * 40px) entry calc(var(--p, 0) * 40px + 96px);
+      }
+
+      /*
        * view() measures against the nearest SCROLL CONTAINER, and an element
        * with overflow hidden or auto is one even when it never scrolls. Inside
        * one, an entrance measures against that box instead of the window, and
@@ -1211,8 +1234,36 @@
        * a scroll container. This guard makes sure anything missed is shown.
        */
       :is(.overflow-hidden, .overflow-auto, .overflow-scroll, .overflow-x-auto, .overflow-y-auto, .overflow-x-hidden, .overflow-y-hidden)
-        :is(.reveal, .reveal-group > *, .settle, .tick-rule) {
+        :is(.reveal, .reveal-group > *, .settle, .tick-rule, .v-part) {
         animation: none;
+      }
+    }
+  }
+
+  /*
+   * Reading progress, on long reads only (guides and case studies): a 2px
+   * line along the header's bottom edge that fills left to right as the page
+   * is read. The site's tick rule, plotted against the whole page. A scroll
+   * timeline on scaleX, so it runs on the compositor and costs no script.
+   * It says nothing the scrollbar does not, so it simply is not there under
+   * reduced motion or where scroll timelines are unsupported.
+   */
+  .read-progress {
+    display: none;
+  }
+  @supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .read-progress {
+        display: block;
+        position: absolute;
+        inset-inline: 0;
+        top: 70px;
+        height: 2px;
+        pointer-events: none;
+        background: var(--color-panel-accent);
+        transform-origin: left center;
+        animation: ci-plot linear both;
+        animation-timeline: scroll(root block);
       }
     }
   }

@@ -37,6 +37,8 @@ interface Props {
   prefill?: PrefillKey;
   /** Which of the two offers the sticky bar's text link makes. */
   offer?: 'review' | 'content';
+  /** A reading-progress line under the header, for long reads. */
+  progress?: boolean;
 }
 
 const {
@@ -54,6 +56,7 @@ const {
   noindex,
   prefill = 'default',
   offer = 'review',
+  progress = false,
 } = Astro.props;
 ---
 
@@ -104,7 +107,7 @@ const {
     >
       Skip to content
     </a>
-    <Header />
+    <Header {progress} />
     <main id="main">
       <slot />
     </main>
