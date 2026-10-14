@@ -195,15 +195,101 @@ stranded on the last row and the set reads as unfinished.
 
 ## Motion (hard rules)
 
-One easing: `--ease-instrument`. Only `opacity` and `transform` animate — never
-width, height, top or shadow. Pure CSS; no animation libraries, no scroll
-listeners, no JS.
+Motion here behaves like an instrument settling: short, exact, once, on one
+easing. Things arrive and settle; every touch is answered; the drawings
+assemble. Nothing loops (bar the hero's 7px "live" dot), nothing parallaxes,
+nothing counts up, and no library drives any of it. The before/after
+measurements are in `docs/launch/motion-upgrade-2026-10.md`.
 
-- Entrance: 240ms fade + 8px rise, once. Above the fold `animate-rise` /
-  `animate-fade`; below it `.reveal` / `.reveal-group`.
-- Hover: 200ms 2px lift + border darken (`.card-hover`).
-- `prefers-reduced-motion` disables everything, handled globally. Never add
-  motion that escapes it.
+**Tokens** (`@theme`): `--ease-instrument`; `--duration-enter` 240ms (things
+arriving), `--duration-hover` 200ms (hover, focus and colour state changes),
+`--duration-exit` 160ms (things leaving), `--duration-press` 100ms (a tap);
+`--stagger` 60ms; `--rise` 8px. A new rule reads a token; it never writes a
+literal duration. (The estimator script writes 200ms out once, with a
+comment: reading the token back cost more bytes than the effect.)
+
+**What may move:** `opacity` and the transform family (`transform`,
+`translate`, `scale`), plus colour on a state change (a border or background
+on hover or selection). Never width, height, top or shadow. One documented
+exception: the FAQ answer's height opens over 240ms (`::details-content`),
+because it is user-initiated and an answer that jumps open shoves every
+question below it without warning.
+
+**Pure CSS.** JavaScript animates only a value that changed because of input
+(the estimator's total settles through the Web Animations API). No
+libraries, no scroll listeners, no IntersectionObserver.
+
+### Two kinds of entrance
+
+- **The hero, by the clock, on load.** The H1 and the lede are visible from
+  the first frame and settle 6px with no fade (`.hero-settle`, the lede one
+  stagger step later with `[--i:1]`). The label, buttons, chips and facts fade
+  and rise in one step apart (`.hero-in [--i:N]`, N at most 3). The hero
+  photograph never animates. **Nothing that can be the page's largest element
+  ever starts at opacity 0**: Chrome does not count an element painted at
+  opacity 0 as an LCP candidate, and until 2026-10-11 every page's LCP was
+  being measured on the quick bar's 14px text because of it. On a phone the
+  lede is often the largest element, which is why it settles rather than
+  fades.
+- **Everything below, by scroll position.** `.reveal`, `.reveal-group` (each
+  child owns its `view()` timeline; columns cascade 0/24/48px via
+  `nth-child(3n…)`), `.settle` (numerals, a beat later), `.tick-rule` (the
+  plot), and the drawings (`.v-assemble` on the `<svg>`, its parts wrapped in
+  `<g class="v-part [--p:N]">`, assembling 40px of scroll apart). Timelines
+  are inset 72px for the header and 60px for the quick bar, and ranges are
+  fixed pixels, so anything is fully opaque 96px after it appears, whatever
+  its height. Fill is `backwards`, and entrances move `translate`, never
+  `transform`, so a card's hover lift still composes on top.
+- **Reading progress** on guides and case studies only (`progress` on
+  `BaseLayout`): a 2px `panel-accent` line under the header on a
+  `scroll(root)` timeline. Absent under reduced motion.
+
+**Scroll-linked on purpose.** Visibility is a pure function of scroll
+position, so content reached by an anchor, a restored scroll position or
+find-in-page is simply visible. CSS scroll-*triggered* animations
+(`timeline-trigger`) were prototyped on 2026-10-11 and rejected: cards
+brought into view by a jump stayed at opacity 0 until a real scroll.
+
+**Never inside a scroll container.** `overflow: hidden` or `auto` makes an
+element a scroll container even when it never scrolls, and `view()` then
+measures against that box instead of the window. An entrance inside one can
+stop part-way: the price numerals sat at 75% opacity for exactly this reason.
+A card that holds an entrance or a drawing takes `overflow-clip`, which clips
+identically and is not a scroll container. A guard in `global.css` turns off
+any entrance that still ends up inside an `overflow-*` utility.
+
+### Answering the visitor
+
+- **Hover** (2px lift, border to `line-hover`, 200ms) only for
+  `(hover: hover) and (pointer: fine)`: on a phone `:hover` sticks to the last
+  thing tapped. Keyboard focus gets the same lift (`:focus-visible`, or
+  `:has(:focus-visible)` for a `.card-link` card). Every button and card
+  answers `:active` with a 100ms press. `.card-hover` lives in the
+  **utilities** layer: in `components` it lost to every card's `border-line`
+  utility and its border change never once showed.
+- **Arrows:** a link that goes somewhere ends in
+  `<span class="go" aria-hidden="true">→</span>`, which nudges 3px on hover
+  or focus of the link or its card. Screen readers no longer hear "right
+  arrow".
+- **Card pictures** sit in a `.card-media` frame (it carries the border the
+  image used to) and scale 1.02 inside it with the card.
+- **Menus** open with the rise and close in 160ms (`@starting-style` plus
+  `transition-behavior: allow-discrete`). The Services panel still never
+  opens on hover.
+- **Selections** show: an estimator option takes a surgical border on the
+  surgical tint (`has-checked:`; every text token clears AA on it, lowest
+  4.65), and the total settles when it changes.
+- **Pages:** a 240ms cross-document view transition, opted into only under
+  `prefers-reduced-motion: no-preference`. The header and quick bar keep
+  their place (`view-transition-name`) while the body crossfades.
+
+`prefers-reduced-motion` turns all of it off, view transitions included;
+print resolves every entrance to its end state.
+
+**Verify in a real window.** Device emulation (DevTools, or the app's
+browser pane at phone sizes) switches scroll timelines off, so a phone check
+there proves nothing. Use headless Chrome at `--window-size=500,900` and read
+computed opacity at each scroll stop: nothing 150px into view may be below 1.
 
 ## Components
 
@@ -220,7 +306,8 @@ closed by Escape (focus returns to the button), a click outside, or focus
 leaving it. It never opens on hover: a menu that appears under a passing cursor
 is a menu that covers the page by accident, and a phone has no hover at all.
 The panel is midnight (`bg-panel`, `border-panel-line`) with the one shadow
-recipe, and only `opacity` and `transform` move. On a phone the same links sit
+recipe; it opens with the entrance rise and closes in 160ms, moving only
+`opacity` and `translate`. On a phone the same links sit
 nested and indented in the mobile menu rather than behind a second toggle.
 
 **Clients are text marks until a logo is supplied with permission.** The
