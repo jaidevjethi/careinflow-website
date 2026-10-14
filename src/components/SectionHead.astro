@@ -10,11 +10,11 @@ interface Props {
    * own opener, so this has never needed to be anything else, but the prop
    * keeps the component honest if a section ever nests deeper.
    */
-  as?: 'h2' | 'h3';
+  tag?: 'h2' | 'h3';
   /** Goes on the heading, for a section's aria-labelledby. */
   id?: string;
 }
-const { label, title, lede, dark = false, as: Tag = 'h2', id } = Astro.props;
+const { label, title, lede, dark = false, tag: Tag = 'h2', id } = Astro.props;
 ---
 
 <div class="max-w-[700px]">

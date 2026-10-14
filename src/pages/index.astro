@@ -295,7 +295,7 @@ const topicLabels: Record<string, string> = {
            is deciding, and the three facts follow it. On a wide screen the
            photograph takes the right column and the facts sit under the copy. -->
       <div
-        class="flex flex-col gap-10 lg:grid lg:grid-cols-[1fr_560px] lg:grid-rows-[auto_auto] lg:items-center lg:gap-x-16 lg:gap-y-7"
+        class="flex flex-col gap-10 lg:grid lg:grid-cols-[1fr_440px] xl:grid-cols-[1fr_520px] 2xl:grid-cols-[1fr_560px] lg:grid-rows-[auto_auto] lg:items-center lg:gap-x-16 lg:gap-y-7"
       >
         <div class="lg:col-start-1 lg:row-start-1">
           <p class="hero-in inline-flex max-w-full items-center gap-2.5 rounded-full border border-panel-line bg-panel-card px-3.5 py-2">
@@ -330,7 +330,7 @@ const topicLabels: Record<string, string> = {
           </div>
         </div>
 
-        <dl class="hero-in [--i:3] order-last grid max-w-[620px] gap-x-8 gap-y-5 border-t border-panel-line pt-5 sm:grid-cols-3 lg:order-none lg:col-start-1 lg:row-start-2">
+        <dl class="hero-in [--i:3] order-last grid max-w-[620px] gap-x-8 gap-y-5 border-t border-panel-line pt-5 sm:grid-cols-[repeat(3,minmax(min-content,1fr))] lg:order-none lg:col-start-1 lg:row-start-2">
           {credibility.map((c) => (
             <div>
               <dt class="sr-only">{c.caption}</dt>
@@ -346,8 +346,8 @@ const topicLabels: Record<string, string> = {
           <Image
             src={heroPhoto}
             alt="A doctor in a white coat and a web designer sitting together at a desk, looking at a clinic website on a laptop while the designer points at the screen."
-            widths={[560, 700, 840, 1120]}
-            sizes="(min-width: 1024px) 560px, 92vw"
+            widths={[440, 560, 700, 880, 1120]}
+            sizes="(min-width: 1536px) 560px, (min-width: 1280px) 520px, (min-width: 1024px) 440px, 92vw"
             loading="eager"
             fetchpriority="high"
             class="aspect-[3/2] w-full rounded-3xl border border-panel-line object-cover"
