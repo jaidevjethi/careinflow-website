@@ -196,9 +196,14 @@
     display: flex;
     justify-content: space-between;
     gap: 12px;
+    padding: 2px 8px 2px 10px;
+    box-shadow: inset 3px 0 0 var(--color-vivid);
   }
   .inv-table .inv-adj > td {
-    padding-left: 0;
-    padding-right: 0;
+    padding: 0;
+    border: 0;
+  }
+  .inv-table .inv-adj-last {
+    margin-bottom: 8px;
   }
 }

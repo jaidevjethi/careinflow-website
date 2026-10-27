@@ -8,6 +8,11 @@
  * worked out ("₹300 each instead of the regular ₹699", "5 × ₹300"). A
  * reader can follow the figure down from the regular price to what is owed,
  * and nothing about a reduction is hidden inside a unit price.
+ *
+ * Discount rows are highlighted, because the owner wants every client to see
+ * what they were given: a band of the brand's pale blue with a periwinkle
+ * edge, and the label and figure in bold brand blue. Colour is never the only
+ * signal: the band and the weight survive a grayscale print.
  */
 import { ACCENTS } from '@/lib/accents';
 import { formatMoney, unitSuffix, type ComputedInvoice, type ResolvedLine } from '@/lib/invoice';
@@ -81,15 +86,27 @@ const th = 'label-mono pb-[2mm] align-bottom text-[7pt] font-medium text-muted';
             <td class="inv-num inv-amt pt-[1.9mm] align-top font-semibold text-ink">{money(l.gross)}</td>
           </tr>
           {l.discounts.map((d, i) => (
-            <tr class="inv-adj">
+            <tr class:list={['inv-adj bg-surgical-tint', i === l.discounts.length - 1 && 'inv-adj-last']}>
               <td
                 colspan="3"
-                class:list={['pl-[4mm] pr-[4mm] pt-[0.6mm] align-top text-[8.5pt] leading-[1.35]', i === l.discounts.length - 1 ? 'pb-[1.9mm]' : 'pb-[0.4mm]']}
+                class:list={[
+                  // A border, not an inset shadow: a shadow is painted per cell and left
+                  // a hairline seam between two discount rows in the PDF.
+                  'border-l-[0.9mm] border-vivid pl-[3.1mm] pr-[4mm] align-top text-[8.5pt] leading-[1.35]',
+                  i === 0 ? 'pt-[1.3mm]' : 'pt-[0.5mm]',
+                  i === l.discounts.length - 1 ? 'pb-[1.3mm]' : 'pb-[0.5mm]',
+                ]}
               >
-                <span class="text-ink">{d.label}</span>
-                {d.note && <span class="text-muted"> · {d.note}</span>}
+                <span class="font-bold text-surgical">{d.label}</span>
+                {d.note && <span class="text-body"> · {d.note}</span>}
               </td>
-              <td class:list={['inv-num pt-[0.6mm] align-top text-[8.5pt] text-ink', i === l.discounts.length - 1 ? 'pb-[1.9mm]' : 'pb-[0.4mm]']}>
+              <td
+                class:list={[
+                  'inv-num pr-[2mm] align-top text-[8.5pt] font-bold text-surgical',
+                  i === 0 ? 'pt-[1.3mm]' : 'pt-[0.5mm]',
+                  i === l.discounts.length - 1 ? 'pb-[1.3mm]' : 'pb-[0.5mm]',
+                ]}
+              >
                 {money(-d.amount)}
               </td>
             </tr>

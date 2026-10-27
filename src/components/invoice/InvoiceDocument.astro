@@ -60,7 +60,7 @@ const terms = [
 
 // The summary shows a row only when it says something the next row does not.
 const both = inv.oneTimeSubtotal > 0 && inv.monthlySubtotal > 0;
-const rows: Array<{ label: string; amount: number }> = both
+const rows: Array<{ label: string; amount: number; discount?: boolean }> = both
   ? [
       { label: 'One-time charges', amount: inv.oneTimeSubtotal },
       { label: 'Monthly plans', amount: inv.monthlySubtotal },
@@ -68,7 +68,7 @@ const rows: Array<{ label: string; amount: number }> = both
   : [{ label: 'Subtotal', amount: inv.subtotal }];
 // Each kind of discount on its own row, in the order the lines applied them,
 // so the summary reads down the same way the lines do.
-for (const d of inv.discountsByLabel) rows.push({ label: d.label, amount: -d.amount });
+for (const d of inv.discountsByLabel) rows.push({ label: d.label, amount: -d.amount, discount: true });
 for (const t of inv.taxes) rows.push({ label: `${t.label} ${t.rate}%`, amount: t.amount });
 const showTotal = rows.length > 1 || data.payments.length > 0;
 // A lone subtotal with nothing taken off or added says the same as the
@@ -77,6 +77,10 @@ if (rows.length === 1 && !showTotal) rows.length = 0;
 
 const paid = inv.status === 'paid';
 const dueLabel = paid ? 'Paid in full' : inv.received > 0 ? 'Balance due' : 'Amount due';
+// The regular price is struck through beside the amount only when the two are
+// directly comparable: no tax added on top and nothing received yet. The
+// discount itself is shown whenever there is one.
+const strikeRegular = inv.discountTotal > 0 && inv.taxes.length === 0 && inv.received === 0;
 
 const promoChoice = data.promo;
 const covered = promoCovered(data);
@@ -176,6 +180,18 @@ const statusChip = {
     <div class="self-start rounded-[3mm] bg-surgical-tint px-[4.5mm] pb-[4mm] pt-[3.5mm]">
       <h2 class="label-mono text-[7pt] font-medium text-surgical">{dueLabel}</h2>
       <p class="numeral mt-[2.5mm] whitespace-nowrap text-[27pt] text-surgical">{money(paid ? inv.total : inv.balance)}</p>
+      {inv.discountTotal > 0 && (
+        <p class="mt-[2mm] flex flex-wrap items-center gap-x-[2mm] gap-y-[1mm] text-[8.5pt] leading-none">
+          {strikeRegular && (
+            <span class="text-body line-through decoration-[0.8pt]">
+              <span class="sr-only">Regular price </span>{money(inv.subtotal)}
+            </span>
+          )}
+          <span class="rounded-[1.2mm] border-[0.8pt] border-vivid bg-surface px-[1.8mm] py-[1mm] font-bold text-surgical">
+            {money(inv.discountTotal)} discount
+          </span>
+        </p>
+      )}
       {paid ? (
         <p class="mt-[2mm] text-[8.5pt] text-body-deep">Thank you. Nothing more is owed on this invoice.</p>
       ) : (
@@ -212,12 +228,19 @@ const statusChip = {
 
     <div>
       <dl class="text-[9pt]">
-        {rows.map((r) => (
-          <div class="flex justify-between gap-[4mm] py-[0.7mm]">
-            <dt class="text-body">{r.label}</dt>
-            <dd class="inv-num text-ink">{money(r.amount)}</dd>
-          </div>
-        ))}
+        {rows.map((r) =>
+          r.discount ? (
+            <div class="my-[0.5mm] flex justify-between gap-[4mm] rounded-[1.2mm] bg-surgical-tint py-[0.9mm] pl-[2.4mm] pr-[2mm] font-bold text-surgical shadow-[inset_0.9mm_0_0_var(--color-vivid)]">
+              <dt>{r.label}</dt>
+              <dd class="inv-num">{money(r.amount)}</dd>
+            </div>
+          ) : (
+            <div class="flex justify-between gap-[4mm] py-[0.7mm]">
+              <dt class="text-body">{r.label}</dt>
+              <dd class="inv-num text-ink">{money(r.amount)}</dd>
+            </div>
+          ),
+        )}
         {showTotal && (
           <div class="mt-[0.8mm] flex justify-between gap-[4mm] border-t border-line-strong pt-[1.4mm] font-semibold">
             <dt class="text-ink">Total</dt>
