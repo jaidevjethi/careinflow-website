@@ -157,6 +157,10 @@
   .inv-footer-address {
     text-align: left;
   }
+  .inv-pay-ids {
+    border-left: 0;
+    padding-left: 0;
+  }
   .inv-table thead {
     display: none;
   }

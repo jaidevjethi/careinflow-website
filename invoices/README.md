@@ -72,9 +72,10 @@ printing.
 Until a QR or a link is set, the invoice shows a dashed box saying so, and
 the toolbar warns you. Nothing is ever filled in with an example.
 
-The WhatsApp code on every invoice is already live. It opens a chat with the
-studio's number from `src/config/site.ts`, starting "Hi CareInflow. About
-invoice …".
+The UPI code is the only QR code on an invoice, so a client paying can never
+scan the wrong one. WhatsApp is a link in the closing line ("Questions about any
+line? WhatsApp us at …"), using the studio's number from `src/config/site.ts` and
+opening the chat with "Hi CareInflow. About invoice …".
 
 ## Invoice fields
 

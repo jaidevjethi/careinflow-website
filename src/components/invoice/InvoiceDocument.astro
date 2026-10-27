@@ -16,7 +16,7 @@ import InvoiceLines from './InvoiceLines.astro';
 import InvoicePayment from './InvoicePayment.astro';
 import InvoicePromo from './InvoicePromo.astro';
 import { BUSINESS, CANONICAL_HOST } from '@/config/site';
-import { INVOICE, PROMO, invoiceTerms } from '@/config/invoice';
+import { INVOICE, PROMO, invoiceTerms, invoiceWhatsapp } from '@/config/invoice';
 import {
   STATUS_LABEL,
   formatDate,
@@ -239,11 +239,14 @@ const statusChip = {
     <footer class="inv-cols inv-avoid mt-[4mm] grid grid-cols-[minmax(0,1fr)_auto] items-end gap-x-[8mm] gap-y-[2mm] border-t-[1.2pt] border-ink pt-[2.8mm]">
       <div>
         <p class="text-[10pt] font-bold tracking-[-0.01em] text-ink">{INVOICE.closing}</p>
-        <p class="text-[8pt] text-body">{INVOICE.closingNote}</p>
+        <p class="text-[8pt] leading-[1.45] text-body">
+          Questions about any line?
+          <a href={invoiceWhatsapp(data.number)} rel="noopener" class="font-semibold whitespace-nowrap text-whatsapp-deep">WhatsApp us at {BUSINESS.phoneDisplay}</a>
+        </p>
       </div>
       <address class="inv-footer-address text-right text-[7.5pt] not-italic leading-[1.5] text-muted">
         {studioAddress}<br />
-        {BUSINESS.phoneDisplay} · {BUSINESS.email} · {site}
+        {BUSINESS.email} · {site}
       </address>
     </footer>
   </div>
@@ -260,8 +263,11 @@ const statusChip = {
    * measurement would not describe the page, so nothing is hidden.
    */
   const MM = 96 / 25.4;
-  /** The height print.css gives one page of sheet, in mm. */
-  const PAGE_MM = 268;
+  /**
+   * What one printed page holds, in mm: the 271mm page box less a millimetre
+   * of safety. (The sheet's 268mm print min-height only pins the footer.)
+   */
+  const PAGE_MM = 270;
 
   function fit() {
     const sheet = document.querySelector<HTMLElement>('.invoice-sheet');

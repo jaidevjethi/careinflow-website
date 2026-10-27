@@ -36,11 +36,11 @@ export const INVOICE = {
    */
   dueDays: 7,
 
-  /** The opening of the WhatsApp message the invoice's QR code starts. */
+  /** The opening of the WhatsApp message the invoice's closing link starts. */
   whatsappPrefill: (number: string) => `Hi CareInflow. About invoice ${number}: `,
 
+  /** The closing line. The sentence under it links WhatsApp; see InvoiceDocument. */
   closing: 'Thank you for working with CareInflow.',
-  closingNote: 'If any line is unclear, message us and we will explain it.',
 } as const;
 
 /**

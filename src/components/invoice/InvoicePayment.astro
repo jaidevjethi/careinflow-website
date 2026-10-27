@@ -13,12 +13,13 @@
  * (with `upiIncludeAmount`) the amount already filled in. It only works where
  * a UPI app is installed, which is why the code and the UPI ID stay beside it.
  *
- * The WhatsApp code is real. Its number is the verified one in site.ts, the
- * same one every page of the website opens.
+ * One QR code on the page, and it pays. The WhatsApp code that used to sit
+ * here was a second square a client could scan by mistake when paying, so
+ * WhatsApp is a plain link in the closing line instead.
  */
 import QrCode from './QrCode.astro';
 import { BUSINESS } from '@/config/site';
-import { invoiceWhatsapp, upiQrDataUri } from '@/config/invoice';
+import { upiQrDataUri } from '@/config/invoice';
 import { formatMoney, upiUri, type InvoiceSettings } from '@/lib/invoice';
 
 interface Props {
@@ -53,11 +54,11 @@ const payeeNote =
       : `Shows as ${payee} in your UPI app.`;
 const link = paymentLink ?? settings.paymentLink;
 const bank = settings.bank;
-const whatsapp = invoiceWhatsapp(number);
 const amount = formatMoney(balance, decimals);
 
 const title = 'text-[9pt] font-bold leading-[1.3] text-ink';
 const small = 'text-[8pt] leading-[1.45] text-body';
+const label = 'label-mono text-[6.5pt] font-medium text-muted';
 const button =
   'mt-[1.2mm] inline-flex items-center gap-[1.5mm] rounded-[2mm] bg-vivid px-[3mm] py-[1.5mm] text-[8.5pt] font-bold text-ink';
 const placeholder =
@@ -70,8 +71,8 @@ const placeholder =
 >
   <h2 id="inv-pay" class="label-mono text-[7pt] font-medium text-muted">How to pay</h2>
 
-  <div class="inv-cols mt-[2.5mm] grid grid-cols-[30mm_minmax(0,1fr)_62mm] gap-[5.5mm]">
-    <!-- UPI -->
+  <div class="inv-cols mt-[2.5mm] grid grid-cols-[30mm_minmax(0,1fr)_minmax(0,1fr)] gap-[6mm]">
+    <!-- The code -->
     <div>
       {qrImage ? (
         <img src={qrImage} alt="UPI QR code to pay CareInflow" class="block size-[30mm] rounded-[1.5mm] bg-surface object-contain" />
@@ -82,25 +83,19 @@ const placeholder =
       )}
     </div>
 
-    <!-- UPI words, the link, the bank, the reference -->
-    <div class="flex flex-col gap-[2.5mm]">
+    <!-- Scan or tap, and any other way to pay -->
+    <div class="flex flex-col gap-[3mm]">
       <div>
         <p class={title}>Pay by UPI</p>
         <p class={small}>
           {upiLink
-            ? 'Scan with any UPI app, or tap on your phone.'
+            ? 'Scan the code with Google Pay, PhonePe, Paytm or any UPI app. On your phone, tap the button instead.'
             : 'Scan the code with Google Pay, PhonePe, Paytm or any UPI app.'}
         </p>
         {upiLink && (
           <a href={upiLink} class={button}>
             {settings.upiIncludeAmount && balance > 0 ? `Pay ${amount} by UPI` : 'Pay by UPI'} <span aria-hidden="true">→</span>
           </a>
-        )}
-        {settings.upiId && (
-          <p class="mt-[1mm] text-[8pt] leading-[1.45] text-body">
-            UPI ID <span class="font-mono font-semibold text-ink">{settings.upiId}</span>
-            {payeeNote && <span class="block">{payeeNote}</span>}
-          </p>
         )}
       </div>
 
@@ -120,25 +115,23 @@ const placeholder =
           </div>
         )
       )}
-
-      <p class="text-[8pt] text-body">
-        Payment note: <span class="font-mono font-semibold text-ink">{number}</span>
-      </p>
     </div>
 
-    <!-- WhatsApp -->
-    <div class="border-l border-line pl-[5mm]">
-      <p class={title}>Questions about this invoice?</p>
-      <div class="mt-[2mm] flex items-start gap-[3mm]">
-        <a href={whatsapp} rel="noopener" class="block shrink-0" aria-label="Message CareInflow on WhatsApp about this invoice">
-          <QrCode value={whatsapp} label="QR code: message CareInflow on WhatsApp" class="size-[23mm] rounded-[1.5mm]" />
-        </a>
-        <p class={small}>
-          Scan to message us on WhatsApp, or write to
-          <a href={whatsapp} rel="noopener" class="block font-semibold whitespace-nowrap text-whatsapp-deep">{BUSINESS.phoneDisplay}</a>
-        </p>
+    <!-- What to type, if typing is easier than scanning -->
+    <dl class="inv-pay-ids flex flex-col gap-[2.5mm] border-l border-line pl-[6mm]">
+      {settings.upiId && (
+        <div>
+          <dt class={label}>UPI ID</dt>
+          <dd class="mt-[0.8mm] break-all font-mono text-[10pt] font-semibold leading-[1.25] text-ink">{settings.upiId}</dd>
+          {payeeNote && <dd class:list={[small, 'mt-[0.5mm]']}>{payeeNote}</dd>}
+        </div>
+      )}
+      <div>
+        <dt class={label}>Payment note</dt>
+        <dd class="mt-[0.8mm] font-mono text-[10pt] font-semibold leading-[1.25] text-ink">{number}</dd>
+        <dd class:list={[small, 'mt-[0.5mm]']}>So we can match your payment to this invoice.</dd>
       </div>
-    </div>
+    </dl>
   </div>
 
   {bank && (
