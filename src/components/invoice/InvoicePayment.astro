@@ -31,9 +31,11 @@ interface Props {
   paymentLink?: string;
   settings: InvoiceSettings;
   upi: UpiPayment;
+  /** The founder's photograph, shown beside his name when he is the payee. */
+  photo?: string;
 }
 
-const { number, balance, decimals, paymentLink, settings, upi } = Astro.props;
+const { number, balance, decimals, paymentLink, settings, upi, photo } = Astro.props;
 
 const owed = balance > 0;
 const link = paymentLink ?? settings.paymentLink;
@@ -124,12 +126,27 @@ const code = 'mt-[0.8mm] break-all font-mono text-[10pt] font-semibold leading-[
 
       <!-- What to type, if typing is easier than scanning -->
       <dl class="inv-pay-ids flex flex-col gap-[2.5mm] border-l border-line pl-[6mm]">
-        {upi.upiId && (
+        {upi.upiId && upi.payeeIsFounder && photo ? (
           <div>
-            <dt class={label}>UPI ID</dt>
+            <dt class="sr-only">Paid to</dt>
+            <dd class="flex items-center gap-[2.5mm]">
+              <img src={photo} alt={upi.payee} class="size-[11mm] shrink-0 rounded-full border-[0.8pt] border-line object-cover" />
+              <span class="min-w-0">
+                <span class="block text-[9pt] font-bold leading-[1.25] text-ink">{upi.payee}</span>
+                <span class="block text-[7.5pt] leading-[1.35] text-body">CareInflow's founder. Your UPI app shows this name.</span>
+              </span>
+            </dd>
+            <dt class:list={[label, 'mt-[2mm]']}>UPI ID</dt>
             <dd class={code}>{upi.upiId}</dd>
-            {upi.payeeNote && <dd class:list={[small, 'mt-[0.5mm]']}>{upi.payeeNote}</dd>}
           </div>
+        ) : (
+          upi.upiId && (
+            <div>
+              <dt class={label}>UPI ID</dt>
+              <dd class={code}>{upi.upiId}</dd>
+              {upi.payeeNote && <dd class:list={[small, 'mt-[0.5mm]']}>{upi.payeeNote}</dd>}
+            </div>
+          )
         )}
         <div>
           <dt class={label}>Payment note</dt>

@@ -11,7 +11,7 @@ import { getCollection } from 'astro:content';
 import InvoiceLayout from '@/layouts/InvoiceLayout.astro';
 import InvoiceToolbar from '@/components/invoice/InvoiceToolbar.astro';
 import InvoiceDocument from '@/components/invoice/InvoiceDocument.astro';
-import { loadSettings, readUpiQrImage, settingsGaps } from '@/config/invoice';
+import { founderPhoto, loadSettings, readUpiQrImage, settingsGaps } from '@/config/invoice';
 import {
   STATUS_LABEL,
   computeInvoice,
@@ -74,7 +74,7 @@ const th = 'label-mono px-4 py-3 text-left text-[11px] font-medium text-muted';
   >
     <InvoiceToolbar number={entry.data.number} warnings={[...(entry.data.sample ? ['Sample data'] : []), ...gaps]} />
     <main class="py-8 print:py-0">
-      <InvoiceDocument data={entry.data} inv={computed} settings={settings} qrImage={qrImage} />
+      <InvoiceDocument data={entry.data} inv={computed} settings={settings} qrImage={qrImage} photo={await founderPhoto()} />
     </main>
   </InvoiceLayout>
 ) : (

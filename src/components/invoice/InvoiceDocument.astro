@@ -33,9 +33,11 @@ interface Props {
   settings: InvoiceSettings;
   /** The settings QR image, read once per render by the route. */
   qrImage?: QrImage;
+  /** The founder's photograph, cropped by the route. */
+  photo?: string;
 }
 
-const { data, inv, settings, qrImage } = Astro.props;
+const { data, inv, settings, qrImage, photo } = Astro.props;
 // One payment model for the whole sheet, so the button by the amount and the
 // one in the payment panel can never point at different places.
 const upi = upiPayment(settings, qrImage, { number: data.number, balance: inv.balance });
@@ -280,7 +282,7 @@ const statusChip = {
     </div>
   </section>
 
-  <InvoicePayment number={data.number} balance={inv.balance} decimals={inv.decimals} paymentLink={data.paymentLink} settings={settings} upi={upi} />
+  <InvoicePayment number={data.number} balance={inv.balance} decimals={inv.decimals} paymentLink={data.paymentLink} settings={settings} upi={upi} photo={photo} />
 
   <!-- Pinned to the foot of the last page -->
   <div class="mt-auto">

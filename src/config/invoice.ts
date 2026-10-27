@@ -244,6 +244,24 @@ export async function readUpiQrImage(settings: InvoiceSettings): Promise<QrImage
   };
 }
 
+/**
+ * The founder's portrait, cropped to head and shoulders for the small round
+ * photo beside the payee's name. The same photograph the About page uses,
+ * so the face on the invoice is the face on the website. Cropped and
+ * embedded at render, so the PDF carries it at print resolution.
+ */
+let founderPhotoCache: Promise<string> | undefined;
+export function founderPhoto(): Promise<string> {
+  founderPhotoCache ??= sharp(readFileSync(new URL('../assets/jaidev-jethi.jpg', import.meta.url)))
+    // The face sits in the top half of the 896 x 1200 portrait.
+    .extract({ left: 212, top: 90, width: 480, height: 480 })
+    .resize(320, 320)
+    .jpeg({ quality: 86 })
+    .toBuffer()
+    .then((b) => `data:image/jpeg;base64,${b.toString('base64')}`);
+  return founderPhotoCache;
+}
+
 /** How an invoice is paid by UPI: the link, the code to print, and the details. */
 export interface UpiPayment {
   /** The `upi://` link behind the pay button. Absent without a UPI ID, or when nothing is owed. */
@@ -258,6 +276,8 @@ export interface UpiPayment {
   payee: string;
   /** Says whose name the payer will see, when it is not the business's. */
   payeeNote?: string;
+  /** The payee is the founder, so the invoice can show his photograph. */
+  payeeIsFounder: boolean;
 }
 
 /**
@@ -296,6 +316,7 @@ export function upiPayment(
       qrHasAmount: false,
       upiId: qrImage?.upiId,
       payee: qrImage?.payee ?? payee,
+      payeeIsFounder: (qrImage?.payee ?? payee) === BUSINESS.founder,
     };
   }
 
@@ -322,6 +343,7 @@ export function upiPayment(
     upiId: settings.upiId,
     payee,
     payeeNote,
+    payeeIsFounder: payee === BUSINESS.founder,
   };
 }
 
