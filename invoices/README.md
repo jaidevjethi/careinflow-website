@@ -62,9 +62,9 @@ printing.
 | Setting | What it does |
 |---|---|
 | `upiQrImage` | The file name of your own UPI or Google Pay QR image, saved in `invoices/` (png, jpg or webp). Crop it to the code itself; the invoice prints it at 30 mm square. |
-| `upiId` | Your UPI ID. Printed under the code. With no image, the invoice generates the QR from it, with the invoice number as the payment note. |
-| `upiIncludeAmount` | Put the amount due into a generated QR. Off by default, because some apps refuse a preset amount to a personal UPI ID. Test it with a small payment first. |
-| `payeeName` | The name a payer sees in their UPI app. Defaults to CareInflow. |
+| `upiId` | Your UPI ID. Printed under the code, and turned into a **Pay by UPI** button on every invoice: a `upi://` link that opens the payer's UPI app with your UPI ID and the invoice number already filled in. Tapping it works on a phone with a UPI app; on a computer, the code is the way to pay. With no image, the QR is generated from it too. |
+| `upiIncludeAmount` | Also fill the amount still owed into the button (and a generated QR). Off unless you turn it on, because some UPI apps decline a link payment with a preset amount to a personal UPI ID. Test it with a real payment from a client's point of view before you rely on it. |
+| `payeeName` | The name on the UPI account, as a payer's app shows it. Defaults to CareInflow. When it is a person's name, the invoice adds "Shows as …, CareInflow's founder", so a client paying a business invoice is not surprised by it. |
 | `paymentLink` | A standing payment page (Razorpay, Instamojo, a UPI link). An invoice can set its own `paymentLink`, e.g. a link with the amount already in it. |
 | `bank` | Account name, number, IFSC, bank and branch, for clients who pay by transfer. Printed in one line under the payment options. |
 | `gstin` | Only once the studio is registered for GST. Without it, no invoice can carry tax lines. With it, the GSTIN prints in the header and an invoice with `taxes` is titled "Tax invoice". |

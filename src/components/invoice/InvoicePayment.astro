@@ -8,6 +8,11 @@
  * an example: a placeholder that looks like a working UPI ID is a payment sent
  * to nobody.
  *
+ * With a UPI ID set, the panel also carries a tap-to-pay button: a `upi://`
+ * link that opens the payer's UPI app with the payee, the invoice number and
+ * (with `upiIncludeAmount`) the amount already filled in. It only works where
+ * a UPI app is installed, which is why the code and the UPI ID stay beside it.
+ *
  * The WhatsApp code is real. Its number is the verified one in site.ts, the
  * same one every page of the website opens.
  */
@@ -29,15 +34,23 @@ interface Props {
 const { number, balance, decimals, paymentLink, settings } = Astro.props;
 
 const qrImage = upiQrDataUri(settings);
-const upiValue =
-  !qrImage && settings.upiId
-    ? upiUri({
-        upiId: settings.upiId,
-        payee: settings.payeeName ?? BUSINESS.name,
-        note: `Invoice ${number}`,
-        amountPaise: settings.upiIncludeAmount ? balance : undefined,
-      })
-    : undefined;
+const payee = settings.payeeName ?? BUSINESS.name;
+const upiLink = settings.upiId
+  ? upiUri({
+      upiId: settings.upiId,
+      payee,
+      note: `Invoice ${number}`,
+      amountPaise: settings.upiIncludeAmount && balance > 0 ? balance : undefined,
+    })
+  : undefined;
+// A client paying a CareInflow invoice and seeing a person's name in their
+// UPI app should not have to wonder whether it is the right account.
+const payeeNote =
+  payee === BUSINESS.name
+    ? undefined
+    : payee === BUSINESS.founder
+      ? `Shows as ${payee}, CareInflow's founder.`
+      : `Shows as ${payee} in your UPI app.`;
 const link = paymentLink ?? settings.paymentLink;
 const bank = settings.bank;
 const whatsapp = invoiceWhatsapp(number);
@@ -45,6 +58,8 @@ const amount = formatMoney(balance, decimals);
 
 const title = 'text-[9pt] font-bold leading-[1.3] text-ink';
 const small = 'text-[8pt] leading-[1.45] text-body';
+const button =
+  'mt-[1.2mm] inline-flex items-center gap-[1.5mm] rounded-[2mm] bg-vivid px-[3mm] py-[1.5mm] text-[8.5pt] font-bold text-ink';
 const placeholder =
   'flex items-center justify-center rounded-[2mm] border-[0.8pt] border-dashed border-line-strong bg-surface text-center label-mono text-[6.5pt] leading-[1.5] text-muted';
 ---
@@ -60,8 +75,8 @@ const placeholder =
     <div>
       {qrImage ? (
         <img src={qrImage} alt="UPI QR code to pay CareInflow" class="block size-[30mm] rounded-[1.5mm] bg-surface object-contain" />
-      ) : upiValue ? (
-        <QrCode value={upiValue} label="UPI QR code to pay CareInflow" class="size-[30mm] rounded-[1.5mm]" />
+      ) : upiLink ? (
+        <QrCode value={upiLink} label="UPI QR code to pay CareInflow" class="size-[30mm] rounded-[1.5mm]" />
       ) : (
         <div class:list={[placeholder, 'size-[30mm] px-[2mm]']}>UPI QR code<br />to be added</div>
       )}
@@ -71,31 +86,40 @@ const placeholder =
     <div class="flex flex-col gap-[2.5mm]">
       <div>
         <p class={title}>Pay by UPI</p>
-        <p class={small}>Scan the code with Google Pay, PhonePe, Paytm or any UPI app.</p>
+        <p class={small}>
+          {upiLink
+            ? 'Scan with any UPI app, or tap on your phone.'
+            : 'Scan the code with Google Pay, PhonePe, Paytm or any UPI app.'}
+        </p>
+        {upiLink && (
+          <a href={upiLink} class={button}>
+            {settings.upiIncludeAmount && balance > 0 ? `Pay ${amount} by UPI` : 'Pay by UPI'} <span aria-hidden="true">→</span>
+          </a>
+        )}
         {settings.upiId && (
-          <p class="mt-[0.5mm] text-[8pt] text-body">
+          <p class="mt-[1mm] text-[8pt] leading-[1.45] text-body">
             UPI ID <span class="font-mono font-semibold text-ink">{settings.upiId}</span>
+            {payeeNote && <span class="block">{payeeNote}</span>}
           </p>
         )}
       </div>
 
-      <div>
-        <p class={title}>Pay online</p>
-        {link ? (
-          <>
-            <a
-              href={link}
-              rel="noopener"
-              class="mt-[1mm] inline-flex items-center gap-[1.5mm] rounded-[2mm] bg-vivid px-[3mm] py-[1.5mm] text-[8.5pt] font-bold text-ink"
-            >
-              Pay {amount} online <span aria-hidden="true">→</span>
-            </a>
-            <p class="mt-[0.8mm] break-all font-mono text-[7pt] text-muted">{link.replace(/^https?:\/\//, '')}</p>
-          </>
-        ) : (
-          <p class:list={[placeholder, 'mt-[1mm] h-[7mm] max-w-[58mm]']}>Payment link to be added</p>
-        )}
-      </div>
+      {link ? (
+        <div>
+          <p class={title}>Pay online</p>
+          <a href={link} rel="noopener" class={button}>
+            Pay {amount} online <span aria-hidden="true">→</span>
+          </a>
+          <p class="mt-[0.8mm] break-all font-mono text-[7pt] text-muted">{link.replace(/^https?:\/\//, '')}</p>
+        </div>
+      ) : (
+        !upiLink && (
+          <div>
+            <p class={title}>Pay online</p>
+            <p class:list={[placeholder, 'mt-[1mm] h-[7mm] max-w-[58mm]']}>Payment link to be added</p>
+          </div>
+        )
+      )}
 
       <p class="text-[8pt] text-body">
         Payment note: <span class="font-mono font-semibold text-ink">{number}</span>

@@ -134,7 +134,7 @@ const th = 'label-mono px-4 py-3 text-left text-[11px] font-medium text-muted';
           <h2 class="label-mono text-muted">Payment details</h2>
           <ul class="mt-3 space-y-1.5 text-[15px] text-body">
             <li>UPI QR: <strong class="text-ink">{settings.upiQrImage ? `invoices/${settings.upiQrImage}` : settings.upiId ? 'generated from your UPI ID' : 'not added yet'}</strong></li>
-            <li>Payment link: <strong class="text-ink">{settings.paymentLink ?? 'not added yet'}</strong></li>
+            <li>Payment link: <strong class="text-ink">{settings.paymentLink ?? (settings.upiId ? 'a tap-to-pay UPI link on every invoice' : 'not added yet')}</strong></li>
             <li>Bank transfer: <strong class="text-ink">{settings.bank ? 'shown' : 'not shown'}</strong></li>
             <li>GSTIN: <strong class="text-ink">{settings.gstin ?? 'none, so no invoice can carry GST'}</strong></li>
           </ul>

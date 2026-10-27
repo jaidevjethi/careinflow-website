@@ -179,12 +179,18 @@ const GSTIN = /^\d{2}[A-Z]{5}\d{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/;
 
 /** The studio's private payment details, from invoices/settings.json. */
 export const settingsSchema = z.object({
-  /** Your UPI ID. Used to generate a UPI QR when there is no image. */
+  /**
+   * Your UPI ID. Printed under the code, and turned into each invoice's
+   * tap-to-pay `upi://` link. Also generates the QR when there is no image.
+   */
   upiId: z
     .string()
     .regex(/^[\w.-]{2,256}@[a-zA-Z][\w.-]{1,64}$/, 'not a UPI ID (name@bank)')
     .optional(),
-  /** The name a payer sees in their UPI app. Defaults to the business name. */
+  /**
+   * The name on the UPI account, as a payer's app shows it. Defaults to the
+   * business name; when it is a person's name the invoice says whose it is.
+   */
   payeeName: z.string().optional(),
   /** File name of your own UPI QR image, saved in invoices/ (png, jpg or webp). */
   upiQrImage: z
@@ -192,9 +198,9 @@ export const settingsSchema = z.object({
     .regex(/^[\w.-]+\.(png|jpe?g|webp)$/i, 'a file name in invoices/, ending .png, .jpg or .webp')
     .optional(),
   /**
-   * Put the invoice amount into a generated UPI QR. Off by default: some UPI
-   * apps decline a prefilled amount sent to a personal UPI ID. Turn it on for
-   * a business UPI ID, and test it with a small payment first.
+   * Fill the amount due into the tap-to-pay link (and a generated QR). Off by
+   * default: some UPI apps decline a link payment with a preset amount to a
+   * personal UPI ID. Test it with a real payment before relying on it.
    */
   upiIncludeAmount: z.boolean().default(false),
   /** A standing payment page, used when an invoice has no `paymentLink` of its own. */

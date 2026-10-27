@@ -220,6 +220,8 @@ export function upiQrDataUri(settings: InvoiceSettings): string | undefined {
 export function settingsGaps(settings: InvoiceSettings): string[] {
   const gaps: string[] = [];
   if (!settings.upiQrImage && !settings.upiId) gaps.push('No UPI QR code yet');
-  if (!settings.paymentLink) gaps.push('No standing payment link');
+  // A UPI ID gives every invoice its own tap-to-pay link, so a standing
+  // payment page is only missing when there is neither.
+  if (!settings.paymentLink && !settings.upiId) gaps.push('No payment link yet');
   return gaps;
 }
