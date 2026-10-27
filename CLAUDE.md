@@ -19,6 +19,14 @@ Astro 5 · TypeScript strict · Tailwind CSS v4 (`@tailwindcss/vite`, tokens in 
 - Deploys: GitHub Actions → GitHub Pages (mirror); Cloudflare Pages builds the same repo at root (production). `public/_headers` and `public/_redirects` are Cloudflare-only; GitHub Pages ignores both.
 - **Cloudflare Pages strips `.html` extensions**, 308ing `/file.html` → `/file`. Anything fetched by exact URL — the Search Console token in `public/google86e87b3d4788a10e.html` — needs a `200` rewrite in `_redirects`. Never delete that file or its rule; `npm run verify` fails the build if the file goes.
 
+## Invoices (a studio tool, never part of the site)
+
+- `/invoices/` renders branded A4 invoices from YAML, **only under `astro dev`**: the `careinflow-invoices` integration in `astro.config.mjs` injects the route for `command === 'dev'` and never for a build, so no invoice, client name or agreed price can reach production or the mirror. `invoices/README.md` is the manual.
+- **`invoices/` is gitignored except its README and `examples/`.** Client profiles (`invoices/clients/`), invoices, the payment details in `invoices/settings.json` (UPI ID, QR image, payment link, bank, GSTIN) and exported PDFs stay on the studio machine; the repo is public. Never commit a real invoice or settings file, and never put an agreed client price in `src/`.
+- **When the owner gives a client's agreed prices, write them into that client's profile** (`rates` for catalog services, `services` for their own), not into `pricing.ts`: a line bills its own `unitPrice`, else the client's rate, else the published figure. The catalog in `src/lib/invoice.ts` reads every published price from `pricing.ts`; the promo strip (`PROMO` in `src/config/invoice.ts`) does the same with `PRICE_PREFIX`.
+- The intro rate is never a discount; the Discount column prints only when a line has one; GST lines need the studio's GSTIN in `invoices/settings.json`, and none is recorded anywhere in the repo. Payment fields with no real value print as marked placeholders, never as examples.
+- Export: the toolbar's "Print or save as PDF", or `npm run invoice:pdf -- <id>|--all` (headless Chrome over CDP, no dependency).
+
 ## Design system 2a "Instrument" (hard rules)
 
 Full rules in the `careinflow-design` skill. The short version:

@@ -1,0 +1,169 @@
+# Invoices
+
+CareInflow's invoice template: one YAML file per invoice, rendered as a
+branded A4 page you can check on screen and save as a PDF.
+
+**Everything in this folder stays on your machine except this README and
+`examples/`.** The repo is public, and client details, agreed prices and
+payment details are private. `.gitignore` keeps them out. Back the folder up
+the way you back up anything else that matters, because git will not.
+
+The invoice pages exist only while `npm run dev` is running. No build of the
+website can contain an invoice.
+
+## Make an invoice
+
+1. If this is a regular client, give them a profile once:
+   `invoices/clients/<client-id>.yaml`. Start from
+   `examples/clients/your-practice.yaml`. It holds their billing details and
+   the prices you agreed with them.
+2. Copy a sample from `examples/` to `invoices/2026/CI-2026-004.yaml` (any
+   year folder works, and so does `invoices/` itself). The file name becomes
+   the address: `/invoices/ci-2026-004/`.
+3. Change the number, dates, client and lines, and delete `sample: true`.
+4. Run `npm run dev` and open <http://localhost:4321/invoices/>. Every invoice
+   is listed there. Open yours and check every figure.
+5. Save it as a PDF, either way:
+   - **In the browser:** click **Print or save as PDF**, choose *Save as PDF*,
+     and leave paper at A4 and margins at Default. The page sets both.
+   - **From the terminal:** `npm run invoice:pdf -- ci-2026-004` writes
+     `invoices/pdf/CI-2026-004.pdf`. `npm run invoice:pdf -- --all` does every
+     invoice. It uses your installed Chrome or Edge. If it cannot find one,
+     set `CHROME_PATH`.
+
+A mistake in a file (an unknown service, a missing price, a client with no
+profile) stops that invoice with a message saying exactly what is wrong. The
+list still shows the others.
+
+## Prices: what an invoice bills
+
+For each line, the first of these that exists wins:
+
+1. `unitPrice` on the line itself, for a one-off figure.
+2. The client's agreed price: `rates` in their profile, or one of their own
+   `services`.
+3. The published price in `src/config/pricing.ts`.
+
+So a client with agreed rates needs nothing on the line but the service and
+the quantity. The invoice prints only the agreed figure, never the published
+one beside it.
+
+Website Care and the multi-doctor build have no published price, so they
+need `unitPrice` or an agreed rate. Without one, the invoice refuses to
+render rather than guess.
+
+## Payment details
+
+Copy `examples/settings.example.json` to `invoices/settings.json` and fill in
+what you have. Delete any line you do not use. The `REPLACE` values in the
+example are invalid on purpose, so a forgotten one fails loudly instead of
+printing.
+
+| Setting | What it does |
+|---|---|
+| `upiQrImage` | The file name of your own UPI or Google Pay QR image, saved in `invoices/` (png, jpg or webp). Crop it to the code itself; the invoice prints it at 30 mm square. |
+| `upiId` | Your UPI ID. Printed under the code. With no image, the invoice generates the QR from it, with the invoice number as the payment note. |
+| `upiIncludeAmount` | Put the amount due into a generated QR. Off by default, because some apps refuse a preset amount to a personal UPI ID. Test it with a small payment first. |
+| `payeeName` | The name a payer sees in their UPI app. Defaults to CareInflow. |
+| `paymentLink` | A standing payment page (Razorpay, Instamojo, a UPI link). An invoice can set its own `paymentLink`, e.g. a link with the amount already in it. |
+| `bank` | Account name, number, IFSC, bank and branch, for clients who pay by transfer. Printed in one line under the payment options. |
+| `gstin` | Only once the studio is registered for GST. Without it, no invoice can carry tax lines. With it, the GSTIN prints in the header and an invoice with `taxes` is titled "Tax invoice". |
+
+Until a QR or a link is set, the invoice shows a dashed box saying so, and
+the toolbar warns you. Nothing is ever filled in with an example.
+
+The WhatsApp code on every invoice is already live. It opens a chat with the
+studio's number from `src/config/site.ts`, starting "Hi CareInflow. About
+invoice …".
+
+## Invoice fields
+
+```yaml
+number: CI-2026-004          # printed as written; also the payment reference
+issued: 2026-11-01
+due: 2026-11-07              # optional: issued + 7 days (src/config/invoice.ts)
+period: November 2026        # optional
+client: your-practice        # a profile id, or write the details out:
+# client:
+#   name: Practice name
+#   contact: Dr. Name
+#   address: |
+#     Line one
+#     Mehsana, Gujarat 384002
+#   phone: ...
+#   email: ...
+#   gstin: ...
+reference: PO-123            # optional: the client's own reference
+
+lines:
+  - service: reel            # a service key (below) or a client's own service
+    quantity: 8              # months for a monthly plan
+    unitPrice: 650           # optional: a one-off agreed price
+    detail: Eight reels for November   # optional second line
+  - service: website-practice
+    instalment: { part: 1, of: 2, label: to begin }   # half the project fee
+  - service: content-growth
+    rate: intro              # the introductory rate, first three billed months
+  - description: Anything not in the catalog
+    billing: once            # or monthly
+    unit: piece              # project, month, page, once or piece
+    unitPrice: 1500
+    discount: { percent: 10, reason: ... }   # or { amount: 500 }
+
+taxes:                       # only with a GSTIN in settings.json
+  - { label: CGST, rate: 9 }
+  - { label: SGST, rate: 9 }
+payments:                    # money already received
+  - { date: 2026-10-01, amount: 17500, note: advance, by UPI }
+upcoming:                    # starts later: listed, never added to the total
+  - { service: google-care, starts: the month after launch }
+notes:
+  - Printed above the standard terms.
+paymentLink: https://...     # optional: this invoice's own link
+promo: [website, review]     # optional: which "Also from CareInflow" items; false hides it
+status: overdue              # optional: otherwise Due, Part paid or Paid, worked out
+sample: true                 # marks the invoice as a sample
+```
+
+All amounts are in rupees. The invoice works in paise internally, so a
+percentage or a tax rate never leaves a rounding error in a total.
+
+### Service keys
+
+Each key bills the published name and price from `src/config/pricing.ts`,
+unless the client has an agreed rate for it.
+
+| Key | Service | Billed |
+|---|---|---|
+| `website-foundation` | Foundation Website | once |
+| `website-practice` | Practice Website | once |
+| `website-growth` | Growth Website | once |
+| `website-multi` | Multi-Doctor / Multi-Location Website (needs a price) | once |
+| `google-care` | Local SEO & Google Care | monthly |
+| `website-care` | Website Care (needs a price) | monthly |
+| `content-starter`, `content-growth`, `content-plus` | Content packages (`rate: intro` allowed) | monthly |
+| `reel`, `reel-advanced`, `reel-complex` | Healthcare reels | per piece |
+| `post`, `flyer`, `carousel`, `carousel-research` | Posts, flyers, carousels | per piece |
+| `gbp-rebuild` | Google Business Profile rebuild | once |
+| `takeover-audit` | Website takeover audit | once |
+| `extra-page` | Extra treatment or area page | per page |
+| `gujarati-version` | Gujarati version of an existing site | once |
+
+## What prints, and why
+
+- **One-time and monthly lines are grouped apart**, and the summary shows the
+  monthly figure as a separate "Monthly recurring" row under the amount
+  payable. Later months are never added to this invoice's total.
+- **The Discount column appears only when a line has a discount.** The
+  content packages' introductory rate is not a discount: the line prints the
+  regular rate beside it, as the website does.
+- **The terms are the published ones** (`src/content/faqs.json`): builds paid in
+  two halves or three parts, monthly plans billed in advance with no lock-in.
+  Each prints only when the invoice has the thing it is about.
+- **"Also from CareInflow"** shows two services this invoice does not already
+  bill, with their published starting prices (`PROMO` in
+  `src/config/invoice.ts`). If it is the only thing pushing an invoice onto a
+  second page, it is left off.
+- **Long invoices run to a second page** cleanly: rows, the summary, the
+  payment panel and the footer never split, the column headings repeat, and
+  every page carries the invoice number and "Page n of N".

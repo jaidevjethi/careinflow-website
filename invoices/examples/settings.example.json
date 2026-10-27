@@ -1,0 +1,13 @@
+{
+  "upiId": "REPLACE-with-your-UPI-ID",
+  "payeeName": "CareInflow",
+  "upiQrImage": "upi-qr.png",
+  "upiIncludeAmount": false,
+  "paymentLink": "REPLACE-with-your-payment-link",
+  "bank": {
+    "accountName": "REPLACE",
+    "accountNumber": "REPLACE",
+    "ifsc": "REPLACE",
+    "bankName": "REPLACE"
+  }
+}

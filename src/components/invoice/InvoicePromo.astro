@@ -1,0 +1,38 @@
+---
+/**
+ * "Also from CareInflow": two other things the studio does, below the money
+ * and quieter than it. Small type, muted, no fill — a line a client may read
+ * once the invoice is paid, never a banner competing with the amount.
+ */
+import { ACCENTS } from '@/lib/accents';
+import { PRICING_LINK, type PromoItem } from '@/config/invoice';
+
+interface Props {
+  items: PromoItem[];
+}
+
+const { items } = Astro.props;
+---
+
+{items.length > 0 && (
+  <aside class="inv-avoid mt-[4mm]" aria-labelledby="inv-promo" data-promo>
+    <div class="flex flex-wrap items-baseline justify-between gap-x-[4mm] border-t border-line pt-[2.5mm]">
+      <h2 id="inv-promo" class="label-mono text-[7pt] font-medium text-muted">Also from CareInflow</h2>
+      <a href={PRICING_LINK.href} rel="noopener" class="text-[7.5pt] text-body">
+        Every price is published at <span class="font-semibold text-surgical">{PRICING_LINK.label}</span>
+      </a>
+    </div>
+    <ul class:list={['inv-cols mt-[2mm] grid gap-[6mm]', items.length > 1 ? 'grid-cols-2' : 'grid-cols-1']}>
+      {items.map((p) => (
+        <li class="flex gap-[2.5mm]">
+          <span aria-hidden="true" class:list={['w-[0.9mm] shrink-0 rounded-full', ACCENTS[p.accent].bar]}></span>
+          <span class="min-w-0 text-[7.5pt] leading-[1.45]">
+            <a href={p.href} rel="noopener" class="text-[8.5pt] font-bold text-ink">{p.title}</a>
+            <span class:list={['font-semibold', ACCENTS[p.accent].text]}> · {p.price}</span>
+            <span class="block text-body">{p.note}.</span>
+          </span>
+        </li>
+      ))}
+    </ul>
+  </aside>
+)}

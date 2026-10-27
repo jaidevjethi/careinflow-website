@@ -31,3 +31,10 @@ docs/private/
 # Social-media studio: design system, renderer, content calendar and exports.
 # Kept on the studio machine only; the repo is public.
 careinflow-social/
+
+# Invoices: client details, agreed prices and the studio's payment details.
+# The repo is public, so all of it stays on the studio machine. Only the
+# README and the samples in invoices/examples/ are committed.
+invoices/*
+!invoices/README.md
+!invoices/examples/

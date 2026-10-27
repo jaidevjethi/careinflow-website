@@ -1,0 +1,58 @@
+---
+/**
+ * The bar above the sheet: where you are, what is still missing, and the one
+ * action. Screen only. It is the tool's single midnight block, the same navy
+ * the website's header uses, and it never reaches paper.
+ */
+import { href } from '@/lib/url';
+
+interface Props {
+  /** Shown on an invoice; absent on the list. */
+  number?: string;
+  /** Things to fix before this goes to a client. */
+  warnings?: string[];
+}
+
+const { number, warnings = [] } = Astro.props;
+---
+
+<div class="no-print relative top-0 z-10 border-b border-panel-line bg-panel text-panel-text sm:sticky">
+  <div class="mx-auto flex max-w-[1280px] flex-wrap items-center gap-x-5 gap-y-3 px-4 py-3 sm:px-6">
+    <div class="flex min-w-0 items-center gap-3">
+      {number ? (
+        <a href={href('/invoices')} class="text-[14px] font-semibold text-surface hover:underline">
+          <span aria-hidden="true">←</span> All invoices
+        </a>
+      ) : (
+        <span class="text-[15px] font-bold text-surface">Invoices</span>
+      )}
+      <span class="label-mono hidden text-panel-text-faint xl:inline">Studio tool · never published</span>
+    </div>
+
+    {warnings.length > 0 && (
+      <ul class="flex flex-wrap gap-2" aria-label="Before this goes to a client">
+        {warnings.map((w) => (
+          <li class="chip bg-panel-chip text-panel-accent">{w}</li>
+        ))}
+      </ul>
+    )}
+
+    {number && (
+      <div class="ml-auto flex items-center gap-3">
+        <span class="hidden text-[13px] text-panel-text-dim 2xl:inline">Save as PDF, paper A4</span>
+        <button type="button" data-print class="btn-accent px-4 py-2.5 text-[14px]">
+          Print or save as PDF
+        </button>
+      </div>
+    )}
+  </div>
+</div>
+
+<script>
+  // Wait for the fonts, so a print taken straight after load is never set in
+  // a fallback face.
+  document.querySelector('[data-print]')?.addEventListener('click', async () => {
+    await document.fonts.ready;
+    window.print();
+  });
+</script>

@@ -1,0 +1,27 @@
+# SAMPLE: the first half of a website build. Copy this file to start a real
+# invoice, and remove `sample: true`.
+sample: true
+
+number: CI-2026-001
+issued: 2026-10-27
+# due: 2026-11-03          # optional; defaults to issued + 7 days
+period: Website build, first half
+
+# A one-off client can be written out here instead of having a profile.
+client:
+  name: Your Practice
+  contact: Dr. Your Name
+  address: |
+    Clinic address, line one
+    Mehsana, Gujarat 384002
+
+lines:
+  # Billed at the published Practice Website price. Set `unitPrice` here, or a
+  # rate in the client's profile, if the agreed figure is different.
+  - service: website-practice
+    instalment: { part: 1, of: 2, label: to begin }
+
+# Monthly work that starts later. Printed for information, never added up.
+upcoming:
+  - service: google-care
+    starts: the month after launch

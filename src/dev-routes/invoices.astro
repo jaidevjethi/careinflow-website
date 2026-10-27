@@ -1,0 +1,156 @@
+---
+/**
+ * /invoices/ and /invoices/<id>/, under `astro dev` only.
+ *
+ * Injected by the `careinflow-invoices` integration in astro.config.mjs and
+ * never by a build, so no invoice, client or agreed price can reach the
+ * website or its mirror. The data is in the gitignored invoices/ folder; see
+ * invoices/README.md for how to write one.
+ */
+import { getCollection } from 'astro:content';
+import InvoiceLayout from '@/layouts/InvoiceLayout.astro';
+import InvoiceToolbar from '@/components/invoice/InvoiceToolbar.astro';
+import InvoiceDocument from '@/components/invoice/InvoiceDocument.astro';
+import { INVOICE, loadSettings, settingsGaps } from '@/config/invoice';
+import {
+  STATUS_LABEL,
+  computeInvoice,
+  formatDate,
+  formatMoney,
+  type ClientProfile,
+} from '@/lib/invoice';
+import { href } from '@/lib/url';
+
+export async function getStaticPaths() {
+  const invoices = await getCollection('invoices');
+  return [{ params: { slug: undefined } }, ...invoices.map((e) => ({ params: { slug: e.id } }))];
+}
+
+const { slug } = Astro.params;
+
+const entries = await getCollection('invoices');
+const profiles: Record<string, ClientProfile> = Object.fromEntries(
+  (await getCollection('invoiceClients')).map((c) => [c.id, c.data]),
+);
+
+// An invoice number is the payment reference, so two files claiming one
+// number would make two payments indistinguishable.
+const seen = new Map<string, string>();
+for (const e of entries) {
+  const other = seen.get(e.data.number);
+  if (other) throw new Error(`Invoice number ${e.data.number} is used by both ${other} and ${e.id}.`);
+  seen.set(e.data.number, e.id);
+}
+
+const settings = loadSettings();
+const options = { dueDays: INVOICE.dueDays, gstin: settings.gstin };
+const gaps = settingsGaps(settings);
+
+const entry = slug ? entries.find((e) => e.id === slug) : undefined;
+const computed = entry ? computeInvoice(entry.data, profiles, options) : undefined;
+
+// One broken file must not hide the rest of the list. Its row says what is
+// wrong; opening it shows the same error in full.
+const list = slug
+  ? []
+  : entries
+      .map((e) => {
+        try {
+          return { id: e.id, data: e.data, inv: computeInvoice(e.data, profiles, options) };
+        } catch (error) {
+          return { id: e.id, data: e.data, error: (error as Error).message };
+        }
+      })
+      .sort((a, b) => b.data.issued.getTime() - a.data.issued.getTime() || b.data.number.localeCompare(a.data.number));
+
+const th = 'label-mono px-4 py-3 text-left text-[11px] font-medium text-muted';
+---
+
+{entry && computed ? (
+  <InvoiceLayout
+    title={`CareInflow invoice ${entry.data.number} - ${computed.client.name}`}
+    pageFooter={`CareInflow · Invoice ${entry.data.number}`}
+  >
+    <InvoiceToolbar number={entry.data.number} warnings={[...(entry.data.sample ? ['Sample data'] : []), ...gaps]} />
+    <main class="py-8 print:py-0">
+      <InvoiceDocument data={entry.data} inv={computed} settings={settings} />
+    </main>
+  </InvoiceLayout>
+) : (
+  <InvoiceLayout title="Invoices · CareInflow">
+    <InvoiceToolbar warnings={gaps} />
+    <main class="mx-auto max-w-[1280px] px-4 py-10 sm:px-6">
+      <h1 class="text-[32px] font-extrabold leading-tight tracking-[-0.045em] text-ink">Invoices</h1>
+      <p class="mt-2 max-w-[680px] text-[16px] leading-[1.6] text-body">
+        Every invoice in the <code class="font-mono text-[14px] text-ink">invoices/</code> folder, newest first.
+        Open one to check it, then print it or save it as a PDF. How to write a new one is in
+        <code class="font-mono text-[14px] text-ink">invoices/README.md</code>.
+      </p>
+
+      <div class="mt-8 overflow-x-auto rounded-2xl border border-line bg-surface shadow-card">
+        <table class="w-full min-w-[720px] border-collapse">
+          <thead class="border-b border-line bg-canvas">
+            <tr>
+              <th scope="col" class={th}>Number</th>
+              <th scope="col" class={th}>Client</th>
+              <th scope="col" class={th}>Issued</th>
+              <th scope="col" class={th}>Due</th>
+              <th scope="col" class:list={[th, 'text-right']}>Payable</th>
+              <th scope="col" class={th}>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {list.map((row) => (
+              <tr class="border-b border-hairline last:border-0">
+                <td class="whitespace-nowrap px-4 py-3 align-top">
+                  <a href={href(`/invoices/${row.id}`)} class="font-mono text-[14px] font-semibold text-surgical hover:underline">
+                    {row.data.number}
+                  </a>
+                </td>
+                {'error' in row ? (
+                  <td colspan="5" class="px-4 py-3 text-[14px] font-semibold text-a-social">{row.error}</td>
+                ) : (
+                  <>
+                    <td class="px-4 py-3 text-[15px] text-ink">
+                      {row.inv.client.name}
+                      {row.data.sample && <span class="chip ml-2 bg-vivid px-2 py-0.5 text-[10px] text-ink">Sample</span>}
+                    </td>
+                    <td class="whitespace-nowrap px-4 py-3 text-[14px] text-body">{formatDate(row.data.issued)}</td>
+                    <td class="whitespace-nowrap px-4 py-3 text-[14px] text-body">{formatDate(row.inv.due)}</td>
+                    <td class="whitespace-nowrap px-4 py-3 text-right text-[15px] font-semibold tabular-nums text-ink">
+                      {formatMoney(row.inv.status === 'paid' ? row.inv.total : row.inv.balance, row.inv.decimals)}
+                    </td>
+                    <td class="whitespace-nowrap px-4 py-3 text-[14px] text-body">{STATUS_LABEL[row.inv.status]}</td>
+                  </>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <section class="mt-10 grid gap-6 md:grid-cols-2" aria-label="Payment details">
+        <div class="rounded-2xl border border-line bg-surface p-6">
+          <h2 class="label-mono text-muted">Payment details</h2>
+          <ul class="mt-3 space-y-1.5 text-[15px] text-body">
+            <li>UPI QR: <strong class="text-ink">{settings.upiQrImage ? `invoices/${settings.upiQrImage}` : settings.upiId ? 'generated from your UPI ID' : 'not added yet'}</strong></li>
+            <li>Payment link: <strong class="text-ink">{settings.paymentLink ?? 'not added yet'}</strong></li>
+            <li>Bank transfer: <strong class="text-ink">{settings.bank ? 'shown' : 'not shown'}</strong></li>
+            <li>GSTIN: <strong class="text-ink">{settings.gstin ?? 'none, so no invoice can carry GST'}</strong></li>
+          </ul>
+          <p class="mt-3 text-[14px] text-muted">
+            Set in <code class="font-mono text-ink">invoices/settings.json</code>, which stays on this machine.
+          </p>
+        </div>
+        <div class="rounded-2xl border border-line bg-surface p-6">
+          <h2 class="label-mono text-muted">A new invoice</h2>
+          <ol class="mt-3 list-decimal space-y-1.5 pl-5 text-[15px] text-body">
+            <li>Copy a sample from <code class="font-mono text-ink">invoices/examples/</code> into <code class="font-mono text-ink">invoices/{new Date().getFullYear()}/</code>.</li>
+            <li>Change the number, dates, client and lines. Remove <code class="font-mono text-ink">sample: true</code>.</li>
+            <li>Open it here, check every figure, then print or save as PDF.</li>
+          </ol>
+        </div>
+      </section>
+    </main>
+  </InvoiceLayout>
+)}

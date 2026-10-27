@@ -1,0 +1,193 @@
+/*
+ * The invoice: an A4 document first, a web page second.
+ *
+ * Loaded only by InvoiceLayout, so none of this reaches the website. It sits
+ * outside Tailwind's layers on purpose: unlayered rules outrank every
+ * utility, which is what lets the narrow-screen overrides below win without
+ * !important.
+ *
+ * Sizes inside the sheet are in pt and mm, because the sheet is measured in
+ * paper. 9.5pt body, nothing smaller than 7pt, which is still legible at
+ * arm's length on a printed page.
+ */
+
+/* Manrope's latin subset has no rupee sign; the latin-ext file does. Scoped
+   to the one glyph, so every ₹ is set in Manrope rather than in whatever the
+   system falls back to, and nothing else changes face. */
+@font-face {
+  font-family: 'Manrope Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 800;
+  src: url('@fontsource-variable/manrope/files/manrope-latin-ext-wght-normal.woff2')
+    format('woff2-variations');
+  unicode-range: U+20B9;
+}
+
+/*
+ * The page box. These margins are the sheet's padding on screen too, so the
+ * screen preview and the printed page are the same layout. The bottom margin
+ * is deeper because it carries the running line: the invoice number on the
+ * left (set per invoice in InvoiceLayout) and the page count on the right.
+ */
+@page {
+  size: A4 portrait;
+  margin: 12mm 13mm 14mm;
+
+  @bottom-left {
+    font-family: 'JetBrains Mono Variable', ui-monospace, monospace;
+    font-size: 7pt;
+    letter-spacing: 0.06em;
+    color: #4e6883;
+  }
+  @bottom-right {
+    content: 'Page ' counter(page) ' of ' counter(pages);
+    font-family: 'JetBrains Mono Variable', ui-monospace, monospace;
+    font-size: 7pt;
+    letter-spacing: 0.06em;
+    color: #4e6883;
+  }
+}
+
+.invoice-body {
+  background: var(--color-mist);
+}
+
+.invoice-sheet {
+  container: sheet / inline-size;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 210mm;
+  min-height: 297mm;
+  margin-inline: auto;
+  padding: 12mm 13mm 14mm;
+  background: #ffffff;
+  color: var(--color-ink);
+  font-size: 9.5pt;
+  line-height: 1.45;
+  box-shadow: var(--shadow-card-lg);
+  /* Tints are part of the hierarchy, so they print whatever the dialog's
+     "Background graphics" box says. They are all light, so this costs
+     almost no ink. */
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* Tabular figures and no wrapping for every amount. */
+.inv-num {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* A block that must never be split across two pages. */
+.inv-avoid {
+  break-inside: avoid;
+}
+.inv-table tr {
+  break-inside: avoid;
+}
+/* A group label never ends a page on its own. */
+.inv-table .inv-group {
+  break-after: avoid;
+}
+
+/* -------------------------------------------------------------------------
+ * Paper
+ * ---------------------------------------------------------------------- */
+
+@media print {
+  .invoice-body {
+    background: #ffffff;
+  }
+  .invoice-sheet {
+    width: auto;
+    /* Just under the 271mm the page box leaves, so a one-page invoice puts its
+       closing block at the foot of the page instead of halfway up it, and a
+       rounding error can never spill a blank second page. */
+    min-height: 268mm;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+  .no-print,
+  astro-dev-toolbar {
+    display: none !important;
+  }
+  /* Links read as text on paper; the URL beside each one is what a reader
+     can actually use. */
+  .invoice-sheet a {
+    text-decoration: none;
+  }
+}
+
+/* -------------------------------------------------------------------------
+ * Narrow screens
+ *
+ * A4 is wider than a phone. Below the paper's width the sheet becomes fluid,
+ * and below about 150mm of content the columns stack and each table row
+ * becomes a small block, so nothing ever scrolls sideways. Print never
+ * reaches these rules: the page box is always 184mm wide.
+ * ---------------------------------------------------------------------- */
+
+@media screen and (max-width: 226mm) {
+  .invoice-sheet {
+    width: auto;
+    min-height: 0;
+    margin-inline: 12px;
+    padding: 28px 20px;
+  }
+}
+
+@container sheet (width < 150mm) {
+  .inv-cols {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .inv-header {
+    flex-direction: column;
+  }
+  .inv-header-meta {
+    text-align: left;
+  }
+  .inv-header-meta dl,
+  .inv-header-meta .inv-chips {
+    justify-content: start;
+  }
+  .inv-footer-address {
+    text-align: left;
+  }
+  .inv-table thead {
+    display: none;
+  }
+  .inv-table .inv-line {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 12px;
+    padding-block: 8px;
+  }
+  .inv-table .inv-line > td {
+    padding: 0;
+    text-align: left;
+  }
+  .inv-table .inv-line > .inv-desc {
+    grid-column: 1 / -1;
+    padding-bottom: 4px;
+  }
+  .inv-table .inv-line > .inv-amt {
+    grid-column: 2;
+    grid-row: 2 / span 3;
+    align-self: end;
+    text-align: right;
+  }
+  .inv-table .inv-line > td[data-label]::before {
+    content: attr(data-label) ': ';
+    color: var(--color-muted);
+  }
+  .inv-table .inv-group {
+    display: block;
+  }
+  .inv-table .inv-empty {
+    display: none;
+  }
+}

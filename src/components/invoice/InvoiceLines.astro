@@ -1,0 +1,98 @@
+---
+/**
+ * What the invoice bills, one row per line, grouped into one-time charges and
+ * monthly plans so the two can never be read as one kind of money.
+ *
+ * The Discount column exists only when a line on this invoice has one. A
+ * standard invoice never shows an empty "Discount" column: the studio does
+ * not advertise reductions, and a blank one reads as an invitation to ask.
+ */
+import { ACCENTS } from '@/lib/accents';
+import { formatMoney, unitSuffix, type ComputedInvoice, type ResolvedLine } from '@/lib/invoice';
+
+interface Props {
+  inv: ComputedInvoice;
+}
+
+const { inv } = Astro.props;
+const money = (paise: number) => formatMoney(paise, inv.decimals);
+
+const groups = [
+  { label: 'One-time', lines: inv.lines.filter((l) => l.billing === 'once') },
+  { label: 'Monthly, billed in advance', lines: inv.lines.filter((l) => l.billing === 'monthly') },
+].filter((g) => g.lines.length > 0);
+
+const columns = inv.hasDiscounts ? 5 : 4;
+
+const quantity = (l: ResolvedLine): string =>
+  l.instalment ? `${l.instalment.part} of ${l.instalment.of}` : String(Number(l.quantity.toFixed(2)));
+
+const detail = (l: ResolvedLine): string | undefined => {
+  const instalment = l.instalment
+    ? `Instalment ${l.instalment.part} of ${l.instalment.of}${l.instalment.label ? `, ${l.instalment.label}` : ''}`
+    : undefined;
+  return [l.detail, instalment].filter(Boolean).join('. ') || undefined;
+};
+
+const th = 'label-mono pb-[2mm] align-bottom text-[7pt] font-medium text-muted';
+---
+
+<table class="inv-table mt-[4.5mm] w-full border-collapse text-left">
+  <caption class="sr-only">Services billed on this invoice</caption>
+  <thead>
+    <tr class="border-b-[1.2pt] border-ink">
+      <th scope="col" class={th}>Service</th>
+      <th scope="col" class:list={[th, 'w-[16mm] text-right']}>Qty</th>
+      <th scope="col" class:list={[th, 'w-[30mm] text-right']}>Unit price</th>
+      {inv.hasDiscounts && <th scope="col" class:list={[th, 'w-[26mm] text-right']}>Discount</th>}
+      <th scope="col" class:list={[th, 'w-[27mm] text-right']}>Amount</th>
+    </tr>
+  </thead>
+  {groups.map((g) => (
+    <tbody>
+      <tr class="inv-group">
+        <th scope="rowgroup" colspan={columns} class="label-mono pb-[0.3mm] pt-[3mm] text-[7pt] font-medium text-surgical">
+          {g.label}
+        </th>
+      </tr>
+      {g.lines.map((l) => (
+        <tr class="inv-line border-b border-hairline">
+          <td class="inv-desc py-[1.9mm] pr-[4mm] align-top">
+            <span class="flex items-start gap-[2.2mm]">
+              <span
+                aria-hidden="true"
+                class:list={['mt-[1.35mm] size-[1.8mm] shrink-0 rounded-full', l.accent ? ACCENTS[l.accent].vivid : 'bg-rule']}
+              ></span>
+              <span class="min-w-0">
+                <span class="block font-semibold leading-[1.3] text-ink">{l.description}</span>
+                {detail(l) && <span class="mt-[0.4mm] block text-[8pt] leading-[1.4] text-body">{detail(l)}</span>}
+              </span>
+            </span>
+          </td>
+          <td class="inv-num inv-qty py-[1.9mm] align-top" data-label="Qty">{quantity(l)}</td>
+          <td class="inv-num inv-unit py-[1.9mm] align-top" data-label="Unit price">
+            {money(l.unitPrice)}
+            {(l.instalment || unitSuffix(l.unit)) && (
+              <span class="block text-[7pt] text-muted">{l.instalment ? 'project fee' : unitSuffix(l.unit)}</span>
+            )}
+          </td>
+          {inv.hasDiscounts && (
+            <td class:list={['inv-num inv-disc py-[1.9mm] align-top', l.discount === 0 && 'inv-empty']} data-label="Discount">
+              {l.discount > 0 ? (
+                <>
+                  {money(-l.discount)}
+                  {l.discountLabel && (
+                    <span class="block whitespace-normal text-[7pt] leading-[1.35] text-muted">{l.discountLabel}</span>
+                  )}
+                </>
+              ) : (
+                <span class="sr-only">None</span>
+              )}
+            </td>
+          )}
+          <td class="inv-num inv-amt py-[1.9mm] align-top font-semibold text-ink">{money(l.net)}</td>
+        </tr>
+      ))}
+    </tbody>
+  ))}
+</table>

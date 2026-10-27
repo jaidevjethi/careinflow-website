@@ -1,0 +1,23 @@
+# SAMPLE: a month of healthcare content for a client with agreed prices.
+# The extra reels bill at the client's own rate (invoices/examples/clients/
+# your-practice.yaml), not the published one.
+sample: true
+
+number: CI-2026-002
+issued: 2026-11-01
+due: 2026-11-07
+period: November 2026
+client: your-practice
+
+lines:
+  # The introductory rate for a new client's first three billed months. The
+  # invoice prints the regular rate beside it.
+  - service: content-growth
+    rate: intro
+
+  - service: reel
+    quantity: 2
+    detail: Two reels beyond this month's package
+
+  # One of the client's own services, priced in its profile.
+  - service: festival-creatives

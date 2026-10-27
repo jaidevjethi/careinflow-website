@@ -1,0 +1,58 @@
+# SAMPLE, and a stress test rather than a realistic invoice: a long client
+# name and address, ten lines, both kinds of discount, paise, an advance
+# already received and an upcoming plan. It should run to two pages, and the
+# break between them should fall cleanly between rows.
+sample: true
+
+number: CI-2026-003
+issued: 2026-11-03
+period: 1 November to 30 November 2026
+reference: PO 2026/11/0042-ADMIN-ACCOUNTS
+client:
+  name: Your Practice Multispeciality Dental, Orthodontic and Implant Centre
+  contact: Dr. Your Name, Clinical Director
+  address: |
+    First floor, a long building name, opposite a long landmark name
+    Station Road, near the old bus stand
+    Mehsana, Gujarat 384001
+  phone: Clinic phone number
+  email: accounts@yourpractice.example
+
+lines:
+  - service: website-growth
+    instalment: { part: 2, of: 3, label: at design approval }
+  - service: extra-page
+    quantity: 3
+    detail: Root canal treatment, dental implants and clear aligners
+    discount: { amount: 1000, reason: one page shares its research with another }
+  - service: gujarati-version
+  - service: gbp-rebuild
+    discount: { percent: 10 }
+  - service: google-care
+    quantity: 2
+    detail: November and December 2026, paid together
+  - service: content-starter
+  - service: reel
+    quantity: 4
+  - service: carousel-research
+    quantity: 2
+    unitPrice: 1250
+    detail: Two carousels on gum disease and diabetes, each with more slides than the standard six, written to a dentist's notes and checked by them before publishing
+  - service: flyer
+    quantity: 3
+  - description: Photography shot list for your photographer
+    detail: Room by room, so the clinic's own photographs can replace stock images
+    billing: once
+    unitPrice: 1500
+
+payments:
+  - date: 2026-10-01
+    amount: 20000
+    note: advance, by UPI
+
+upcoming:
+  - service: content-plus
+    starts: January 2027
+
+notes:
+  - The Gujarati version goes live the same day as the English site, so both are checked together.

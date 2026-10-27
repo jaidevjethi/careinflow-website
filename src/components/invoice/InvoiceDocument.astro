@@ -1,0 +1,289 @@
+---
+/**
+ * One invoice, as an A4 sheet.
+ *
+ * Read top to bottom it answers, in order: who sent this, what it is, how much
+ * and by when, for what, how to pay, and who to ask. The amount due is the one
+ * large figure on the page, set the way the website sets its numerals: large,
+ * tight, in the brand's own blue. Nothing else competes with it.
+ *
+ * Ink is spent carefully. The page is white, the only fills are pale tints,
+ * and every distinction that matters is made by weight and size as well as
+ * colour, so a grayscale printout loses nothing a reader needs.
+ */
+import Mark from '@/assets/careinflow-mark.svg';
+import InvoiceLines from './InvoiceLines.astro';
+import InvoicePayment from './InvoicePayment.astro';
+import InvoicePromo from './InvoicePromo.astro';
+import { BUSINESS, CANONICAL_HOST } from '@/config/site';
+import { INVOICE, PROMO, invoiceTerms } from '@/config/invoice';
+import {
+  STATUS_LABEL,
+  formatDate,
+  formatMoney,
+  promoCovered,
+  type ComputedInvoice,
+  type InvoiceData,
+  type InvoiceSettings,
+} from '@/lib/invoice';
+
+interface Props {
+  data: InvoiceData;
+  inv: ComputedInvoice;
+  settings: InvoiceSettings;
+}
+
+const { data, inv, settings } = Astro.props;
+const money = (paise: number) => formatMoney(paise, inv.decimals);
+
+const hasTax = data.taxes.length > 0;
+const heading = hasTax ? 'Tax invoice' : 'Invoice';
+const site = CANONICAL_HOST.replace(/^https?:\/\//, '');
+const { street, locality, region, postalCode } = BUSINESS.address;
+const studioAddress = `${street}, ${locality}, ${region} ${postalCode}`;
+const client = inv.client;
+
+const terms = [
+  ...data.notes,
+  ...invoiceTerms({
+    number: data.number,
+    due: formatDate(inv.due),
+    instalmentsOf: inv.lines.find((l) => l.instalment)?.instalment?.of,
+    hasMonthly: inv.lines.some((l) => l.billing === 'monthly') || inv.upcoming.length > 0,
+    hasTax,
+  }),
+];
+
+// The summary shows a row only when it says something the next row does not.
+const both = inv.oneTimeSubtotal > 0 && inv.monthlySubtotal > 0;
+const rows: Array<{ label: string; amount: number }> = both
+  ? [
+      { label: 'One-time charges', amount: inv.oneTimeSubtotal },
+      { label: 'Monthly plans', amount: inv.monthlySubtotal },
+    ]
+  : [{ label: 'Subtotal', amount: inv.subtotal }];
+if (inv.discountTotal > 0) rows.push({ label: 'Discount', amount: -inv.discountTotal });
+for (const t of inv.taxes) rows.push({ label: `${t.label} ${t.rate}%`, amount: t.amount });
+const showTotal = rows.length > 1 || data.payments.length > 0;
+// A lone subtotal with nothing taken off or added says the same as the
+// amount payable directly beneath it.
+if (rows.length === 1 && !showTotal) rows.length = 0;
+
+const paid = inv.status === 'paid';
+const dueLabel = paid ? 'Paid in full' : inv.received > 0 ? 'Balance due' : 'Amount due';
+
+const promoChoice = data.promo;
+const covered = promoCovered(data);
+const promo = (
+  promoChoice === false
+    ? []
+    : promoChoice
+      ? PROMO.filter((p) => promoChoice.includes(p.key))
+      : PROMO.filter((p) => !covered.has(p.key))
+).slice(0, 2);
+
+const label = 'label-mono text-[7pt] font-medium text-muted';
+const statusChip = {
+  due: 'bg-surgical-tint text-surgical',
+  'part-paid': 'bg-surgical-tint text-surgical',
+  paid: 'border border-ink text-ink',
+  overdue: 'bg-ink text-surface',
+}[inv.status];
+---
+
+<article class="invoice-sheet" aria-label={`${heading} ${data.number}`} data-number={data.number}>
+  <!-- Who sent this, and what it is -->
+  <header class="inv-header flex items-start justify-between gap-[8mm]">
+    <div class="min-w-0">
+      <a href={`${CANONICAL_HOST}/`} rel="noopener" class="flex items-center gap-[2.4mm] text-ink">
+        <Mark class="h-[8.5mm] w-auto shrink-0" />
+        <span class="text-[19pt] font-extrabold leading-none tracking-[-0.03em]">{BUSINESS.name}</span>
+      </a>
+      <p class="mt-[2.5mm] max-w-[112mm] text-[8pt] leading-[1.45] text-body">
+        {BUSINESS.tagline}
+      </p>
+      <p class="mt-[0.8mm] text-[8pt] font-semibold text-surgical">{site}</p>
+      {settings.gstin && (
+        <p class="mt-[0.8mm] text-[8pt] text-body">
+          GSTIN <span class="font-mono font-semibold text-ink">{settings.gstin}</span>
+        </p>
+      )}
+    </div>
+
+    <div class="inv-header-meta shrink-0 text-right">
+      <div class="inv-chips flex flex-wrap items-center justify-end gap-x-[1.5mm] gap-y-[1mm]">
+        {data.sample && <span class="chip bg-vivid px-[2.2mm] py-[0.9mm] text-[6.5pt] text-ink">Sample</span>}
+        <span class:list={['chip px-[2.2mm] py-[0.9mm] text-[6.5pt]', statusChip]}>{STATUS_LABEL[inv.status]}</span>
+        <h1 class="ml-[1.5mm] text-[25pt] font-extrabold leading-[0.95] tracking-[-0.045em] text-ink">{heading}</h1>
+      </div>
+      <dl class="mt-[3mm] grid grid-cols-[auto_auto] justify-end gap-x-[4mm] gap-y-[0.6mm] text-[8.5pt]">
+        <dt class:list={[label, 'self-center']}>Invoice no.</dt>
+        <dd class="font-mono font-semibold text-ink">{data.number}</dd>
+        <dt class:list={[label, 'self-center']}>Issued</dt>
+        <dd class="text-ink">{formatDate(data.issued)}</dd>
+        <dt class:list={[label, 'self-center']}>Due</dt>
+        <dd class="font-semibold text-ink">{formatDate(inv.due)}</dd>
+      </dl>
+    </div>
+  </header>
+
+  <div class="mt-[4mm] h-[1.2pt] bg-ink" aria-hidden="true"></div>
+
+  <!-- Who it is for, and how much -->
+  <section class="inv-cols mt-[4.5mm] grid grid-cols-[minmax(0,1fr)_42mm_65mm] gap-[6mm]" aria-label="Billing details">
+    <div class="min-w-0">
+      <h2 class={label}>Billed to</h2>
+      <div class="tick-rule mt-[1mm] h-[1.6mm] max-w-[30mm]" aria-hidden="true"></div>
+      <p class="mt-[2mm] text-[11pt] font-bold leading-[1.25] tracking-[-0.01em] text-ink">{client.name}</p>
+      {client.contact && <p class="mt-[0.5mm] text-ink">{client.contact}</p>}
+      {client.address && <p class="mt-[0.5mm] whitespace-pre-line text-[8.5pt] leading-[1.45] text-body">{client.address.trim()}</p>}
+      {(client.phone || client.email) && (
+        <p class="mt-[0.5mm] text-[8.5pt] text-body">{[client.phone, client.email].filter(Boolean).join(' · ')}</p>
+      )}
+      {client.gstin && (
+        <p class="mt-[0.5mm] text-[8.5pt] text-body">
+          GSTIN <span class="font-mono text-ink">{client.gstin}</span>
+        </p>
+      )}
+    </div>
+
+    <div class="min-w-0">
+      {data.period && (
+        <>
+          <h2 class={label}>Service period</h2>
+          <div class="tick-rule mt-[1mm] h-[1.6mm] max-w-[30mm]" aria-hidden="true"></div>
+          <p class="mt-[2mm] font-semibold text-ink">{data.period}</p>
+        </>
+      )}
+      {inv.reference && (
+        <div class:list={[data.period && 'mt-[4mm]']}>
+          <h2 class={label}>Your reference</h2>
+          <p class="mt-[1mm] break-words font-mono text-[8.5pt] text-ink">{inv.reference}</p>
+        </div>
+      )}
+    </div>
+
+    <div class="self-start rounded-[3mm] bg-surgical-tint px-[4.5mm] pb-[4mm] pt-[3.5mm]">
+      <h2 class="label-mono text-[7pt] font-medium text-surgical">{dueLabel}</h2>
+      <p class="numeral mt-[2.5mm] whitespace-nowrap text-[27pt] text-surgical">{money(paid ? inv.total : inv.balance)}</p>
+      <p class="mt-[2mm] text-[8.5pt] text-body-deep">
+        {paid ? 'Thank you. Nothing more is owed on this invoice.' : <>By <strong class="font-semibold text-ink">{formatDate(inv.due)}</strong></>}
+      </p>
+    </div>
+  </section>
+
+  <InvoiceLines inv={inv} />
+
+  <!-- Terms beside the arithmetic -->
+  <section class="inv-cols inv-avoid mt-[4.5mm] grid grid-cols-[minmax(0,1fr)_76mm] gap-[8mm]" aria-label="Summary">
+    <div class="min-w-0">
+      <h2 class={label}>Terms</h2>
+      <ul class="mt-[1.5mm] space-y-[1mm] text-[8pt] leading-[1.45] text-body">
+        {terms.map((t) => <li>{t}</li>)}
+      </ul>
+    </div>
+
+    <div>
+      <dl class="text-[9pt]">
+        {rows.map((r) => (
+          <div class="flex justify-between gap-[4mm] py-[0.7mm]">
+            <dt class="text-body">{r.label}</dt>
+            <dd class="inv-num text-ink">{money(r.amount)}</dd>
+          </div>
+        ))}
+        {showTotal && (
+          <div class="mt-[0.8mm] flex justify-between gap-[4mm] border-t border-line-strong pt-[1.4mm] font-semibold">
+            <dt class="text-ink">Total</dt>
+            <dd class="inv-num text-ink">{money(inv.total)}</dd>
+          </div>
+        )}
+        {data.payments.map((p) => (
+          <div class="flex justify-between gap-[4mm] py-[0.7mm]">
+            <dt class="text-body">Received {formatDate(p.date)}{p.note && <span class="text-muted"> · {p.note}</span>}</dt>
+            <dd class="inv-num text-ink">{money(-Math.round(p.amount * 100))}</dd>
+          </div>
+        ))}
+        <div class="mt-[1.2mm] flex items-baseline justify-between gap-[4mm] border-t-[1.2pt] border-ink pt-[2mm]">
+          <dt class="text-[10pt] font-bold text-ink">{paid ? 'Paid' : 'Amount payable'}</dt>
+          <dd class="inv-num text-[14pt] font-extrabold tracking-[-0.02em] text-surgical">{money(paid ? inv.total : inv.balance)}</dd>
+        </div>
+      </dl>
+
+      {(inv.monthlyRunRate > 0 || inv.upcoming.length > 0) && (
+        <div class="mt-[2.5mm] border-t border-dashed border-line-strong pt-[1.5mm]">
+          <dl class="text-[8pt]">
+            {inv.monthlyRunRate > 0 && (
+              <div class="flex justify-between gap-[4mm] py-[0.5mm]">
+                <dt class="text-body">Monthly recurring</dt>
+                <dd class="inv-num text-ink">{money(inv.monthlyRunRate)} <span class="text-muted">/ month</span></dd>
+              </div>
+            )}
+            {inv.upcoming.map((u) => (
+              <div class="flex justify-between gap-[4mm] py-[0.5mm]">
+                <dt class="text-body">{u.description}, from {u.starts}</dt>
+                <dd class="inv-num text-ink">{money(u.amount)} <span class="text-muted">/ month</span></dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <InvoicePayment number={data.number} balance={inv.balance} decimals={inv.decimals} paymentLink={data.paymentLink} settings={settings} />
+
+  <!-- Pinned to the foot of the last page -->
+  <div class="mt-auto">
+    <InvoicePromo items={promo} />
+
+    <footer class="inv-cols inv-avoid mt-[4mm] grid grid-cols-[minmax(0,1fr)_auto] items-end gap-x-[8mm] gap-y-[2mm] border-t-[1.2pt] border-ink pt-[2.8mm]">
+      <div>
+        <p class="text-[10pt] font-bold tracking-[-0.01em] text-ink">{INVOICE.closing}</p>
+        <p class="text-[8pt] text-body">{INVOICE.closingNote}</p>
+      </div>
+      <address class="inv-footer-address text-right text-[7.5pt] not-italic leading-[1.5] text-muted">
+        {studioAddress}<br />
+        {BUSINESS.phoneDisplay} · {BUSINESS.email} · {site}
+      </address>
+    </footer>
+  </div>
+</article>
+
+<script>
+  /*
+   * The invoice comes first. When the "Also from CareInflow" strip is the only
+   * thing pushing an invoice onto a second page, the strip is left off, so a
+   * client never turns the page to find a footer and an advert.
+   *
+   * Measured on screen, where the sheet is exactly as wide as the printed page
+   * box (184mm), and again just before printing. At any other width the
+   * measurement would not describe the page, so nothing is hidden.
+   */
+  const MM = 96 / 25.4;
+  /** The height print.css gives one page of sheet, in mm. */
+  const PAGE_MM = 268;
+
+  function fit() {
+    const sheet = document.querySelector<HTMLElement>('.invoice-sheet');
+    const promo = sheet?.querySelector<HTMLElement>('[data-promo]');
+    if (!sheet || !promo) return;
+
+    promo.hidden = false;
+    const style = getComputedStyle(sheet);
+    const padX = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
+    if (Math.abs((sheet.clientWidth - padX) / MM - 184) > 2) return;
+
+    // The sheet's natural height, without the stretch that pins the closing
+    // block to the foot of the page.
+    sheet.style.minHeight = '0';
+    const content =
+      sheet.getBoundingClientRect().height - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
+    sheet.style.minHeight = '';
+    const promoHeight = promo.getBoundingClientRect().height + parseFloat(getComputedStyle(promo).marginTop);
+
+    promo.hidden = content / MM > PAGE_MM && (content - promoHeight) / MM <= PAGE_MM;
+  }
+
+  document.fonts.ready.then(fit);
+  window.addEventListener('beforeprint', fit);
+</script>

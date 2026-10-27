@@ -49,6 +49,24 @@ function rehypeInternalLinks() {
   };
 }
 
+/**
+ * Invoices: a studio tool that lives beside the site, never on it.
+ *
+ * The route is injected only under `astro dev`, so a production or mirror build
+ * cannot contain an invoice, a client's name or an agreed price, and the
+ * sitemap, the page count and scripts/check-meta.mjs never see one. The data
+ * it renders is in the gitignored `invoices/` folder; see invoices/README.md.
+ */
+const invoiceTool = {
+  name: 'careinflow-invoices',
+  hooks: {
+    'astro:config:setup': ({ command, injectRoute }) => {
+      if (command !== 'dev') return;
+      injectRoute({ pattern: '/invoices/[...slug]', entrypoint: './src/dev-routes/invoices.astro' });
+    },
+  },
+};
+
 export default defineConfig({
   site: SITE,
   base: BASE_PATH,
@@ -81,6 +99,7 @@ export default defineConfig({
         '/services/social-media': `${BASE_PATH.replace(/\/$/, '')}/services/healthcare-content/`,
       },
   integrations: [
+    invoiceTool,
     mdx(),
     sitemap({
       // The 404 self-canonicalises and is noindex; it does not belong in here.

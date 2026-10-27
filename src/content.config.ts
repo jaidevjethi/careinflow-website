@@ -1,6 +1,7 @@
 import { defineCollection, z } from 'astro:content';
 import { glob, file } from 'astro/loaders';
 import { PRICE_REFS } from './lib/prices';
+import { clientProfileSchema, invoiceSchema } from './lib/invoice';
 
 /**
  * Services — the four core offerings. Long-form content lives in the MDX
@@ -307,6 +308,38 @@ const testimonials = defineCollection({
   }),
 });
 
+/**
+ * Invoices and the clients they bill. A studio tool, not part of the site: the
+ * files live in the gitignored `invoices/` folder at the repo root, because the
+ * repo is public and an agreed price is a client-specific arrangement, and the
+ * route that renders them exists only under `astro dev` (see astro.config.mjs).
+ * Only the samples in `invoices/examples/` are committed.
+ *
+ * Ids are the file name, lowercased, so `invoices/2026/CI-2026-014.yaml` is
+ * /invoices/ci-2026-014/ and an invoice names its client as `client: <file>`.
+ */
+const byFileName = ({ entry }: { entry: string }) =>
+  entry.split('/').pop()!.replace(/\.ya?ml$/, '').toLowerCase();
+
+const invoiceClients = defineCollection({
+  loader: glob({
+    pattern: ['clients/*.{yaml,yml}', 'examples/clients/*.{yaml,yml}'],
+    base: './invoices',
+    generateId: byFileName,
+  }),
+  schema: clientProfileSchema,
+});
+
+const invoices = defineCollection({
+  loader: glob({
+    // Loose in invoices/, in a year folder (invoices/2026/), or a sample.
+    pattern: ['*.{yaml,yml}', '[0-9][0-9][0-9][0-9]/**/*.{yaml,yml}', 'examples/*.{yaml,yml}'],
+    base: './invoices',
+    generateId: byFileName,
+  }),
+  schema: invoiceSchema,
+});
+
 export const collections = {
   services,
   specialties,
@@ -315,4 +348,6 @@ export const collections = {
   resources,
   faqs,
   testimonials,
+  invoices,
+  invoiceClients,
 };

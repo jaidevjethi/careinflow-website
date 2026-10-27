@@ -1,0 +1,54 @@
+---
+/**
+ * A QR code as inline SVG, encoded at render time. No script reaches the
+ * browser, and the code is vector, so it stays sharp at any print size.
+ *
+ * Ink on white with the four-module quiet zone the QR standard asks for:
+ * scanners find the code by its contrast with the margin around it, and a
+ * code set flush against a tinted panel is the usual reason one will not
+ * scan. Error correction M survives a crease or a smudge on paper.
+ */
+import { encode } from 'uqr';
+
+interface Props {
+  /** What the code encodes, exactly. */
+  value: string;
+  /** What scanning it does, for a screen reader. */
+  label: string;
+  class?: string;
+}
+
+const { value, label, class: className } = Astro.props;
+
+const QUIET_ZONE = 4;
+const qr = encode(value, { ecc: 'M', border: 0 });
+const size = qr.size + QUIET_ZONE * 2;
+
+// One path for the whole code: each run of dark modules along a row becomes
+// a single rectangle, which keeps the SVG small and free of hairline seams.
+let d = '';
+qr.data.forEach((row, y) => {
+  let x = 0;
+  while (x < row.length) {
+    if (!row[x]) {
+      x++;
+      continue;
+    }
+    const start = x;
+    while (x < row.length && row[x]) x++;
+    d += `M${start + QUIET_ZONE} ${y + QUIET_ZONE}h${x - start}v1h${start - x}z`;
+  }
+});
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox={`0 0 ${size} ${size}`}
+  role="img"
+  aria-label={label}
+  shape-rendering="crispEdges"
+  class:list={['block', className]}
+>
+  <rect width={size} height={size} fill="#ffffff"></rect>
+  <path d={d} fill="#0e2439"></path>
+</svg>

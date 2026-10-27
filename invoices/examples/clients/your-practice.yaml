@@ -1,0 +1,29 @@
+# A client profile: who the client is, and the prices agreed with them.
+#
+# SAMPLE. "Your Practice" stands in for a real client. Real profiles go in
+# invoices/clients/<client-id>.yaml, which is gitignored: an agreed price is a
+# private arrangement and the repo is public.
+#
+# An invoice names this profile by its file name:   client: your-practice
+
+name: Your Practice
+contact: Dr. Your Name
+address: |
+  Clinic address, line one
+  Mehsana, Gujarat 384002
+email: accounts@yourpractice.example
+
+# Prices agreed with this client, in rupees, keyed by the service names in
+# CATALOG (src/lib/invoice.ts). Any service not listed here bills at the
+# published price in src/config/pricing.ts.
+rates:
+  reel: 650
+
+# Work this client buys that has no published price of its own.
+services:
+  festival-creatives:
+    description: Festival creative set
+    detail: A greeting post and a story, in Gujarati and English
+    billing: once
+    unit: piece
+    price: 900

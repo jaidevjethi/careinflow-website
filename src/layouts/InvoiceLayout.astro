@@ -1,0 +1,44 @@
+---
+/**
+ * The document shell for the invoice tool. Deliberately not BaseLayout: an
+ * invoice carries no site header, footer, quick-contact bar or analytics, and
+ * nothing about it is for a search engine.
+ */
+import '@/styles/global.css';
+import '@/styles/invoice.css';
+import { href } from '@/lib/url';
+import manropeWoff2 from '@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url';
+import manropeExtWoff2 from '@fontsource-variable/manrope/files/manrope-latin-ext-wght-normal.woff2?url';
+import monoWoff2 from '@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2?url';
+
+interface Props {
+  /** Also the default file name when the page is saved as a PDF. */
+  title: string;
+  /** Printed in the bottom margin of every page, beside the page count. */
+  pageFooter?: string;
+}
+
+const { title, pageFooter } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{title}</title>
+    <!-- All three faces are preloaded so a print taken straight after load
+         never catches a fallback font. The latin-ext file is here only for ₹. -->
+    <link rel="preload" as="font" type="font/woff2" href={manropeWoff2} crossorigin="anonymous" />
+    <link rel="preload" as="font" type="font/woff2" href={manropeExtWoff2} crossorigin="anonymous" />
+    <link rel="preload" as="font" type="font/woff2" href={monoWoff2} crossorigin="anonymous" />
+    <link rel="icon" href={href('/favicon.svg')} type="image/svg+xml" />
+    {pageFooter && (
+      <style set:html={`@page { @bottom-left { content: ${JSON.stringify(pageFooter)}; } }`} />
+    )}
+  </head>
+  <body class="invoice-body">
+    <slot />
+  </body>
+</html>
