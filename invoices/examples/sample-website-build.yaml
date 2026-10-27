@@ -2,7 +2,7 @@
 # invoice, and remove `sample: true`.
 sample: true
 
-number: CI-2026-001
+number: SAMPLE-001
 issued: 2026-10-27
 # due: 2026-11-03          # optional; defaults to issued + 7 days
 period: Website build, first half

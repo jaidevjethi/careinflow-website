@@ -4,7 +4,7 @@
 # break between them should fall cleanly between rows.
 sample: true
 
-number: CI-2026-003
+number: SAMPLE-003
 issued: 2026-11-03
 period: 1 November to 30 November 2026
 reference: PO 2026/11/0042-ADMIN-ACCOUNTS
