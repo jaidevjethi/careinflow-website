@@ -209,8 +209,7 @@ export const settingsSchema = z.object({
   payeeName: z.string().optional(),
   /**
    * File name of a QR image you already have (a Google Pay code), saved in
-   * invoices/. It is read back at render: printed only when it pays a
-   * different UPI ID from `upiId`, or when there is no `upiId` at all.
+   * invoices/. It is read back at render to see which UPI ID it pays.
    */
   upiQrImage: z
     .string()
@@ -231,6 +230,13 @@ export const settingsSchema = z.object({
    * number is in the payment note (`tn`) either way.
    */
   upiTransactionRef: z.boolean().default(false),
+  /**
+   * Which code to print when `upiQrImage` pays the same UPI ID as `upiId`:
+   * `image`, the code you supplied (the default: a Google Pay code is the one
+   * clients recognise), or `generated`, one made per invoice with the amount
+   * and the invoice number in it. Only one is printed either way.
+   */
+  upiQrSource: z.enum(['image', 'generated']).default('image'),
   /**
    * An HTTPS payment page from a payment gateway, used when an invoice has no
    * `paymentLink` of its own. Never a made-up address.

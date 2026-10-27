@@ -151,7 +151,9 @@ const th = 'label-mono px-4 py-3 text-left text-[11px] font-medium text-muted';
                   : !qrImage.upiId
                     ? `invoices/${settings.upiQrImage} has no readable UPI code`
                     : settings.upiId && qrImage.upiId.toLowerCase() === settings.upiId.toLowerCase()
-                      ? `pays ${qrImage.upiId}, the same UPI ID, so it is not printed twice`
+                      ? settings.upiQrSource === 'image'
+                        ? `pays ${qrImage.upiId}, and is the code printed on every invoice`
+                        : `pays ${qrImage.upiId}; a generated code with the amount is printed instead`
                       : `pays ${qrImage.upiId}, printed beside the generated code`}
               </strong>
             </li>

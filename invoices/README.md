@@ -65,7 +65,8 @@ printing.
 | `payeeName` | The name on that UPI account, as a payer's app shows it. Defaults to CareInflow. When it is a person's name, the invoice adds "Shows as …, CareInflow's founder", so a client paying a business invoice is not surprised by it. |
 | `upiIncludeAmount` | On by default: the button and the QR carry the amount still owed. Some UPI apps decline a preset amount sent to a personal UPI ID; if a test payment fails for that reason, set this to `false` and the payer types the amount. |
 | `upiTransactionRef` | Off by default. Adds the invoice number as the UPI transaction reference (`tr`). That field belongs to merchant payments, and on a personal UPI ID it can make an app decline the payment, so turn it on only for a merchant (business) UPI ID. The invoice number is in the payment note either way. |
-| `upiQrImage` | Optional: the file name of a QR image you already have (a Google Pay code), saved in `invoices/`. The invoice reads it to see where it pays. If it pays the same UPI ID as `upiId`, it is not printed, because the generated code goes to the same place and also carries the amount. If it pays a different UPI ID, both codes are printed, each labelled. With no `upiId`, it is the only code shown and the button stays off. |
+| `upiQrImage` | Optional: the file name of a QR image you already have (a Google Pay code), saved in `invoices/`. The invoice reads it to see where it pays. If it pays the same UPI ID as `upiId`, it is the code printed on every invoice (see `upiQrSource`). If it pays a different UPI ID, both codes are printed, each labelled. With no `upiId`, it is the only code shown and the button stays off. |
+| `upiQrSource` | `image` (the default) prints your own QR image when it pays the same UPI ID: the Google Pay code clients recognise, without the amount, so the panel asks them to enter it. `generated` prints a code made per invoice with the amount and invoice number in it instead. Only one code is ever printed for one UPI ID. |
 | `paymentLink` | Optional: an HTTPS payment page from a payment gateway (a Razorpay or Instamojo payment link). Printed as **Or pay online**. A browser opens an https link everywhere, which a `upi://` link cannot promise. An invoice can set its own `paymentLink`, e.g. a gateway link made for that amount. |
 | `bank` | Account name, number, IFSC, bank and branch, for clients who pay by transfer. Printed in one line under the payment options. |
 | `gstin` | Only once the studio is registered for GST. Without it, no invoice can carry tax lines. With it, the GSTIN prints in the header and an invoice with `taxes` is titled "Tax invoice". |
@@ -86,9 +87,10 @@ upi://pay?pa=<UPI ID>&pn=<payee name>&am=<amount owed>&cu=INR&tn=Invoice%20<numb
 ```
 
 The amount is what is still owed: the total after discounts and tax, less
-anything already received. The QR code is generated from the same link, so
-scanning and tapping always pay the same person the same amount. A paid
-invoice shows no button and no code.
+anything already received. The printed code pays the same UPI ID: your
+Google Pay code by default, which leaves the amount for the payer to enter,
+or with `upiQrSource: generated` a code made from the same link, amount
+included. A paid invoice shows no button and no code.
 
 Tapping it asks the device to open whichever app handles `upi://`. That is
 not something every PDF viewer allows, so the QR code, the UPI ID and the

@@ -71,7 +71,7 @@ const code = 'mt-[0.8mm] break-all font-mono text-[10pt] font-semibold leading-[
         {upi.qr?.kind === 'generated' ? (
           <QrCode
             value={upi.qr.value}
-            label={`UPI QR code: pay ${amountInLink ? `${amount} ` : ''}to ${upi.upiId}`}
+            label={`UPI QR code: pay ${upi.qrHasAmount ? `${amount} ` : ''}to ${upi.upiId}`}
             class="size-[30mm] rounded-[1.5mm]"
           />
         ) : upi.qr?.kind === 'image' ? (
@@ -104,8 +104,10 @@ const code = 'mt-[0.8mm] break-all font-mono text-[10pt] font-semibold leading-[
           )}
           <p class:list={[small, 'mt-[1.5mm]']}>
             {upi.link
-              ? 'On your phone, tap the button. If no UPI app opens, scan the code with Google Pay, PhonePe, Paytm or any UPI app, or pay the UPI ID with the payment note.'
-              : 'Scan the code with Google Pay, PhonePe, Paytm or any UPI app, and add the payment note.'}
+              ? upi.qrHasAmount
+                ? 'On your phone, tap the button. If no UPI app opens, scan the code with Google Pay, PhonePe, Paytm or any UPI app, or pay the UPI ID with the payment note.'
+                : `On your phone, tap the button. If no UPI app opens, scan the code with Google Pay, PhonePe, Paytm or any UPI app, enter ${amount} and add the payment note.`
+              : `Scan the code with Google Pay, PhonePe, Paytm or any UPI app, enter ${amount} and add the payment note.`}
           </p>
         </div>
 

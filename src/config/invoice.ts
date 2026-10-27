@@ -248,8 +248,10 @@ export async function readUpiQrImage(settings: InvoiceSettings): Promise<QrImage
 export interface UpiPayment {
   /** The `upi://` link behind the pay button. Absent without a UPI ID, or when nothing is owed. */
   link?: string;
-  /** The code to print: generated from the link, or the settings image when there is no UPI ID. */
+  /** The code to print: your own image, or one generated from the link. */
   qr?: { kind: 'generated'; value: string } | { kind: 'image'; dataUri: string };
+  /** Scanning the code fills in the amount (only a generated code does). */
+  qrHasAmount: boolean;
   /** The settings image as well, only when it pays a different UPI ID from `upiId`. */
   otherQr?: { dataUri: string; upiId: string; payee?: string };
   upiId?: string;
@@ -266,8 +268,10 @@ export interface UpiPayment {
  * the total after discounts and tax, less anything already received.
  *
  * One code per destination. A Google Pay image that pays the same UPI ID as
- * `upiId` is the same destination as the generated code, and the generated
- * one also carries the amount, so the image is not printed beside it.
+ * `upiId` is the same destination as a generated code, so only one of them
+ * is printed: the image by default, because it is the code clients know
+ * (`upiQrSource` in settings). The button carries the amount either way.
+ * An image that pays a different UPI ID is printed beside the generated code.
  *
  * Nothing here can mark an invoice paid. Status comes only from `payments`
  * in the invoice file, written once the money is seen in the account.
@@ -289,6 +293,7 @@ export function upiPayment(
   if (!settings.upiId) {
     return {
       qr: owed && qrImage ? { kind: 'image', dataUri: qrImage.dataUri } : undefined,
+      qrHasAmount: false,
       upiId: qrImage?.upiId,
       payee: qrImage?.payee ?? payee,
     };
@@ -303,12 +308,15 @@ export function upiPayment(
         ref: settings.upiTransactionRef ? upiTransactionRef(invoice.number) : undefined,
       })
     : undefined;
-  const differs =
-    qrImage?.upiId !== undefined && qrImage.upiId.toLowerCase() !== settings.upiId.toLowerCase();
+  const same =
+    qrImage?.upiId !== undefined && qrImage.upiId.toLowerCase() === settings.upiId.toLowerCase();
+  const differs = qrImage?.upiId !== undefined && !same;
+  const useImage = owed && same && settings.upiQrSource === 'image';
 
   return {
     link,
-    qr: link ? { kind: 'generated', value: link } : undefined,
+    qr: useImage ? { kind: 'image', dataUri: qrImage!.dataUri } : link ? { kind: 'generated', value: link } : undefined,
+    qrHasAmount: !useImage && Boolean(link) && settings.upiIncludeAmount,
     otherQr:
       owed && differs ? { dataUri: qrImage!.dataUri, upiId: qrImage!.upiId!, payee: qrImage!.payee } : undefined,
     upiId: settings.upiId,
