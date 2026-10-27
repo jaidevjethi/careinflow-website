@@ -85,7 +85,8 @@
 .inv-avoid {
   break-inside: avoid;
 }
-.inv-table tr {
+.inv-table tr,
+.inv-table .inv-item {
   break-inside: avoid;
 }
 /* A group label never ends a page on its own. */
@@ -191,7 +192,13 @@
   .inv-table .inv-group {
     display: block;
   }
-  .inv-table .inv-empty {
-    display: none;
+  .inv-table .inv-adj {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .inv-table .inv-adj > td {
+    padding-left: 0;
+    padding-right: 0;
   }
 }

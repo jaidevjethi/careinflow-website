@@ -82,7 +82,7 @@ opening the chat with "Hi CareInflow. About invoice …".
 ```yaml
 number: CI-2026-004          # printed as written; also the payment reference
 issued: 2026-11-01
-due: 2026-11-07              # optional: issued + 7 days (src/config/invoice.ts)
+due: 2026-11-07              # optional: without it, no pay-by date is printed
 period: November 2026        # optional
 client: your-practice        # a profile id, or write the details out:
 # client:
@@ -110,6 +110,11 @@ lines:
     unit: piece              # project, month, page, once or piece
     unitPrice: 1500
     discount: { percent: 10, reason: ... }   # or { amount: 500 }
+  - service: reel            # the regular price, then each reduction as its own row
+    quantity: 24
+    discount:
+      - { price: 300, reason: First-client price }   # ₹300 each instead of the regular price
+      - { units: 5, reason: First 5 reels free }     # 5 reels at the price reached so far
 
 taxes:                       # only with a GSTIN in settings.json
   - { label: CGST, rate: 9 }
@@ -155,9 +160,16 @@ unless the client has an agreed rate for it.
 - **One-time and monthly lines are grouped apart**, and the summary shows the
   monthly figure as a separate "Monthly recurring" row under the amount
   payable. Later months are never added to this invoice's total.
-- **The Discount column appears only when a line has a discount.** The
-  content packages' introductory rate is not a discount: the line prints the
-  regular rate beside it, as the website does.
+- **A discount is its own row, under its line.** The line shows the regular
+  price; each discount follows in order, with what it is for and how it was
+  worked out ("₹300 each instead of the regular ₹699", "5 × ₹300"), and the
+  summary repeats them by name. `price` sets a new unit price, `units` frees
+  that many units at the price reached so far, `percent` takes a share of
+  what is left, and `amount` takes a fixed sum. The content packages'
+  introductory rate is not a discount: the line prints the regular rate
+  beside it, as the website does.
+- **No pay-by date unless you set one.** Without `due`, the invoice prints no
+  due date and no "please pay by".
 - **The terms are the published ones** (`src/content/faqs.json`): builds paid in
   two halves or three parts, monthly plans billed in advance with no lock-in.
   Each prints only when the invoice has the thing it is about.

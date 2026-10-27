@@ -46,8 +46,7 @@ const client = inv.client;
 const terms = [
   ...data.notes,
   ...invoiceTerms({
-    number: data.number,
-    due: formatDate(inv.due),
+    due: inv.due && formatDate(inv.due),
     instalmentsOf: inv.lines.find((l) => l.instalment)?.instalment?.of,
     hasMonthly: inv.lines.some((l) => l.billing === 'monthly') || inv.upcoming.length > 0,
     hasTax,
@@ -62,7 +61,9 @@ const rows: Array<{ label: string; amount: number }> = both
       { label: 'Monthly plans', amount: inv.monthlySubtotal },
     ]
   : [{ label: 'Subtotal', amount: inv.subtotal }];
-if (inv.discountTotal > 0) rows.push({ label: 'Discount', amount: -inv.discountTotal });
+// Each kind of discount on its own row, in the order the lines applied them,
+// so the summary reads down the same way the lines do.
+for (const d of inv.discountsByLabel) rows.push({ label: d.label, amount: -d.amount });
 for (const t of inv.taxes) rows.push({ label: `${t.label} ${t.rate}%`, amount: t.amount });
 const showTotal = rows.length > 1 || data.payments.length > 0;
 // A lone subtotal with nothing taken off or added says the same as the
@@ -121,8 +122,12 @@ const statusChip = {
         <dd class="font-mono font-semibold text-ink">{data.number}</dd>
         <dt class:list={[label, 'self-center']}>Issued</dt>
         <dd class="text-ink">{formatDate(data.issued)}</dd>
-        <dt class:list={[label, 'self-center']}>Due</dt>
-        <dd class="font-semibold text-ink">{formatDate(inv.due)}</dd>
+        {inv.due && (
+          <>
+            <dt class:list={[label, 'self-center']}>Due</dt>
+            <dd class="font-semibold text-ink">{formatDate(inv.due)}</dd>
+          </>
+        )}
       </dl>
     </div>
   </header>
@@ -166,9 +171,15 @@ const statusChip = {
     <div class="self-start rounded-[3mm] bg-surgical-tint px-[4.5mm] pb-[4mm] pt-[3.5mm]">
       <h2 class="label-mono text-[7pt] font-medium text-surgical">{dueLabel}</h2>
       <p class="numeral mt-[2.5mm] whitespace-nowrap text-[27pt] text-surgical">{money(paid ? inv.total : inv.balance)}</p>
-      <p class="mt-[2mm] text-[8.5pt] text-body-deep">
-        {paid ? 'Thank you. Nothing more is owed on this invoice.' : <>By <strong class="font-semibold text-ink">{formatDate(inv.due)}</strong></>}
-      </p>
+      {paid ? (
+        <p class="mt-[2mm] text-[8.5pt] text-body-deep">Thank you. Nothing more is owed on this invoice.</p>
+      ) : (
+        inv.due && (
+          <p class="mt-[2mm] text-[8.5pt] text-body-deep">
+            By <strong class="font-semibold text-ink">{formatDate(inv.due)}</strong>
+          </p>
+        )
+      )}
     </div>
   </section>
 

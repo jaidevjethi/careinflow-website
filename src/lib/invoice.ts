@@ -74,6 +74,27 @@ export const clientProfileSchema = clientDetailsSchema.extend({
   services: z.record(z.string(), customServiceSchema).default({}),
 });
 
+/**
+ * A discount takes exactly one of:
+ *   price    the unit price after it: `{ price: 300 }` bills ₹300 a reel
+ *            where the line's price is the regular ₹699
+ *   units    that many units free, at the unit price reached so far
+ *   percent  off what is left of the line after any earlier discount
+ *   amount   a fixed sum off the line, in rupees
+ * and `reason`, which is what the row says: "First-client price".
+ */
+const discountSchema = z
+  .object({
+    price: rupeeAmount.optional(),
+    units: z.number().positive().optional(),
+    percent: z.number().gt(0).max(100).optional(),
+    amount: rupeeAmount.optional(),
+    reason: z.string().optional(),
+  })
+  .refine((d) => [d.price, d.units, d.percent, d.amount].filter((v) => v !== undefined).length === 1, {
+    message: 'a discount takes exactly one of `price`, `units`, `percent` or `amount`',
+  });
+
 const lineSchema = z
   .object({
     /** A catalog key (see CATALOG below) or one of the client's own services. */
@@ -102,17 +123,11 @@ const lineSchema = z
       })
       .refine((i) => i.part <= i.of, { message: 'instalment part cannot be greater than `of`' })
       .optional(),
-    /** Off this line's amount: `{ percent: 10 }` or `{ amount: 500 }`, never both. */
-    discount: z
-      .object({
-        percent: z.number().gt(0).max(100).optional(),
-        amount: rupeeAmount.optional(),
-        reason: z.string().optional(),
-      })
-      .refine((d) => (d.percent === undefined) !== (d.amount === undefined), {
-        message: 'a discount needs either `percent` or `amount`, not both',
-      })
-      .optional(),
+    /**
+     * One discount or a list of them, applied in order and each printed as its
+     * own row under the line. See `discountSchema`.
+     */
+    discount: z.union([discountSchema, z.array(discountSchema).min(1)]).optional(),
   })
   .refine((l) => Boolean(l.service || l.description), {
     message: 'each line needs a `service` key or a `description`',
@@ -128,7 +143,7 @@ export const invoiceSchema = z.object({
   /** Printed exactly as written, and used as the payment reference. */
   number: z.string().min(1),
   issued: z.coerce.date(),
-  /** Defaults to `issued` plus INVOICE.dueDays. */
+  /** Optional. Without it the invoice names no date to pay by. */
   due: z.coerce.date().optional(),
   /** The months or dates this invoice covers: "November 2026". */
   period: z.string().optional(),
@@ -376,8 +391,6 @@ const dateFormat = new Intl.DateTimeFormat('en-IN', {
 /** "27 Oct 2026" */
 export const formatDate = (d: Date): string => dateFormat.format(d);
 
-/** The date a number of days after another, at UTC midnight. */
-export const addDays = (d: Date, days: number): Date => new Date(d.getTime() + days * 86_400_000);
 
 const toPaise = (rupees: number): number => Math.round(rupees * 100);
 
@@ -400,14 +413,24 @@ export interface ResolvedLine {
   instalment?: { part: number; of: number; label?: string };
   /** In paise. */
   gross: number;
+  /** Each discount, in order, as its own row under the line. */
+  discounts: ResolvedDiscount[];
+  /** All of them together. */
   discount: number;
-  discountLabel?: string;
   net: number;
   accent?: AccentName;
   /** Billed at the content packages' introductory rate. */
   intro: boolean;
   /** Where the price came from, for the readiness notes. */
   priceSource: 'line' | 'client' | 'catalog';
+}
+
+export interface ResolvedDiscount {
+  label: string;
+  /** How the figure was reached: "₹300 each instead of the regular ₹699". */
+  note?: string;
+  /** In paise, as a positive number. */
+  amount: number;
 }
 
 export interface ResolvedUpcoming {
@@ -420,7 +443,7 @@ export interface ResolvedUpcoming {
 export interface ComputedInvoice {
   client: ClientDetails;
   reference?: string;
-  due: Date;
+  due?: Date;
   lines: ResolvedLine[];
   upcoming: ResolvedUpcoming[];
   /** Every amount below is in paise. Subtotals are before discounts. */
@@ -428,6 +451,8 @@ export interface ComputedInvoice {
   monthlySubtotal: number;
   subtotal: number;
   discountTotal: number;
+  /** Discounts summed by what they are for, in the order they first appear. */
+  discountsByLabel: Array<{ label: string; amount: number }>;
   taxes: Array<{ label: string; rate: number; amount: number }>;
   total: number;
   received: number;
@@ -437,7 +462,6 @@ export interface ComputedInvoice {
   status: InvoiceStatus;
   /** True when any figure on the invoice has paise, so all of them show two decimals. */
   decimals: boolean;
-  hasDiscounts: boolean;
 }
 
 export class InvoiceError extends Error {
@@ -560,10 +584,71 @@ export const instalmentAmount = (feePaise: number, part: number, of: number): nu
   return part < of ? share : feePaise - share * (of - 1);
 };
 
+type Discount = z.infer<typeof discountSchema>;
+
+/**
+ * Turn a line's discounts into rows, in order. A `price` discount lowers the
+ * unit price the later ones work from, so "₹300 instead of ₹699, then the
+ * first 5 reels free" frees 5 reels at ₹300, not at ₹699.
+ */
+function applyDiscounts(opts: {
+  list: Discount[];
+  gross: number;
+  unitPrice: number;
+  quantity: number;
+  unit: PriceUnit;
+  /** The line's price is the published one, so it can be called "regular". */
+  regular: boolean;
+  instalment: boolean;
+  fail: (message: string) => Error;
+}): ResolvedDiscount[] {
+  const money = (paise: number) => formatMoney(paise, paise % 100 !== 0);
+  const per = ({ month: 'a month', page: 'a page', piece: 'each' } as Partial<Record<PriceUnit, string>>)[opts.unit];
+  let unit = opts.unitPrice;
+  let left = opts.gross;
+  const rows: ResolvedDiscount[] = [];
+
+  for (const d of opts.list) {
+    let row: ResolvedDiscount;
+    if (d.price !== undefined) {
+      if (opts.instalment) throw opts.fail('a `price` discount cannot apply to an instalment.');
+      const price = toPaise(d.price);
+      if (price >= unit) throw opts.fail(`the discounted price must be below ${money(unit)}.`);
+      const was = `${opts.regular && unit === opts.unitPrice ? 'the regular ' : ''}${money(unit)}`;
+      row = {
+        label: d.reason ?? 'Reduced price',
+        note: `${money(price)}${per ? ` ${per}` : ''} instead of ${was}`,
+        amount: Math.round((unit - price) * opts.quantity),
+      };
+      unit = price;
+    } else if (d.units !== undefined) {
+      if (opts.instalment) throw opts.fail('a `units` discount cannot apply to an instalment.');
+      if (d.units > opts.quantity) throw opts.fail(`only ${opts.quantity} can be free, not ${d.units}.`);
+      row = {
+        label: d.reason ?? `${d.units} free`,
+        note: `${d.units} × ${money(unit)}`,
+        amount: Math.round(unit * d.units),
+      };
+    } else if (d.percent !== undefined) {
+      row = {
+        label: d.reason ?? 'Discount',
+        note: `${d.percent}% of ${money(left)}`,
+        amount: Math.round((left * d.percent) / 100),
+      };
+    } else {
+      row = { label: d.reason ?? 'Discount', amount: toPaise(d.amount!) };
+    }
+    left -= row.amount;
+    if (left < 0) throw opts.fail('its discounts come to more than the line.');
+    rows.push(row);
+  }
+  return rows;
+}
+
 export function computeInvoice(
   data: InvoiceData,
   profiles: Record<string, ClientProfile>,
-  options: { dueDays: number; gstin?: string },
+  options: { gstin?: string },
 ): ComputedInvoice {
   const { details, profile } = resolveClient(data, profiles);
 
@@ -582,17 +667,17 @@ export function computeInvoice(
       ? instalmentAmount(fee, line.instalment.part, line.instalment.of)
       : fee;
 
-    let discount = 0;
-    let discountLabel: string | undefined;
-    if (line.discount?.percent !== undefined) {
-      discount = Math.round((gross * line.discount.percent) / 100);
-      discountLabel = `${line.discount.percent}%`;
-    } else if (line.discount?.amount !== undefined) {
-      discount = toPaise(line.discount.amount);
-    }
-    if (discount > gross) {
-      throw new InvoiceError(data.number, `the discount on "${priced.description}" is larger than the line.`);
-    }
+    const discounts = applyDiscounts({
+      list: line.discount === undefined ? [] : [line.discount].flat(),
+      gross,
+      unitPrice,
+      quantity: line.quantity,
+      unit: priced.unit,
+      regular: priced.source === 'catalog',
+      instalment: Boolean(line.instalment),
+      fail: (message) => new InvoiceError(data.number, `"${priced.description}": ${message}`),
+    });
+    const discount = discounts.reduce((a, d) => a + d.amount, 0);
 
     return {
       description: priced.description,
@@ -603,10 +688,8 @@ export function computeInvoice(
       unitPrice,
       instalment: line.instalment,
       gross,
+      discounts,
       discount,
-      discountLabel: line.discount?.reason
-        ? [discountLabel, line.discount.reason].filter(Boolean).join(' · ')
-        : discountLabel,
       net: gross - discount,
       accent: priced.accent,
       intro: priced.intro,
@@ -640,6 +723,12 @@ export function computeInvoice(
   const monthlySubtotal = sum(lines.filter((l) => l.billing === 'monthly').map((l) => l.gross));
   const subtotal = sum(lines.map((l) => l.gross));
   const discountTotal = sum(lines.map((l) => l.discount));
+  const discountsByLabel: ComputedInvoice['discountsByLabel'] = [];
+  for (const d of lines.flatMap((l) => l.discounts)) {
+    const same = discountsByLabel.find((x) => x.label === d.label);
+    if (same) same.amount += d.amount;
+    else discountsByLabel.push({ label: d.label, amount: d.amount });
+  }
   const taxable = subtotal - discountTotal;
   const taxes = data.taxes.map((t) => ({ ...t, amount: Math.round((taxable * t.rate) / 100) }));
   const total = taxable + sum(taxes.map((t) => t.amount));
@@ -655,7 +744,7 @@ export function computeInvoice(
 
   const derived: InvoiceStatus = balance <= 0 ? 'paid' : received > 0 ? 'part-paid' : 'due';
   const everyFigure = [
-    ...lines.flatMap((l) => [l.unitPrice, l.gross, l.discount, l.net]),
+    ...lines.flatMap((l) => [l.unitPrice, l.gross, l.net, ...l.discounts.map((d) => d.amount)]),
     ...taxes.map((t) => t.amount),
     total,
     received,
@@ -665,13 +754,14 @@ export function computeInvoice(
   return {
     client: details,
     reference: data.reference ?? details.reference,
-    due: data.due ?? addDays(data.issued, options.dueDays),
+    due: data.due,
     lines,
     upcoming,
     oneTimeSubtotal,
     monthlySubtotal,
     subtotal,
     discountTotal,
+    discountsByLabel,
     taxes,
     total,
     received,
@@ -679,7 +769,6 @@ export function computeInvoice(
     monthlyRunRate,
     status: data.status ?? derived,
     decimals: everyFigure.some((p) => p % 100 !== 0),
-    hasDiscounts: discountTotal > 0,
   };
 }
 

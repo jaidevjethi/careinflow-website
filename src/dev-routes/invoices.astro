@@ -11,7 +11,7 @@ import { getCollection } from 'astro:content';
 import InvoiceLayout from '@/layouts/InvoiceLayout.astro';
 import InvoiceToolbar from '@/components/invoice/InvoiceToolbar.astro';
 import InvoiceDocument from '@/components/invoice/InvoiceDocument.astro';
-import { INVOICE, loadSettings, settingsGaps } from '@/config/invoice';
+import { loadSettings, settingsGaps } from '@/config/invoice';
 import {
   STATUS_LABEL,
   computeInvoice,
@@ -43,7 +43,7 @@ for (const e of entries) {
 }
 
 const settings = loadSettings();
-const options = { dueDays: INVOICE.dueDays, gstin: settings.gstin };
+const options = { gstin: settings.gstin };
 const gaps = settingsGaps(settings);
 
 const entry = slug ? entries.find((e) => e.id === slug) : undefined;
@@ -116,7 +116,7 @@ const th = 'label-mono px-4 py-3 text-left text-[11px] font-medium text-muted';
                       {row.data.sample && <span class="chip ml-2 bg-vivid px-2 py-0.5 text-[10px] text-ink">Sample</span>}
                     </td>
                     <td class="whitespace-nowrap px-4 py-3 text-[14px] text-body">{formatDate(row.data.issued)}</td>
-                    <td class="whitespace-nowrap px-4 py-3 text-[14px] text-body">{formatDate(row.inv.due)}</td>
+                    <td class="whitespace-nowrap px-4 py-3 text-[14px] text-body">{row.inv.due ? formatDate(row.inv.due) : 'Not set'}</td>
                     <td class="whitespace-nowrap px-4 py-3 text-right text-[15px] font-semibold tabular-nums text-ink">
                       {formatMoney(row.inv.status === 'paid' ? row.inv.total : row.inv.balance, row.inv.decimals)}
                     </td>

@@ -30,12 +30,6 @@ import type { AccentName } from '@/lib/accents';
 import { settingsSchema, type InvoiceSettings, type PromoKey } from '@/lib/invoice';
 
 export const INVOICE = {
-  /**
-   * Days between issue and due date, when an invoice does not set `due`.
-   * Not published anywhere on the site; seven is a working assumption.
-   */
-  dueDays: 7,
-
   /** The opening of the WhatsApp message the invoice's closing link starts. */
   whatsappPrefill: (number: string) => `Hi CareInflow. About invoice ${number}: `,
 
@@ -47,17 +41,18 @@ export const INVOICE = {
  * The terms printed under the lines. Each comes from what the site already
  * publishes (the payment-schedule and GST answers in faqs.json), and each is
  * printed only when this invoice has the thing it is about.
+ *
+ * No invoice names a date to pay by unless its file sets `due`: the owner
+ * does not put a deadline on a client by default. The payment note is in the
+ * payment panel, so it is not repeated here.
  */
 export function invoiceTerms(opts: {
-  number: string;
-  due: string;
+  due?: string;
   instalmentsOf?: number;
   hasMonthly: boolean;
   hasTax: boolean;
 }): string[] {
-  const terms = [
-    `Please pay by ${opts.due}, with ${opts.number} as the payment note, so the payment can be matched to this invoice.`,
-  ];
+  const terms = opts.due ? [`Please pay by ${opts.due}.`] : [];
   if (opts.instalmentsOf === 2) {
     terms.push('The build is paid in two halves: one to begin, one at launch.');
   } else if (opts.instalmentsOf === 3) {

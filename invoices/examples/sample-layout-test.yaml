@@ -24,7 +24,7 @@ lines:
   - service: extra-page
     quantity: 3
     detail: Root canal treatment, dental implants and clear aligners
-    discount: { amount: 1000, reason: one page shares its research with another }
+    discount: { amount: 1000, reason: One page shares its research with another }
   - service: gujarati-version
   - service: gbp-rebuild
     discount: { percent: 10 }

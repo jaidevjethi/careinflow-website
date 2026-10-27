@@ -3,9 +3,11 @@
  * What the invoice bills, one row per line, grouped into one-time charges and
  * monthly plans so the two can never be read as one kind of money.
  *
- * The Discount column exists only when a line on this invoice has one. A
- * standard invoice never shows an empty "Discount" column: the studio does
- * not advertise reductions, and a blank one reads as an invitation to ask.
+ * A line shows its full price first. Each discount on it follows as its own
+ * row, in the order it was applied, with what it is for and how it was
+ * worked out ("₹300 each instead of the regular ₹699", "5 × ₹300"). A
+ * reader can follow the figure down from the regular price to what is owed,
+ * and nothing about a reduction is hidden inside a unit price.
  */
 import { ACCENTS } from '@/lib/accents';
 import { formatMoney, unitSuffix, type ComputedInvoice, type ResolvedLine } from '@/lib/invoice';
@@ -21,8 +23,6 @@ const groups = [
   { label: 'One-time', lines: inv.lines.filter((l) => l.billing === 'once') },
   { label: 'Monthly, billed in advance', lines: inv.lines.filter((l) => l.billing === 'monthly') },
 ].filter((g) => g.lines.length > 0);
-
-const columns = inv.hasDiscounts ? 5 : 4;
 
 const quantity = (l: ResolvedLine): string =>
   l.instalment ? `${l.instalment.part} of ${l.instalment.of}` : String(Number(l.quantity.toFixed(2)));
@@ -44,55 +44,58 @@ const th = 'label-mono pb-[2mm] align-bottom text-[7pt] font-medium text-muted';
       <th scope="col" class={th}>Service</th>
       <th scope="col" class:list={[th, 'w-[16mm] text-right']}>Qty</th>
       <th scope="col" class:list={[th, 'w-[30mm] text-right']}>Unit price</th>
-      {inv.hasDiscounts && <th scope="col" class:list={[th, 'w-[26mm] text-right']}>Discount</th>}
       <th scope="col" class:list={[th, 'w-[27mm] text-right']}>Amount</th>
     </tr>
   </thead>
   {groups.map((g) => (
-    <tbody>
-      <tr class="inv-group">
-        <th scope="rowgroup" colspan={columns} class="label-mono pb-[0.3mm] pt-[3mm] text-[7pt] font-medium text-surgical">
-          {g.label}
-        </th>
-      </tr>
+    <>
+      <tbody>
+        <tr class="inv-group">
+          <th scope="rowgroup" colspan="4" class="label-mono pb-[0.3mm] pt-[3mm] text-[7pt] font-medium text-surgical">
+            {g.label}
+          </th>
+        </tr>
+      </tbody>
       {g.lines.map((l) => (
-        <tr class="inv-line border-b border-hairline">
-          <td class="inv-desc py-[1.9mm] pr-[4mm] align-top">
-            <span class="flex items-start gap-[2.2mm]">
-              <span
-                aria-hidden="true"
-                class:list={['mt-[1.35mm] size-[1.8mm] shrink-0 rounded-full', l.accent ? ACCENTS[l.accent].vivid : 'bg-rule']}
-              ></span>
-              <span class="min-w-0">
-                <span class="block font-semibold leading-[1.3] text-ink">{l.description}</span>
-                {detail(l) && <span class="mt-[0.4mm] block text-[8pt] leading-[1.4] text-body">{detail(l)}</span>}
+        <tbody class="inv-item border-b border-hairline">
+          <tr class="inv-line">
+            <td class:list={['inv-desc pr-[4mm] pt-[1.9mm] align-top', l.discounts.length ? 'pb-[1mm]' : 'pb-[1.9mm]']}>
+              <span class="flex items-start gap-[2.2mm]">
+                <span
+                  aria-hidden="true"
+                  class:list={['mt-[1.35mm] size-[1.8mm] shrink-0 rounded-full', l.accent ? ACCENTS[l.accent].vivid : 'bg-rule']}
+                ></span>
+                <span class="min-w-0">
+                  <span class="block font-semibold leading-[1.3] text-ink">{l.description}</span>
+                  {detail(l) && <span class="mt-[0.4mm] block text-[8pt] leading-[1.4] text-body">{detail(l)}</span>}
+                </span>
               </span>
-            </span>
-          </td>
-          <td class="inv-num inv-qty py-[1.9mm] align-top" data-label="Qty">{quantity(l)}</td>
-          <td class="inv-num inv-unit py-[1.9mm] align-top" data-label="Unit price">
-            {money(l.unitPrice)}
-            {(l.instalment || unitSuffix(l.unit)) && (
-              <span class="block text-[7pt] text-muted">{l.instalment ? 'project fee' : unitSuffix(l.unit)}</span>
-            )}
-          </td>
-          {inv.hasDiscounts && (
-            <td class:list={['inv-num inv-disc py-[1.9mm] align-top', l.discount === 0 && 'inv-empty']} data-label="Discount">
-              {l.discount > 0 ? (
-                <>
-                  {money(-l.discount)}
-                  {l.discountLabel && (
-                    <span class="block whitespace-normal text-[7pt] leading-[1.35] text-muted">{l.discountLabel}</span>
-                  )}
-                </>
-              ) : (
-                <span class="sr-only">None</span>
+            </td>
+            <td class="inv-num inv-qty pt-[1.9mm] align-top" data-label="Qty">{quantity(l)}</td>
+            <td class="inv-num inv-unit pt-[1.9mm] align-top" data-label="Unit price">
+              {money(l.unitPrice)}
+              {(l.instalment || unitSuffix(l.unit)) && (
+                <span class="block text-[7pt] text-muted">{l.instalment ? 'project fee' : unitSuffix(l.unit)}</span>
               )}
             </td>
-          )}
-          <td class="inv-num inv-amt py-[1.9mm] align-top font-semibold text-ink">{money(l.net)}</td>
-        </tr>
+            <td class="inv-num inv-amt pt-[1.9mm] align-top font-semibold text-ink">{money(l.gross)}</td>
+          </tr>
+          {l.discounts.map((d, i) => (
+            <tr class="inv-adj">
+              <td
+                colspan="3"
+                class:list={['pl-[4mm] pr-[4mm] pt-[0.6mm] align-top text-[8.5pt] leading-[1.35]', i === l.discounts.length - 1 ? 'pb-[1.9mm]' : 'pb-[0.4mm]']}
+              >
+                <span class="text-ink">{d.label}</span>
+                {d.note && <span class="text-muted"> · {d.note}</span>}
+              </td>
+              <td class:list={['inv-num pt-[0.6mm] align-top text-[8.5pt] text-ink', i === l.discounts.length - 1 ? 'pb-[1.9mm]' : 'pb-[0.4mm]']}>
+                {money(-d.amount)}
+              </td>
+            </tr>
+          ))}
+        </tbody>
       ))}
-    </tbody>
+    </>
   ))}
 </table>
