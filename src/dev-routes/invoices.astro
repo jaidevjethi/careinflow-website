@@ -11,7 +11,7 @@ import { getCollection } from 'astro:content';
 import InvoiceLayout from '@/layouts/InvoiceLayout.astro';
 import InvoiceToolbar from '@/components/invoice/InvoiceToolbar.astro';
 import InvoiceDocument from '@/components/invoice/InvoiceDocument.astro';
-import { loadSettings, settingsGaps } from '@/config/invoice';
+import { loadSettings, readUpiQrImage, settingsGaps } from '@/config/invoice';
 import {
   STATUS_LABEL,
   computeInvoice,
@@ -43,8 +43,9 @@ for (const e of entries) {
 }
 
 const settings = loadSettings();
+const qrImage = await readUpiQrImage(settings);
 const options = { gstin: settings.gstin };
-const gaps = settingsGaps(settings);
+const gaps = settingsGaps(settings, qrImage);
 
 const entry = slug ? entries.find((e) => e.id === slug) : undefined;
 const computed = entry ? computeInvoice(entry.data, profiles, options) : undefined;
@@ -73,7 +74,7 @@ const th = 'label-mono px-4 py-3 text-left text-[11px] font-medium text-muted';
   >
     <InvoiceToolbar number={entry.data.number} warnings={[...(entry.data.sample ? ['Sample data'] : []), ...gaps]} />
     <main class="py-8 print:py-0">
-      <InvoiceDocument data={entry.data} inv={computed} settings={settings} />
+      <InvoiceDocument data={entry.data} inv={computed} settings={settings} qrImage={qrImage} />
     </main>
   </InvoiceLayout>
 ) : (
@@ -133,8 +134,28 @@ const th = 'label-mono px-4 py-3 text-left text-[11px] font-medium text-muted';
         <div class="rounded-2xl border border-line bg-surface p-6">
           <h2 class="label-mono text-muted">Payment details</h2>
           <ul class="mt-3 space-y-1.5 text-[15px] text-body">
-            <li>UPI QR: <strong class="text-ink">{settings.upiQrImage ? `invoices/${settings.upiQrImage}` : settings.upiId ? 'generated from your UPI ID' : 'not added yet'}</strong></li>
-            <li>Payment link: <strong class="text-ink">{settings.paymentLink ?? (settings.upiId ? 'a tap-to-pay UPI link on every invoice' : 'not added yet')}</strong></li>
+            <li>UPI ID: <strong class="text-ink">{settings.upiId ?? 'not added yet, so the pay button is off'}</strong></li>
+            <li>
+              Pay button and QR:
+              <strong class="text-ink">
+                {settings.upiId
+                  ? `generated per invoice${settings.upiIncludeAmount ? ', with the amount owed' : ', without an amount'}${settings.upiTransactionRef ? ' and a transaction reference' : ''}`
+                  : 'off'}
+              </strong>
+            </li>
+            <li>
+              QR image:
+              <strong class="text-ink">
+                {!qrImage
+                  ? 'none'
+                  : !qrImage.upiId
+                    ? `invoices/${settings.upiQrImage} has no readable UPI code`
+                    : settings.upiId && qrImage.upiId.toLowerCase() === settings.upiId.toLowerCase()
+                      ? `pays ${qrImage.upiId}, the same UPI ID, so it is not printed twice`
+                      : `pays ${qrImage.upiId}, printed beside the generated code`}
+              </strong>
+            </li>
+            <li>HTTPS payment page: <strong class="text-ink">{settings.paymentLink ?? 'none'}</strong></li>
             <li>Bank transfer: <strong class="text-ink">{settings.bank ? 'shown' : 'not shown'}</strong></li>
             <li>GSTIN: <strong class="text-ink">{settings.gstin ?? 'none, so no invoice can carry GST'}</strong></li>
           </ul>

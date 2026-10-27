@@ -17,7 +17,9 @@
 
 import { existsSync, readFileSync } from 'node:fs';
 import { extname } from 'node:path';
-import { CANONICAL_HOST, SERVICE_MENU, whatsappWithMessage } from '@/config/site';
+import jsQR from 'jsqr';
+import sharp from 'sharp';
+import { BUSINESS, CANONICAL_HOST, SERVICE_MENU, whatsappWithMessage } from '@/config/site';
 import {
   BUILDS,
   CONTENT_PIECES,
@@ -27,7 +29,14 @@ import {
   rupees,
 } from '@/config/pricing';
 import type { AccentName } from '@/lib/accents';
-import { settingsSchema, type InvoiceSettings, type PromoKey } from '@/lib/invoice';
+import {
+  readUpiPayload,
+  settingsSchema,
+  upiTransactionRef,
+  upiUri,
+  type InvoiceSettings,
+  type PromoKey,
+} from '@/lib/invoice';
 
 export const INVOICE = {
   /** The opening of the WhatsApp message the invoice's closing link starts. */
@@ -195,11 +204,26 @@ const IMAGE_TYPES: Record<string, string> = {
   '.webp': 'image/webp',
 };
 
+/** A QR image from settings: the picture, and what it was read to contain. */
+export interface QrImage {
+  dataUri: string;
+  /** The decoded text, when a code could be read at all. */
+  payload?: string;
+  /** The UPI ID it pays, when the code is a UPI payment code. */
+  upiId?: string;
+  payee?: string;
+}
+
 /**
- * The UPI QR image named in settings, as a data URI. Embedded rather than
- * linked, so the saved PDF carries the code itself at full resolution.
+ * The QR image named in settings (a Google Pay code, say), read back as well
+ * as embedded. Reading it is how the invoice knows where the image actually
+ * pays: whether it is the same UPI ID as `upiId`, and so a duplicate of the
+ * generated code, or a different destination that deserves its own place.
+ *
+ * Embedded as a data URI, so the saved PDF carries the code itself at full
+ * resolution.
  */
-export function upiQrDataUri(settings: InvoiceSettings): string | undefined {
+export async function readUpiQrImage(settings: InvoiceSettings): Promise<QrImage | undefined> {
   if (!settings.upiQrImage) return undefined;
   const file = new URL(settings.upiQrImage, INVOICES_DIR);
   if (!existsSync(file)) {
@@ -207,16 +231,97 @@ export function upiQrDataUri(settings: InvoiceSettings): string | undefined {
       `invoices/settings.json names "${settings.upiQrImage}" as the UPI QR image, but invoices/${settings.upiQrImage} does not exist.`,
     );
   }
+  const bytes = readFileSync(file);
   const type = IMAGE_TYPES[extname(settings.upiQrImage).toLowerCase()];
-  return `data:${type};base64,${readFileSync(file).toString('base64')}`;
+  const { data, info } = await sharp(bytes).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+  const code = jsQR(new Uint8ClampedArray(data.buffer, data.byteOffset, data.length), info.width, info.height);
+  const upi = code ? readUpiPayload(code.data) : undefined;
+  return {
+    dataUri: `data:${type};base64,${bytes.toString('base64')}`,
+    payload: code?.data,
+    upiId: upi?.upiId,
+    payee: upi?.payee,
+  };
 }
 
-/** What is still missing before an invoice can go to a client. */
-export function settingsGaps(settings: InvoiceSettings): string[] {
+/** How an invoice is paid by UPI: the link, the code to print, and the details. */
+export interface UpiPayment {
+  /** The `upi://` link behind the pay button. Absent without a UPI ID, or when nothing is owed. */
+  link?: string;
+  /** The code to print: generated from the link, or the settings image when there is no UPI ID. */
+  qr?: { kind: 'generated'; value: string } | { kind: 'image'; dataUri: string };
+  /** The settings image as well, only when it pays a different UPI ID from `upiId`. */
+  otherQr?: { dataUri: string; upiId: string; payee?: string };
+  upiId?: string;
+  payee: string;
+  /** Says whose name the payer will see, when it is not the business's. */
+  payeeNote?: string;
+}
+
+/**
+ * The UPI side of one invoice.
+ *
+ * The link and the generated code carry the same payee, amount and note, so
+ * the button and the code always agree. The amount is what is still owed:
+ * the total after discounts and tax, less anything already received.
+ *
+ * One code per destination. A Google Pay image that pays the same UPI ID as
+ * `upiId` is the same destination as the generated code, and the generated
+ * one also carries the amount, so the image is not printed beside it.
+ *
+ * Nothing here can mark an invoice paid. Status comes only from `payments`
+ * in the invoice file, written once the money is seen in the account.
+ */
+export function upiPayment(
+  settings: InvoiceSettings,
+  qrImage: QrImage | undefined,
+  invoice: { number: string; balance: number },
+): UpiPayment {
+  const payee = settings.payeeName ?? BUSINESS.name;
+  const payeeNote =
+    payee === BUSINESS.name
+      ? undefined
+      : payee === BUSINESS.founder
+        ? `Shows as ${payee}, CareInflow's founder.`
+        : `Shows as ${payee} in your UPI app.`;
+  const owed = invoice.balance > 0;
+
+  if (!settings.upiId) {
+    return {
+      qr: owed && qrImage ? { kind: 'image', dataUri: qrImage.dataUri } : undefined,
+      upiId: qrImage?.upiId,
+      payee: qrImage?.payee ?? payee,
+    };
+  }
+
+  const link = owed
+    ? upiUri({
+        upiId: settings.upiId,
+        payee,
+        note: `Invoice ${invoice.number}`,
+        amountPaise: settings.upiIncludeAmount ? invoice.balance : undefined,
+        ref: settings.upiTransactionRef ? upiTransactionRef(invoice.number) : undefined,
+      })
+    : undefined;
+  const differs =
+    qrImage?.upiId !== undefined && qrImage.upiId.toLowerCase() !== settings.upiId.toLowerCase();
+
+  return {
+    link,
+    qr: link ? { kind: 'generated', value: link } : undefined,
+    otherQr:
+      owed && differs ? { dataUri: qrImage!.dataUri, upiId: qrImage!.upiId!, payee: qrImage!.payee } : undefined,
+    upiId: settings.upiId,
+    payee,
+    payeeNote,
+  };
+}
+
+/** What is still missing, or wrong, before an invoice can go to a client. */
+export function settingsGaps(settings: InvoiceSettings, qrImage: QrImage | undefined): string[] {
   const gaps: string[] = [];
-  if (!settings.upiQrImage && !settings.upiId) gaps.push('No UPI QR code yet');
-  // A UPI ID gives every invoice its own tap-to-pay link, so a standing
-  // payment page is only missing when there is neither.
-  if (!settings.paymentLink && !settings.upiId) gaps.push('No payment link yet');
+  if (!settings.upiId) gaps.push(qrImage ? 'No UPI ID: the pay button is off' : 'No UPI ID or QR code: payment is off');
+  if (qrImage && !qrImage.payload) gaps.push(`No QR code found in invoices/${settings.upiQrImage}`);
+  else if (qrImage && !qrImage.upiId) gaps.push(`invoices/${settings.upiQrImage} is not a UPI payment code`);
   return gaps;
 }

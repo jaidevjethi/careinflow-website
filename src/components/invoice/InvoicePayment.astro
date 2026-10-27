@@ -1,140 +1,146 @@
 ---
 /**
- * How to pay, and who to ask. The panel that turns the invoice into money, so
- * it carries the most direct copy on the page and nothing else.
+ * How to pay. The panel that turns the invoice into money, so it carries the
+ * most direct copy on the page and nothing else.
+ *
+ * Three ways in, all to the same UPI destination and all carrying the same
+ * amount and note:
+ *   - "Pay with any UPI app", a real `upi://` link. Tapped on a phone, it asks
+ *     the phone to open a UPI app with everything filled in. Whether it does
+ *     depends on the PDF viewer and the phone, so it is never the only way.
+ *   - The QR code, generated from that same link, for any UPI app's scanner.
+ *   - The UPI ID, amount and payment note, set large enough to type by hand.
+ * A standing HTTPS payment page (a gateway link) joins them when settings
+ * has one, because a browser opens https:// everywhere.
  *
  * Every payment detail comes from the gitignored invoices/settings.json. When
- * one is missing, a dashed box says so in plain words. It is never filled with
- * an example: a placeholder that looks like a working UPI ID is a payment sent
- * to nobody.
- *
- * With a UPI ID set, the panel also carries a tap-to-pay button: a `upi://`
- * link that opens the payer's UPI app with the payee, the invoice number and
- * (with `upiIncludeAmount`) the amount already filled in. It only works where
- * a UPI app is installed, which is why the code and the UPI ID stay beside it.
- *
- * One QR code on the page, and it pays. The WhatsApp code that used to sit
- * here was a second square a client could scan by mistake when paying, so
- * WhatsApp is a plain link in the closing line instead.
+ * the UPI ID is missing, the button is shown switched off and labelled, and
+ * nothing is filled in with an example: a placeholder that looks like a
+ * working UPI ID is a payment sent to nobody.
  */
 import QrCode from './QrCode.astro';
-import { BUSINESS } from '@/config/site';
-import { upiQrDataUri } from '@/config/invoice';
-import { formatMoney, upiUri, type InvoiceSettings } from '@/lib/invoice';
+import { formatMoney, type InvoiceSettings } from '@/lib/invoice';
+import type { UpiPayment } from '@/config/invoice';
 
 interface Props {
   number: string;
   /** What is still owed, in paise. */
   balance: number;
   decimals: boolean;
-  /** This invoice's own payment link, if it has one. */
+  /** This invoice's own HTTPS payment link, if it has one. */
   paymentLink?: string;
   settings: InvoiceSettings;
+  upi: UpiPayment;
 }
 
-const { number, balance, decimals, paymentLink, settings } = Astro.props;
+const { number, balance, decimals, paymentLink, settings, upi } = Astro.props;
 
-const qrImage = upiQrDataUri(settings);
-const payee = settings.payeeName ?? BUSINESS.name;
-const upiLink = settings.upiId
-  ? upiUri({
-      upiId: settings.upiId,
-      payee,
-      note: `Invoice ${number}`,
-      amountPaise: settings.upiIncludeAmount && balance > 0 ? balance : undefined,
-    })
-  : undefined;
-// A client paying a CareInflow invoice and seeing a person's name in their
-// UPI app should not have to wonder whether it is the right account.
-const payeeNote =
-  payee === BUSINESS.name
-    ? undefined
-    : payee === BUSINESS.founder
-      ? `Shows as ${payee}, CareInflow's founder.`
-      : `Shows as ${payee} in your UPI app.`;
+const owed = balance > 0;
 const link = paymentLink ?? settings.paymentLink;
 const bank = settings.bank;
 const amount = formatMoney(balance, decimals);
+const amountInLink = settings.upiIncludeAmount;
 
 const title = 'text-[9pt] font-bold leading-[1.3] text-ink';
 const small = 'text-[8pt] leading-[1.45] text-body';
 const label = 'label-mono text-[6.5pt] font-medium text-muted';
 const button =
-  'mt-[1.2mm] inline-flex items-center gap-[1.5mm] rounded-[2mm] bg-vivid px-[3mm] py-[1.5mm] text-[8.5pt] font-bold text-ink';
+  'inline-flex items-center gap-[2mm] rounded-[2mm] bg-vivid px-[3.5mm] py-[2mm] text-[9.5pt] font-bold leading-none text-ink';
 const placeholder =
   'flex items-center justify-center rounded-[2mm] border-[0.8pt] border-dashed border-line-strong bg-surface text-center label-mono text-[6.5pt] leading-[1.5] text-muted';
+const code = 'mt-[0.8mm] break-all font-mono text-[10pt] font-semibold leading-[1.25] text-ink';
 ---
 
 <section
   class="inv-avoid mt-[4.5mm] rounded-[3.5mm] border border-line bg-canvas px-[5mm] pb-[4mm] pt-[3mm]"
   aria-labelledby="inv-pay"
 >
-  <h2 id="inv-pay" class="label-mono text-[7pt] font-medium text-muted">How to pay</h2>
+  <h2 id="inv-pay" class="label-mono text-[7pt] font-medium text-muted">{owed ? 'How to pay' : 'Payment'}</h2>
 
-  <div class="inv-cols mt-[2.5mm] grid grid-cols-[30mm_minmax(0,1fr)_minmax(0,1fr)] gap-[6mm]">
-    <!-- The code -->
-    <div>
-      {qrImage ? (
-        <img src={qrImage} alt="UPI QR code to pay CareInflow" class="block size-[30mm] rounded-[1.5mm] bg-surface object-contain" />
-      ) : upiLink ? (
-        <QrCode value={upiLink} label="UPI QR code to pay CareInflow" class="size-[30mm] rounded-[1.5mm]" />
-      ) : (
-        <div class:list={[placeholder, 'size-[30mm] px-[2mm]']}>UPI QR code<br />to be added</div>
+  {owed ? (
+    <div
+      class:list={[
+        'inv-cols mt-[2.5mm] grid gap-[6mm]',
+        upi.otherQr
+          ? 'grid-cols-[30mm_30mm_minmax(0,1fr)_minmax(0,1fr)]'
+          : 'grid-cols-[30mm_minmax(0,1fr)_minmax(0,1fr)]',
+      ]}
+    >
+      <!-- The code: the same link as the button, so the two always agree -->
+      <figure>
+        {upi.qr?.kind === 'generated' ? (
+          <QrCode
+            value={upi.qr.value}
+            label={`UPI QR code: pay ${amountInLink ? `${amount} ` : ''}to ${upi.upiId}`}
+            class="size-[30mm] rounded-[1.5mm]"
+          />
+        ) : upi.qr?.kind === 'image' ? (
+          <img src={upi.qr.dataUri} alt="UPI QR code to pay CareInflow" class="block size-[30mm] rounded-[1.5mm] bg-surface object-contain" />
+        ) : (
+          <div class:list={[placeholder, 'size-[30mm] px-[2mm]']}>UPI QR code<br />to be added</div>
+        )}
+        {upi.otherQr && <figcaption class="label-mono mt-[1mm] text-center text-[6pt] text-muted">Any UPI app</figcaption>}
+      </figure>
+
+      {upi.otherQr && (
+        <figure>
+          <img src={upi.otherQr.dataUri} alt={`QR code: pay ${upi.otherQr.upiId}`} class="block size-[30mm] rounded-[1.5mm] bg-surface object-contain" />
+          <figcaption class="mt-[1mm] break-all text-center font-mono text-[6pt] text-muted">{upi.otherQr.upiId}</figcaption>
+        </figure>
       )}
-    </div>
 
-    <!-- Scan or tap, and any other way to pay -->
-    <div class="flex flex-col gap-[3mm]">
-      <div>
-        <p class={title}>Pay by UPI</p>
-        <p class={small}>
-          {upiLink
-            ? 'Scan the code with Google Pay, PhonePe, Paytm or any UPI app. On your phone, tap the button instead.'
-            : 'Scan the code with Google Pay, PhonePe, Paytm or any UPI app.'}
-        </p>
-        {upiLink && (
-          <a href={upiLink} class={button}>
-            {settings.upiIncludeAmount && balance > 0 ? `Pay ${amount} by UPI` : 'Pay by UPI'} <span aria-hidden="true">→</span>
-          </a>
+      <!-- The button, and what to do when it cannot open anything -->
+      <div class="flex flex-col gap-[2.5mm]">
+        <div>
+          <p class={title}>Pay with any UPI app</p>
+          {upi.link ? (
+            <a href={upi.link} class:list={[button, 'mt-[1.5mm]']} data-upi-link>
+              {amountInLink ? `Pay ${amount} with any UPI app` : 'Pay with any UPI app'} <span aria-hidden="true">→</span>
+            </a>
+          ) : (
+            <p class:list={[placeholder, 'mt-[1.5mm] h-[8mm] max-w-[62mm] px-[2mm]']} aria-disabled="true">
+              Pay button off · UPI ID to be added
+            </p>
+          )}
+          <p class:list={[small, 'mt-[1.5mm]']}>
+            {upi.link
+              ? 'On your phone, tap the button. If no UPI app opens, scan the code with Google Pay, PhonePe, Paytm or any UPI app, or pay the UPI ID with the payment note.'
+              : 'Scan the code with Google Pay, PhonePe, Paytm or any UPI app, and add the payment note.'}
+          </p>
+        </div>
+
+        {link && (
+          <div>
+            <p class={title}>Or pay online</p>
+            <a href={link} rel="noopener" class:list={[button, 'mt-[1.5mm]']}>
+              Pay {amount} online <span aria-hidden="true">→</span>
+            </a>
+            <p class="mt-[0.8mm] break-all font-mono text-[7pt] text-muted">{link.replace(/^https?:\/\//, '')}</p>
+          </div>
         )}
       </div>
 
-      {link ? (
-        <div>
-          <p class={title}>Pay online</p>
-          <a href={link} rel="noopener" class={button}>
-            Pay {amount} online <span aria-hidden="true">→</span>
-          </a>
-          <p class="mt-[0.8mm] break-all font-mono text-[7pt] text-muted">{link.replace(/^https?:\/\//, '')}</p>
-        </div>
-      ) : (
-        !upiLink && (
+      <!-- What to type, if typing is easier than scanning -->
+      <dl class="inv-pay-ids flex flex-col gap-[2.5mm] border-l border-line pl-[6mm]">
+        {upi.upiId && (
           <div>
-            <p class={title}>Pay online</p>
-            <p class:list={[placeholder, 'mt-[1mm] h-[7mm] max-w-[58mm]']}>Payment link to be added</p>
+            <dt class={label}>UPI ID</dt>
+            <dd class={code}>{upi.upiId}</dd>
+            {upi.payeeNote && <dd class:list={[small, 'mt-[0.5mm]']}>{upi.payeeNote}</dd>}
           </div>
-        )
-      )}
-    </div>
-
-    <!-- What to type, if typing is easier than scanning -->
-    <dl class="inv-pay-ids flex flex-col gap-[2.5mm] border-l border-line pl-[6mm]">
-      {settings.upiId && (
+        )}
         <div>
-          <dt class={label}>UPI ID</dt>
-          <dd class="mt-[0.8mm] break-all font-mono text-[10pt] font-semibold leading-[1.25] text-ink">{settings.upiId}</dd>
-          {payeeNote && <dd class:list={[small, 'mt-[0.5mm]']}>{payeeNote}</dd>}
+          <dt class={label}>Payment note</dt>
+          <dd class={code}>{number}</dd>
+          <dd class:list={[small, 'mt-[0.5mm]']}>So we can match your payment to this invoice.</dd>
         </div>
-      )}
-      <div>
-        <dt class={label}>Payment note</dt>
-        <dd class="mt-[0.8mm] font-mono text-[10pt] font-semibold leading-[1.25] text-ink">{number}</dd>
-        <dd class:list={[small, 'mt-[0.5mm]']}>So we can match your payment to this invoice.</dd>
-      </div>
-    </dl>
-  </div>
+      </dl>
+    </div>
+  ) : (
+    <p class="mt-[1.5mm] text-[9pt] text-ink">Paid in full. Nothing more is owed on this invoice.</p>
+  )}
 
-  {bank && (
+  {owed && bank && (
     <div class="mt-[3mm] border-t border-line pt-[2mm] text-[8pt] leading-[1.5] text-body">
       <span class="font-bold text-ink">Bank transfer</span>
       <dl class="inline">

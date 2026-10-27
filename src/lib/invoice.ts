@@ -195,8 +195,8 @@ const GSTIN = /^\d{2}[A-Z]{5}\d{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/;
 /** The studio's private payment details, from invoices/settings.json. */
 export const settingsSchema = z.object({
   /**
-   * Your UPI ID. Printed under the code, and turned into each invoice's
-   * tap-to-pay `upi://` link. Also generates the QR when there is no image.
+   * The UPI ID payments go to. Each invoice turns it into a "Pay with any
+   * UPI app" `upi://` link and a QR code generated from that same link.
    */
   upiId: z
     .string()
@@ -207,18 +207,34 @@ export const settingsSchema = z.object({
    * business name; when it is a person's name the invoice says whose it is.
    */
   payeeName: z.string().optional(),
-  /** File name of your own UPI QR image, saved in invoices/ (png, jpg or webp). */
+  /**
+   * File name of a QR image you already have (a Google Pay code), saved in
+   * invoices/. It is read back at render: printed only when it pays a
+   * different UPI ID from `upiId`, or when there is no `upiId` at all.
+   */
   upiQrImage: z
     .string()
     .regex(/^[\w.-]+\.(png|jpe?g|webp)$/i, 'a file name in invoices/, ending .png, .jpg or .webp')
     .optional(),
   /**
-   * Fill the amount due into the tap-to-pay link (and a generated QR). Off by
-   * default: some UPI apps decline a link payment with a preset amount to a
-   * personal UPI ID. Test it with a real payment before relying on it.
+   * Fill the amount still owed into the pay button and the QR code. On by
+   * default. Some UPI apps decline a preset amount sent to a personal UPI ID;
+   * if a test payment fails for that reason, turn this off and the payer
+   * types the amount instead.
    */
-  upiIncludeAmount: z.boolean().default(false),
-  /** A standing payment page, used when an invoice has no `paymentLink` of its own. */
+  upiIncludeAmount: z.boolean().default(true),
+  /**
+   * Add the invoice number as the UPI transaction reference (`tr`). Off by
+   * default: `tr` belongs to merchant payments, and on a personal UPI ID it
+   * can make an app treat the payment as a merchant one and decline it. Turn
+   * it on once payments go to a merchant (business) UPI ID. The invoice
+   * number is in the payment note (`tn`) either way.
+   */
+  upiTransactionRef: z.boolean().default(false),
+  /**
+   * An HTTPS payment page from a payment gateway, used when an invoice has no
+   * `paymentLink` of its own. Never a made-up address.
+   */
   paymentLink: z.string().url().optional(),
   bank: z
     .object({
@@ -787,18 +803,41 @@ export const STATUS_LABEL: Record<InvoiceStatus, string> = {
   overdue: 'Overdue',
 };
 
-/** A UPI payment URI, as UPI apps read it from a QR code. */
+/**
+ * A UPI payment link, as UPI apps read it from a tap or a QR code, in the
+ * NPCI deep-link format: payee address, payee name, amount, currency, note
+ * and, optionally, a transaction reference.
+ *
+ * Every value is percent-encoded except the "@" in the UPI ID. "@" is legal
+ * in a query string as it stands, and some apps fail to match a payee whose
+ * "@" arrives as %40. Spaces are %20, never "+", which some apps print
+ * literally.
+ */
 export const upiUri = (opts: {
   upiId: string;
   payee: string;
   note: string;
   amountPaise?: number;
+  /** `tr`: letters and digits only, at most 35. */
+  ref?: string;
 }): string => {
-  // The UPI ID goes in as written: some apps fail to match a payee whose "@"
-  // arrives as %40. Everything else is encoded, spaces as %20 rather than "+",
-  // which some apps show literally.
-  const params = [`pa=${opts.upiId}`, `pn=${encodeURIComponent(opts.payee)}`];
+  const enc = (value: string) => encodeURIComponent(value);
+  const params = [`pa=${enc(opts.upiId).replace(/%40/g, '@')}`, `pn=${enc(opts.payee)}`];
   if (opts.amountPaise !== undefined) params.push(`am=${(opts.amountPaise / 100).toFixed(2)}`);
-  params.push('cu=INR', `tn=${encodeURIComponent(opts.note)}`);
+  params.push('cu=INR', `tn=${enc(opts.note)}`);
+  if (opts.ref) params.push(`tr=${enc(opts.ref)}`);
   return `upi://pay?${params.join('&')}`;
 };
+
+/** An invoice number as a UPI transaction reference: CI-2026-001 → CI2026001. */
+export const upiTransactionRef = (invoiceNumber: string): string =>
+  invoiceNumber.replace(/[^A-Za-z0-9]/g, '').slice(0, 35);
+
+/** The payee in a UPI link or QR payload, or undefined if it is not one. */
+export function readUpiPayload(payload: string): { upiId: string; payee?: string; amount?: string } | undefined {
+  if (!/^upi:\/\/pay\?/i.test(payload)) return undefined;
+  const params = new URLSearchParams(payload.slice(payload.indexOf('?') + 1));
+  const upiId = params.get('pa');
+  if (!upiId) return undefined;
+  return { upiId, payee: params.get('pn') ?? undefined, amount: params.get('am') ?? undefined };
+}

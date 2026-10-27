@@ -16,7 +16,7 @@ import InvoiceLines from './InvoiceLines.astro';
 import InvoicePayment from './InvoicePayment.astro';
 import InvoicePromo from './InvoicePromo.astro';
 import { BUSINESS, CANONICAL_HOST } from '@/config/site';
-import { INVOICE, PROMO, invoiceTerms, invoiceWhatsapp } from '@/config/invoice';
+import { INVOICE, PROMO, invoiceTerms, invoiceWhatsapp, upiPayment, type QrImage } from '@/config/invoice';
 import {
   STATUS_LABEL,
   formatDate,
@@ -31,9 +31,14 @@ interface Props {
   data: InvoiceData;
   inv: ComputedInvoice;
   settings: InvoiceSettings;
+  /** The settings QR image, read once per render by the route. */
+  qrImage?: QrImage;
 }
 
-const { data, inv, settings } = Astro.props;
+const { data, inv, settings, qrImage } = Astro.props;
+// One payment model for the whole sheet, so the button by the amount and the
+// one in the payment panel can never point at different places.
+const upi = upiPayment(settings, qrImage, { number: data.number, balance: inv.balance });
 const money = (paise: number) => formatMoney(paise, inv.decimals);
 
 const hasTax = data.taxes.length > 0;
@@ -174,11 +179,22 @@ const statusChip = {
       {paid ? (
         <p class="mt-[2mm] text-[8.5pt] text-body-deep">Thank you. Nothing more is owed on this invoice.</p>
       ) : (
-        inv.due && (
-          <p class="mt-[2mm] text-[8.5pt] text-body-deep">
-            By <strong class="font-semibold text-ink">{formatDate(inv.due)}</strong>
-          </p>
-        )
+        <>
+          {inv.due && (
+            <p class="mt-[2mm] text-[8.5pt] text-body-deep">
+              By <strong class="font-semibold text-ink">{formatDate(inv.due)}</strong>
+            </p>
+          )}
+          {upi.link && (
+            <a
+              href={upi.link}
+              class="mt-[3mm] inline-flex items-center gap-[2mm] rounded-[2mm] bg-vivid px-[3.5mm] py-[2mm] text-[9pt] font-bold leading-none text-ink"
+              data-upi-link
+            >
+              Pay with any UPI app <span aria-hidden="true">→</span>
+            </a>
+          )}
+        </>
       )}
     </div>
   </section>
@@ -241,7 +257,7 @@ const statusChip = {
     </div>
   </section>
 
-  <InvoicePayment number={data.number} balance={inv.balance} decimals={inv.decimals} paymentLink={data.paymentLink} settings={settings} />
+  <InvoicePayment number={data.number} balance={inv.balance} decimals={inv.decimals} paymentLink={data.paymentLink} settings={settings} upi={upi} />
 
   <!-- Pinned to the foot of the last page -->
   <div class="mt-auto">

@@ -61,21 +61,60 @@ printing.
 
 | Setting | What it does |
 |---|---|
-| `upiQrImage` | The file name of your own UPI or Google Pay QR image, saved in `invoices/` (png, jpg or webp). Crop it to the code itself; the invoice prints it at 30 mm square. |
-| `upiId` | Your UPI ID. Printed under the code, and turned into a **Pay by UPI** button on every invoice: a `upi://` link that opens the payer's UPI app with your UPI ID and the invoice number already filled in. Tapping it works on a phone with a UPI app; on a computer, the code is the way to pay. With no image, the QR is generated from it too. |
-| `upiIncludeAmount` | Also fill the amount still owed into the button (and a generated QR). Off unless you turn it on, because some UPI apps decline a link payment with a preset amount to a personal UPI ID. Test it with a real payment from a client's point of view before you rely on it. |
-| `payeeName` | The name on the UPI account, as a payer's app shows it. Defaults to CareInflow. When it is a person's name, the invoice adds "Shows as …, CareInflow's founder", so a client paying a business invoice is not surprised by it. |
-| `paymentLink` | A standing payment page (Razorpay, Instamojo, a UPI link). An invoice can set its own `paymentLink`, e.g. a link with the amount already in it. |
+| `upiId` | The UPI ID payments go to. Every invoice turns it into a **Pay with any UPI app** button and a QR code, both carrying the same payee, the amount still owed and the invoice number as the note. Without it the button is shown switched off and labelled, and the toolbar warns you. |
+| `payeeName` | The name on that UPI account, as a payer's app shows it. Defaults to CareInflow. When it is a person's name, the invoice adds "Shows as …, CareInflow's founder", so a client paying a business invoice is not surprised by it. |
+| `upiIncludeAmount` | On by default: the button and the QR carry the amount still owed. Some UPI apps decline a preset amount sent to a personal UPI ID; if a test payment fails for that reason, set this to `false` and the payer types the amount. |
+| `upiTransactionRef` | Off by default. Adds the invoice number as the UPI transaction reference (`tr`). That field belongs to merchant payments, and on a personal UPI ID it can make an app decline the payment, so turn it on only for a merchant (business) UPI ID. The invoice number is in the payment note either way. |
+| `upiQrImage` | Optional: the file name of a QR image you already have (a Google Pay code), saved in `invoices/`. The invoice reads it to see where it pays. If it pays the same UPI ID as `upiId`, it is not printed, because the generated code goes to the same place and also carries the amount. If it pays a different UPI ID, both codes are printed, each labelled. With no `upiId`, it is the only code shown and the button stays off. |
+| `paymentLink` | Optional: an HTTPS payment page from a payment gateway (a Razorpay or Instamojo payment link). Printed as **Or pay online**. A browser opens an https link everywhere, which a `upi://` link cannot promise. An invoice can set its own `paymentLink`, e.g. a gateway link made for that amount. |
 | `bank` | Account name, number, IFSC, bank and branch, for clients who pay by transfer. Printed in one line under the payment options. |
 | `gstin` | Only once the studio is registered for GST. Without it, no invoice can carry tax lines. With it, the GSTIN prints in the header and an invoice with `taxes` is titled "Tax invoice". |
 
-Until a QR or a link is set, the invoice shows a dashed box saying so, and
-the toolbar warns you. Nothing is ever filled in with an example.
+Nothing is ever filled in with an example. A missing detail prints as a
+labelled placeholder, and the toolbar says what is missing.
 
-The UPI code is the only QR code on an invoice, so a client paying can never
-scan the wrong one. WhatsApp is a link in the closing line ("Questions about any
-line? WhatsApp us at …"), using the studio's number from `src/config/site.ts` and
-opening the chat with "Hi CareInflow. About invoice …".
+WhatsApp is a link in the closing line ("Questions about any line? WhatsApp
+us at …"), never a QR code, so the only codes on an invoice are ones that pay.
+
+## The pay button: what it does, and where it works
+
+The button is a real link inside the PDF (a link annotation, not styled
+text), pointing at a standard UPI payment address:
+
+```
+upi://pay?pa=<UPI ID>&pn=<payee name>&am=<amount owed>&cu=INR&tn=Invoice%20<number>
+```
+
+The amount is what is still owed: the total after discounts and tax, less
+anything already received. The QR code is generated from the same link, so
+scanning and tapping always pay the same person the same amount. A paid
+invoice shows no button and no code.
+
+Tapping it asks the device to open whichever app handles `upi://`. That is
+not something every PDF viewer allows, so the QR code, the UPI ID and the
+payment note are always printed beside it.
+
+| Where the PDF is opened | What happens | Checked |
+|---|---|---|
+| Chrome's "Save as PDF", and `npm run invoice:pdf` | Both buttons are kept as `upi://` links, with tap areas of about 43 × 7 mm and 57 × 7 mm; the QR decodes to exactly the same link | Yes, by reading the PDF |
+| Firefox's PDF viewer, and any app built on pdf.js | The `upi://` links are dropped, so the button does nothing. Scan the code instead | Yes, with pdf.js |
+| Android, in a PDF app such as Google Drive or Adobe Acrobat | Should offer the installed UPI apps | Not yet: needs a real phone |
+| Android, from WhatsApp | WhatsApp hands the PDF to the phone's PDF app; as above | Not yet |
+| iPhone (Files, Mail, Safari) | Opens a UPI app only if one has registered `upi://`; often nothing happens | Not yet |
+| Desktop (Chrome, Edge, Acrobat) | No UPI app to open. The QR code is the way to pay | Not yet |
+
+Before relying on it, send yourself an invoice and, on an Android phone and
+an iPhone, open it from WhatsApp and from email, tap the button and check
+that the app shows the right payee and amount. Pay a small invoice end to
+end once. If Google Pay refuses the preset amount, turn `upiIncludeAmount`
+off.
+
+**The button never marks anything paid.** Tapping it only opens a payment
+app; nothing reports back. An invoice changes to Part paid or Paid only when
+you add a `payments:` entry to its file, once you have seen the money arrive
+in the account. A payment gateway (see `paymentLink`) can confirm payments
+automatically, but that needs the gateway's own account and webhook, which
+this tool does not have.
 
 ## Invoice fields
 
